@@ -1,6 +1,7 @@
 //! Deterministic replay fixture contracts.
 
 use oprs_core::{DryRunStatus, OracleSnapshot, RiskReasonCode, Slot};
+use serde::Deserialize;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FixtureSource {
@@ -74,59 +75,93 @@ impl FixtureValidationReport {
 pub fn validate_fixture_case(case: FixtureValidationCase<'_>) -> FixtureValidationReport {
     let mut failures = Vec::new();
 
-    require_contains(
-        case.manifest_json,
-        &format!("\"dataset_name\": \"{}\"", case.fixture_set_id),
-        "manifest dataset_name must match fixture_set_id",
-        &mut failures,
-    );
-    require_contains(
-        case.manifest_json,
-        "\"source_window\": \"synthetic-fixture\"",
-        "manifest must disclose synthetic source_window",
-        &mut failures,
-    );
-    require_contains(
-        case.manifest_json,
-        "\"dq_status\": \"Warn\"",
-        "synthetic fixture manifest should warn, not pass as historical data",
-        &mut failures,
-    );
-    require_contains(
-        case.dry_run_output_json,
-        &format!("\"run_id\": \"{}\"", case.fixture_set_id),
-        "dry-run run_id must match fixture_set_id",
-        &mut failures,
-    );
-    require_contains(
-        case.dry_run_output_json,
-        "\"mode\": \"Fixture\"",
-        "dry-run output must declare Fixture mode",
-        &mut failures,
-    );
-    require_contains(
-        case.dry_run_output_json,
-        &format!(
-            "\"status\": \"{}\"",
-            dry_run_status_name(case.expected_status)
-        ),
-        "dry-run output must include expected status",
-        &mut failures,
-    );
-    require_contains(
-        case.dry_run_output_json,
-        "\"ExecutionDisabledDryRun\"",
-        "dry-run output must include execution-disabled guardrail",
-        &mut failures,
-    );
+    let manifest = match serde_json::from_str::<SampleDatasetManifest>(case.manifest_json) {
+        Ok(manifest) => Some(manifest),
+        Err(error) => {
+            failures.push(format!("manifest JSON failed to parse: {error}"));
+            None
+        }
+    };
 
-    for code in case.expected_reason_codes {
-        require_contains(
-            case.dry_run_output_json,
-            &format!("\"{}\"", risk_reason_code_name(*code)),
-            "dry-run output missing expected reason code",
-            &mut failures,
-        );
+    if let Some(manifest) = manifest {
+        if manifest.dataset_name != case.fixture_set_id {
+            failures.push(format!(
+                "manifest dataset_name `{}` must match fixture_set_id `{}`",
+                manifest.dataset_name, case.fixture_set_id
+            ));
+        }
+        if manifest.source_window != "synthetic-fixture" {
+            failures.push(format!(
+                "manifest source_window `{}` must disclose synthetic-fixture",
+                manifest.source_window
+            ));
+        }
+        if manifest.dq_status != "Warn" {
+            failures.push(format!(
+                "synthetic fixture manifest should warn, found `{}`",
+                manifest.dq_status
+            ));
+        }
+    }
+
+    let dry_run = match serde_json::from_str::<SampleDryRunOutput>(case.dry_run_output_json) {
+        Ok(dry_run) => Some(dry_run),
+        Err(error) => {
+            failures.push(format!("dry-run JSON failed to parse: {error}"));
+            None
+        }
+    };
+
+    if let Some(dry_run) = dry_run {
+        if dry_run.summary.run_id != case.fixture_set_id {
+            failures.push(format!(
+                "dry-run run_id `{}` must match fixture_set_id `{}`",
+                dry_run.summary.run_id, case.fixture_set_id
+            ));
+        }
+        if dry_run.summary.mode != "Fixture" {
+            failures.push(format!(
+                "dry-run mode `{}` must declare Fixture mode",
+                dry_run.summary.mode
+            ));
+        }
+
+        let expected_status = dry_run_status_name(case.expected_status);
+        if !dry_run.has_status(expected_status) {
+            failures.push(format!(
+                "dry-run output missing expected status `{expected_status}`"
+            ));
+        }
+
+        if !dry_run.has_reason_code("ExecutionDisabledDryRun") {
+            failures.push("dry-run output must include execution-disabled guardrail".to_string());
+        }
+
+        for code in case.expected_reason_codes {
+            let code_name = risk_reason_code_name(*code);
+            if !dry_run.has_reason_code(code_name) {
+                failures.push(format!(
+                    "dry-run output missing expected reason code `{code_name}`"
+                ));
+            }
+        }
+
+        for opportunity in &dry_run.opportunities {
+            if let Some(plan) = &opportunity.tx_plan {
+                if plan.requires_signer {
+                    failures.push(format!(
+                        "opportunity `{}` has requires_signer=true",
+                        opportunity.id
+                    ));
+                }
+                if !plan.submission_disabled {
+                    failures.push(format!(
+                        "opportunity `{}` has submission_disabled=false",
+                        opportunity.id
+                    ));
+                }
+            }
+        }
     }
 
     FixtureValidationReport {
@@ -141,32 +176,35 @@ pub fn validate_fixture_catalog(
     fixture_set_ids: &[&str],
 ) -> FixtureValidationReport {
     let mut failures = Vec::new();
-    require_contains(
-        catalog_json,
-        "\"schema_version\": \"0.1.0\"",
-        "fixture catalog must declare schema_version",
-        &mut failures,
-    );
 
-    for fixture_set_id in fixture_set_ids {
-        require_contains(
-            catalog_json,
-            &format!("\"fixture_set_id\": \"{}\"", fixture_set_id),
-            "fixture catalog missing fixture_set_id",
-            &mut failures,
-        );
+    match serde_json::from_str::<SampleFixtureCatalog>(catalog_json) {
+        Ok(catalog) => {
+            if catalog.schema_version != "0.1.0" {
+                failures.push(format!(
+                    "fixture catalog schema_version `{}` must be `0.1.0`",
+                    catalog.schema_version
+                ));
+            }
+
+            for fixture_set_id in fixture_set_ids {
+                if !catalog
+                    .fixtures
+                    .iter()
+                    .any(|fixture| fixture.fixture_set_id == *fixture_set_id)
+                {
+                    failures.push(format!(
+                        "fixture catalog missing fixture_set_id `{fixture_set_id}`"
+                    ));
+                }
+            }
+        }
+        Err(error) => failures.push(format!("fixture catalog JSON failed to parse: {error}")),
     }
 
     FixtureValidationReport {
         fixture_set_id: "fixture_catalog".to_string(),
         passed: failures.is_empty(),
         failures,
-    }
-}
-
-fn require_contains(haystack: &str, needle: &str, message: &str, failures: &mut Vec<String>) {
-    if !haystack.contains(needle) {
-        failures.push(format!("{message}: expected `{needle}`"));
     }
 }
 
@@ -178,6 +216,106 @@ fn dry_run_status_name(status: DryRunStatus) -> &'static str {
         DryRunStatus::Unsupported => "Unsupported",
         DryRunStatus::SimulationFailed => "SimulationFailed",
     }
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleDatasetManifest {
+    dataset_name: String,
+    source_window: String,
+    dq_status: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleFixtureCatalog {
+    schema_version: String,
+    fixtures: Vec<SampleFixtureCatalogEntry>,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleFixtureCatalogEntry {
+    fixture_set_id: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleDryRunOutput {
+    summary: SampleDryRunSummary,
+    opportunities: Vec<SampleOpportunity>,
+    gate_results: Vec<SampleGateResult>,
+    simulation_results: Vec<SampleSimulationResult>,
+}
+
+impl SampleDryRunOutput {
+    fn has_status(&self, status: &str) -> bool {
+        self.opportunities
+            .iter()
+            .any(|opportunity| opportunity.decision.status == status)
+            || self
+                .simulation_results
+                .iter()
+                .any(|result| result.status == status)
+    }
+
+    fn has_reason_code(&self, reason_code: &str) -> bool {
+        self.summary
+            .reason_codes
+            .iter()
+            .any(|code| code == reason_code)
+            || self
+                .opportunities
+                .iter()
+                .any(|opportunity| opportunity.decision.has_reason_code(reason_code))
+            || self
+                .gate_results
+                .iter()
+                .any(|gate| gate.reason_codes.iter().any(|code| code == reason_code))
+            || self
+                .simulation_results
+                .iter()
+                .any(|result| result.reason_codes.iter().any(|code| code == reason_code))
+    }
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleDryRunSummary {
+    run_id: String,
+    mode: String,
+    reason_codes: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleOpportunity {
+    id: String,
+    tx_plan: Option<SampleTxPlan>,
+    decision: SampleDecision,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleTxPlan {
+    requires_signer: bool,
+    submission_disabled: bool,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleDecision {
+    status: String,
+    reason_codes: Vec<String>,
+}
+
+impl SampleDecision {
+    fn has_reason_code(&self, reason_code: &str) -> bool {
+        self.reason_codes.iter().any(|code| code == reason_code)
+    }
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleGateResult {
+    reason_codes: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleSimulationResult {
+    status: String,
+    reason_codes: Vec<String>,
 }
 
 fn risk_reason_code_name(code: RiskReasonCode) -> &'static str {
