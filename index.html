@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Perps Reliability Stack Proof Pack</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7f8;
+        --panel: #ffffff;
+        --ink: #16202a;
+        --muted: #627083;
+        --line: #d9e0e8;
+        --blue: #2563a9;
+        --green: #16724f;
+        --amber: #a86500;
+        --red: #b7353d;
+        --teal: #0f766e;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        letter-spacing: 0;
+      }
+
+      header {
+        background: var(--panel);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 18px 20px;
+      }
+
+      .top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.2;
+      }
+
+      .subcopy {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+        max-width: 760px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fbfcfd;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 650;
+        padding: 6px 9px;
+        white-space: nowrap;
+      }
+
+      main.wrap {
+        display: grid;
+        gap: 14px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+        gap: 14px;
+      }
+
+      .two {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+      }
+
+      .label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .metric {
+        margin-top: 8px;
+        font-size: 28px;
+        font-weight: 780;
+      }
+
+      .note {
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        font-size: 15px;
+      }
+
+      a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .link-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .link-row {
+        display: grid;
+        grid-template-columns: 170px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 8px;
+      }
+
+      .link-row:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .link-title {
+        font-size: 13px;
+        font-weight: 720;
+      }
+
+      .link-copy {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .bars {
+        display: grid;
+        gap: 10px;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: 150px 1fr 34px;
+        gap: 10px;
+        align-items: center;
+        font-size: 13px;
+      }
+
+      .bar {
+        height: 9px;
+        border-radius: 999px;
+        background: #e6ebf1;
+        overflow: hidden;
+      }
+
+      .fill {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+      }
+
+      .blue {
+        background: var(--blue);
+      }
+
+      .green {
+        background: var(--green);
+      }
+
+      .amber {
+        background: var(--amber);
+      }
+
+      .red {
+        background: var(--red);
+      }
+
+      .teal {
+        background: var(--teal);
+      }
+
+      code {
+        border-radius: 4px;
+        background: #eef2f6;
+        color: #334155;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        padding: 2px 4px;
+        overflow-wrap: anywhere;
+      }
+
+      pre {
+        margin: 0;
+        border-radius: 6px;
+        background: #17202a;
+        color: #f6f8fb;
+        font-size: 12px;
+        line-height: 1.6;
+        overflow-x: auto;
+        padding: 12px;
+      }
+
+      .codes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag {
+        border-radius: 4px;
+        background: #eef2f6;
+        color: #334155;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        padding: 4px 6px;
+        overflow-wrap: anywhere;
+      }
+
+      .foot {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      @media (max-width: 880px) {
+        .top,
+        .grid,
+        .two,
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .chips {
+          justify-content: flex-start;
+        }
+
+        .link-row,
+        .bar-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap top">
+        <div>
+          <h1>Open Perps Reliability Stack</h1>
+          <p class="subcopy">
+            Validated, open, read-only reliability data for Solana perps: adapter health, Pyth-aware oracle risk, market-quality schemas, and deterministic dry-run replay.
+          </p>
+        </div>
+        <div class="chips" aria-label="scope">
+          <span class="chip">Read-only</span>
+          <span class="chip">Dry-run</span>
+          <span class="chip">No signing</span>
+          <span class="chip">No custody</span>
+          <span class="chip">No live execution</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="metrics" aria-label="proof pack summary">
+        <div class="panel">
+          <div class="label">Fixture Cases</div>
+          <div class="metric">6</div>
+          <div class="note">Synthetic Drift replay scenarios</div>
+        </div>
+        <div class="panel">
+          <div class="label">API Examples</div>
+          <div class="metric">6</div>
+          <div class="note">Envelope and safety validated</div>
+        </div>
+        <div class="panel">
+          <div class="label">Replay Tests</div>
+          <div class="metric">8</div>
+          <div class="note">Includes checksum mutation rejection</div>
+        </div>
+        <div class="panel">
+          <div class="label">Access Needed</div>
+          <div class="metric">0</div>
+          <div class="note">For local proof-pack validation</div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="panel">
+          <h2>Reviewer Links</h2>
+          <div class="link-list">
+            <div class="link-row">
+              <a class="link-title" href="docs/solana-foundation-developer-tooling-proposal.md">Grant Proposal</a>
+              <p class="link-copy">Developer Tooling proposal with milestones, public-good framing, and execution boundaries.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="docs/architecture.md">Architecture</a>
+              <p class="link-copy">Module boundaries for adapters, data, risk, dry-run replay, API, and dashboard surfaces.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="docs/adapter-standard.md">Adapter Standard</a>
+              <p class="link-copy">Capability model and venue interface for read-only and dry-run adapters.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="docs/liquidation-dry-run.md">Dry-Run Replay</a>
+              <p class="link-copy">Reason-code taxonomy, gate model, fixture runner, and no-submission constraints.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="datasets/sample/fixture_catalog.json">Fixture Catalog</a>
+              <p class="link-copy">Six synthetic Drift cases covering oracle, adapter, and execution-disabled outcomes.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="examples/api/">API Examples</a>
+              <p class="link-copy">Public sample responses for protocols, oracle risk, market quality, adapter health, dry-run replay, and liquidation health.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="apps/dashboard/index.html">Dashboard Demo</a>
+              <p class="link-copy">Static fixture-only dashboard for market, oracle, adapter, and dry-run replay views.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Validation Commands</h2>
+          <pre>cargo run -p oprs-replay --example validate_fixtures
+cargo run -p oprs-api-types --example validate_api_examples
+cargo test</pre>
+          <p class="foot">
+            These commands use checked-in fixtures and examples only. They do not require RPC credentials, private keys, wallets, or external services.
+          </p>
+        </div>
+      </section>
+
+      <section class="two">
+        <div class="panel">
+          <h2>Fixture Coverage</h2>
+          <div class="bars">
+            <div class="bar-row">
+              <span>Execution Boundary</span>
+              <div class="bar"><span class="fill green" style="width: 100%"></span></div>
+              <span>6/6</span>
+            </div>
+            <div class="bar-row">
+              <span>Oracle Risk</span>
+              <div class="bar"><span class="fill blue" style="width: 67%"></span></div>
+              <span>4/6</span>
+            </div>
+            <div class="bar-row">
+              <span>Adapter Health</span>
+              <div class="bar"><span class="fill amber" style="width: 17%"></span></div>
+              <span>1/6</span>
+            </div>
+            <div class="bar-row">
+              <span>Content Checksums</span>
+              <div class="bar"><span class="fill teal" style="width: 100%"></span></div>
+              <span>6/6</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Reason Codes</h2>
+          <div class="codes">
+            <span class="tag">ExecutionDisabledDryRun</span>
+            <span class="tag">StaleOracle</span>
+            <span class="tag">WideOracleConfidence</span>
+            <span class="tag">MissingOracle</span>
+            <span class="tag">OracleMarkDivergence</span>
+            <span class="tag">AdapterVersionMismatch</span>
+          </div>
+          <p class="foot">
+            Fixture labels are synthetic and intentionally marked with warning-level dataset quality until real read-only Drift decode proof is added.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

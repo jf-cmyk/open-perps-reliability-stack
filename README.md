@@ -20,6 +20,7 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 - [Data model](docs/data-model.md)
 - [Liquidation dry-run and replay](docs/liquidation-dry-run.md)
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
+- [Reviewer proof-pack index](index.html)
 - [Public API schema](schemas/api/public-api-v0.json)
 - [Public dashboard schema](schemas/dashboard/public-dashboard-v0.json)
 - [Sample Drift fixture dataset](datasets/sample/drift_synthetic_margin_001/manifest.json)
