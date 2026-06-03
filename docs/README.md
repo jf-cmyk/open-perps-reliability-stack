@@ -3,6 +3,7 @@
 - [Roadmap](roadmap.md)
 - [Agent work packages](agent-work-packages.md)
 - [Decision log](decision-log.md)
+- [Development checkpoint: 2026-06-03](checkpoints/2026-06-03-development-checkpoint.md)
 - [Protocol targets](protocol-targets.md)
 - [Grant package](grant-package.md)
 - [Grant application draft](grant-application-draft.md)
