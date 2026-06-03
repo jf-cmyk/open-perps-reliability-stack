@@ -3,3 +3,15 @@
 Open-source reliability infrastructure for Solana onchain perps: protocol adapters, market-quality data, Pyth-aware risk tooling, liquidation dry-run/replay, and execution reliability analytics.
 
 Initial scope: read-only and dry-run only. No production trading, custody, or live execution.
+
+## Current Workstreams
+
+- [Roadmap](docs/roadmap.md)
+- [Agent work packages](docs/agent-work-packages.md)
+- [Decision log](docs/decision-log.md)
+- [Protocol targets](docs/protocol-targets.md)
+- [Architecture](docs/architecture.md)
+- [Adapter standard](docs/adapter-standard.md)
+- [Data model](docs/data-model.md)
+- [Liquidation dry-run and replay](docs/liquidation-dry-run.md)
+- [OSS and commercial boundary](docs/oss-commercial-boundary.md)
