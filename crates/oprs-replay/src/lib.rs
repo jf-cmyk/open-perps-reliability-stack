@@ -1,6 +1,7 @@
 //! Deterministic replay fixture contracts.
 
 use oprs_core::{DryRunStatus, OracleSnapshot, RiskReasonCode, Slot};
+use oprs_data::{validate_public_dataset_scrub_text, ScrubViolation};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
@@ -112,6 +113,8 @@ pub fn validate_fixture_case(case: FixtureValidationCase<'_>) -> FixtureValidati
         }
         validate_manifest_checksums(&manifest, case.content_files, &mut failures);
     }
+
+    validate_fixture_scrub_policy(&case, &mut failures);
 
     let dry_run = match serde_json::from_str::<SampleDryRunOutput>(case.dry_run_output_json) {
         Ok(dry_run) => Some(dry_run),
@@ -377,6 +380,47 @@ fn validate_manifest_checksums(
     }
 }
 
+fn validate_fixture_scrub_policy(case: &FixtureValidationCase<'_>, failures: &mut Vec<String>) {
+    let manifest_path = format!("datasets/sample/{}/manifest.json", case.fixture_set_id);
+    append_scrub_failures(
+        validate_public_dataset_scrub_text(&manifest_path, case.manifest_json),
+        failures,
+    );
+
+    let dry_run_path = format!(
+        "datasets/sample/{}/dry_run_output.json",
+        case.fixture_set_id
+    );
+    append_scrub_failures(
+        validate_public_dataset_scrub_text(&dry_run_path, case.dry_run_output_json),
+        failures,
+    );
+
+    for file in case.content_files {
+        match std::str::from_utf8(file.bytes) {
+            Ok(text) => append_scrub_failures(
+                validate_public_dataset_scrub_text(file.path, text),
+                failures,
+            ),
+            Err(error) => failures.push(format!(
+                "fixture content `{}` must be UTF-8 for scrub validation: {error}",
+                file.path
+            )),
+        }
+    }
+}
+
+fn append_scrub_failures(violations: Vec<ScrubViolation>, failures: &mut Vec<String>) {
+    for violation in violations {
+        failures.push(format!(
+            "scrub policy violation in `{}`: {} ({})",
+            violation.path,
+            violation.kind.label(),
+            violation.evidence
+        ));
+    }
+}
+
 fn parse_checksum_entry(entry: &str) -> Option<(&str, &str)> {
     let (hash, path) = entry.split_once(' ')?;
     let hash = hash.strip_prefix("sha256:")?;
@@ -594,6 +638,76 @@ mod tests {
             .failures
             .iter()
             .any(|failure| failure.contains("content checksum mismatch")));
+    }
+
+    #[test]
+    fn rejects_dataset_scrub_policy_failures() {
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: r#"{
+                "dataset_name": "drift_synthetic_margin_001",
+                "source_window": "synthetic-fixture",
+                "dq_status": "Warn",
+                "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+                "content_checksums": [
+                  "sha256:0000000000000000000000000000000000000000000000000000000000000000 datasets/sample/drift_synthetic_margin_001/dry_run_output.json"
+                ],
+                "source_ref": "https://mainnet.helius-rpc.com/?api-key=secret"
+            }"#,
+            dry_run_output_json: r#"{
+                "summary": {
+                  "run_id": "drift_synthetic_margin_001",
+                  "mode": "Fixture",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                },
+                "opportunities": [{
+                  "id": "invalid_scrub_case",
+                  "wallet_inventory": {"USDC": "1000"},
+                  "execution_policy": {"max_slippage_bps": 5},
+                  "tx_plan": {"requires_signer": false, "submission_disabled": true},
+                  "decision": {
+                    "status": "Unsupported",
+                    "reason_codes": ["ExecutionDisabledDryRun"]
+                  }
+                }],
+                "gate_results": [{"reason_codes": ["ExecutionDisabledDryRun"]}],
+                "simulation_results": [{
+                  "status": "Unsupported",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                }]
+            }"#,
+            content_files: &[FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/dry_run_output.json",
+                bytes: br#"{
+                  "raw_path": "/Users/founder/private/snapshot.json",
+                  "auth": "Bearer abc123",
+                  "note": "load .env before replay",
+                  "private_key": "redacted-but-invalid"
+                }"#,
+            }],
+            expected_status: DryRunStatus::Unsupported,
+            expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
+        });
+
+        assert!(!report.passed);
+        for expected in [
+            "rpc_url_with_api_key",
+            "bearer_token",
+            "local_absolute_path",
+            "env_reference",
+            "private_key_material",
+            "signer_or_wallet_metadata",
+            "capital_or_execution_policy",
+        ] {
+            assert!(
+                report
+                    .failures
+                    .iter()
+                    .any(|failure| failure.contains(expected)),
+                "missing {expected} in {:?}",
+                report.failures
+            );
+        }
     }
 
     fn margin_content_files() -> &'static [FixtureContent<'static>] {

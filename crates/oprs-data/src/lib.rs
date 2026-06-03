@@ -134,6 +134,133 @@ pub struct ScrubPolicy {
     pub field_rules_json: String,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ScrubViolationKind {
+    RpcUrlWithApiKey,
+    BearerToken,
+    LocalAbsolutePath,
+    EnvReference,
+    PrivateKeyMaterial,
+    SignerOrWalletMetadata,
+    CapitalOrExecutionPolicy,
+}
+
+impl ScrubViolationKind {
+    pub fn label(self) -> &'static str {
+        match self {
+            ScrubViolationKind::RpcUrlWithApiKey => "rpc_url_with_api_key",
+            ScrubViolationKind::BearerToken => "bearer_token",
+            ScrubViolationKind::LocalAbsolutePath => "local_absolute_path",
+            ScrubViolationKind::EnvReference => "env_reference",
+            ScrubViolationKind::PrivateKeyMaterial => "private_key_material",
+            ScrubViolationKind::SignerOrWalletMetadata => "signer_or_wallet_metadata",
+            ScrubViolationKind::CapitalOrExecutionPolicy => "capital_or_execution_policy",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScrubViolation {
+    pub path: String,
+    pub kind: ScrubViolationKind,
+    pub evidence: String,
+}
+
+impl ScrubViolation {
+    fn new(path: &str, kind: ScrubViolationKind, evidence: &str) -> Self {
+        Self {
+            path: path.to_string(),
+            kind,
+            evidence: evidence.to_string(),
+        }
+    }
+}
+
+pub fn validate_public_dataset_scrub_text(path: &str, text: &str) -> Vec<ScrubViolation> {
+    let mut violations = Vec::new();
+    let lower = text.to_ascii_lowercase();
+
+    if contains_rpc_url_with_api_key(&lower) {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::RpcUrlWithApiKey,
+            "remote RPC URL appears to carry key/token material",
+        ));
+    }
+    if lower.contains("bearer ") || lower.contains("authorization: bearer") {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::BearerToken,
+            "bearer authorization material is present",
+        ));
+    }
+    if contains_local_absolute_path(text) {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::LocalAbsolutePath,
+            "local absolute filesystem path is present",
+        ));
+    }
+    if lower.contains(".env") {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::EnvReference,
+            ".env reference is present",
+        ));
+    }
+    if contains_any_json_key(
+        &lower,
+        &[
+            "private_key",
+            "seed_phrase",
+            "mnemonic",
+            "secret_key",
+            "keypair",
+        ],
+    ) || lower.contains("begin private key")
+    {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::PrivateKeyMaterial,
+            "private key, seed phrase, mnemonic, or keypair material is present",
+        ));
+    }
+    if contains_any_json_key(
+        &lower,
+        &[
+            "signer",
+            "signer_id",
+            "wallet_json",
+            "wallet_inventory",
+            "wallet_balances",
+            "custody_wallet",
+        ],
+    ) {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::SignerOrWalletMetadata,
+            "signer, wallet inventory, or custody metadata field is present",
+        ));
+    }
+    if contains_any_json_key(
+        &lower,
+        &[
+            "capital_limit",
+            "capital_limits",
+            "execution_policy",
+            "execution_limits",
+        ],
+    ) {
+        violations.push(ScrubViolation::new(
+            path,
+            ScrubViolationKind::CapitalOrExecutionPolicy,
+            "capital limit or execution policy field is present",
+        ));
+    }
+
+    violations
+}
+
 pub fn event_id_preimage(event: &CanonicalEvent) -> String {
     format!(
         "{}|{}|{}|{}|{}|{}|{}|{}|{}",
@@ -147,4 +274,105 @@ pub fn event_id_preimage(event: &CanonicalEvent) -> String {
         event.event_subtype.as_deref().unwrap_or_default(),
         event.adapter_version
     )
+}
+
+fn contains_rpc_url_with_api_key(lower: &str) -> bool {
+    let has_remote_url = lower.contains("http://") || lower.contains("https://");
+    if !has_remote_url {
+        return false;
+    }
+
+    lower.contains("api_key=")
+        || lower.contains("api-key=")
+        || lower.contains("apikey=")
+        || lower.contains("x-api-key")
+        || lower.contains("access_token=")
+        || lower.contains("token=")
+        || (lower.contains("rpc") && lower.contains("key="))
+        || lower.contains("alchemy.com/v2/")
+        || lower.contains("quiknode.pro/")
+        || lower.contains("helius-rpc.com/?api-key")
+}
+
+fn contains_local_absolute_path(text: &str) -> bool {
+    text.contains("/Users/")
+        || text.contains("/home/")
+        || text.contains("/private/")
+        || text.contains("/var/folders/")
+        || text.contains("C:\\")
+        || text.contains("D:\\")
+}
+
+fn contains_any_json_key(lower: &str, keys: &[&str]) -> bool {
+    keys.iter().any(|key| {
+        lower.contains(&format!("\"{key}\""))
+            || lower.contains(&format!("'{key}'"))
+            || lower.contains(&format!("{key}:"))
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn accepts_public_fixture_language_without_secret_fields() {
+        let violations = validate_public_dataset_scrub_text(
+            "datasets/sample/example/manifest.json",
+            r#"{
+                "scrub_policy_version": "0.1.0",
+                "known_gaps": [
+                  "No private keys, signing, transaction submission, or capital deployment."
+                ],
+                "tx_plan": {
+                  "requires_signer": false,
+                  "submission_disabled": true
+                }
+            }"#,
+        );
+
+        assert!(violations.is_empty(), "{violations:?}");
+    }
+
+    #[test]
+    fn rejects_secret_and_execution_leak_patterns() {
+        let cases = [
+            (
+                ScrubViolationKind::RpcUrlWithApiKey,
+                r#"{"rpc_url":"https://mainnet.helius-rpc.com/?api-key=abc123"}"#,
+            ),
+            (
+                ScrubViolationKind::BearerToken,
+                r#"{"authorization":"Bearer abc123"}"#,
+            ),
+            (
+                ScrubViolationKind::LocalAbsolutePath,
+                r#"{"raw_ref":"/Users/founder/private/snapshot.json"}"#,
+            ),
+            (
+                ScrubViolationKind::EnvReference,
+                r#"{"source":"load .env before running"}"#,
+            ),
+            (
+                ScrubViolationKind::PrivateKeyMaterial,
+                r#"{"private_key":"redacted-but-still-invalid"}"#,
+            ),
+            (
+                ScrubViolationKind::SignerOrWalletMetadata,
+                r#"{"wallet_inventory":{"USDC":"1000"}}"#,
+            ),
+            (
+                ScrubViolationKind::CapitalOrExecutionPolicy,
+                r#"{"execution_policy":{"max_slippage_bps":10}}"#,
+            ),
+        ];
+
+        for (kind, text) in cases {
+            let violations = validate_public_dataset_scrub_text("invalid_fixture.json", text);
+            assert!(
+                violations.iter().any(|violation| violation.kind == kind),
+                "expected {kind:?} in {violations:?}"
+            );
+        }
+    }
 }

@@ -123,6 +123,7 @@ name = "oprs-replay"
 version = "0.1.0"
 dependencies = [
  "oprs-core",
+ "oprs-data",
  "serde",
  "serde_json",
  "sha2",
