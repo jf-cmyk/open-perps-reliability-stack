@@ -4,7 +4,8 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
-- [2026-06-03 development checkpoint](2026-06-03-development-checkpoint.md)
+- [2026-06-03 dashboard design checkpoint](2026-06-03-dashboard-design-checkpoint.md)
+- Previous: [2026-06-03 development checkpoint](2026-06-03-development-checkpoint.md)
 
 ## How To Use This Folder
 
@@ -65,4 +66,3 @@ Minimum fields:
 - active next queue
 - access/confirmation blockers
 - fresh-window kickoff prompt
-

@@ -5,6 +5,7 @@
 - [Decision log](decision-log.md)
 - [Checkpoint system](checkpoints/README.md)
 - [Context map](checkpoints/context-map.md)
+- [Dashboard design checkpoint: 2026-06-03](checkpoints/2026-06-03-dashboard-design-checkpoint.md)
 - [Development checkpoint: 2026-06-03](checkpoints/2026-06-03-development-checkpoint.md)
 - [Protocol targets](protocol-targets.md)
 - [Grant package](grant-package.md)

@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-06-03-development-checkpoint.md)
+1. [Current checkpoint](2026-06-03-dashboard-design-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -68,6 +68,7 @@ Read when changing frontend/static reviewer artifacts:
 
 - `index.html`
 - `apps/dashboard/index.html`
+- [Dashboard design checkpoint](2026-06-03-dashboard-design-checkpoint.md)
 - [Reviewer-facing grant proposal](../solana-foundation-developer-tooling-proposal.md)
 
 Required checks:
@@ -135,4 +136,3 @@ When agent guidance affects implementation order, summarize it in the next check
 3. Dry-run summary and gate invariant validation.
 4. Future service-boundary docs.
 5. Real Drift read-only decode proof once access/source inputs are confirmed.
-
