@@ -14,6 +14,7 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 - [Grant application draft](docs/grant-application-draft.md)
 - [Solana Foundation application fields](docs/solana-foundation-application-fields.md)
 - [Solana Foundation Developer Tooling proposal](docs/solana-foundation-developer-tooling-proposal.md)
+- [Local Word proposal](deliverables/Open%20Perps%20Reliability%20Stack%20-%20Solana%20Foundation%20Proposal.docx)
 - [Architecture](docs/architecture.md)
 - [Adapter standard](docs/adapter-standard.md)
 - [Data model](docs/data-model.md)
@@ -22,3 +23,4 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 - [Public API schema](schemas/api/public-api-v0.json)
 - [Public dashboard schema](schemas/dashboard/public-dashboard-v0.json)
 - [Sample Drift fixture dataset](datasets/sample/drift_synthetic_margin_001/manifest.json)
+- [Static dashboard demo](apps/dashboard/index.html)

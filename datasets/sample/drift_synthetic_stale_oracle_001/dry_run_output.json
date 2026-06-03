@@ -1,0 +1,32 @@
+{
+  "summary": {
+    "run_id": "drift_synthetic_stale_oracle_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "drift-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "pyth-mainnet-v0",
+    "started_at_unix": 1780448600,
+    "completed_at_unix": 1780448601,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["StaleOracle", "ExecutionDisabledDryRun"]
+  },
+  "opportunities": [],
+  "gate_results": [
+    {
+      "gate_id": "oracle_freshness",
+      "status": "Fail",
+      "reason_codes": ["StaleOracle"],
+      "message": "Oracle publish time exceeds policy staleness threshold."
+    },
+    {
+      "gate_id": "no_signing",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture dry-run contains no signer, custody, submission, or capital controls."
+    }
+  ],
+  "simulation_results": []
+}

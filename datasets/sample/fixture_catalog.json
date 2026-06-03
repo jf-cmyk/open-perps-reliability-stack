@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1.0",
+  "fixtures": [
+    {
+      "fixture_set_id": "drift_synthetic_margin_001",
+      "protocol": "drift",
+      "market_id": "SOL-PERP",
+      "case": "liquidation_candidate_execution_disabled",
+      "status": "Unsupported",
+      "oracle_confidence_bps": 10,
+      "oracle_staleness_secs": 1,
+      "health_ratio_bps": 7500,
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_margin_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_stale_oracle_001",
+      "protocol": "drift",
+      "market_id": "SOL-PERP",
+      "case": "stale_oracle_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": 8,
+      "oracle_staleness_secs": 120,
+      "health_ratio_bps": 8300,
+      "reason_codes": ["StaleOracle", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_stale_oracle_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_wide_confidence_001",
+      "protocol": "drift",
+      "market_id": "SOL-PERP",
+      "case": "wide_confidence_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": 350,
+      "oracle_staleness_secs": 2,
+      "health_ratio_bps": 7900,
+      "reason_codes": ["WideOracleConfidence", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_wide_confidence_001/manifest.json"
+    }
+  ]
+}
