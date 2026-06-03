@@ -14,8 +14,10 @@
   "distinct_event_count": 2,
   "raw_refs_count": 2,
   "raw_hash_algorithm": "sha256",
-  "checksum": "sha256:synthetic-missing-oracle-fixture-v0",
-  "content_checksums": [],
+  "checksum": "sha256:79c0064bb100f35775f5960b695b214aaa26d7c58bb2ee14fe81231249344b90",
+  "content_checksums": [
+    "sha256:79c0064bb100f35775f5960b695b214aaa26d7c58bb2ee14fe81231249344b90 datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json"
+  ],
   "dq_status": "Warn",
   "dq_results_ref": null,
   "quality_score_bps": 7000,

@@ -1,10 +1,13 @@
 use oprs_core::{DryRunStatus, RiskReasonCode};
-use oprs_replay::{validate_fixture_case, validate_fixture_catalog, FixtureValidationCase};
+use oprs_replay::{
+    validate_fixture_case, validate_fixture_catalog, FixtureContent, FixtureValidationCase,
+};
 
 struct Case<'a> {
     fixture_set_id: &'a str,
     manifest_json: &'a str,
     dry_run_output_json: &'a str,
+    content_files: &'a [FixtureContent<'a>],
     expected_status: DryRunStatus,
     expected_reason_codes: &'a [RiskReasonCode],
 }
@@ -18,6 +21,32 @@ const CASES: &[Case<'_>] = &[
         dry_run_output_json: include_str!(
             "../../../datasets/sample/drift_synthetic_margin_001/dry_run_output.json"
         ),
+        content_files: &[
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/README.md",
+                bytes: include_bytes!("../../../datasets/sample/drift_synthetic_margin_001/README.md"),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/canonical_event.json",
+                bytes: include_bytes!("../../../datasets/sample/drift_synthetic_margin_001/canonical_event.json"),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/dry_run_output.json",
+                bytes: include_bytes!("../../../datasets/sample/drift_synthetic_margin_001/dry_run_output.json"),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json",
+                bytes: include_bytes!("../../../datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json"),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/position_snapshot.json",
+                bytes: include_bytes!("../../../datasets/sample/drift_synthetic_margin_001/position_snapshot.json"),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/publish_gate.json",
+                bytes: include_bytes!("../../../datasets/sample/drift_synthetic_margin_001/publish_gate.json"),
+            },
+        ],
         expected_status: DryRunStatus::Unsupported,
         expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
     },
@@ -29,6 +58,12 @@ const CASES: &[Case<'_>] = &[
         dry_run_output_json: include_str!(
             "../../../datasets/sample/drift_synthetic_stale_oracle_001/dry_run_output.json"
         ),
+        content_files: &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_stale_oracle_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_stale_oracle_001/dry_run_output.json"
+            ),
+        }],
         expected_status: DryRunStatus::Rejected,
         expected_reason_codes: &[
             RiskReasonCode::StaleOracle,
@@ -43,6 +78,12 @@ const CASES: &[Case<'_>] = &[
         dry_run_output_json: include_str!(
             "../../../datasets/sample/drift_synthetic_wide_confidence_001/dry_run_output.json"
         ),
+        content_files: &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_wide_confidence_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_wide_confidence_001/dry_run_output.json"
+            ),
+        }],
         expected_status: DryRunStatus::Rejected,
         expected_reason_codes: &[
             RiskReasonCode::WideOracleConfidence,
@@ -57,6 +98,12 @@ const CASES: &[Case<'_>] = &[
         dry_run_output_json: include_str!(
             "../../../datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json"
         ),
+        content_files: &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json"
+            ),
+        }],
         expected_status: DryRunStatus::Rejected,
         expected_reason_codes: &[
             RiskReasonCode::MissingOracle,
@@ -71,6 +118,12 @@ const CASES: &[Case<'_>] = &[
         dry_run_output_json: include_str!(
             "../../../datasets/sample/drift_synthetic_oracle_divergence_001/dry_run_output.json"
         ),
+        content_files: &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_oracle_divergence_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_oracle_divergence_001/dry_run_output.json"
+            ),
+        }],
         expected_status: DryRunStatus::Rejected,
         expected_reason_codes: &[
             RiskReasonCode::OracleMarkDivergence,
@@ -85,6 +138,12 @@ const CASES: &[Case<'_>] = &[
         dry_run_output_json: include_str!(
             "../../../datasets/sample/drift_synthetic_adapter_version_mismatch_001/dry_run_output.json"
         ),
+        content_files: &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_adapter_version_mismatch_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_adapter_version_mismatch_001/dry_run_output.json"
+            ),
+        }],
         expected_status: DryRunStatus::Rejected,
         expected_reason_codes: &[
             RiskReasonCode::AdapterVersionMismatch,
@@ -107,6 +166,7 @@ fn main() {
             fixture_set_id: case.fixture_set_id,
             manifest_json: case.manifest_json,
             dry_run_output_json: case.dry_run_output_json,
+            content_files: case.content_files,
             expected_status: case.expected_status,
             expected_reason_codes: case.expected_reason_codes,
         });

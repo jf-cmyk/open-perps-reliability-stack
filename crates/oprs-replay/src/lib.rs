@@ -2,6 +2,7 @@
 
 use oprs_core::{DryRunStatus, OracleSnapshot, RiskReasonCode, Slot};
 use serde::Deserialize;
+use sha2::{Digest, Sha256};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FixtureSource {
@@ -51,8 +52,15 @@ pub struct FixtureValidationCase<'a> {
     pub fixture_set_id: &'a str,
     pub manifest_json: &'a str,
     pub dry_run_output_json: &'a str,
+    pub content_files: &'a [FixtureContent<'a>],
     pub expected_status: DryRunStatus,
     pub expected_reason_codes: &'a [RiskReasonCode],
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FixtureContent<'a> {
+    pub path: &'a str,
+    pub bytes: &'a [u8],
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -102,6 +110,7 @@ pub fn validate_fixture_case(case: FixtureValidationCase<'_>) -> FixtureValidati
                 manifest.dq_status
             ));
         }
+        validate_manifest_checksums(&manifest, case.content_files, &mut failures);
     }
 
     let dry_run = match serde_json::from_str::<SampleDryRunOutput>(case.dry_run_output_json) {
@@ -223,6 +232,8 @@ struct SampleDatasetManifest {
     dataset_name: String,
     source_window: String,
     dq_status: String,
+    checksum: String,
+    content_checksums: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -318,6 +329,75 @@ struct SampleSimulationResult {
     reason_codes: Vec<String>,
 }
 
+fn validate_manifest_checksums(
+    manifest: &SampleDatasetManifest,
+    content_files: &[FixtureContent<'_>],
+    failures: &mut Vec<String>,
+) {
+    if !manifest.checksum.starts_with("sha256:") {
+        failures.push("manifest checksum must use sha256 prefix".to_string());
+    }
+    if manifest.checksum.contains("synthetic-") {
+        failures.push("manifest checksum must not be a placeholder synthetic label".to_string());
+    }
+    if manifest.content_checksums.is_empty() {
+        failures.push("manifest content_checksums must list at least one file".to_string());
+    }
+
+    for entry in &manifest.content_checksums {
+        let Some((expected_hash, path)) = parse_checksum_entry(entry) else {
+            failures.push(format!("invalid content checksum entry `{entry}`"));
+            continue;
+        };
+
+        if !path.starts_with("datasets/sample/") {
+            failures.push(format!(
+                "content checksum path `{path}` must be repo-relative under datasets/sample"
+            ));
+        }
+        if path.contains("/manifest.json") {
+            failures.push(format!(
+                "content checksum path `{path}` must not include the self-referential manifest"
+            ));
+        }
+
+        match content_files.iter().find(|file| file.path == path) {
+            Some(file) => {
+                let actual_hash = sha256_hex(file.bytes);
+                if actual_hash != expected_hash {
+                    failures.push(format!(
+                        "content checksum mismatch for `{path}`: expected `{expected_hash}`, got `{actual_hash}`"
+                    ));
+                }
+            }
+            None => failures.push(format!(
+                "manifest content checksum references missing validation file `{path}`"
+            )),
+        }
+    }
+}
+
+fn parse_checksum_entry(entry: &str) -> Option<(&str, &str)> {
+    let (hash, path) = entry.split_once(' ')?;
+    let hash = hash.strip_prefix("sha256:")?;
+    if hash.len() != 64 || !hash.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return None;
+    }
+    if path.is_empty() {
+        return None;
+    }
+    Some((hash, path))
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    let digest = Sha256::digest(bytes);
+    let mut output = String::with_capacity(64);
+    for byte in digest {
+        output.push_str(&format!("{byte:02x}"));
+    }
+    output
+}
+
 fn risk_reason_code_name(code: RiskReasonCode) -> &'static str {
     match code {
         RiskReasonCode::Eligible => "Eligible",
@@ -405,6 +485,7 @@ mod tests {
             fixture_set_id: "drift_synthetic_margin_001",
             manifest_json: MARGIN_MANIFEST,
             dry_run_output_json: MARGIN_DRY_RUN,
+            content_files: margin_content_files(),
             expected_status: DryRunStatus::Unsupported,
             expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
         })
@@ -417,6 +498,7 @@ mod tests {
             fixture_set_id: "drift_synthetic_stale_oracle_001",
             manifest_json: STALE_MANIFEST,
             dry_run_output_json: STALE_DRY_RUN,
+            content_files: stale_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::StaleOracle,
@@ -432,6 +514,7 @@ mod tests {
             fixture_set_id: "drift_synthetic_wide_confidence_001",
             manifest_json: WIDE_MANIFEST,
             dry_run_output_json: WIDE_DRY_RUN,
+            content_files: wide_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::WideOracleConfidence,
@@ -447,6 +530,7 @@ mod tests {
             fixture_set_id: "drift_synthetic_missing_oracle_001",
             manifest_json: MISSING_MANIFEST,
             dry_run_output_json: MISSING_DRY_RUN,
+            content_files: missing_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::MissingOracle,
@@ -462,6 +546,7 @@ mod tests {
             fixture_set_id: "drift_synthetic_oracle_divergence_001",
             manifest_json: DIVERGENCE_MANIFEST,
             dry_run_output_json: DIVERGENCE_DRY_RUN,
+            content_files: divergence_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::OracleMarkDivergence,
@@ -477,6 +562,7 @@ mod tests {
             fixture_set_id: "drift_synthetic_adapter_version_mismatch_001",
             manifest_json: VERSION_MANIFEST,
             dry_run_output_json: VERSION_DRY_RUN,
+            content_files: version_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::AdapterVersionMismatch,
@@ -484,5 +570,111 @@ mod tests {
             ],
         })
         .assert_passed();
+    }
+
+    #[test]
+    fn rejects_fixture_content_checksum_mismatch() {
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_stale_oracle_001",
+            manifest_json: STALE_MANIFEST,
+            dry_run_output_json: STALE_DRY_RUN,
+            content_files: &[FixtureContent {
+                path: "datasets/sample/drift_synthetic_stale_oracle_001/dry_run_output.json",
+                bytes: MISSING_DRY_RUN.as_bytes(),
+            }],
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::StaleOracle,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        });
+
+        assert!(!report.passed);
+        assert!(report
+            .failures
+            .iter()
+            .any(|failure| failure.contains("content checksum mismatch")));
+    }
+
+    fn margin_content_files() -> &'static [FixtureContent<'static>] {
+        &[
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/README.md",
+                bytes: include_bytes!(
+                    "../../../datasets/sample/drift_synthetic_margin_001/README.md"
+                ),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/canonical_event.json",
+                bytes: include_bytes!(
+                    "../../../datasets/sample/drift_synthetic_margin_001/canonical_event.json"
+                ),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/dry_run_output.json",
+                bytes: include_bytes!(
+                    "../../../datasets/sample/drift_synthetic_margin_001/dry_run_output.json"
+                ),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json",
+                bytes: include_bytes!(
+                    "../../../datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json"
+                ),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/position_snapshot.json",
+                bytes: include_bytes!(
+                    "../../../datasets/sample/drift_synthetic_margin_001/position_snapshot.json"
+                ),
+            },
+            FixtureContent {
+                path: "datasets/sample/drift_synthetic_margin_001/publish_gate.json",
+                bytes: include_bytes!(
+                    "../../../datasets/sample/drift_synthetic_margin_001/publish_gate.json"
+                ),
+            },
+        ]
+    }
+
+    fn stale_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_stale_oracle_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_stale_oracle_001/dry_run_output.json"
+            ),
+        }]
+    }
+
+    fn wide_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_wide_confidence_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_wide_confidence_001/dry_run_output.json"
+            ),
+        }]
+    }
+
+    fn missing_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json"
+            ),
+        }]
+    }
+
+    fn divergence_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_oracle_divergence_001/dry_run_output.json",
+            bytes: include_bytes!("../../../datasets/sample/drift_synthetic_oracle_divergence_001/dry_run_output.json"),
+        }]
+    }
+
+    fn version_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_adapter_version_mismatch_001/dry_run_output.json",
+            bytes: include_bytes!("../../../datasets/sample/drift_synthetic_adapter_version_mismatch_001/dry_run_output.json"),
+        }]
     }
 }
