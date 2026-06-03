@@ -24,6 +24,13 @@ Schema and fixture artifacts:
 - [API response examples](../examples/api/)
 - [Static dashboard demo](../apps/dashboard/index.html)
 
+Validation commands:
+
+```bash
+cargo run -p oprs-replay --example validate_fixtures
+cargo run -p oprs-api-types --example validate_api_examples
+```
+
 Planned detail areas:
 
 - Pyth-aware risk SDK

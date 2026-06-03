@@ -9,6 +9,7 @@ repository.workspace = true
 oprs-core = { path = "../oprs-core" }
 oprs-data = { path = "../oprs-data" }
 oprs-dry-run = { path = "../oprs-dry-run" }
+serde_json = "1"
 
 [lib]
 path = "src/lib.rs"

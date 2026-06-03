@@ -36,6 +36,7 @@ dependencies = [
  "oprs-core",
  "oprs-data",
  "oprs-dry-run",
+ "serde_json",
 ]
 
 [[package]]
