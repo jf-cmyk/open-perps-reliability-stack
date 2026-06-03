@@ -226,6 +226,12 @@ Replay fixtures should be small, deterministic, and versioned. A fixture can be
 backed by CSV/JSONL research rows, raw transaction/account snapshots, or a
 synthetic state vector. Each fixture must include expected reason codes.
 
+The `oprs-replay` crate includes a dependency-light fixture validator for the
+current JSON sample set. It checks that fixture manifests disclose synthetic
+source windows, carry warning-level DQ status, and that dry-run outputs include
+the expected status, reason codes, fixture mode, and `execution_disabled_dry_run`
+guardrail.
+
 ```ts
 export interface ReplayFixture {
   id: string;
@@ -259,6 +265,8 @@ Initial fixture set:
   tip unknowns, latency unknowns, and shadow-mode edge constraints.
 - Drift v2 IDL-derived synthetic fixtures for perps adapter shape tests until
   decoded Drift historical perps liquidation fixtures are available.
+- Current validated Drift synthetic fixtures: margin candidate execution
+  disabled, stale oracle rejected, and wide confidence rejected.
 
 Fixture labels must distinguish `perps` from `lending` so public outputs do not
 overclaim that lending liquidation economics prove perps execution readiness.

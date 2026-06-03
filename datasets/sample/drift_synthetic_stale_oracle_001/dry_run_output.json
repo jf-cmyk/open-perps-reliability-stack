@@ -28,5 +28,11 @@
       "message": "Fixture dry-run contains no signer, custody, submission, or capital controls."
     }
   ],
-  "simulation_results": []
+  "simulation_results": [
+    {
+      "status": "Rejected",
+      "reason_codes": ["StaleOracle", "ExecutionDisabledDryRun"],
+      "error": null
+    }
+  ]
 }
