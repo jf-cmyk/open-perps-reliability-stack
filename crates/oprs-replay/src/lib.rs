@@ -158,6 +158,8 @@ pub fn validate_fixture_case(case: FixtureValidationCase<'_>) -> FixtureValidati
             }
         }
 
+        validate_dry_run_invariants(&dry_run, &mut failures);
+
         for opportunity in &dry_run.opportunities {
             if let Some(plan) = &opportunity.tx_plan {
                 if plan.requires_signer {
@@ -292,7 +294,13 @@ impl SampleDryRunOutput {
 #[derive(Debug, Deserialize)]
 struct SampleDryRunSummary {
     run_id: String,
+    schema_version: Option<String>,
     mode: String,
+    started_at_unix: Option<i64>,
+    completed_at_unix: Option<i64>,
+    opportunities_scanned: Option<u64>,
+    opportunities_accepted: Option<u64>,
+    opportunities_rejected: Option<u64>,
     reason_codes: Vec<String>,
 }
 
@@ -323,6 +331,8 @@ impl SampleDecision {
 
 #[derive(Debug, Deserialize)]
 struct SampleGateResult {
+    gate_id: Option<String>,
+    status: Option<String>,
     reason_codes: Vec<String>,
 }
 
@@ -378,6 +388,166 @@ fn validate_manifest_checksums(
             )),
         }
     }
+}
+
+fn validate_dry_run_invariants(dry_run: &SampleDryRunOutput, failures: &mut Vec<String>) {
+    if dry_run.summary.schema_version.as_deref() != Some("0.1.0") {
+        failures.push("dry-run summary schema_version must be `0.1.0`".to_string());
+    }
+
+    match (
+        dry_run.summary.started_at_unix,
+        dry_run.summary.completed_at_unix,
+    ) {
+        (Some(started), Some(completed)) if completed < started => {
+            failures.push(format!(
+                "dry-run completed_at_unix `{completed}` must be >= started_at_unix `{started}`"
+            ));
+        }
+        (Some(_), Some(_)) => {}
+        _ => failures
+            .push("dry-run summary must include started_at_unix and completed_at_unix".to_string()),
+    }
+
+    let accepted_opportunities = dry_run
+        .opportunities
+        .iter()
+        .filter(|opportunity| opportunity.decision.status == "Accepted")
+        .count() as u64;
+    let rejected_opportunities = dry_run
+        .opportunities
+        .iter()
+        .filter(|opportunity| is_rejected_status(&opportunity.decision.status))
+        .count() as u64;
+    let accepted_simulations = dry_run
+        .simulation_results
+        .iter()
+        .filter(|result| result.status == "Accepted")
+        .count() as u64;
+    let rejected_simulations = dry_run
+        .simulation_results
+        .iter()
+        .filter(|result| is_rejected_status(&result.status))
+        .count() as u64;
+
+    let observed_accepted = accepted_opportunities.max(accepted_simulations);
+    let observed_rejected = rejected_opportunities.max(rejected_simulations);
+
+    if let Some(summary_accepted) = dry_run.summary.opportunities_accepted {
+        if summary_accepted != observed_accepted {
+            failures.push(format!(
+                "dry-run opportunities_accepted `{summary_accepted}` must match observed accepted `{observed_accepted}`"
+            ));
+        }
+    } else {
+        failures.push("dry-run summary must include opportunities_accepted".to_string());
+    }
+
+    if let Some(summary_rejected) = dry_run.summary.opportunities_rejected {
+        if summary_rejected != observed_rejected {
+            failures.push(format!(
+                "dry-run opportunities_rejected `{summary_rejected}` must match observed rejected `{observed_rejected}`"
+            ));
+        }
+    } else {
+        failures.push("dry-run summary must include opportunities_rejected".to_string());
+    }
+
+    if let Some(scanned) = dry_run.summary.opportunities_scanned {
+        let observed_total = observed_accepted + observed_rejected;
+        if scanned != observed_total {
+            failures.push(format!(
+                "dry-run opportunities_scanned `{scanned}` must equal accepted + rejected `{observed_total}`"
+            ));
+        }
+    } else {
+        failures.push("dry-run summary must include opportunities_scanned".to_string());
+    }
+
+    validate_reason_code_union(dry_run, failures);
+    validate_gate_invariants(dry_run, failures);
+}
+
+fn validate_reason_code_union(dry_run: &SampleDryRunOutput, failures: &mut Vec<String>) {
+    let mut observed = Vec::new();
+    for opportunity in &dry_run.opportunities {
+        observed.extend(opportunity.decision.reason_codes.iter().cloned());
+    }
+    for gate in &dry_run.gate_results {
+        observed.extend(gate.reason_codes.iter().cloned());
+    }
+    for result in &dry_run.simulation_results {
+        observed.extend(result.reason_codes.iter().cloned());
+    }
+
+    observed.sort();
+    observed.dedup();
+
+    let mut summary = dry_run.summary.reason_codes.clone();
+    summary.sort();
+    summary.dedup();
+
+    if observed != summary {
+        failures.push(format!(
+            "dry-run summary reason_codes {:?} must match observed reason-code union {:?}",
+            summary, observed
+        ));
+    }
+}
+
+fn validate_gate_invariants(dry_run: &SampleDryRunOutput, failures: &mut Vec<String>) {
+    let mut gate_ids = Vec::new();
+    let mut non_pass_gate_seen = false;
+
+    for (index, gate) in dry_run.gate_results.iter().enumerate() {
+        match gate.gate_id.as_deref() {
+            Some("") | None => failures.push(format!(
+                "dry-run gate at index `{index}` must include a non-empty gate_id"
+            )),
+            Some(gate_id) => {
+                if gate_ids.iter().any(|seen| seen == gate_id) {
+                    failures.push(format!("dry-run gate_id `{gate_id}` must be unique"));
+                }
+                gate_ids.push(gate_id.to_string());
+            }
+        }
+
+        match gate.status.as_deref() {
+            Some("Pass") => {}
+            Some("Warn" | "Fail" | "Skipped") => non_pass_gate_seen = true,
+            Some(status) => failures.push(format!(
+                "dry-run gate `{}` has unsupported status `{status}`",
+                gate.gate_id.as_deref().unwrap_or("<missing>")
+            )),
+            None => failures.push(format!(
+                "dry-run gate `{}` must include status",
+                gate.gate_id.as_deref().unwrap_or("<missing>")
+            )),
+        }
+    }
+
+    if has_rejected_status(dry_run) && !non_pass_gate_seen {
+        failures
+            .push("rejected dry-run outputs must include at least one non-pass gate".to_string());
+    }
+}
+
+fn has_rejected_status(dry_run: &SampleDryRunOutput) -> bool {
+    dry_run
+        .opportunities
+        .iter()
+        .any(|opportunity| opportunity.decision.status == "Rejected")
+        || dry_run
+            .simulation_results
+            .iter()
+            .any(|result| result.status == "Rejected")
+}
+
+fn is_rejected_status(status: &str) -> bool {
+    matches!(
+        status,
+        "Rejected" | "Unsafe" | "Unsupported" | "SimulationFailed"
+    )
 }
 
 fn validate_fixture_scrub_policy(case: &FixtureValidationCase<'_>, failures: &mut Vec<String>) {
@@ -657,7 +827,13 @@ mod tests {
             dry_run_output_json: r#"{
                 "summary": {
                   "run_id": "drift_synthetic_margin_001",
+                  "schema_version": "0.1.0",
                   "mode": "Fixture",
+                  "started_at_unix": 1780447600,
+                  "completed_at_unix": 1780447601,
+                  "opportunities_scanned": 1,
+                  "opportunities_accepted": 0,
+                  "opportunities_rejected": 1,
                   "reason_codes": ["ExecutionDisabledDryRun"]
                 },
                 "opportunities": [{
@@ -670,7 +846,11 @@ mod tests {
                     "reason_codes": ["ExecutionDisabledDryRun"]
                   }
                 }],
-                "gate_results": [{"reason_codes": ["ExecutionDisabledDryRun"]}],
+                "gate_results": [{
+                  "gate_id": "invalid_scrub_guardrail",
+                  "status": "Pass",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                }],
                 "simulation_results": [{
                   "status": "Unsupported",
                   "reason_codes": ["ExecutionDisabledDryRun"]
@@ -749,13 +929,83 @@ mod tests {
         }
     }
 
+    #[test]
+    fn rejects_dry_run_summary_and_gate_invariant_failures() {
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: MARGIN_MANIFEST,
+            dry_run_output_json: r#"{
+                "summary": {
+                  "run_id": "drift_synthetic_margin_001",
+                  "schema_version": "0.1.0",
+                  "mode": "Fixture",
+                  "started_at_unix": 1780447600,
+                  "completed_at_unix": 1780447601,
+                  "opportunities_scanned": 1,
+                  "opportunities_accepted": 0,
+                  "opportunities_rejected": 1,
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                },
+                "opportunities": [{
+                  "id": "bad_invariant_case",
+                  "tx_plan": {"requires_signer": false, "submission_disabled": true},
+                  "decision": {
+                    "status": "Rejected",
+                    "reason_codes": ["StaleOracle", "ExecutionDisabledDryRun"]
+                  }
+                }],
+                "gate_results": [
+                  {
+                    "gate_id": "oracle_freshness",
+                    "status": "Pass",
+                    "reason_codes": ["StaleOracle"]
+                  },
+                  {
+                    "gate_id": "oracle_freshness",
+                    "status": "Pass",
+                    "reason_codes": ["ExecutionDisabledDryRun"]
+                  }
+                ],
+                "simulation_results": []
+            }"#,
+            content_files: margin_content_files(),
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::StaleOracle,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        });
+
+        assert!(!report.passed);
+        for expected in [
+            "must match observed reason-code union",
+            "gate_id `oracle_freshness` must be unique",
+            "rejected dry-run outputs must include at least one non-pass gate",
+        ] {
+            assert!(
+                report
+                    .failures
+                    .iter()
+                    .any(|failure| failure.contains(expected)),
+                "missing {expected} in {:?}",
+                report.failures
+            );
+        }
+    }
+
     fn dry_run_fixture_with_reason(reason_code: &str, status: DryRunStatus) -> String {
         let status_name = dry_run_status_name(status);
         format!(
             r#"{{
                 "summary": {{
                   "run_id": "drift_synthetic_margin_001",
+                  "schema_version": "0.1.0",
                   "mode": "Fixture",
+                  "started_at_unix": 1780447600,
+                  "completed_at_unix": 1780447601,
+                  "opportunities_scanned": 1,
+                  "opportunities_accepted": 0,
+                  "opportunities_rejected": 1,
                   "reason_codes": ["{reason_code}", "ExecutionDisabledDryRun"]
                 }},
                 "opportunities": [{{
@@ -767,6 +1017,8 @@ mod tests {
                   }}
                 }}],
                 "gate_results": [{{
+                  "gate_id": "expanded_reason_gate",
+                  "status": "Fail",
                   "reason_codes": ["{reason_code}", "ExecutionDisabledDryRun"]
                 }}],
                 "simulation_results": [{{
