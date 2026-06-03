@@ -1,0 +1,13 @@
+{
+  "feed_id": "SOL-PERP:pyth",
+  "price": "150000000",
+  "confidence": "150000",
+  "exponent": -6,
+  "publish_time_unix": 1780447599,
+  "received_at_unix": 1780447600,
+  "slot": 0,
+  "source": "Pyth",
+  "raw_ref": "datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json",
+  "raw_hash": "sha256:26e8c49a960359941ae4e97a852f89e87dc73adb30849a0a2d0ad076bafd99d3",
+  "quality_flags": ["synthetic", "fixture_only"]
+}

@@ -1,0 +1,40 @@
+{
+  "manifest_version": "0.1.0",
+  "dataset_name": "drift_synthetic_margin_001",
+  "schema_version": "0.1.0",
+  "protocol": "drift",
+  "chain_id": "solana-mainnet-beta",
+  "adapter_version": "0.1.0",
+  "event_types": ["position_snapshot", "oracle_snapshot", "canonical_event", "dry_run_output", "publish_gate"],
+  "source_window": "synthetic-fixture",
+  "source_start_slot": null,
+  "source_end_slot": null,
+  "partition_paths": ["datasets/sample/drift_synthetic_margin_001"],
+  "row_count": 5,
+  "distinct_event_count": 5,
+  "raw_refs_count": 5,
+  "raw_hash_algorithm": "sha256",
+  "checksum": "sha256:2a85696427c4765de8f28b94ad363fcb5ae0526a87167e7b74776958e852dc45",
+  "content_checksums": [
+    "sha256:f0b0fb2f1d6167ba961e6a25e5f33b5e00aab43ff11fe5a467c64d0a34b41494 datasets/sample/drift_synthetic_margin_001/README.md",
+    "sha256:e2ef2039e044e609d7249fa4184c10fd255946dfda341916ca7df8a4ad67212f datasets/sample/drift_synthetic_margin_001/canonical_event.json",
+    "sha256:2ddce3797bbb07b1399ec7e96390a6e4f74193e09b7f0285d8c93fc4c8649848 datasets/sample/drift_synthetic_margin_001/dry_run_output.json",
+    "sha256:000a37018936ed5ca9fc3eb48a470800eb6a680c307690d95b703b5d79b200dc datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json",
+    "sha256:71a4d60d96e40b0d9903b0baf545758985163148efe28738aadd5656cf878a96 datasets/sample/drift_synthetic_margin_001/position_snapshot.json",
+    "sha256:b1e3feccbbbbad97a39b34943746944654d20295f93e9165083f07463d46ae47 datasets/sample/drift_synthetic_margin_001/publish_gate.json"
+  ],
+  "dq_status": "Warn",
+  "dq_results_ref": "datasets/sample/drift_synthetic_margin_001/publish_gate.json",
+  "quality_score_bps": 7000,
+  "known_gaps": [
+    "Synthetic fixture only; not a decoded historical Drift liquidation.",
+    "IDL hash is pending until the first live read-only adapter decode pass."
+  ],
+  "source_limitations": [
+    "No live RPC reads.",
+    "No private keys, signing, transaction submission, or capital deployment."
+  ],
+  "scrub_policy_version": "0.1.0",
+  "generated_at_unix": 1780447600,
+  "generated_by": "blocksize-oprs"
+}

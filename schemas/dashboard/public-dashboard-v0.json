@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/dashboard/public-dashboard-v0.json",
+  "title": "Open Perps Reliability Stack Public Dashboard v0",
+  "type": "object",
+  "required": ["schema_version", "views"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["view_id", "title", "public_metrics", "blocked_fields"],
+        "properties": {
+          "view_id": { "type": "string" },
+          "title": { "type": "string" },
+          "public_metrics": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "blocked_fields": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "0.1.0",
+      "views": [
+        {
+          "view_id": "market_quality",
+          "title": "Market Quality",
+          "public_metrics": ["spread_bps", "depth_usd", "open_interest_usd", "funding_rate_bps", "volume_usd"],
+          "blocked_fields": ["private_route_label", "customer_label", "strategy_threshold"]
+        },
+        {
+          "view_id": "oracle_risk",
+          "title": "Oracle Risk",
+          "public_metrics": ["staleness_secs", "confidence_bps", "divergence_bps", "reason_codes"],
+          "blocked_fields": ["private_feed_override", "internal_alert_route"]
+        },
+        {
+          "view_id": "liquidation_health",
+          "title": "Liquidation Health",
+          "public_metrics": ["candidate_count", "accepted_count", "rejected_count", "reason_code_distribution"],
+          "blocked_fields": ["capital_limit", "signer_id", "execution_policy"]
+        },
+        {
+          "view_id": "adapter_health",
+          "title": "Adapter Health",
+          "public_metrics": ["decode_success_rate_bps", "schema_version", "missing_account_count", "quality_flags"],
+          "blocked_fields": ["rpc_url", "api_key", "local_path"]
+        }
+      ]
+    }
+  ]
+}

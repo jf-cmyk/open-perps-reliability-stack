@@ -1,0 +1,13 @@
+{
+  "venue": "drift",
+  "market_id": "SOL-PERP",
+  "position_id": "fixture-position-001",
+  "owner": "fixture-owner",
+  "side": "Long",
+  "base_amount": "10000000000",
+  "quote_notional_usd": "1500000000",
+  "collateral_usd": "75000000",
+  "maintenance_margin_usd": "100000000",
+  "observed_slot": 0,
+  "quality_flags": ["synthetic", "fixture_only", "liquidation_candidate_shape"]
+}

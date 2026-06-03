@@ -32,25 +32,31 @@ Every normalized row must include:
 ```text
 event_id
 schema_version
+adapter_name
 adapter_version
 chain_id
 protocol
+program_id
 market_id
 event_type
+event_subtype
 slot
 block_time
 signature
 instruction_index
 inner_index
 actor
+subject_account
+source_account_keys
 raw_ref
 raw_hash
 decode_status
 quality_flags
 attrs_json
+created_at
 ```
 
-`event_id = sha256(chain_id|protocol|signature|instruction_index|inner_index|event_type|adapter_version)`.
+`event_id = sha256(chain_id|protocol|program_id|signature|instruction_index|inner_index|event_type|event_subtype|adapter_version)`.
 
 ## Core Tables
 
@@ -96,14 +102,18 @@ datasets/perps/v0/manifests/date=2026-06-01/manifest.json
 
 Manifest fields:
 
-- Schema version.
-- Adapter version.
-- Source window.
-- Row counts.
-- Event hashes.
+- Manifest version and dataset name.
+- Schema version, protocol, chain ID, and adapter version.
+- Event types and source window.
+- Source slot range where applicable.
+- Partition paths.
+- Row count, distinct event count, and raw ref count.
+- Raw hash algorithm, root checksum, and content checksums.
+- Data quality status and DQ results reference.
 - Quality score.
-- Known gaps.
+- Known gaps and source limitations.
 - Scrub policy version.
+- Generated timestamp and generator identity.
 
 ## Data Quality Checks
 

@@ -1,0 +1,38 @@
+{
+  "dataset_id": "drift_synthetic_margin_001",
+  "status": "Warn",
+  "checks": [
+    {
+      "check_id": "synthetic_fixture_disclosure",
+      "gate_id": "public_publish_v0",
+      "gate_version": "0.1.0",
+      "dataset_name": "drift_synthetic_margin_001",
+      "partition": "datasets/sample/drift_synthetic_margin_001",
+      "check_name": "fixture_source_disclosed",
+      "severity": "WarnPublic",
+      "status": "Warn",
+      "metric_value": "synthetic",
+      "threshold": "historical_or_synthetic_disclosed",
+      "failed_rows_ref": null,
+      "message": "Fixture is synthetic and must not be described as a decoded historical liquidation.",
+      "details_json": "{\"public_note\":\"synthetic shape fixture only\"}",
+      "evaluated_at_unix": 1780447600
+    },
+    {
+      "check_id": "no_secret_material",
+      "gate_id": "public_publish_v0",
+      "gate_version": "0.1.0",
+      "dataset_name": "drift_synthetic_margin_001",
+      "partition": "datasets/sample/drift_synthetic_margin_001",
+      "check_name": "scrubbed_sensitive_fields",
+      "severity": "BlockPublish",
+      "status": "Pass",
+      "metric_value": "0",
+      "threshold": "0",
+      "failed_rows_ref": null,
+      "message": "No RPC URLs, API keys, local paths, signer IDs, custody details, or private route labels are present.",
+      "details_json": "{}",
+      "evaluated_at_unix": 1780447600
+    }
+  ]
+}

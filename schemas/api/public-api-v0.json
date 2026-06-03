@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/api/public-api-v0.json",
+  "title": "Open Perps Reliability Stack Public API v0",
+  "type": "object",
+  "required": ["schema_version", "endpoints"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "endpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "method", "summary", "response_schema"],
+        "properties": {
+          "path": { "type": "string" },
+          "method": { "enum": ["GET"] },
+          "summary": { "type": "string" },
+          "response_schema": { "type": "string" }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "0.1.0",
+      "endpoints": [
+        {
+          "path": "/v0/protocols",
+          "method": "GET",
+          "summary": "Supported protocols and adapter capabilities.",
+          "response_schema": "protocols_response"
+        },
+        {
+          "path": "/v0/protocols/{protocol}/markets",
+          "method": "GET",
+          "summary": "Read-only market catalog for a protocol.",
+          "response_schema": "markets_response"
+        },
+        {
+          "path": "/v0/markets/{protocol}/{market_id}/quality",
+          "method": "GET",
+          "summary": "Read-only market quality aggregate.",
+          "response_schema": "market_quality_response"
+        },
+        {
+          "path": "/v0/oracles/{feed_id}/risk",
+          "method": "GET",
+          "summary": "Pyth-aware oracle risk snapshot.",
+          "response_schema": "oracle_risk_response"
+        },
+        {
+          "path": "/v0/liquidations/{protocol}/{market_id}/health",
+          "method": "GET",
+          "summary": "Dry-run liquidation health aggregate.",
+          "response_schema": "liquidation_health_response"
+        },
+        {
+          "path": "/v0/adapters/{adapter_name}/health",
+          "method": "GET",
+          "summary": "Adapter decode and data quality health.",
+          "response_schema": "adapter_health_response"
+        },
+        {
+          "path": "/v0/dry-runs/{run_id}",
+          "method": "GET",
+          "summary": "Dry-run output bundle and reason-code summary.",
+          "response_schema": "dry_run_output_bundle"
+        },
+        {
+          "path": "/v0/datasets/{dataset_name}/manifest",
+          "method": "GET",
+          "summary": "Dataset manifest with lineage, checksums, DQ status, and known gaps.",
+          "response_schema": "dataset_manifest"
+        },
+        {
+          "path": "/v0/fixtures/{fixture_set_id}",
+          "method": "GET",
+          "summary": "Published replay fixture manifest.",
+          "response_schema": "fixture_manifest"
+        }
+      ]
+    }
+  ]
+}

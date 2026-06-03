@@ -94,18 +94,25 @@ Evidence:
 
 ## Budget
 
-Founder decision needed: set grant ask and milestone split.
+Recommended Solana Foundation request: $125,000.
 
-Suggested budget categories:
+Milestone split:
+
+- Milestone 1, adapter and architecture foundation: $25,000.
+- Milestone 2, canonical data and sample datasets: $35,000.
+- Milestone 3, Pyth-aware risk SDK and dry-run replay: $40,000.
+- Milestone 4, public dashboard/API contract and final report: $25,000.
+
+Budget categories:
 
 - Protocol adapter engineering.
-- Data indexing and backfill.
+- Data schemas, sample datasets, and data quality gates.
 - Risk SDK and dry-run engine.
-- Dashboard/API.
+- Dashboard/API contracts.
 - QA and fixtures.
 - Documentation and developer relations.
-- RPC/data infrastructure.
-- Security and license review.
+- RPC/data infrastructure for reproducible reads.
+- Security/license review.
 - Project management.
 
 ## Open-Source Deliverables
@@ -136,8 +143,8 @@ Grant-funded outputs remain public, reproducible, read-only, and dry-run only.
 
 ## Founder Decisions Needed
 
-- Grant ask size.
-- Milestone budget split.
 - Whether validator telemetry belongs in v0.
 - Public dataset depth.
 - Whether the application should disclose the future commercial track explicitly or keep the proposal framed as pure public-good infrastructure.
+
+Grant ask and milestone split are now recommended in `docs/solana-foundation-application-fields.md`; founder should confirm before submission.

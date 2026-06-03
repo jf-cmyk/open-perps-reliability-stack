@@ -1,0 +1,51 @@
+{
+  "summary": {
+    "run_id": "drift_synthetic_margin_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "drift-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "pyth-mainnet-v0",
+    "started_at_unix": 1780447600,
+    "completed_at_unix": 1780447601,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["ExecutionDisabledDryRun"]
+  },
+  "opportunities": [
+    {
+      "id": "fixture-opportunity-001",
+      "venue": "drift",
+      "market_id": "SOL-PERP",
+      "position_id": "fixture-position-001",
+      "observed_slot": 0,
+      "adapter_version": "0.1.0",
+      "estimated_net_usd": null,
+      "tx_plan": {
+        "unsigned_plan_id": "unsigned-plan-disabled-001",
+        "allowed_programs": ["dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH"],
+        "writable_accounts": [],
+        "address_lookup_tables": [],
+        "estimated_compute_units": null,
+        "requires_signer": false,
+        "submission_disabled": true
+      },
+      "decision": {
+        "status": "Unsupported",
+        "reason_codes": ["ExecutionDisabledDryRun"],
+        "human_summary": "Production execution is disabled in read-only/dry-run scope."
+      },
+      "trace_id": "trace-drift-synthetic-margin-001"
+    }
+  ],
+  "gate_results": [
+    {
+      "gate_id": "no_signing",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture dry-run contains no signer, custody, submission, or capital controls."
+    }
+  ],
+  "simulation_results": []
+}
