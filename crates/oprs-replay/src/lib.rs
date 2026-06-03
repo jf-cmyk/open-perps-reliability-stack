@@ -710,6 +710,73 @@ mod tests {
         }
     }
 
+    #[test]
+    fn validates_expanded_dry_run_reason_code_fixture_coverage() {
+        let cases = [
+            (RiskReasonCode::NotLiquidatable, DryRunStatus::Rejected),
+            (RiskReasonCode::MissingPositionState, DryRunStatus::Rejected),
+            (RiskReasonCode::AdapterDecodeFailed, DryRunStatus::Rejected),
+            (RiskReasonCode::DataQualityLow, DryRunStatus::Rejected),
+            (
+                RiskReasonCode::InsufficientLiquidity,
+                DryRunStatus::Rejected,
+            ),
+            (RiskReasonCode::NegativeExpectedEdge, DryRunStatus::Rejected),
+            (
+                RiskReasonCode::TxBuildUnsupported,
+                DryRunStatus::Unsupported,
+            ),
+            (
+                RiskReasonCode::SimulationFailed,
+                DryRunStatus::SimulationFailed,
+            ),
+            (RiskReasonCode::ComputeLimitRisk, DryRunStatus::Rejected),
+            (RiskReasonCode::ProtocolReject, DryRunStatus::Rejected),
+        ];
+
+        for (reason_code, status) in cases {
+            let reason_code_name = risk_reason_code_name(reason_code);
+            let dry_run_output_json = dry_run_fixture_with_reason(reason_code_name, status);
+            validate_fixture_case(FixtureValidationCase {
+                fixture_set_id: "drift_synthetic_margin_001",
+                manifest_json: MARGIN_MANIFEST,
+                dry_run_output_json: &dry_run_output_json,
+                content_files: margin_content_files(),
+                expected_status: status,
+                expected_reason_codes: &[reason_code, RiskReasonCode::ExecutionDisabledDryRun],
+            })
+            .assert_passed();
+        }
+    }
+
+    fn dry_run_fixture_with_reason(reason_code: &str, status: DryRunStatus) -> String {
+        let status_name = dry_run_status_name(status);
+        format!(
+            r#"{{
+                "summary": {{
+                  "run_id": "drift_synthetic_margin_001",
+                  "mode": "Fixture",
+                  "reason_codes": ["{reason_code}", "ExecutionDisabledDryRun"]
+                }},
+                "opportunities": [{{
+                  "id": "expanded_reason_{reason_code}",
+                  "tx_plan": {{"requires_signer": false, "submission_disabled": true}},
+                  "decision": {{
+                    "status": "{status_name}",
+                    "reason_codes": ["{reason_code}", "ExecutionDisabledDryRun"]
+                  }}
+                }}],
+                "gate_results": [{{
+                  "reason_codes": ["{reason_code}", "ExecutionDisabledDryRun"]
+                }}],
+                "simulation_results": [{{
+                  "status": "{status_name}",
+                  "reason_codes": ["{reason_code}", "ExecutionDisabledDryRun"]
+                }}]
+            }}"#
+        )
+    }
+
     fn margin_content_files() -> &'static [FixtureContent<'static>] {
         &[
             FixtureContent {
