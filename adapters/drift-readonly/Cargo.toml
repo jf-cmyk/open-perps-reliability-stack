@@ -1,0 +1,13 @@
+[package]
+name = "drift-readonly-adapter"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+oprs-adapter = { path = "../../crates/oprs-adapter" }
+oprs-core = { path = "../../crates/oprs-core" }
+
+[lib]
+path = "src/lib.rs"

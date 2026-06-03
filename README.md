@@ -11,6 +11,7 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 - [Decision log](docs/decision-log.md)
 - [Protocol targets](docs/protocol-targets.md)
 - [Grant package](docs/grant-package.md)
+- [Grant application draft](docs/grant-application-draft.md)
 - [Architecture](docs/architecture.md)
 - [Adapter standard](docs/adapter-standard.md)
 - [Data model](docs/data-model.md)

@@ -75,10 +75,16 @@ SDK path, but replay classification should remain byte-for-byte reproducible.
 
 ```ts
 export interface AdapterMetadata {
+  adapterName: string;
+  adapterVersion: string;
   protocol: string;
+  network: string;
   venueKind: "perps" | "lending" | "swap" | "unknown";
   programIds: string[];
   accountSchemaVersion: string;
+  supportedAccountSchemaVersions: string[];
+  idlHash?: string;
+  sourceUpdatedAt?: string;
   docsUrl?: string;
   dataQuality: "high" | "medium" | "low" | "unknown";
   caveats: string[];
@@ -90,8 +96,12 @@ export interface OracleSnapshot {
   confidence: Decimal;
   exponent: number;
   publishTime: string;
+  receivedAt?: string;
   slot?: number;
   source: "pyth" | "pyth_lazer" | "fixture" | "adapter";
+  rawRef?: string;
+  rawHash?: string;
+  qualityFlags: string[];
 }
 
 export interface PositionSnapshot {

@@ -35,6 +35,14 @@ pub enum OracleSource {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MarketType {
+    Perp,
+    Spot,
+    Prediction,
+    Unknown,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PositionSide {
     Long,
     Short,
@@ -80,10 +88,16 @@ pub enum RiskReasonCode {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AdapterMetadata {
+    pub adapter_name: String,
+    pub adapter_version: String,
     pub protocol: String,
+    pub network: String,
     pub venue_kind: VenueKind,
     pub program_ids: Vec<String>,
     pub account_schema_version: String,
+    pub supported_account_schema_versions: Vec<String>,
+    pub idl_hash: Option<String>,
+    pub source_updated_at_unix: Option<i64>,
     pub docs_url: Option<String>,
     pub data_quality: DataQuality,
     pub caveats: Vec<String>,
@@ -103,6 +117,7 @@ pub struct MarketSnapshot {
     pub market_id: String,
     pub base_asset: String,
     pub quote_asset: String,
+    pub market_type: MarketType,
     pub observed_slot: Slot,
 }
 
@@ -119,8 +134,21 @@ pub struct OracleSnapshot {
     pub confidence: Decimal,
     pub exponent: i32,
     pub publish_time_unix: i64,
+    pub received_at_unix: Option<i64>,
     pub slot: Option<Slot>,
     pub source: OracleSource,
+    pub raw_ref: Option<String>,
+    pub raw_hash: Option<String>,
+    pub quality_flags: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct OracleRiskSnapshot {
+    pub feed_id: String,
+    pub stale: bool,
+    pub confidence_bps: Option<i64>,
+    pub divergence_bps: Option<i64>,
+    pub reason_codes: Vec<RiskReasonCode>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -151,4 +179,17 @@ pub struct MarginState {
     pub health_ratio_bps: Option<i64>,
     pub liquidation_price: Option<Decimal>,
     pub is_liquidatable: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LiquidationStateInput {
+    pub position: PositionSnapshot,
+    pub oracle: OracleSnapshot,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LiquidationState {
+    pub is_candidate: bool,
+    pub margin: MarginState,
+    pub reason_codes: Vec<RiskReasonCode>,
 }

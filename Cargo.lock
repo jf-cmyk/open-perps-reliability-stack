@@ -3,6 +3,14 @@
 version = 4
 
 [[package]]
+name = "drift-readonly-adapter"
+version = "0.1.0"
+dependencies = [
+ "oprs-adapter",
+ "oprs-core",
+]
+
+[[package]]
 name = "oprs-adapter"
 version = "0.1.0"
 dependencies = [

@@ -1,8 +1,8 @@
 //! Adapter traits for read-only protocol integrations.
 
 use oprs_core::{
-    AdapterCapability, AdapterMetadata, MarginState, MarketSnapshot, OracleFeedRef,
-    OracleSnapshot, PositionQuery, PositionSnapshot, RiskReasonCode,
+    AdapterCapability, AdapterMetadata, LiquidationState, LiquidationStateInput, MarginState,
+    MarketSnapshot, OracleFeedRef, OracleSnapshot, PositionQuery, PositionSnapshot, RiskReasonCode,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -24,6 +24,7 @@ pub trait VenueAdapter {
         position: &PositionSnapshot,
         oracle: &OracleSnapshot,
     ) -> AdapterResult<MarginState>;
+    fn liquidation_state(&self, input: LiquidationStateInput) -> AdapterResult<LiquidationState>;
 }
 
 pub fn requires_execute_disabled(capabilities: &[AdapterCapability]) -> bool {

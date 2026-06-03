@@ -5,6 +5,7 @@
 - [Decision log](decision-log.md)
 - [Protocol targets](protocol-targets.md)
 - [Grant package](grant-package.md)
+- [Grant application draft](grant-application-draft.md)
 - [Architecture](architecture.md)
 - [Adapter standard](adapter-standard.md)
 - [Data model](data-model.md)
