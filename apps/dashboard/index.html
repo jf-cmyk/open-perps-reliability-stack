@@ -3,185 +3,574 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Open Perps Reliability Stack</title>
+    <title>OpenPerp Reliability Dashboard</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f6f7f9;
-        --panel: #ffffff;
-        --ink: #17202a;
-        --muted: #647184;
-        --line: #d8dee8;
-        --blue: #2b6cb0;
-        --green: #17845b;
-        --amber: #ad6b00;
-        --red: #bd3539;
-        --violet: #6252a2;
+        --color-primary: #4f4bff;
+        --color-foreground: #0a0d12;
+        --color-background: #ffffff;
+        --color-muted: #535862;
+        --color-surface: #e9eaeb;
+        --color-success: #47cd89;
+        --color-warning: #ebf781;
+        --color-border: #dfe1e5;
+        --color-border-soft: #f0f1f3;
+        --font-display: Hind, "Aptos Display", "Segoe UI", system-ui, sans-serif;
+        --font-body: Roboto, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "JetBrains Mono", "SFMono-Regular", "Roboto Mono", Menlo, monospace;
       }
 
       * {
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--color-background);
+        color: var(--color-foreground);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.5;
         letter-spacing: 0;
       }
 
-      header {
-        border-bottom: 1px solid var(--line);
-        background: var(--panel);
+      a {
+        color: inherit;
       }
 
-      .topbar,
-      main {
-        max-width: 1180px;
+      .site-nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 50;
+        border-bottom: 1px solid var(--color-border-soft);
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .container {
+        width: min(80rem, calc(100% - 48px));
         margin: 0 auto;
-        padding: 18px 20px;
       }
 
-      .topbar {
-        display: flex;
+      .nav-inner {
+        display: grid;
+        min-height: 80px;
+        grid-template-columns: minmax(220px, 1fr) auto auto;
+        gap: 32px;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
       }
 
-      h1 {
-        margin: 0;
+      .brand {
+        display: inline-flex;
+        min-width: 0;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid var(--color-foreground);
+        background: var(--color-foreground);
+        color: #ffffff;
+      }
+
+      .brand-wordmark {
+        display: grid;
+        gap: 1px;
+        min-width: 0;
+      }
+
+      .brand-name {
+        font-family: var(--font-display);
         font-size: 20px;
-        font-weight: 720;
+        font-weight: 700;
+        line-height: 1.05;
       }
 
-      .subtitle {
-        margin: 4px 0 0;
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      .status-strip {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: flex-end;
-      }
-
-      .pill {
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: #fafbfc;
-        color: var(--muted);
+      .brand-tagline {
+        color: var(--color-muted);
         font-size: 12px;
-        padding: 6px 9px;
+        line-height: 1.25;
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
       }
 
-      .grid {
+      .nav-links,
+      .nav-actions,
+      .hero-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links {
+        gap: 30px;
+      }
+
+      .nav-links a {
+        color: var(--color-muted);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        color: var(--color-foreground);
+        outline: none;
+      }
+
+      .nav-actions,
+      .hero-actions {
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--color-foreground);
+        border-radius: 0;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 14px 24px;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .button.primary {
+        background: var(--color-foreground);
+        color: #ffffff;
+      }
+
+      .button.primary:hover,
+      .button.primary:focus-visible {
+        background: #252a33;
+        outline: none;
+      }
+
+      .button.secondary {
+        background: #ffffff;
+        color: var(--color-foreground);
+      }
+
+      .button.secondary:hover,
+      .button.secondary:focus-visible {
+        background: #f8f8f8;
+        outline: none;
+      }
+
+      main {
+        padding-top: 80px;
+      }
+
+      section {
+        border-bottom: 1px solid var(--color-border-soft);
+        padding: 96px 0;
+      }
+
+      .hero {
+        padding-top: 52px;
+      }
+
+      .hero-grid {
         display: grid;
-        gap: 14px;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr);
+        gap: 64px;
+        align-items: center;
       }
 
-      .metrics {
+      .tag,
+      .metric-label,
+      .label,
+      .table th,
+      .reason-code,
+      .footer-heading,
+      .tier-label,
+      .step-number,
+      .data-chip {
+        font-family: var(--font-mono);
+        letter-spacing: 0;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--color-border);
+        background: #fafafa;
+        color: var(--color-foreground);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 8px 10px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 720px;
+        margin-top: 28px;
+        font-size: 72px;
+        line-height: 1.125;
+      }
+
+      h2 {
+        max-width: 760px;
+        font-size: 72px;
+        line-height: 1.125;
+      }
+
+      h3 {
+        font-size: 48px;
+        line-height: 1.125;
+      }
+
+      h4 {
+        font-size: 24px;
+        line-height: 1.35;
+      }
+
+      .accent-text {
+        color: var(--color-primary);
+        font-weight: 700;
+      }
+
+      .lede {
+        max-width: 620px;
+        margin: 28px 0 0;
+        color: var(--color-muted);
+        font-size: 20px;
+        line-height: 1.55;
+      }
+
+      .hero-actions {
+        flex-wrap: wrap;
+        margin-top: 36px;
+      }
+
+      .scope-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 40px;
+      }
+
+      .scope-pill {
+        display: inline-flex;
+        min-height: 34px;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--color-border);
+        border-radius: 2px;
+        background: #ffffff;
+        color: var(--color-muted);
+        font-size: 13px;
+        font-weight: 500;
+        padding: 7px 11px;
+      }
+
+      .scope-dot {
+        width: 8px;
+        height: 8px;
+        flex: 0 0 auto;
+        background: var(--color-success);
+      }
+
+      .scope-dot.warning {
+        background: var(--color-warning);
+      }
+
+      .visual-panel {
+        border: 1px solid var(--color-border-soft);
+        background: #ffffff;
+      }
+
+      .visual-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--color-border-soft);
+        padding: 18px 20px;
+      }
+
+      .visual-title {
+        color: var(--color-foreground);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .visual-status {
+        color: var(--color-muted);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .visual-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 330px;
+      }
+
+      .metrics-grid {
+        display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        margin-bottom: 14px;
+        gap: 24px;
       }
 
-      .layout {
-        grid-template-columns: 1fr;
+      .metric-card,
+      .feature-card,
+      .access-card,
+      .tier-card {
+        border: 1px solid var(--color-border-soft);
+        border-radius: 2px;
+        background: #ffffff;
       }
 
-      .secondary {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      }
-
-      .panel {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 14px;
+      .metric-card {
+        display: flex;
+        min-height: 164px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px;
       }
 
       .metric-label,
-      .section-label {
-        color: var(--muted);
+      .label {
+        color: var(--color-muted);
         font-size: 12px;
-        font-weight: 650;
+        font-weight: 700;
         text-transform: uppercase;
       }
 
       .metric-value {
-        margin-top: 8px;
-        font-size: 26px;
-        font-weight: 760;
+        margin-top: 24px;
+        font-family: var(--font-display);
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1;
       }
 
       .metric-note {
-        margin-top: 5px;
-        color: var(--muted);
-        font-size: 12px;
+        margin-top: 10px;
+        color: var(--color-muted);
+        font-size: 14px;
       }
 
-      h2 {
-        margin: 0 0 12px;
-        font-size: 15px;
+      .section-kicker {
+        margin-bottom: 18px;
+        color: var(--color-muted);
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
       }
 
-      table {
+      .section-copy {
+        max-width: 680px;
+        margin: 22px 0 0;
+        color: var(--color-muted);
+        font-size: 18px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+        margin-top: 48px;
+      }
+
+      .feature-card {
+        min-height: 254px;
+        padding: 32px;
+        transition: border-color 160ms ease-out, background-color 160ms ease-out;
+      }
+
+      .feature-card:hover {
+        background: #fcfcfc;
+      }
+
+      .feature-icon {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        background: #f7f7f8;
+        color: #8b929d;
+        font-family: var(--font-mono);
+        font-size: 18px;
+        font-weight: 700;
+        transition: color 160ms ease-out, background-color 160ms ease-out;
+      }
+
+      .feature-card:hover .feature-icon {
+        background: #f3f3ff;
+        color: var(--color-primary);
+      }
+
+      .feature-card h4 {
+        margin-top: 28px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .feature-card p {
+        margin: 14px 0 0;
+        color: var(--color-muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .workflow-layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+        gap: 72px;
+        align-items: start;
+      }
+
+      .steps {
+        display: grid;
+        gap: 36px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 28px;
+      }
+
+      .step-number {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border: 1px solid var(--color-foreground);
+        color: var(--color-foreground);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .step p {
+        margin: 8px 0 0;
+        color: var(--color-muted);
+      }
+
+      .replay-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.36fr);
+        gap: 32px;
+        align-items: start;
+        margin-top: 48px;
+      }
+
+      .table-wrap,
+      .reason-panel {
+        border: 1px solid var(--color-border-soft);
+        background: #ffffff;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      .table {
         width: 100%;
+        min-width: 760px;
         border-collapse: collapse;
         table-layout: fixed;
       }
 
-      th,
-      td {
-        border-bottom: 1px solid var(--line);
-        padding: 10px 8px;
+      .table th,
+      .table td {
+        border-bottom: 1px solid var(--color-border-soft);
+        padding: 18px 20px;
         text-align: left;
-        vertical-align: middle;
-        font-size: 13px;
-        overflow-wrap: anywhere;
+        vertical-align: top;
       }
 
-      th {
-        color: var(--muted);
+      .table th {
+        color: var(--color-muted);
         font-size: 11px;
+        font-weight: 700;
         text-transform: uppercase;
       }
 
-      tr:last-child td {
+      .table tr:last-child td {
         border-bottom: 0;
       }
 
-      .bar {
-        height: 8px;
-        border-radius: 999px;
-        background: #e7ebf0;
-        overflow: hidden;
+      .fixture-id,
+      .reason-code,
+      .status-badge {
+        font-family: var(--font-mono);
       }
 
-      .bar > span {
+      .fixture-id {
+        color: var(--color-foreground);
+        font-size: 12px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--color-border);
+        border-radius: 2px;
+        color: var(--color-muted);
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 6px 8px;
+        text-transform: uppercase;
+      }
+
+      .status-badge.rejected {
+        background: #fff8f3;
+      }
+
+      .status-badge.unsupported {
+        background: #fafbdf;
+      }
+
+      .quality-bar {
+        height: 8px;
+        margin-top: 8px;
+        border: 1px solid var(--color-border-soft);
+        background: #ffffff;
+      }
+
+      .quality-bar span {
         display: block;
         height: 100%;
-        border-radius: 999px;
-      }
-
-      .blue {
-        background: var(--blue);
-      }
-
-      .green {
-        background: var(--green);
-      }
-
-      .amber {
-        background: var(--amber);
-      }
-
-      .red {
-        background: var(--red);
+        background: var(--color-foreground);
       }
 
       .code-list {
@@ -190,182 +579,643 @@
         gap: 6px;
       }
 
-      .code {
-        border-radius: 4px;
-        background: #eef1f5;
-        color: #344154;
-        padding: 4px 6px;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      .reason-code {
+        border: 1px solid var(--color-border-soft);
+        border-radius: 2px;
+        background: #fbfbfb;
+        color: var(--color-foreground);
         font-size: 11px;
+        font-weight: 700;
+        padding: 5px 7px;
         overflow-wrap: anywhere;
       }
 
-      .view-list {
-        display: grid;
-        gap: 10px;
+      .reason-panel {
+        padding: 24px;
       }
 
-      .view-row {
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        gap: 10px;
-        align-items: start;
-        border-bottom: 1px solid var(--line);
-        padding-bottom: 10px;
+      .reason-row {
+        margin-bottom: 18px;
       }
 
-      .view-row:last-child {
-        border-bottom: 0;
-        padding-bottom: 0;
+      .reason-row:last-child {
+        margin-bottom: 0;
       }
 
-      .view-title {
-        font-size: 13px;
+      .reason-line {
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        color: var(--color-foreground);
+        font-family: var(--font-mono);
+        font-size: 12px;
         font-weight: 700;
       }
 
-      .view-copy {
-        margin: 0;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.45;
+      .bar {
+        height: 9px;
+        margin-top: 8px;
+        border: 1px solid var(--color-border-soft);
+        background: #ffffff;
       }
 
-      .footer-note {
-        margin-top: 14px;
-        color: var(--muted);
+      .bar span {
+        display: block;
+        height: 100%;
+        background: var(--color-foreground);
+      }
+
+      .access-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+      }
+
+      .access-card {
+        min-height: 196px;
+        padding: 32px;
+      }
+
+      .access-card strong {
+        display: block;
+        margin-top: 24px;
+        font-family: var(--font-display);
+        font-size: 24px;
+        line-height: 1.35;
+      }
+
+      .access-card p {
+        margin: 12px 0 0;
+        color: var(--color-muted);
+        font-size: 14px;
+      }
+
+      .tiers {
+        background: #0a0d12;
+        color: #ffffff;
+      }
+
+      .tiers .section-kicker,
+      .tiers .section-copy {
+        color: #a5abb4;
+      }
+
+      .tier-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+        margin-top: 48px;
+      }
+
+      .tier-card {
+        display: flex;
+        min-height: 320px;
+        flex-direction: column;
+        justify-content: space-between;
+        border-color: #242a33;
+        background: #10151d;
+        padding: 32px;
+      }
+
+      .tier-label {
+        color: #a5abb4;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .tier-card h4 {
+        margin-top: 18px;
+        font-weight: 700;
+      }
+
+      .tier-card p {
+        margin: 14px 0 0;
+        color: #c1c6cd;
+        font-size: 14px;
+      }
+
+      .tier-card ul {
+        display: grid;
+        gap: 10px;
+        margin: 28px 0 0;
+        padding: 0;
+        color: #dce0e5;
+        font-size: 14px;
+        list-style: none;
+      }
+
+      .tier-card li::before {
+        content: "";
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin-right: 9px;
+        background: var(--color-success);
+      }
+
+      .tier-cta {
+        display: block;
+        margin-top: 32px;
+        padding: 14px 16px;
+        background: #ffffff;
+        color: var(--color-foreground);
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .tier-cta.pro {
+        background: var(--color-primary);
+        color: #ffffff;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--color-border-soft);
+        padding: 64px 0 42px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) repeat(3, minmax(0, 0.65fr));
+        gap: 48px;
+      }
+
+      .footer-copy {
+        max-width: 330px;
+        margin: 18px 0 0;
+        color: var(--color-muted);
+        font-size: 14px;
+      }
+
+      .footer-heading {
+        margin: 0 0 18px;
+        color: var(--color-foreground);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .footer-list {
+        display: grid;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        color: var(--color-muted);
+        font-size: 14px;
+        list-style: none;
+      }
+
+      .footer-list a {
+        text-decoration: none;
+      }
+
+      .footer-list a:hover {
+        color: var(--color-foreground);
+      }
+
+      .footer-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: space-between;
+        border-top: 1px solid var(--color-border-soft);
+        margin-top: 52px;
+        padding-top: 28px;
+        color: var(--color-muted);
         font-size: 12px;
       }
 
-      @media (max-width: 860px) {
-        .topbar {
-          align-items: flex-start;
+      @media (max-width: 1060px) {
+        .nav-inner {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 14px 0;
+        }
+
+        main {
+          padding-top: 156px;
+        }
+
+        .nav-links,
+        .nav-actions {
+          flex-wrap: wrap;
+        }
+
+        .hero-grid,
+        .workflow-layout,
+        .replay-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics-grid,
+        .feature-grid,
+        .access-grid,
+        .tier-grid,
+        .footer-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        h1,
+        h2 {
+          font-size: 56px;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .container {
+          width: min(100% - 32px, 80rem);
+        }
+
+        section {
+          padding: 64px 0;
+        }
+
+        .nav-links {
+          gap: 14px;
+        }
+
+        .nav-actions,
+        .hero-actions {
+          align-items: stretch;
           flex-direction: column;
         }
 
-        .status-strip {
-          justify-content: flex-start;
-        }
-
-        .metrics,
-        .layout {
-          grid-template-columns: 1fr;
-        }
-
-        .secondary {
-          grid-template-columns: 1fr;
-        }
-
-        table {
-          display: block;
-        }
-
-        thead {
-          display: none;
-        }
-
-        tbody,
-        tr,
-        td {
-          display: block;
+        .button {
           width: 100%;
         }
 
-        tr {
-          border-bottom: 1px solid var(--line);
-          padding: 10px 0;
+        .brand-tagline {
+          white-space: normal;
         }
 
-        tr:last-child {
-          border-bottom: 0;
+        h1,
+        h2 {
+          font-size: 44px;
         }
 
-        td {
-          border-bottom: 0;
-          display: grid;
-          grid-template-columns: 110px minmax(0, 1fr);
-          gap: 10px;
-          padding: 6px 0;
+        h3 {
+          font-size: 36px;
         }
 
-        td::before {
-          color: var(--muted);
-          content: attr(data-label);
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
+        .lede {
+          font-size: 18px;
+        }
+
+        .metrics-grid,
+        .feature-grid,
+        .access-grid,
+        .tier-grid,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .step {
+          grid-template-columns: 1fr;
+        }
+
+        .visual-svg {
+          min-height: 260px;
         }
       }
     </style>
   </head>
   <body>
-    <header>
-      <div class="topbar">
-        <div>
-          <h1>Open Perps Reliability Stack</h1>
-          <p class="subtitle">Public read-only dashboard stub using synthetic Drift fixtures</p>
-        </div>
-        <div class="status-strip">
-          <span class="pill">Read-only</span>
-          <span class="pill">Dry-run only</span>
-          <span class="pill">No signing</span>
-          <span class="pill">Fixture data</span>
+    <header class="site-nav">
+      <div class="container nav-inner">
+        <a class="brand" href="#overview" aria-label="OpenPerp overview">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" role="img" aria-label="Blocksize logo mark">
+              <path d="M3 5h7v7H3zM12 5h7v3h-7zM12 10h7v7h-7zM3 14h7v3H3z" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="brand-wordmark">
+            <span class="brand-name">OpenPerp</span>
+            <span class="brand-tagline">The open-source standard for institutional derivative trading infrastructure</span>
+          </span>
+        </a>
+        <nav class="nav-links" aria-label="Dashboard sections">
+          <a href="#features">Features</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#replay">Replay</a>
+          <a href="#tracks">Tracks</a>
+          <a href="https://github.com/jf-cmyk/open-perps-reliability-stack">GitHub</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="button secondary" href="#replay">View Rows</a>
+          <a class="button primary" href="#access">Proof Pack</a>
         </div>
       </div>
     </header>
 
-    <main>
-      <section class="grid metrics" id="metrics"></section>
-
-      <section class="grid layout">
-        <div class="panel">
-          <h2>Fixture Replay Cases</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Fixture</th>
-                <th>Status</th>
-                <th>Oracle</th>
-                <th>Health</th>
-                <th>Reason Codes</th>
-              </tr>
-            </thead>
-            <tbody id="fixtureRows"></tbody>
-          </table>
-        </div>
-
-        <div class="grid secondary">
-          <div class="panel">
-            <h2>Reason Code Distribution</h2>
-            <div id="reasonBars"></div>
+    <main id="overview">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="tag">Institutional DeFi Infrastructure</span>
+            <h1>Making <span class="accent-text">Open Perps Reliability</span> Verifiable</h1>
+            <p class="lede">
+              A public, read-only reliability surface for Solana perpetuals infrastructure. It validates adapter behavior,
+              oracle risk, data quality, and liquidation dry-run outcomes without signing, custody, order routing, or live execution.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#metrics">Inspect Metrics</a>
+              <a class="button secondary" href="#workflow">Review Workflow</a>
+            </div>
+            <div class="scope-strip" aria-label="Safety scope">
+              <span class="scope-pill"><span class="scope-dot"></span>Read-only</span>
+              <span class="scope-pill"><span class="scope-dot warning"></span>Dry-run only</span>
+              <span class="scope-pill"><span class="scope-dot warning"></span>No live execution</span>
+              <span class="scope-pill"><span class="scope-dot"></span>Synthetic fixtures</span>
+            </div>
           </div>
 
-          <div class="panel">
-            <h2>Public Views</h2>
-            <div class="view-list">
-              <div class="view-row">
-                <div class="view-title">Market Quality</div>
-                <p class="view-copy">Spread, depth, open interest, funding, volume, and venue health.</p>
-              </div>
-              <div class="view-row">
-                <div class="view-title">Oracle Risk</div>
-                <p class="view-copy">Confidence, staleness, divergence, missing feed alerts, and policy reasons.</p>
-              </div>
-              <div class="view-row">
-                <div class="view-title">Liquidation Health</div>
-                <p class="view-copy">Candidates, replay outcomes, rejection causes, and dry-run coverage.</p>
-              </div>
-              <div class="view-row">
-                <div class="view-title">Adapter Health</div>
-                <p class="view-copy">Decode success, stale slots, schema mismatch, missing accounts, and data quality flags.</p>
-              </div>
+          <aside class="visual-panel" aria-label="Reliability path visualization">
+            <div class="visual-head">
+              <span class="visual-title">Reliability control plane</span>
+              <span class="visual-status">Read-only mode</span>
             </div>
+            <svg class="visual-svg" viewBox="0 0 620 460" role="img" aria-label="Static fixture data flowing through adapter, oracle, policy, and dashboard checks">
+              <rect x="0" y="0" width="620" height="460" fill="#ffffff" />
+              <g fill="none" stroke="#e9eaeb" stroke-width="1">
+                <path d="M70 72h480M70 148h480M70 224h480M70 300h480M70 376h480" />
+                <path d="M110 40v380M240 40v380M380 40v380M510 40v380" />
+              </g>
+              <g fill="#ffffff" stroke="#0a0d12" stroke-width="1">
+                <rect x="72" y="70" width="164" height="72" />
+                <rect x="72" y="194" width="164" height="72" />
+                <rect x="72" y="318" width="164" height="72" />
+                <rect x="384" y="70" width="164" height="72" />
+                <rect x="384" y="194" width="164" height="72" />
+                <rect x="384" y="318" width="164" height="72" />
+              </g>
+              <g fill="#0a0d12" font-family="JetBrains Mono, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700">
+                <text x="94" y="109">FIXTURES</text>
+                <text x="94" y="233">ADAPTER</text>
+                <text x="94" y="357">ORACLE</text>
+                <text x="410" y="109">POLICY</text>
+                <text x="410" y="233">REPLAY</text>
+                <text x="410" y="357">PROOF PACK</text>
+              </g>
+              <g fill="none" stroke="#0a0d12" stroke-width="1">
+                <path d="M236 106h84v124h64" />
+                <path d="M236 230h148" />
+                <path d="M236 354h84v-124" />
+                <path d="M466 142v52" />
+                <path d="M466 266v52" />
+              </g>
+              <g>
+                <rect x="304" y="211" width="32" height="32" fill="#47cd89" />
+                <rect x="452" y="88" width="16" height="16" fill="#ebf781" />
+                <rect x="452" y="212" width="16" height="16" fill="#47cd89" />
+                <rect x="452" y="336" width="16" height="16" fill="#47cd89" />
+              </g>
+              <g fill="#535862" font-family="JetBrains Mono, SFMono-Regular, Menlo, monospace" font-size="10" font-weight="700">
+                <text x="82" y="160">NO RPC REQUIRED</text>
+                <text x="82" y="284">SCHEMA CHECKS</text>
+                <text x="82" y="408">CONFIDENCE / STALE</text>
+                <text x="394" y="160">REJECT / UNSUPPORTED</text>
+                <text x="394" y="284">DRY-RUN RESULTS</text>
+                <text x="394" y="408">PUBLIC EVIDENCE</text>
+              </g>
+            </svg>
+          </aside>
+        </div>
+      </section>
+
+      <section aria-label="Replay metrics">
+        <div class="container">
+          <p class="section-kicker">Community Metrics</p>
+          <h2>Current fixture replay status</h2>
+          <p class="section-copy">
+            Static examples surface the reliability questions the stack must answer before any future production design:
+            did the adapter decode correctly, was the oracle safe, and why did the replay gate reject?
+          </p>
+          <div class="metrics-grid" id="metrics"></div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <p class="section-kicker">Feature Set</p>
+          <h2>Open infrastructure primitives for reviewable perps reliability</h2>
+          <p class="section-copy">
+            The dashboard is intentionally evidence-first. It keeps public OSS surfaces separate from commercial route intelligence
+            and keeps every execution path disabled until the founder approves a later production track.
+          </p>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon">A</div>
+              <h4>Adapter Validation</h4>
+              <p>Versioned account decoders, schema mismatch detection, fixture coverage, and explicit adapter health states.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">O</div>
+              <h4>Oracle Risk</h4>
+              <p>Confidence, staleness, missing feeds, and mark divergence checks expressed as portable policy reasons.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">R</div>
+              <h4>Replay Evidence</h4>
+              <p>Dry-run liquidation outcomes that produce reviewer-friendly traces without touching wallets or submitting orders.</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <p class="footer-note">This dashboard is a static v0 demo surface. It does not expose private route intelligence, signer controls, custody metadata, transaction submission, or capital allocation logic.</p>
+      <section id="workflow">
+        <div class="container workflow-layout">
+          <div>
+            <p class="section-kicker">How It Works</p>
+            <h3>Institutional integration flow</h3>
+            <p class="section-copy">
+              Built for open-source reliability review first: adapters and fixtures become proof-pack evidence before any
+              live infrastructure or commercial service is considered.
+            </p>
+          </div>
+          <div class="steps">
+            <article class="step">
+              <div class="step-number">01</div>
+              <div>
+                <h4>Fixture and Adapter Setup</h4>
+                <p>Define read-only protocol fixtures, expected account shapes, version gates, and sample market state.</p>
+              </div>
+            </article>
+            <article class="step">
+              <div class="step-number">02</div>
+              <div>
+                <h4>Risk and Data Quality Validation</h4>
+                <p>Apply oracle confidence, staleness, divergence, missing data, and adapter mismatch policies to every case.</p>
+              </div>
+            </article>
+            <article class="step">
+              <div class="step-number">03</div>
+              <div>
+                <h4>Reviewer Proof Pack</h4>
+                <p>Publish dry-run replay outputs, reason-code counts, and static evidence for grants, maintainers, and integrators.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="replay">
+        <div class="container">
+          <p class="section-kicker">Fixture Replay Cases</p>
+          <h2>Replay rows and reason codes</h2>
+          <p class="section-copy">
+            Every row below is synthetic. Rejections are expected because the demo keeps execution disabled and highlights
+            why a reliability gate refused the case.
+          </p>
+          <div class="replay-layout">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Fixture</th>
+                    <th>Status</th>
+                    <th>Oracle</th>
+                    <th>Health</th>
+                    <th>Reason Codes</th>
+                  </tr>
+                </thead>
+                <tbody id="fixtureRows"></tbody>
+              </table>
+            </div>
+            <aside class="reason-panel" id="reasons">
+              <div class="label">Reason distribution</div>
+              <div id="reasonBars" style="margin-top: 22px"></div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="access">
+        <div class="container">
+          <p class="section-kicker">Access Boundaries</p>
+          <h2>Review surfaces stay public and inert</h2>
+          <div class="access-grid" style="margin-top: 48px">
+            <article class="access-card">
+              <div class="label">Private Access</div>
+              <strong>No protected route data</strong>
+              <p>Static pages do not expose account-specific route intelligence, privileged wallets, or off-chain strategy inputs.</p>
+            </article>
+            <article class="access-card">
+              <div class="label">Connectivity</div>
+              <strong>No RPC dependency</strong>
+              <p>The public demo renders from embedded fixtures, so it works without cluster access or authenticated services.</p>
+            </article>
+            <article class="access-card">
+              <div class="label">Execution</div>
+              <strong>No signing or live execution</strong>
+              <p>The replay layer is deliberately dry-run only and records blocked outcomes for reliability review.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="tiers" id="tracks">
+        <div class="container">
+          <p class="section-kicker">OSS and Commercial Tracks</p>
+          <h2>Clear boundaries for open reliability work</h2>
+          <p class="section-copy">
+            The open-source track stays focused on adapters, fixtures, reason codes, and reviewer proof packs. Commercial work,
+            if approved later, can build private monitoring and support around those boundaries.
+          </p>
+          <div class="tier-grid">
+            <article class="tier-card">
+              <div>
+                <div class="tier-label">Community</div>
+                <h4>Open Source</h4>
+                <p>Public protocol adapters, static fixtures, typed reason codes, and documentation.</p>
+                <ul>
+                  <li>Apache-2.0 repository</li>
+                  <li>Dry-run examples</li>
+                  <li>Public proof packs</li>
+                </ul>
+              </div>
+              <a class="tier-cta" href="#features">Review OSS</a>
+            </article>
+            <article class="tier-card">
+              <div>
+                <div class="tier-label">Pro Desk</div>
+                <h4>Monitoring Track</h4>
+                <p>Future commercial monitoring and support can sit on top of public reliability primitives.</p>
+                <ul>
+                  <li>Priority integrations</li>
+                  <li>Operator dashboards</li>
+                  <li>Implementation support</li>
+                </ul>
+              </div>
+              <a class="tier-cta pro" href="#access">Map Boundary</a>
+            </article>
+            <article class="tier-card">
+              <div>
+                <div class="tier-label">Institutional</div>
+                <h4>Audit Support</h4>
+                <p>Future partner work can package reviewer evidence, adapter scope, and reliability findings.</p>
+                <ul>
+                  <li>Custom proof-pack support</li>
+                  <li>Protocol coverage planning</li>
+                  <li>Security review handoff</li>
+                </ul>
+              </div>
+              <a class="tier-cta" href="#workflow">Review Flow</a>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href="#overview" aria-label="OpenPerp overview footer">
+              <span class="brand-mark" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" role="img" aria-label="Blocksize logo mark">
+                  <path d="M3 5h7v7H3zM12 5h7v3h-7zM12 10h7v7h-7zM3 14h7v3H3z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="brand-name">OpenPerp</span>
+            </a>
+            <p class="footer-copy">
+              The open-source standard for institutional derivative trading infrastructure, scoped here to read-only reliability review.
+            </p>
+          </div>
+          <div>
+            <p class="footer-heading">Product</p>
+            <ul class="footer-list">
+              <li><a href="#features">Feature Set</a></li>
+              <li><a href="#workflow">Workflow</a></li>
+              <li><a href="#tracks">Track Boundaries</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer-heading">Evidence</p>
+            <ul class="footer-list">
+              <li><a href="#metrics">Metrics</a></li>
+              <li><a href="#replay">Replay Rows</a></li>
+              <li><a href="#reasons">Reason Codes</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer-heading">Connect</p>
+            <ul class="footer-list">
+              <li><a href="https://github.com/jf-cmyk/open-perps-reliability-stack">GitHub</a></li>
+              <li><a href="#access">Access Boundaries</a></li>
+              <li><a href="#overview">Dashboard</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>Copyright 2026 Blocksize. Apache-2.0 licensed OSS components.</span>
+          <span>Read-only + dry-run only. No live execution.</span>
+        </div>
+      </div>
+    </footer>
 
     <script>
       const fixtures = [
@@ -435,11 +1285,13 @@
         ["Execution", "Disabled", "Submission blocked"]
       ];
 
-      document.getElementById("metrics").innerHTML = metrics.map(([label, value, note]) => `
-        <article class="panel">
-          <div class="metric-label">${label}</div>
-          <div class="metric-value">${value}</div>
-          <div class="metric-note">${note}</div>
+      document.getElementById("metrics").innerHTML = metrics.map(([label, value, note], index) => `
+        <article class="metric-card">
+          <div class="metric-label">${String(index + 1).padStart(2, "0")} / ${label}</div>
+          <div>
+            <div class="metric-value">${value}</div>
+            <div class="metric-note">${note}</div>
+          </div>
         </article>
       `).join("");
 
@@ -449,33 +1301,37 @@
         const oracleLabel = item.oracle_confidence_bps === null
           ? "missing"
           : `${item.oracle_confidence_bps} bps / ${item.oracle_staleness_secs}s`;
+        const statusClass = item.status.toLowerCase();
         return `
           <tr>
-            <td data-label="Fixture">${item.fixture_set_id}</td>
-            <td data-label="Status">${item.status}</td>
+            <td data-label="Fixture"><div class="fixture-id">${item.fixture_set_id}</div></td>
+            <td data-label="Status"><span class="status-badge ${statusClass}">${item.status}</span></td>
             <td data-label="Oracle">
-              <div>${oracleLabel}</div>
-              <div class="bar"><span class="${item.oracle_confidence_bps > 100 ? "red" : "green"}" style="width:${confidenceWidth}%"></span></div>
+              ${oracleLabel}
+              <div class="quality-bar" aria-hidden="true"><span style="width: ${confidenceWidth}%"></span></div>
             </td>
             <td data-label="Health">
-              <div>${item.health_ratio_bps} bps</div>
-              <div class="bar"><span class="${item.health_ratio_bps < 8000 ? "amber" : "blue"}" style="width:${healthWidth}%"></span></div>
+              ${item.health_ratio_bps} bps
+              <div class="quality-bar" aria-hidden="true"><span style="width: ${healthWidth}%"></span></div>
             </td>
-            <td data-label="Reasons"><div class="code-list">${item.reason_codes.map((code) => `<span class="code">${code}</span>`).join("")}</div></td>
+            <td data-label="Reason Codes">
+              <div class="code-list">
+                ${item.reason_codes.map((code) => `<span class="reason-code">${code}</span>`).join("")}
+              </div>
+            </td>
           </tr>
         `;
       }).join("");
 
       const maxReasonCount = Math.max(...Object.values(reasonCounts));
-      document.getElementById("reasonBars").innerHTML = Object.entries(reasonCounts).map(([code, count]) => `
-        <div style="margin-bottom:12px">
-          <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:5px;font-size:13px">
-            <span>${code}</span>
-            <strong>${count}</strong>
+      document.getElementById("reasonBars").innerHTML = Object.entries(reasonCounts)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .map(([code, count]) => `
+          <div class="reason-row">
+            <div class="reason-line"><span>${code}</span><span>${count}</span></div>
+            <div class="bar" aria-hidden="true"><span style="width: ${(count / maxReasonCount) * 100}%"></span></div>
           </div>
-          <div class="bar"><span class="${code === "ExecutionDisabledDryRun" ? "blue" : "red"}" style="width:${(count / maxReasonCount) * 100}%"></span></div>
-        </div>
-      `).join("");
+        `).join("");
     </script>
   </body>
 </html>
