@@ -1,0 +1,12 @@
+[package]
+name = "oprs-data"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+oprs-core = { path = "../oprs-core" }
+
+[lib]
+path = "src/lib.rs"

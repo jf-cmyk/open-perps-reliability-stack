@@ -1,0 +1,13 @@
+[package]
+name = "oprs-dry-run"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+oprs-core = { path = "../oprs-core" }
+oprs-replay = { path = "../oprs-replay" }
+
+[lib]
+path = "src/lib.rs"

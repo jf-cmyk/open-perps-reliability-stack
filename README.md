@@ -10,6 +10,7 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 - [Agent work packages](docs/agent-work-packages.md)
 - [Decision log](docs/decision-log.md)
 - [Protocol targets](docs/protocol-targets.md)
+- [Grant package](docs/grant-package.md)
 - [Architecture](docs/architecture.md)
 - [Adapter standard](docs/adapter-standard.md)
 - [Data model](docs/data-model.md)

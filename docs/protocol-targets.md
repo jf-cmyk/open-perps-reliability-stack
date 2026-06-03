@@ -11,25 +11,28 @@ This is the coordinator-level target sheet. The Protocol Agent owns diligence de
 - Adapter work produces public-good value even before any commercial integration.
 - Dry-run candidate detection can be tested without signing or live execution.
 
-## Initial Target Matrix
+## Target Matrix
 
 | Protocol / Venue | Role | Expected Integration Type | Why It Matters | Initial Priority |
 | --- | --- | --- | --- | --- |
-| Drift | Perps venue | Likely permissionless read-only, deeper execution may require more diligence | Rich perps mechanics, liquidations, oracle risk, funding, and keeper ecosystem | High |
-| Jupiter Perps | Perps venue | Read-only likely feasible, execution/liquidation path needs diligence | Major user-facing perps surface and useful oracle/pool contrast | High |
-| Phoenix / orderbook-style venues | Price-discovery primitive | Permissionless read-only expected where programs/data are public | Useful for market-quality and price-discovery benchmarks | Medium-high |
-| Zeta / Bullet lineage | Perps/options lineage | Needs current-state diligence | Relevant Solana derivatives history and possible adapter lessons | Medium |
-| FlashTrade | Perps venue | Needs docs/IDL and partner-dependency diligence | Active perps venue candidate with market-quality relevance | Medium |
-| GMTrade | Perps venue | Needs docs/IDL and partner-dependency diligence | Active venue candidate for breadth and comparison | Medium |
-| Pacifica | Perps venue | Needs docs/IDL and partner-dependency diligence | Active venue candidate for breadth and comparison | Medium |
+| Drift v2 | Perps venue | Permissionless read-only and dry-run; live liquidation is out of scope | Best OSS/public-good fit, open program/SDK, rich margin/oracle/liquidation mechanics | 1 |
+| Phoenix / orderbook-style venues | Price-discovery primitive | Phoenix legacy is public; Phoenix Perps/Rise may be API/onboarding-gated | Best price-discovery/orderbook telemetry lane | 2 |
+| Jupiter Perps | Perps venue | Public read-only; execution/keeper path is Jupiter-operated | Major user-facing perps surface and useful oracle/pool contrast | 3 |
+| FlashTrade | Pool perps venue | Public docs/GitHub/SDK; team-operated liquidation bot per docs | Good oracle/pool-perps telemetry target | 4 |
+| GMTrade | Pool perps venue | Docs plus Rust SDK; deeper decode validation needed | Good GMX-v2-style pool venue and RWA/perps surface | 5 |
+| Pacifica | API-centric perps venue | Public REST/WS API; likely partner/API-gated for deeper integration | Valuable commercial/API data adapter, weaker OSS-first fit | 6 |
+| Zeta / Bullet lineage | Perps/options lineage | Zeta legacy public; Bullet is newer and likely partner-led | Useful research precedent, not first adapter | 7 |
 | Other emerging venues | Discovery lane | Case by case | Keeps stack current as Solana perps market changes | Watch |
 
-## First Recommendation Pending
+## First Recommendation
 
-The expected first adapter path is:
+Build `DriftReadOnlyAdapter` first.
 
-1. Start with the protocol that has the best combination of public docs/IDLs, permissionless read surfaces, liquidation/risk relevance, and stable account schemas.
-2. Add one price-discovery/orderbook adapter for market-quality benchmarking.
-3. Keep partner-required or execution-dependent integrations out of the first read-only milestone.
+Drift is the cleanest first adapter because it has public mechanics, open-source program/SDK surface, actual liquidation and margin complexity, and a strong Solana public-good story. It should decode and simulate only:
 
-The Protocol Agent will produce the final first-adapter recommendation.
+- Markets, user accounts, positions, open orders, funding, and oracle state.
+- Canonical margin health and liquidation eligibility.
+- `LiquidationCandidate`, `OracleRiskSnapshot`, and `MarketQualitySnapshot`.
+- Dry-run liquidation simulation using fixtures or local simulation.
+
+Add Phoenix/orderbook telemetry in parallel for spread/depth/fill/latency baselines. Add Jupiter Perps next to contrast oracle/pool/keeper models.

@@ -4,6 +4,7 @@
 - [Agent work packages](agent-work-packages.md)
 - [Decision log](decision-log.md)
 - [Protocol targets](protocol-targets.md)
+- [Grant package](grant-package.md)
 - [Architecture](architecture.md)
 - [Adapter standard](adapter-standard.md)
 - [Data model](data-model.md)
@@ -13,5 +14,4 @@
 Planned detail areas:
 
 - Pyth-aware risk SDK
-- Market-quality data model
 - Execution reliability analytics

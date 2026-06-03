@@ -1,5 +1,37 @@
 # OSS and Commercial Boundary
 
-Open-source public-good outputs: adapter standard, sample adapters, public schemas, risk SDK interfaces, dry-run/replay tooling, sample datasets, and public dashboard subset.
+The grant-funded/public repo must stay public, read-only, reproducible, and dry-run only.
 
-Commercial outputs may include premium APIs, managed protocol integrations, private reliability analytics, custom reports, and future controlled execution services after separate approval.
+## Open-Source Public-Good Scope
+
+- Adapter standard.
+- Sample/fixture adapters.
+- Read-only protocol adapters.
+- Normalized schemas.
+- Pyth-aware risk SDK.
+- Dry-run and replay harness.
+- Public API schemas.
+- Public dashboard subset.
+- Sample datasets.
+- Docs, ADRs, and grant milestone artifacts.
+
+## Commercial or Private Scope
+
+- Premium low-latency APIs.
+- Private execution analytics.
+- Managed protocol integrations.
+- Proprietary routing.
+- Validator-specific performance intelligence.
+- Live liquidation services.
+- Signer infrastructure.
+- Capital/inventory controls.
+- Partner-specific adapters under NDA.
+- SLA-backed services.
+- Any BUSL/private Express Relay auction-server reuse unless explicitly licensed.
+
+## Boundary Rules
+
+- OSS modules must not depend on private execution, signer, capital, validator-routing, or BUSL auction-server code.
+- Public datasets must be scrubbed for secrets, private routing, internal infra, and strategy fields.
+- Commercial work may build on public artifacts, but cannot privatize grant-funded deliverables.
+- Production execution requires a separate approval package and does not belong in v0.
