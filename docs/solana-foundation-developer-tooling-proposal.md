@@ -183,8 +183,25 @@ The public repo already includes:
 - Pyth-aware risk primitives with unit tests.
 - Replay fixture and dry-run output contracts.
 - Grant package and application draft.
+- Hosted proof-pack MVP path for reviewers:
+  - https://jf-cmyk.github.io/open-perps-reliability-stack/
+  - https://jf-cmyk.github.io/open-perps-reliability-stack/apps/dashboard/
 
 Repo: https://github.com/jf-cmyk/open-perps-reliability-stack
+
+## Running MVP Before Submission
+
+Before grant submission, Blocksize will keep the MVP runnable as a reviewer-facing proof pack rather than a proposal-only artifact.
+
+The MVP target is:
+
+- Hosted static proof-pack index.
+- Hosted public dashboard.
+- Local validator commands for fixture replay and API examples.
+- Optional Helius-backed read-only decode proof loaded from local `.env`.
+- No signing, no private-key handling, no custody, no capital deployment, and no live transaction submission.
+
+The Helius integration is limited to read-only RPC account fetches for decode/provenance proof. RPC URLs and API keys remain local-only and are never committed to the repo or included in public datasets.
 
 ## Why Blocksize
 

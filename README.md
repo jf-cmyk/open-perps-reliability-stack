@@ -4,6 +4,11 @@ Open-source reliability infrastructure for Solana onchain perps: protocol adapte
 
 Initial scope: read-only and dry-run only. No production trading, custody, or live execution.
 
+Hosted proof-pack MVP:
+
+- Proof pack: https://jf-cmyk.github.io/open-perps-reliability-stack/
+- Dashboard: https://jf-cmyk.github.io/open-perps-reliability-stack/apps/dashboard/
+
 ## Current Workstreams
 
 - [Roadmap](docs/roadmap.md)
