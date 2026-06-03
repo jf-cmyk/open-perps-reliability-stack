@@ -20,6 +20,8 @@ Schema and fixture artifacts:
 - [Public API schema](../schemas/api/public-api-v0.json)
 - [Public dashboard schema](../schemas/dashboard/public-dashboard-v0.json)
 - [Sample Drift fixture manifest](../datasets/sample/drift_synthetic_margin_001/manifest.json)
+- [Fixture catalog](../datasets/sample/fixture_catalog.json)
+- [API response examples](../examples/api/)
 - [Static dashboard demo](../apps/dashboard/index.html)
 
 Planned detail areas:

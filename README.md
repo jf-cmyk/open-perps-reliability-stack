@@ -23,4 +23,6 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 - [Public API schema](schemas/api/public-api-v0.json)
 - [Public dashboard schema](schemas/dashboard/public-dashboard-v0.json)
 - [Sample Drift fixture dataset](datasets/sample/drift_synthetic_margin_001/manifest.json)
+- [Fixture catalog](datasets/sample/fixture_catalog.json)
+- [API response examples](examples/api/)
 - [Static dashboard demo](apps/dashboard/index.html)

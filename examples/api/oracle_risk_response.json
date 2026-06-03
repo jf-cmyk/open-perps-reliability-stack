@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1.0",
+  "data": {
+    "protocol": "drift",
+    "market_id": "SOL-PERP",
+    "observed_slot": 0,
+    "snapshots": [
+      {
+        "feed_id": "SOL-PERP:pyth",
+        "stale": false,
+        "confidence_bps": 10,
+        "divergence_bps": null,
+        "reason_codes": []
+      },
+      {
+        "feed_id": "SOL-PERP:pyth",
+        "stale": true,
+        "confidence_bps": 8,
+        "divergence_bps": null,
+        "reason_codes": ["StaleOracle"]
+      },
+      {
+        "feed_id": "SOL-PERP:pyth",
+        "stale": false,
+        "confidence_bps": 350,
+        "divergence_bps": null,
+        "reason_codes": ["WideOracleConfidence"]
+      }
+    ]
+  },
+  "meta": {
+    "adapter_version": "0.1.0",
+    "dataset_name": "fixture_catalog",
+    "manifest_ref": "datasets/sample/fixture_catalog.json",
+    "generated_at_unix": 1780535300,
+    "known_gaps": ["Synthetic oracle scenarios only."]
+  }
+}

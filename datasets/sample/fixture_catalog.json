@@ -36,6 +36,42 @@
       "health_ratio_bps": 7900,
       "reason_codes": ["WideOracleConfidence", "ExecutionDisabledDryRun"],
       "manifest_path": "datasets/sample/drift_synthetic_wide_confidence_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_missing_oracle_001",
+      "protocol": "drift",
+      "market_id": "SOL-PERP",
+      "case": "missing_oracle_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": null,
+      "oracle_staleness_secs": null,
+      "health_ratio_bps": 7600,
+      "reason_codes": ["MissingOracle", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_missing_oracle_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_oracle_divergence_001",
+      "protocol": "drift",
+      "market_id": "SOL-PERP",
+      "case": "oracle_mark_divergence_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": 12,
+      "oracle_staleness_secs": 2,
+      "health_ratio_bps": 8100,
+      "reason_codes": ["OracleMarkDivergence", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_oracle_divergence_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_adapter_version_mismatch_001",
+      "protocol": "drift",
+      "market_id": "SOL-PERP",
+      "case": "adapter_version_mismatch_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": 9,
+      "oracle_staleness_secs": 3,
+      "health_ratio_bps": 8800,
+      "reason_codes": ["AdapterVersionMismatch", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_adapter_version_mismatch_001/manifest.json"
     }
   ]
 }

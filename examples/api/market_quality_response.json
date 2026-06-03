@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "data": {
+    "protocol": "drift",
+    "market_id": "SOL-PERP",
+    "observed_slot": 0,
+    "spread_bps": null,
+    "depth_usd": null,
+    "open_interest_usd": null,
+    "funding_rate_bps": null,
+    "quality_flags": ["synthetic", "fixture_only", "market_quality_not_modeled"]
+  },
+  "meta": {
+    "adapter_version": "0.1.0",
+    "dataset_name": "drift_synthetic_margin_001",
+    "manifest_ref": "datasets/sample/drift_synthetic_margin_001/manifest.json",
+    "generated_at_unix": 1780535300,
+    "known_gaps": ["No live depth, funding, or OI reads in fixture data."]
+  }
+}

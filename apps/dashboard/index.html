@@ -392,6 +392,30 @@
           oracle_staleness_secs: 2,
           health_ratio_bps: 7900,
           reason_codes: ["WideOracleConfidence", "ExecutionDisabledDryRun"]
+        },
+        {
+          fixture_set_id: "drift_synthetic_missing_oracle_001",
+          status: "Rejected",
+          oracle_confidence_bps: null,
+          oracle_staleness_secs: null,
+          health_ratio_bps: 7600,
+          reason_codes: ["MissingOracle", "ExecutionDisabledDryRun"]
+        },
+        {
+          fixture_set_id: "drift_synthetic_oracle_divergence_001",
+          status: "Rejected",
+          oracle_confidence_bps: 12,
+          oracle_staleness_secs: 2,
+          health_ratio_bps: 8100,
+          reason_codes: ["OracleMarkDivergence", "ExecutionDisabledDryRun"]
+        },
+        {
+          fixture_set_id: "drift_synthetic_adapter_version_mismatch_001",
+          status: "Rejected",
+          oracle_confidence_bps: 9,
+          oracle_staleness_secs: 3,
+          health_ratio_bps: 8800,
+          reason_codes: ["AdapterVersionMismatch", "ExecutionDisabledDryRun"]
         }
       ];
 
@@ -403,7 +427,11 @@
       const metrics = [
         ["Fixtures", fixtures.length, "Synthetic replay cases"],
         ["Rejected", fixtures.filter((item) => item.status === "Rejected").length, "Risk gates blocked"],
-        ["Max Confidence", `${Math.max(...fixtures.map((item) => item.oracle_confidence_bps))} bps`, "Wide-confidence case"],
+        [
+          "Max Confidence",
+          `${Math.max(...fixtures.map((item) => item.oracle_confidence_bps || 0))} bps`,
+          "Wide-confidence case"
+        ],
         ["Execution", "Disabled", "Submission blocked"]
       ];
 
@@ -416,14 +444,17 @@
       `).join("");
 
       document.getElementById("fixtureRows").innerHTML = fixtures.map((item) => {
-        const confidenceWidth = Math.min(100, item.oracle_confidence_bps / 4);
+        const confidenceWidth = Math.min(100, (item.oracle_confidence_bps || 0) / 4);
         const healthWidth = Math.min(100, item.health_ratio_bps / 100);
+        const oracleLabel = item.oracle_confidence_bps === null
+          ? "missing"
+          : `${item.oracle_confidence_bps} bps / ${item.oracle_staleness_secs}s`;
         return `
           <tr>
             <td data-label="Fixture">${item.fixture_set_id}</td>
             <td data-label="Status">${item.status}</td>
             <td data-label="Oracle">
-              <div>${item.oracle_confidence_bps} bps / ${item.oracle_staleness_secs}s</div>
+              <div>${oracleLabel}</div>
               <div class="bar"><span class="${item.oracle_confidence_bps > 100 ? "red" : "green"}" style="width:${confidenceWidth}%"></span></div>
             </td>
             <td data-label="Health">

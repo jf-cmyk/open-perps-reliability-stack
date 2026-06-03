@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "run_id": "drift_synthetic_missing_oracle_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "drift-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "pyth-mainnet-v0",
+    "started_at_unix": 1780535000,
+    "completed_at_unix": 1780535001,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["MissingOracle", "ExecutionDisabledDryRun"]
+  },
+  "opportunities": [],
+  "gate_results": [
+    {
+      "gate_id": "oracle_presence",
+      "status": "Fail",
+      "reason_codes": ["MissingOracle"],
+      "message": "Required oracle snapshot is unavailable or has zero price."
+    },
+    {
+      "gate_id": "no_signing",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture dry-run contains no signer, custody, submission, or capital controls."
+    }
+  ],
+  "simulation_results": [
+    {
+      "status": "Rejected",
+      "reason_codes": ["MissingOracle", "ExecutionDisabledDryRun"],
+      "error": null
+    }
+  ]
+}

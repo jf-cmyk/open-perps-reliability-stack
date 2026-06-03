@@ -226,6 +226,23 @@ mod tests {
     const WIDE_DRY_RUN: &str = include_str!(
         "../../../datasets/sample/drift_synthetic_wide_confidence_001/dry_run_output.json"
     );
+    const MISSING_MANIFEST: &str =
+        include_str!("../../../datasets/sample/drift_synthetic_missing_oracle_001/manifest.json");
+    const MISSING_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/drift_synthetic_missing_oracle_001/dry_run_output.json"
+    );
+    const DIVERGENCE_MANIFEST: &str = include_str!(
+        "../../../datasets/sample/drift_synthetic_oracle_divergence_001/manifest.json"
+    );
+    const DIVERGENCE_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/drift_synthetic_oracle_divergence_001/dry_run_output.json"
+    );
+    const VERSION_MANIFEST: &str = include_str!(
+        "../../../datasets/sample/drift_synthetic_adapter_version_mismatch_001/manifest.json"
+    );
+    const VERSION_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/drift_synthetic_adapter_version_mismatch_001/dry_run_output.json"
+    );
     const CATALOG: &str = include_str!("../../../datasets/sample/fixture_catalog.json");
 
     #[test]
@@ -236,6 +253,9 @@ mod tests {
                 "drift_synthetic_margin_001",
                 "drift_synthetic_stale_oracle_001",
                 "drift_synthetic_wide_confidence_001",
+                "drift_synthetic_missing_oracle_001",
+                "drift_synthetic_oracle_divergence_001",
+                "drift_synthetic_adapter_version_mismatch_001",
             ],
         )
         .assert_passed();
@@ -277,6 +297,51 @@ mod tests {
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::WideOracleConfidence,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn validates_missing_oracle_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_missing_oracle_001",
+            manifest_json: MISSING_MANIFEST,
+            dry_run_output_json: MISSING_DRY_RUN,
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::MissingOracle,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn validates_oracle_divergence_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_oracle_divergence_001",
+            manifest_json: DIVERGENCE_MANIFEST,
+            dry_run_output_json: DIVERGENCE_DRY_RUN,
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::OracleMarkDivergence,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn validates_adapter_version_mismatch_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_adapter_version_mismatch_001",
+            manifest_json: VERSION_MANIFEST,
+            dry_run_output_json: VERSION_DRY_RUN,
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::AdapterVersionMismatch,
                 RiskReasonCode::ExecutionDisabledDryRun,
             ],
         })

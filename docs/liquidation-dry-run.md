@@ -232,6 +232,12 @@ source windows, carry warning-level DQ status, and that dry-run outputs include
 the expected status, reason codes, fixture mode, and `execution_disabled_dry_run`
 guardrail.
 
+Run the current sample validation suite with:
+
+```bash
+cargo run -p oprs-replay --example validate_fixtures
+```
+
 ```ts
 export interface ReplayFixture {
   id: string;
@@ -266,7 +272,9 @@ Initial fixture set:
 - Drift v2 IDL-derived synthetic fixtures for perps adapter shape tests until
   decoded Drift historical perps liquidation fixtures are available.
 - Current validated Drift synthetic fixtures: margin candidate execution
-  disabled, stale oracle rejected, and wide confidence rejected.
+  disabled, stale oracle rejected, wide confidence rejected, missing oracle
+  rejected, oracle/mark divergence rejected, and adapter version mismatch
+  rejected.
 
 Fixture labels must distinguish `perps` from `lending` so public outputs do not
 overclaim that lending liquidation economics prove perps execution readiness.

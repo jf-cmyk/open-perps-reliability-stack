@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "data": {
+    "protocol": "drift",
+    "market_id": "SOL-PERP",
+    "candidate_count": 6,
+    "accepted_count": 0,
+    "rejected_count": 5,
+    "reason_codes": [
+      "ExecutionDisabledDryRun",
+      "StaleOracle",
+      "WideOracleConfidence",
+      "MissingOracle",
+      "OracleMarkDivergence",
+      "AdapterVersionMismatch"
+    ]
+  },
+  "meta": {
+    "adapter_version": "0.1.0",
+    "dataset_name": "fixture_catalog",
+    "manifest_ref": "datasets/sample/fixture_catalog.json",
+    "generated_at_unix": 1780535300,
+    "known_gaps": ["Synthetic replay coverage only; no historical Drift liquidation corpus yet."]
+  }
+}

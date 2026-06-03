@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1.0",
+  "data": {
+    "adapter_name": "drift-readonly",
+    "adapter_version": "0.1.0",
+    "protocol": "drift",
+    "decode_success_rate_bps": null,
+    "missing_account_count": 0,
+    "schema_mismatch_count": 1,
+    "quality_flags": ["fixture_only", "execute_disabled", "adapter_version_mismatch_fixture_present"]
+  },
+  "meta": {
+    "adapter_version": "0.1.0",
+    "dataset_name": "fixture_catalog",
+    "manifest_ref": "datasets/sample/fixture_catalog.json",
+    "generated_at_unix": 1780535300,
+    "known_gaps": ["Decode success rate requires live or historical adapter reads."]
+  }
+}
