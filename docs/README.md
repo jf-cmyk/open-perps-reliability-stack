@@ -3,6 +3,8 @@
 - [Roadmap](roadmap.md)
 - [Agent work packages](agent-work-packages.md)
 - [Decision log](decision-log.md)
+- [Checkpoint system](checkpoints/README.md)
+- [Context map](checkpoints/context-map.md)
 - [Development checkpoint: 2026-06-03](checkpoints/2026-06-03-development-checkpoint.md)
 - [Protocol targets](protocol-targets.md)
 - [Grant package](grant-package.md)

@@ -7,7 +7,7 @@ This checkpoint is the resume point for continuing Open Perps Reliability Stack 
 - Local path: `/Users/johannfocke/Documents/Codex-Express Relay/open-perps-reliability-stack`
 - GitHub: `https://github.com/jf-cmyk/open-perps-reliability-stack`
 - Branch: `main`
-- Latest pushed commit at checkpoint time: `eb9b910 Add reviewer proof pack index`
+- Latest pushed commit at checkpoint time: `7cc1ed3 Add development checkpoint`
 - Local untracked item to ignore: `deliverables/~$en Perps Reliability Stack - Solana Foundation Proposal.docx`
 
 ## Scope Lock
@@ -28,6 +28,7 @@ OSS and commercial tracks are both in scope, but commercial execution/private te
 ## Latest Commits
 
 ```text
+7cc1ed3 Add development checkpoint
 eb9b910 Add reviewer proof pack index
 dc15793 Validate fixture content checksums
 0ebdf85 Validate public API examples
