@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-06-03-hosted-mvp-checkpoint.md)
+1. [Current checkpoint](2026-06-04-railway-mvp-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -68,9 +68,11 @@ Read when changing frontend/static reviewer artifacts:
 
 - `index.html`
 - `apps/dashboard/index.html`
+- [Railway MVP checkpoint](2026-06-04-railway-mvp-checkpoint.md)
 - [Hosted MVP checkpoint](2026-06-03-hosted-mvp-checkpoint.md)
 - [Dashboard design checkpoint](2026-06-03-dashboard-design-checkpoint.md)
 - [Reviewer-facing grant proposal](../solana-foundation-developer-tooling-proposal.md)
+- [Railway deployment](../deployment-railway.md)
 
 Required checks:
 
