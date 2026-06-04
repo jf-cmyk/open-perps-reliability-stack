@@ -36,7 +36,25 @@ test -f docs/public-artifact-boundary.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
+test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh
+
+echo "== Public artifact boundary =="
+artifact_dir="target/public-proof-pack-mvp-check-$$"
+trap 'rm -rf "$artifact_dir"' EXIT
+scripts/build_public_artifact.sh "$artifact_dir" >/dev/null
+test -f "$artifact_dir/index.html"
+test -f "$artifact_dir/apps/dashboard/index.html"
+test -f "$artifact_dir/docs/deployment-railway.md"
+test ! -e "$artifact_dir/docs/checkpoints"
+test ! -e "$artifact_dir/.env.example"
+test ! -e "$artifact_dir/Dockerfile"
+test ! -e "$artifact_dir/railway.json"
+test ! -e "$artifact_dir/deploy/railway/nginx.conf.template"
+if find "$artifact_dir" -name '~$*' | rg -q .; then
+  echo "Public artifact contains a Word lock file" >&2
+  exit 1
+fi
 
 echo "== Local Helius configuration =="
 if [ -f .env ] && grep -Eq '^HELIUS_RPC_URL="?[^"]+"?$' .env; then

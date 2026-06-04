@@ -41,6 +41,8 @@ Current execution scope remains strict:
   - GitHub Pages fallback: `https://jf-cmyk.github.io/open-perps-reliability-stack`
 - The workflow uses no secrets and no Railway variables.
 - Hardened `scripts/run_hosted_smoke_checks.sh` so it can run with either `rg` or POSIX `grep`.
+- Added `scripts/build_public_artifact.sh` so GitHub Pages deploys the same filtered reviewer artifact boundary as Railway.
+- Tightened hosted smoke checks for specific checkpoint files, `.env.example`, deployment config paths, Railway `nosniff`, and public JSON secret markers.
 - Documented the hosted monitoring contract in `docs/deployment-railway.md` and README.
 - Updated project memory so protocol priority is Drift first, Jupiter second, Phoenix/Rise third, then FlashTrade/Adrena/Pacifica diligence.
 - Sent monitoring review context to Railway Deployment Review Agent:

@@ -21,6 +21,8 @@ These files remain part of the OSS repo but are not served from the Railway proo
 
 Checkpoint docs are project memory for development continuity. They may include local paths, resume prompts, agent state, and operational notes that are useful to maintainers but unnecessary for grant reviewers.
 
+GitHub Pages uses the same public-artifact boundary through `scripts/build_public_artifact.sh`, so it should not serve `docs/checkpoints/`, deployment config files, `.env.example`, or Word lock files.
+
 ## Never Serve Or Commit
 
 - `.env` or `.env.*`

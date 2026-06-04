@@ -10,7 +10,7 @@ trap 'rm -rf "$workdir"' EXIT
 fetch() {
   local path="$1"
   local out="$2"
-  curl -fsSL "$base_url$path" -o "$out"
+  curl --retry 1 --connect-timeout 10 --max-time 30 -fsSL "$base_url$path" -o "$out"
 }
 
 assert_contains() {
@@ -25,7 +25,16 @@ assert_contains() {
 
 status_code() {
   local path="$1"
-  curl -sS -o /dev/null -w "%{http_code}" "$base_url$path"
+  curl --retry 1 --connect-timeout 10 --max-time 30 -sS -o /dev/null -w "%{http_code}" "$base_url$path"
+}
+
+header_value() {
+  local path="$1"
+  local header="$2"
+  curl --retry 1 --connect-timeout 10 --max-time 30 -fsSI "$base_url$path" \
+    | awk -F': *' -v header="$header" 'tolower($1) == tolower(header) {print tolower($2)}' \
+    | tr -d '\r' \
+    | tail -n 1
 }
 
 echo "== Hosted proof-pack smoke checks =="
@@ -58,6 +67,11 @@ echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"
 checkpoint_status="$(status_code "/docs/checkpoints/")"
+checkpoint_file_status="$(status_code "/docs/checkpoints/2026-06-04-hosted-monitoring-checkpoint.md")"
+env_example_status="$(status_code "/.env.example")"
+dockerfile_status="$(status_code "/Dockerfile")"
+railway_json_status="$(status_code "/railway.json")"
+railway_nginx_status="$(status_code "/deploy/railway/nginx.conf.template")"
 if [ "$missing_status" != "404" ]; then
   echo "Expected 404 for missing path, got $missing_status" >&2
   exit 1
@@ -70,9 +84,37 @@ if [ "$checkpoint_status" != "404" ]; then
   echo "Expected 404 for /docs/checkpoints/, got $checkpoint_status" >&2
   exit 1
 fi
+if [ "$checkpoint_file_status" != "404" ]; then
+  echo "Expected 404 for checkpoint file, got $checkpoint_file_status" >&2
+  exit 1
+fi
+if [ "$env_example_status" != "404" ]; then
+  echo "Expected 404 for /.env.example, got $env_example_status" >&2
+  exit 1
+fi
+if [ "$dockerfile_status" != "404" ]; then
+  echo "Expected 404 for /Dockerfile, got $dockerfile_status" >&2
+  exit 1
+fi
+if [ "$railway_json_status" != "404" ]; then
+  echo "Expected 404 for /railway.json, got $railway_json_status" >&2
+  exit 1
+fi
+if [ "$railway_nginx_status" != "404" ]; then
+  echo "Expected 404 for /deploy/railway/nginx.conf.template, got $railway_nginx_status" >&2
+  exit 1
+fi
+
+if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; then
+  nosniff="$(header_value "/" "X-Content-Type-Options")"
+  if [ "$nosniff" != "nosniff" ]; then
+    echo "Expected Railway X-Content-Type-Options: nosniff, got ${nosniff:-missing}" >&2
+    exit 1
+  fi
+fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

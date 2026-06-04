@@ -22,9 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Build public proof-pack artifact
+        run: scripts/build_public_artifact.sh public-proof-pack
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: public-proof-pack
       - id: deployment
         uses: actions/deploy-pages@v4

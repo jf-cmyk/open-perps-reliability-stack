@@ -55,6 +55,12 @@ Run the full local MVP check:
 scripts/run_mvp_checks.sh
 ```
 
+Build the same filtered public artifact used by GitHub Pages:
+
+```bash
+scripts/build_public_artifact.sh target/public-proof-pack
+```
+
 Run the hosted Railway smoke check:
 
 ```bash

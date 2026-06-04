@@ -4,7 +4,7 @@
   "generated_at_unix": 1780600000,
   "generated_by": "scripts/discover_readonly_targets.py",
   "rpc": {
-    "provider_label": "local_HELIUS_RPC_URL",
+    "provider_label": "local_readonly_rpc_env",
     "credential_printed": false,
     "commitment": "confirmed",
     "observed_slot": 0

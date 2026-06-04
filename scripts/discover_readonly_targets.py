@@ -104,7 +104,7 @@ def build_report(rpc_url: str) -> dict[str, Any]:
         "generated_at_unix": now,
         "generated_by": "scripts/discover_readonly_targets.py",
         "rpc": {
-            "provider_label": "local_HELIUS_RPC_URL",
+            "provider_label": "local_readonly_rpc_env",
             "credential_printed": False,
             "commitment": "confirmed",
             "observed_slot": observed_slot,
