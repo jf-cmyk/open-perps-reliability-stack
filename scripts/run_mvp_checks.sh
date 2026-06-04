@@ -25,6 +25,8 @@ echo "== Deployment config =="
 python3 -m json.tool railway.json >/dev/null
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
+rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
+test -x scripts/run_hosted_smoke_checks.sh
 
 echo "== Local Helius configuration =="
 if [ -f .env ] && grep -Eq '^HELIUS_RPC_URL="?[^"]+"?$' .env; then

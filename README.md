@@ -49,3 +49,9 @@ Run the full local MVP check:
 ```bash
 scripts/run_mvp_checks.sh
 ```
+
+Run the hosted Railway smoke check:
+
+```bash
+scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
+```

@@ -44,6 +44,8 @@ Current execution scope remains strict:
 - Verified Nginx served `/` with HTTP 200 during Railway health checks.
 - Verified hosted proof-pack and dashboard markers over the public Railway domain.
 - Confirmed the static Railway service does not need `HELIUS_RPC_URL`.
+- Hardened Railway static serving to return HTTP 404 for missing files instead of falling back to `/index.html`.
+- Added `scripts/run_hosted_smoke_checks.sh` for public Railway proof-pack/dashboard marker checks, `.env` 404 checks, and public secret-marker checks.
 - Sent deployment-result context to the Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
 
@@ -79,6 +81,7 @@ git check-ignore -v .env
 cargo run -p oprs-replay --example validate_fixtures
 cargo run -p oprs-api-types --example validate_api_examples
 scripts/run_mvp_checks.sh
+scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
 ```
 
 Railway deployment checks passed:
@@ -102,7 +105,8 @@ No access needed:
 1. Expand future service-boundary docs for the later read-only decode worker and any commercial-only managed services.
 2. Keep adapting grant proposal language as the Railway MVP hardens.
 3. Review Solana Expert and Railway Deployment Review Agent outputs and turn findings into development QA tickets.
-4. Add an optional Helius-backed read-only decode proof command once exact account/source targets are selected.
+4. Decide whether `docs/checkpoints/` should remain public in the Railway proof-pack image.
+5. Add an optional Helius-backed read-only decode proof command once exact account/source targets are selected.
 
 Access or confirmation needed:
 
@@ -130,7 +134,7 @@ https://refreshing-art-production-86de.up.railway.app/apps/dashboard/
 
 The static Railway service should not receive HELIUS_RPC_URL. Use Helius only for a separate read-only decode proof worker or local command.
 
-Run `scripts/run_mvp_checks.sh` before committing. Continue with service-boundary docs or Helius read-only decode proof once the target accounts/sources are confirmed.
+Run `scripts/run_mvp_checks.sh` before committing. After Railway deploys, run `scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app`. Continue with service-boundary docs or Helius read-only decode proof once the target accounts/sources are confirmed.
 
 After each completed task, commit and push, then report next steps split into:
 - can continue without access

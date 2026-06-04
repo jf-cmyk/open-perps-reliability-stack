@@ -42,6 +42,8 @@ The public container includes only reviewer-facing static assets:
 
 The `.dockerignore` file excludes `.env`, `.git`, build outputs, and Word temp lock files.
 
+Missing files return HTTP 404 rather than falling back to `/index.html`. This keeps broken reviewer links visible during proof-pack QA.
+
 ## Railway Variables
 
 Required variables:
@@ -80,9 +82,7 @@ curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "OpenPerp|No live exec
 Current smoke-check target:
 
 ```bash
-RAILWAY_PUBLIC_URL="https://refreshing-art-production-86de.up.railway.app"
-curl -sS -L "$RAILWAY_PUBLIC_URL/" | rg -o "Open Perps Reliability Stack Proof Pack|Read-only|Dry-run"
-curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "OpenPerp|No live execution|ExecutionDisabledDryRun|AdapterVersionMismatch"
+scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
 ```
 
 ## QA Checklist
@@ -91,5 +91,6 @@ curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "OpenPerp|No live exec
 - `/apps/dashboard/` returns the OpenPerp dashboard.
 - The site includes `Read-only`, `Dry-run`, and `No live execution` markers.
 - The dashboard includes `ExecutionDisabledDryRun` and `AdapterVersionMismatch`.
+- Missing paths return HTTP 404 instead of the proof-pack index.
 - No `.env` content is served.
 - No `HELIUS_RPC_URL` value appears in hosted HTML.
