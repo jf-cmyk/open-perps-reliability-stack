@@ -42,3 +42,9 @@ cargo run -p oprs-replay --example validate_fixtures
 cargo run -p oprs-api-types --example validate_api_examples
 cargo test
 ```
+
+Run the full local MVP check:
+
+```bash
+scripts/run_mvp_checks.sh
+```

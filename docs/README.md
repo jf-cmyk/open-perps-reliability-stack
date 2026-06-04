@@ -36,6 +36,7 @@ Validation commands:
 ```bash
 cargo run -p oprs-replay --example validate_fixtures
 cargo run -p oprs-api-types --example validate_api_examples
+scripts/run_mvp_checks.sh
 ```
 
 Planned detail areas:
