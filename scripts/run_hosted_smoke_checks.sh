@@ -34,6 +34,11 @@ rg -q "No live execution" "$workdir/dashboard.html"
 rg -q "ExecutionDisabledDryRun" "$workdir/dashboard.html"
 rg -q "AdapterVersionMismatch" "$workdir/dashboard.html"
 
+echo "== Fetch reconstruction envelope =="
+fetch "/examples/datasets/data_reconstruction_envelope.json" "$workdir/data_reconstruction_envelope.json"
+rg -q "reconstruction_type" "$workdir/data_reconstruction_envelope.json"
+rg -q "synthetic_fixture" "$workdir/data_reconstruction_envelope.json"
+
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"

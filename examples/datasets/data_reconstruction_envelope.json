@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.1.0",
+  "envelope_id": "drift_synthetic_margin_001_reconstruction",
+  "dataset_name": "drift_synthetic_margin_001",
+  "chain_id": "solana-mainnet-beta",
+  "protocol": "drift",
+  "reconstruction_type": "synthetic_fixture",
+  "sources": [
+    {
+      "source_id": "synthetic_fixture_generator",
+      "source_kind": "synthetic_fixture",
+      "provider_label": "checked-in-fixture",
+      "commitment": "synthetic",
+      "lifecycle_stage": "fixture_generation",
+      "retention_boundary": "not_applicable_synthetic_fixture"
+    }
+  ],
+  "slot_range": {
+    "start_slot": null,
+    "end_slot": null,
+    "coverage": "synthetic_only"
+  },
+  "query_config": {
+    "methods": ["fixture_load"],
+    "transaction_details": null,
+    "max_supported_transaction_version": null,
+    "address_filter_count": null,
+    "stream_gap_count": 0,
+    "unsupported_version_count": 0
+  },
+  "evidence_refs": [
+    "datasets/sample/drift_synthetic_margin_001/manifest.json",
+    "datasets/sample/drift_synthetic_margin_001/canonical_event.json",
+    "datasets/sample/drift_synthetic_margin_001/oracle_snapshot.json",
+    "datasets/sample/drift_synthetic_margin_001/position_snapshot.json"
+  ],
+  "known_gaps": [
+    "Synthetic fixture only; not a decoded historical Drift liquidation.",
+    "No live RPC, Geyser, or archive-provider reads were used for this sample."
+  ],
+  "source_limitations": [
+    "No provider retention boundary applies to synthetic fixtures.",
+    "Historical replay confidence requires a future read-only decode pass with provider, commitment, slot range, and gap metadata."
+  ],
+  "generated_at_unix": 1780599000,
+  "generated_by": "blocksize-oprs"
+}

@@ -73,6 +73,12 @@
           "response_schema": "dataset_manifest"
         },
         {
+          "path": "/v0/datasets/{dataset_name}/reconstruction",
+          "method": "GET",
+          "summary": "Data reconstruction envelope with source, slot coverage, query config, gaps, and limitations.",
+          "response_schema": "data_reconstruction_envelope"
+        },
+        {
           "path": "/v0/fixtures/{fixture_set_id}",
           "method": "GET",
           "summary": "Published replay fixture manifest.",

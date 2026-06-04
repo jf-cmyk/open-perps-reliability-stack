@@ -23,12 +23,16 @@ rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 
 echo "== Deployment config =="
 python3 -m json.tool railway.json >/dev/null
+python3 -m json.tool schemas/datasets/data-reconstruction-envelope-v0.json >/dev/null
+python3 -m json.tool examples/datasets/data_reconstruction_envelope.json >/dev/null
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
 rg -q '^docs/checkpoints$' .dockerignore
 test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
+test -f schemas/datasets/data-reconstruction-envelope-v0.json
+test -f examples/datasets/data_reconstruction_envelope.json
 test -x scripts/run_hosted_smoke_checks.sh
 
 echo "== Local Helius configuration =="

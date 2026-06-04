@@ -33,9 +33,11 @@ Hosted proof-pack MVP:
 - [Railway deployment notes](docs/deployment-railway.md)
 - [Public API schema](schemas/api/public-api-v0.json)
 - [Public dashboard schema](schemas/dashboard/public-dashboard-v0.json)
+- [Data reconstruction envelope schema](schemas/datasets/data-reconstruction-envelope-v0.json)
 - [Sample Drift fixture dataset](datasets/sample/drift_synthetic_margin_001/manifest.json)
 - [Fixture catalog](datasets/sample/fixture_catalog.json)
 - [API response examples](examples/api/)
+- [Dataset provenance example](examples/datasets/data_reconstruction_envelope.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification

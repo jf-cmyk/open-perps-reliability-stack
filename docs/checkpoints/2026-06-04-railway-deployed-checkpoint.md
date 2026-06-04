@@ -54,6 +54,11 @@ Current execution scope remains strict:
   - `#16` Design Helius read-only decode proof command.
   - `#17` Expand replay failure taxonomy for Solana runtime outcomes.
   - `#18` Add branded Railway domain and service naming.
+- Implemented `#15` with:
+  - `schemas/datasets/data-reconstruction-envelope-v0.json`
+  - `examples/datasets/data_reconstruction_envelope.json`
+  - `oprs-data` validation for required provenance, relative evidence refs, slot-range sanity, and scrub-policy rejection.
+  - public docs and homepage links.
 - Sent deployment-result context to the Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
 
@@ -110,10 +115,9 @@ GitHub Actions:
 
 No access needed:
 
-1. Implement `#15` data reconstruction envelope schema.
-2. Implement `#17` Solana runtime failure taxonomy expansion.
-3. Keep adapting grant proposal language as the Railway MVP hardens.
-4. Add hosted uptime or scheduled smoke monitoring from `#14`.
+1. Implement `#17` Solana runtime failure taxonomy expansion.
+2. Keep adapting grant proposal language as the Railway MVP hardens.
+3. Add hosted uptime or scheduled smoke monitoring from `#14`.
 
 Access or confirmation needed:
 

@@ -108,6 +108,8 @@ name = "oprs-data"
 version = "0.1.0"
 dependencies = [
  "oprs-core",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

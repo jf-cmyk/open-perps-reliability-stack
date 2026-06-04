@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/data-reconstruction-envelope-v0.json",
+  "title": "Open Perps Reliability Stack Data Reconstruction Envelope v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "envelope_id",
+    "dataset_name",
+    "chain_id",
+    "protocol",
+    "reconstruction_type",
+    "sources",
+    "slot_range",
+    "query_config",
+    "evidence_refs",
+    "known_gaps",
+    "source_limitations",
+    "generated_at_unix",
+    "generated_by"
+  ],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "envelope_id": { "type": "string", "minLength": 1 },
+    "dataset_name": { "type": "string", "minLength": 1 },
+    "chain_id": { "type": "string", "minLength": 1 },
+    "protocol": { "type": "string", "minLength": 1 },
+    "reconstruction_type": {
+      "enum": ["synthetic_fixture", "historical_rpc", "stream_replay", "mixed"]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "source_kind",
+          "provider_label",
+          "commitment",
+          "lifecycle_stage",
+          "retention_boundary"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "minLength": 1 },
+          "source_kind": {
+            "enum": [
+              "synthetic_fixture",
+              "solana_rpc",
+              "geyser_stream",
+              "archive_provider",
+              "protocol_docs"
+            ]
+          },
+          "provider_label": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Public label only; never an RPC URL or API key."
+          },
+          "commitment": {
+            "enum": ["synthetic", "processed", "confirmed", "finalized", "unknown"]
+          },
+          "lifecycle_stage": { "type": "string", "minLength": 1 },
+          "retention_boundary": {
+            "type": ["string", "null"],
+            "description": "Public description of provider or source retention limits."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "slot_range": {
+      "type": "object",
+      "required": ["start_slot", "end_slot", "coverage"],
+      "properties": {
+        "start_slot": { "type": ["integer", "null"], "minimum": 0 },
+        "end_slot": { "type": ["integer", "null"], "minimum": 0 },
+        "coverage": { "enum": ["synthetic_only", "complete", "partial", "unknown"] }
+      },
+      "additionalProperties": false
+    },
+    "query_config": {
+      "type": "object",
+      "required": [
+        "methods",
+        "transaction_details",
+        "max_supported_transaction_version",
+        "address_filter_count",
+        "stream_gap_count",
+        "unsupported_version_count"
+      ],
+      "properties": {
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "transaction_details": { "type": ["string", "null"] },
+        "max_supported_transaction_version": { "type": ["integer", "null"] },
+        "address_filter_count": { "type": ["integer", "null"], "minimum": 0 },
+        "stream_gap_count": { "type": "integer", "minimum": 0 },
+        "unsupported_version_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Relative public artifact paths only."
+      }
+    },
+    "known_gaps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "source_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "generated_at_unix": { "type": "integer", "minimum": 1 },
+    "generated_by": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

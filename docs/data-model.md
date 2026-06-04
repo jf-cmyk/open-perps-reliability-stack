@@ -100,6 +100,29 @@ datasets/perps/v0/protocol=drift/event_type=oracle_snapshots/date=2026-06-01/*.p
 datasets/perps/v0/manifests/date=2026-06-01/manifest.json
 ```
 
+## Data Reconstruction Envelope
+
+Every historical or synthetic replay dataset should carry a data reconstruction envelope. The envelope explains what evidence was used, which lifecycle stage it represents, and where replay confidence is limited.
+
+Schema:
+
+- [Data reconstruction envelope v0](../schemas/datasets/data-reconstruction-envelope-v0.json)
+
+Public example:
+
+- [Synthetic fixture reconstruction envelope](../examples/datasets/data_reconstruction_envelope.json)
+
+Required concepts:
+
+- `reconstruction_type`: synthetic fixture, historical RPC, stream replay, or mixed.
+- `sources`: public source labels, source kind, commitment, lifecycle stage, and retention boundary.
+- `slot_range`: start slot, end slot, and coverage quality.
+- `query_config`: RPC or stream methods, transaction detail level, transaction-version support, address-filter count, stream gaps, and unsupported-version counts.
+- `evidence_refs`: relative public artifact paths only.
+- `known_gaps` and `source_limitations`: explicit limits on replay confidence.
+
+The envelope must never contain private RPC URLs, API keys, `.env` references, wallet material, signer fields, capital settings, or live transaction-submission details.
+
 Manifest fields:
 
 - Manifest version and dataset name.

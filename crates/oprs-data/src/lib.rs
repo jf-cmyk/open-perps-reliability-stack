@@ -1,6 +1,7 @@
 //! Canonical data envelope and public dataset metadata.
 
 use oprs_core::Slot;
+use serde::Deserialize;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DecodeStatus {
@@ -119,6 +120,202 @@ pub struct DatasetManifest {
     pub scrub_policy_version: String,
     pub generated_at_unix: i64,
     pub generated_by: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct DataReconstructionEnvelope {
+    pub schema_version: String,
+    pub envelope_id: String,
+    pub dataset_name: String,
+    pub chain_id: String,
+    pub protocol: String,
+    pub reconstruction_type: ReconstructionType,
+    pub sources: Vec<ReconstructionSource>,
+    pub slot_range: ReconstructionSlotRange,
+    pub query_config: ReconstructionQueryConfig,
+    pub evidence_refs: Vec<String>,
+    pub known_gaps: Vec<String>,
+    pub source_limitations: Vec<String>,
+    pub generated_at_unix: i64,
+    pub generated_by: String,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ReconstructionType {
+    SyntheticFixture,
+    HistoricalRpc,
+    StreamReplay,
+    Mixed,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct ReconstructionSource {
+    pub source_id: String,
+    pub source_kind: ReconstructionSourceKind,
+    pub provider_label: String,
+    pub commitment: ReconstructionCommitment,
+    pub lifecycle_stage: String,
+    pub retention_boundary: Option<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ReconstructionSourceKind {
+    SyntheticFixture,
+    SolanaRpc,
+    GeyserStream,
+    ArchiveProvider,
+    ProtocolDocs,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ReconstructionCommitment {
+    Synthetic,
+    Processed,
+    Confirmed,
+    Finalized,
+    Unknown,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct ReconstructionSlotRange {
+    pub start_slot: Option<Slot>,
+    pub end_slot: Option<Slot>,
+    pub coverage: ReconstructionCoverage,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ReconstructionCoverage {
+    SyntheticOnly,
+    Complete,
+    Partial,
+    Unknown,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct ReconstructionQueryConfig {
+    pub methods: Vec<String>,
+    pub transaction_details: Option<String>,
+    pub max_supported_transaction_version: Option<i16>,
+    pub address_filter_count: Option<u16>,
+    pub stream_gap_count: u64,
+    pub unsupported_version_count: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DataReconstructionValidationReport {
+    pub envelope_id: String,
+    pub passed: bool,
+    pub failures: Vec<String>,
+}
+
+impl DataReconstructionValidationReport {
+    pub fn assert_passed(&self) {
+        assert!(
+            self.passed,
+            "data reconstruction envelope {} failed validation: {:?}",
+            self.envelope_id, self.failures
+        );
+    }
+}
+
+pub fn validate_data_reconstruction_envelope_json(
+    envelope_json: &str,
+) -> DataReconstructionValidationReport {
+    let mut failures = Vec::new();
+
+    let scrub_violations =
+        validate_public_dataset_scrub_text("data_reconstruction_envelope.json", envelope_json);
+    for violation in scrub_violations {
+        failures.push(format!(
+            "scrub violation at `{}`: {}",
+            violation.path,
+            violation.kind.label()
+        ));
+    }
+
+    let envelope = match serde_json::from_str::<DataReconstructionEnvelope>(envelope_json) {
+        Ok(envelope) => Some(envelope),
+        Err(error) => {
+            failures.push(format!("envelope JSON failed to parse: {error}"));
+            None
+        }
+    };
+
+    let envelope_id = envelope
+        .as_ref()
+        .map(|envelope| envelope.envelope_id.clone())
+        .unwrap_or_else(|| "unknown".to_string());
+
+    if let Some(envelope) = envelope {
+        if envelope.schema_version != "0.1.0" {
+            failures.push(format!(
+                "schema_version `{}` must be `0.1.0`",
+                envelope.schema_version
+            ));
+        }
+        if envelope.sources.is_empty() {
+            failures.push("sources must include at least one source".to_string());
+        }
+        if envelope.evidence_refs.is_empty() {
+            failures.push("evidence_refs must include at least one relative reference".to_string());
+        }
+        if envelope.known_gaps.is_empty() {
+            failures.push("known_gaps must disclose at least one limitation".to_string());
+        }
+        if envelope.source_limitations.is_empty() {
+            failures.push("source_limitations must disclose at least one limitation".to_string());
+        }
+        if let (Some(start), Some(end)) =
+            (envelope.slot_range.start_slot, envelope.slot_range.end_slot)
+        {
+            if start > end {
+                failures.push(format!(
+                    "slot_range start_slot `{start}` must be <= end_slot `{end}`"
+                ));
+            }
+        }
+        if envelope.query_config.methods.is_empty() {
+            failures.push("query_config.methods must include at least one method".to_string());
+        }
+        if envelope.generated_at_unix <= 0 {
+            failures.push("generated_at_unix must be positive".to_string());
+        }
+
+        for source in &envelope.sources {
+            if source.source_id.trim().is_empty() {
+                failures.push("source_id must not be empty".to_string());
+            }
+            if source.provider_label.starts_with("http://")
+                || source.provider_label.starts_with("https://")
+            {
+                failures.push(format!(
+                    "provider_label `{}` must not expose a URL",
+                    source.provider_label
+                ));
+            }
+        }
+
+        for evidence_ref in &envelope.evidence_refs {
+            if evidence_ref.starts_with('/')
+                || evidence_ref.starts_with("http://")
+                || evidence_ref.starts_with("https://")
+            {
+                failures.push(format!(
+                    "evidence_ref `{evidence_ref}` must be a relative public artifact path"
+                ));
+            }
+        }
+    }
+
+    DataReconstructionValidationReport {
+        envelope_id,
+        passed: failures.is_empty(),
+        failures,
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -374,5 +571,80 @@ mod tests {
                 "expected {kind:?} in {violations:?}"
             );
         }
+    }
+
+    #[test]
+    fn validates_public_data_reconstruction_envelope() {
+        let report = validate_data_reconstruction_envelope_json(include_str!(
+            "../../../examples/datasets/data_reconstruction_envelope.json"
+        ));
+
+        report.assert_passed();
+    }
+
+    #[test]
+    fn rejects_reconstruction_envelope_secret_or_remote_refs() {
+        let report = validate_data_reconstruction_envelope_json(
+            r#"{
+              "schema_version": "0.1.0",
+              "envelope_id": "invalid",
+              "dataset_name": "bad",
+              "chain_id": "solana-mainnet-beta",
+              "protocol": "drift",
+              "reconstruction_type": "historical_rpc",
+              "sources": [{
+                "source_id": "bad-rpc",
+                "source_kind": "solana_rpc",
+                "provider_label": "https://mainnet.helius-rpc.com/?api-key=abc",
+                "commitment": "finalized",
+                "lifecycle_stage": "historical_rpc",
+                "retention_boundary": ".env"
+              }],
+              "slot_range": {
+                "start_slot": 20,
+                "end_slot": 10,
+                "coverage": "partial"
+              },
+              "query_config": {
+                "methods": ["getBlock"],
+                "transaction_details": "full",
+                "max_supported_transaction_version": 0,
+                "address_filter_count": 1,
+                "stream_gap_count": 0,
+                "unsupported_version_count": 0
+              },
+              "evidence_refs": ["https://example.invalid/raw.json"],
+              "known_gaps": ["bad"],
+              "source_limitations": ["bad"],
+              "generated_at_unix": 1780599000,
+              "generated_by": "test"
+            }"#,
+        );
+
+        assert!(!report.passed);
+        assert!(
+            report
+                .failures
+                .iter()
+                .any(|failure| failure.contains("rpc_url_with_api_key")),
+            "{:?}",
+            report.failures
+        );
+        assert!(
+            report
+                .failures
+                .iter()
+                .any(|failure| failure.contains("start_slot")),
+            "{:?}",
+            report.failures
+        );
+        assert!(
+            report
+                .failures
+                .iter()
+                .any(|failure| failure.contains("evidence_ref")),
+            "{:?}",
+            report.failures
+        );
     }
 }
