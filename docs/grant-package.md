@@ -70,11 +70,13 @@ Grant-funded work stays read-only, public, reproducible, and no-signing. Commerc
 
 ## Demo Narrative
 
-Here is a Solana perps venue decoded through an open adapter. The dashboard shows market quality, oracle confidence/staleness, liquidation-risk bands, and decode health. The dry-run replay identifies historical liquidation windows and explains why each was safe, unsafe, stale, thin-liquidity, or not viable, without keys or transaction submission.
+Here is the current Open Perps Reliability Stack proof pack running as a public, read-only MVP. Railway is the canonical reviewer URL, with an equivalent GitHub Pages fallback. The dashboard shows market quality, oracle confidence/staleness, liquidation-risk bands, adapter health, and dry-run guardrails. The replay fixtures explain why opportunities are accepted or rejected without keys, custody, capital, signing, or transaction submission.
+
+The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation commands: [MVP proof checklist](mvp-proof-checklist.md).
 
 ## Founder Decisions Needed
 
-- First adapter target.
+- Helius endpoint correction for the first live read-only Drift/Jupiter proof.
 - Grant ask size.
 - Preferred OSS license.
 - Public dataset depth.

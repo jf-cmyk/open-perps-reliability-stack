@@ -48,7 +48,7 @@ assert_contains "Dry-run" "$workdir/index.html"
 
 echo "== Fetch dashboard =="
 fetch "/apps/dashboard/" "$workdir/dashboard.html"
-assert_contains "OpenPerp" "$workdir/dashboard.html"
+assert_contains "Open Perps" "$workdir/dashboard.html"
 assert_contains "No live execution" "$workdir/dashboard.html"
 assert_contains "ExecutionDisabledDryRun" "$workdir/dashboard.html"
 assert_contains "AdapterVersionMismatch" "$workdir/dashboard.html"

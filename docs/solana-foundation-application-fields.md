@@ -33,7 +33,7 @@ If referred by a Solana Foundation partner or contact, add the referral name her
 
 Blocksize is well positioned to build this because the team combines Solana infrastructure operations, validator/reliability context, Pyth data-provider experience, and prior liquidation/reliability research. The project is not a speculative new perp venue; it is a public-good reliability layer around the venues and oracle systems Solana perps already depend on.
 
-The current repo already demonstrates execution discipline: OSS hygiene, architecture ADRs, read-only/dry-run scope boundaries, Rust workspace scaffolding, core type crates, a fixture-backed Drift read-only adapter, Pyth-aware risk policy tests, canonical data envelope types, replay fixture manifests, dry-run output contracts, and sample schema work. That gives the Foundation a concrete base to evaluate rather than a purely narrative application.
+The current repo already demonstrates execution discipline: OSS hygiene, architecture ADRs, read-only/dry-run scope boundaries, Rust workspace scaffolding, core type crates, a fixture-backed Drift read-only adapter, Pyth-aware risk policy tests, canonical data envelope types, data reconstruction provenance schema, replay fixture manifests, dry-run output contracts, hosted smoke monitoring, and a running public proof-pack MVP on Railway with a filtered GitHub Pages fallback. That gives the Foundation a concrete base to evaluate rather than a purely narrative application.
 
 Blocksize also has a clear commercial boundary: grant-funded deliverables remain public, reproducible, and no-signing. Future premium APIs, managed integrations, private analytics, or controlled execution services would be outside the grant scope and cannot privatize the public artifacts funded here.
 
@@ -69,7 +69,7 @@ Requesting $125,000 across four measurable public-good milestones: $25,000 for a
 
 ### Relevant Metrics
 
-Current status: public GitHub repo live; OSS governance files, architecture docs, ADRs, Rust workspace, core crates, Drift read-only adapter spike, Pyth-aware risk primitives, canonical data contracts, dry-run/replay contracts, and unit tests are already pushed. This is pre-adoption developer tooling; success metrics will be GitHub usage, adapter integrations, reproducible fixture runs, public dataset downloads, dashboard/API consumers, and downstream references by Solana perps builders/researchers.
+Current status: public GitHub repo live; Railway proof-pack MVP live; GitHub Pages fallback live; OSS governance files, architecture docs, ADRs, Rust workspace, core crates, Drift read-only adapter spike, Pyth-aware risk primitives, canonical data contracts, data reconstruction envelope schema, dry-run/replay contracts, hosted smoke monitoring, and unit tests are already pushed. This is pre-adoption developer tooling; success metrics will be GitHub usage, adapter integrations, reproducible fixture runs, public dataset downloads, dashboard/API consumers, and downstream references by Solana perps builders/researchers.
 
 ### Funding Status
 

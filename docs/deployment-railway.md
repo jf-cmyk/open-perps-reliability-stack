@@ -77,7 +77,7 @@ Optional future variable for a separate server-side read-only decode worker:
 
 ```bash
 curl -sS -L "$RAILWAY_PUBLIC_URL/" | rg -o "Open Perps Reliability Stack Proof Pack|Read-only|Dry-run"
-curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "OpenPerp|No live execution|ExecutionDisabledDryRun|AdapterVersionMismatch"
+curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "Open Perps|No live execution|ExecutionDisabledDryRun|AdapterVersionMismatch"
 ```
 
 Current smoke-check target:
@@ -106,7 +106,7 @@ This monitor uses no secrets. It fetches only public pages and examples, verifie
 ## QA Checklist
 
 - `/` returns the proof-pack index.
-- `/apps/dashboard/` returns the OpenPerp dashboard.
+- `/apps/dashboard/` returns the Open Perps Reliability Stack dashboard.
 - The site includes `Read-only`, `Dry-run`, and `No live execution` markers.
 - The dashboard includes `ExecutionDisabledDryRun` and `AdapterVersionMismatch`.
 - Missing paths return HTTP 404 instead of the proof-pack index.

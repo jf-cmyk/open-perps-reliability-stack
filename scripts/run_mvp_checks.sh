@@ -16,7 +16,7 @@ echo "== Static proof-pack markers =="
 rg -q "Open Perps Reliability Stack Proof Pack" index.html
 rg -q "Read-only" index.html
 rg -q "Dry-run" index.html
-rg -q "OpenPerp" apps/dashboard/index.html
+rg -q "Open Perps" apps/dashboard/index.html
 rg -q "No live execution" apps/dashboard/index.html
 rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html

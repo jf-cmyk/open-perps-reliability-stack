@@ -44,6 +44,7 @@ Current execution scope remains strict:
 - Added `scripts/build_public_artifact.sh` so GitHub Pages deploys the same filtered reviewer artifact boundary as Railway.
 - Tightened hosted smoke checks for specific checkpoint files, `.env.example`, deployment config paths, Railway `nosniff`, and public JSON secret markers.
 - Documented the hosted monitoring contract in `docs/deployment-railway.md` and README.
+- Added `docs/mvp-proof-checklist.md` and updated grant materials so the application reflects the running Railway MVP and the Helius access caveat.
 - Updated project memory so protocol priority is Drift first, Jupiter second, Phoenix/Rise third, then FlashTrade/Adrena/Pacifica diligence.
 - Sent monitoring review context to Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`

@@ -29,6 +29,7 @@ Hosted proof-pack MVP:
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
 - [Service boundaries](docs/service-boundaries.md)
 - [Public artifact boundary](docs/public-artifact-boundary.md)
+- [MVP proof checklist](docs/mvp-proof-checklist.md)
 - [Reviewer proof-pack index](index.html)
 - [Railway deployment notes](docs/deployment-railway.md)
 - [Public API schema](schemas/api/public-api-v0.json)

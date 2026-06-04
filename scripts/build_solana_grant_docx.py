@@ -320,9 +320,20 @@ def main():
         "Data quality publish gate and scrub policy types.",
         "Pyth-aware risk primitives with unit tests.",
         "Replay fixture and dry-run output contracts.",
+        "Data reconstruction envelope schema with provider, commitment, slot range, evidence references, known gaps, and scrub-policy validation.",
+        "Expanded Solana runtime failure reason codes for deterministic dry-run explanation.",
+        "Read-only target discovery command for Helius-backed Drift/Jupiter proof setup, currently pending corrected local endpoint access.",
+        "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
+        "Hourly hosted smoke monitoring and public artifact boundary checks.",
         "Grant package and application draft.",
     ]:
         add_bullet(document, item)
+
+    add_callout(
+        document,
+        "Reviewer proof pack",
+        "Canonical proof pack: https://refreshing-art-production-86de.up.railway.app/. Dashboard: https://refreshing-art-production-86de.up.railway.app/apps/dashboard/. GitHub Pages remains an equivalent filtered fallback. The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation commands in docs/mvp-proof-checklist.md.",
+    )
 
     document.add_heading("Why Blocksize", level=1)
     document.add_paragraph(
@@ -337,6 +348,7 @@ def main():
         ("Perps-specific historical liquidation data is thin.", "Start with fixture-backed Drift adapter shape tests, synthetic golden fixtures, and explicit data-quality caveats before claiming replay coverage."),
         ("Venue schemas drift.", "Adapter metadata includes program IDs, schema versions, supported account schema versions, IDL hash, source update timestamps, and caveats."),
         ("Public datasets leak private information.", "Publish gates and scrub policy remove RPC URLs, API keys, internal paths, route labels, private strategy thresholds, capital controls, and signer/custody metadata."),
+        ("Live Helius decode proof is not complete yet.", "The local read-only command exists, but the first provider run returned Unauthorized. Do not claim historical Drift/Jupiter decode coverage until the endpoint/key is corrected and a scrubbed proof output is generated."),
         ("Project scope creeps into execution.", "Dry-run transaction plans require requires_signer=false and submission_disabled=true; production execution remains out of scope."),
         ("Commercial track could confuse grant reviewers.", "Grant-funded outputs are explicitly public-good OSS. Commercial services are disclosed as future/out-of-scope and cannot privatize grant-funded modules."),
     ]

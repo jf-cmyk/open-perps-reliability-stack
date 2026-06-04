@@ -16,6 +16,7 @@
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)
 - [Public artifact boundary](public-artifact-boundary.md)
+- [MVP proof checklist](mvp-proof-checklist.md)
 - [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
 
