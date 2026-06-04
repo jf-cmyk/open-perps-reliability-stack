@@ -2,6 +2,16 @@
 
 This deployment serves the proof-pack MVP as a static, read-only site on Railway.
 
+## Current Deployment
+
+- Project: `refreshing-art`
+- Environment: `production`
+- Service: `refreshing-art`
+- Latest verified deployment: `1c410f43-eff4-4e45-a0b5-8436950df751`
+- Public proof pack: `https://refreshing-art-production-86de.up.railway.app/`
+- Public dashboard: `https://refreshing-art-production-86de.up.railway.app/apps/dashboard/`
+- Verification status: Railway service reported `SUCCESS`, Nginx served `/` with HTTP 200, and hosted smoke checks passed.
+
 ## Scope
 
 - Static proof pack and dashboard only.
@@ -33,6 +43,8 @@ Required variables:
 
 - None. Railway injects `PORT` automatically.
 
+Current Railway variables observed on the static service are Railway-generated metadata only. No `HELIUS_RPC_URL` or private API credential is required for this public static deployment.
+
 Do not add these to the static proof-pack service:
 
 - `HELIUS_RPC_URL`
@@ -56,6 +68,14 @@ Optional future variable for a separate server-side read-only decode worker:
 6. Smoke-check:
 
 ```bash
+curl -sS -L "$RAILWAY_PUBLIC_URL/" | rg -o "Open Perps Reliability Stack Proof Pack|Read-only|Dry-run"
+curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "OpenPerp|No live execution|ExecutionDisabledDryRun|AdapterVersionMismatch"
+```
+
+Current smoke-check target:
+
+```bash
+RAILWAY_PUBLIC_URL="https://refreshing-art-production-86de.up.railway.app"
 curl -sS -L "$RAILWAY_PUBLIC_URL/" | rg -o "Open Perps Reliability Stack Proof Pack|Read-only|Dry-run"
 curl -sS -L "$RAILWAY_PUBLIC_URL/apps/dashboard/" | rg -o "OpenPerp|No live execution|ExecutionDisabledDryRun|AdapterVersionMismatch"
 ```

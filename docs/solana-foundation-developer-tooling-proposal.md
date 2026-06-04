@@ -184,6 +184,9 @@ The public repo already includes:
 - Replay fixture and dry-run output contracts.
 - Grant package and application draft.
 - Hosted proof-pack MVP path for reviewers:
+  - https://refreshing-art-production-86de.up.railway.app/
+  - https://refreshing-art-production-86de.up.railway.app/apps/dashboard/
+- GitHub Pages fallback:
   - https://jf-cmyk.github.io/open-perps-reliability-stack/
   - https://jf-cmyk.github.io/open-perps-reliability-stack/apps/dashboard/
 

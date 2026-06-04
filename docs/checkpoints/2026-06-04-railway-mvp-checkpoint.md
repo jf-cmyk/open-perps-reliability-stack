@@ -1,5 +1,7 @@
 # Railway MVP Checkpoint: 2026-06-04
 
+Superseded by [Railway Deployed MVP Checkpoint: 2026-06-04](2026-06-04-railway-deployed-checkpoint.md). This file records the deploy-ready state before Railway authentication and public-domain smoke checks were completed.
+
 This checkpoint is the resume point after making the hosted MVP deploy-ready for Railway and adding the local MVP runner.
 
 ## Repo

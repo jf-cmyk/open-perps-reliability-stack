@@ -6,8 +6,9 @@ Initial scope: read-only and dry-run only. No production trading, custody, or li
 
 Hosted proof-pack MVP:
 
-- Proof pack: https://jf-cmyk.github.io/open-perps-reliability-stack/
-- Dashboard: https://jf-cmyk.github.io/open-perps-reliability-stack/apps/dashboard/
+- Railway proof pack: https://refreshing-art-production-86de.up.railway.app/
+- Railway dashboard: https://refreshing-art-production-86de.up.railway.app/apps/dashboard/
+- GitHub Pages fallback: https://jf-cmyk.github.io/open-perps-reliability-stack/
 - Railway deployment notes: [docs/deployment-railway.md](docs/deployment-railway.md)
 
 ## Current Workstreams
