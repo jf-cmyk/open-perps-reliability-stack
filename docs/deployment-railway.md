@@ -7,10 +7,15 @@ This deployment serves the proof-pack MVP as a static, read-only site on Railway
 - Project: `refreshing-art`
 - Environment: `production`
 - Service: `refreshing-art`
-- Latest verified deployment: `1c410f43-eff4-4e45-a0b5-8436950df751`
 - Public proof pack: `https://refreshing-art-production-86de.up.railway.app/`
 - Public dashboard: `https://refreshing-art-production-86de.up.railway.app/apps/dashboard/`
 - Verification status: Railway service reported `SUCCESS`, Nginx served `/` with HTTP 200, and hosted smoke checks passed.
+
+Check the current deployment ID with:
+
+```bash
+railway service status --service refreshing-art --json
+```
 
 ## Scope
 

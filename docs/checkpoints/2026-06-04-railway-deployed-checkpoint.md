@@ -11,7 +11,7 @@ This checkpoint is the resume point after deploying and smoke-checking the proof
 - Railway project: `refreshing-art`
 - Railway environment: `production`
 - Railway service: `refreshing-art`
-- Railway deployment: `1c410f43-eff4-4e45-a0b5-8436950df751`
+- Railway deployment ID: inspect current value with `railway service status --service refreshing-art --json`
 - Railway proof pack: `https://refreshing-art-production-86de.up.railway.app/`
 - Railway dashboard: `https://refreshing-art-production-86de.up.railway.app/apps/dashboard/`
 - GitHub Pages fallback:
@@ -37,6 +37,7 @@ Current execution scope remains strict:
 - Railway CLI authentication was confirmed for the founder account.
 - Linked Railway service `refreshing-art` in project `refreshing-art`.
 - Deployed the checked-in static Docker/Nginx service with `railway up --detach`.
+- Re-deployed after the deployment docs/checkpoint update so the public Railway snapshot includes current project memory docs.
 - Generated the public Railway domain:
   - `https://refreshing-art-production-86de.up.railway.app`
 - Verified Railway service status as `SUCCESS`.
