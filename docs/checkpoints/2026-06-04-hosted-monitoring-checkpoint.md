@@ -1,16 +1,17 @@
 # Hosted Monitoring Checkpoint: 2026-06-04
 
-This checkpoint is the resume point after adding scheduled hosted smoke monitoring for the public proof-pack MVP.
+This checkpoint is the resume point after adding scheduled hosted smoke monitoring, hardening public artifact boundaries, and aligning grant materials with the running Railway MVP.
 
 ## Repo
 
 - Local path: `/Users/johannfocke/Documents/Codex-Express Relay/open-perps-reliability-stack`
 - GitHub: `https://github.com/jf-cmyk/open-perps-reliability-stack`
 - Branch: `main`
-- Base commit before this checkpoint update: `68793d7 Add read-only target discovery command`
+- Latest pushed commit at checkpoint refresh: `3e242f0 Align grant proof pack with running MVP`
 - Railway project: `refreshing-art`
 - Railway environment: `production`
 - Railway service: `refreshing-art`
+- Latest Railway deployment verified: `7ac210b5-5827-4712-95d5-611257433ba8`, `SUCCESS`, `stopped: false`
 - Railway proof pack: `https://refreshing-art-production-86de.up.railway.app/`
 - Railway dashboard: `https://refreshing-art-production-86de.up.railway.app/apps/dashboard/`
 - GitHub Pages fallback:
@@ -45,6 +46,8 @@ Current execution scope remains strict:
 - Tightened hosted smoke checks for specific checkpoint files, `.env.example`, deployment config paths, Railway `nosniff`, and public JSON secret markers.
 - Documented the hosted monitoring contract in `docs/deployment-railway.md` and README.
 - Added `docs/mvp-proof-checklist.md` and updated grant materials so the application reflects the running Railway MVP and the Helius access caveat.
+- Regenerated `deliverables/Open Perps Reliability Stack - Solana Foundation Proposal.docx` from the updated grant builder.
+- Tightened dashboard copy from commercial/trading-product language toward public-good developer tooling language.
 - Updated project memory so protocol priority is Drift first, Jupiter second, Phoenix/Rise third, then FlashTrade/Adrena/Pacifica diligence.
 - Sent monitoring review context to Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
@@ -83,21 +86,22 @@ scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.rai
 scripts/run_hosted_smoke_checks.sh https://jf-cmyk.github.io/open-perps-reliability-stack
 ```
 
-The GitHub Pages smoke command required an outside-sandbox network run because the sandbox could not resolve `jf-cmyk.github.io`.
+DOCX structural readback passed for the regenerated local proposal. Visual render QA was attempted but blocked by the bundled headless LibreOffice missing `/opt/homebrew/opt/little-cms2/lib/liblcms2.2.dylib`.
 
-Expected post-push checks:
+GitHub/Railway verification:
 
-- CI should run on `main`.
-- Deploy proof pack should run on `main`.
-- Hosted smoke can be run manually from GitHub Actions immediately and will run hourly after the workflow is active.
+- CI passed for `3e242f0`.
+- GitHub Pages Deploy proof pack passed for `3e242f0`.
+- Railway deployment `7ac210b5-5827-4712-95d5-611257433ba8` reached `SUCCESS`.
+- Hosted smoke workflow run `26976472334` passed for both Railway canonical and GitHub Pages fallback.
 
 ## Recommended Next Development Queue
 
 Can continue without access:
 
-1. Adapt grant proposal language to reflect the running Railway MVP, hosted monitoring, data reconstruction envelope, runtime failure taxonomy, and read-only discovery command.
-2. Add a founder-facing MVP proof checklist that maps reviewer claims to hosted URLs, schemas, fixtures, and validation commands.
-3. Continue dry-run proof polish and dashboard copy while preserving read-only/dry-run language.
+1. Add a read-only Helius proof design doc/checklist from Solana Expert guidance: transaction truth, continuity/gap proof, Drift account state, Jupiter request/fulfillment lifecycle, and public-safe evidence.
+2. Continue dry-run proof polish and dashboard copy while preserving read-only/dry-run language.
+3. Update the Word/PDF visual QA path once the local LibreOffice dependency is fixed.
 
 Needs access or founder confirmation:
 
@@ -152,7 +156,7 @@ Run `scripts/run_mvp_checks.sh` before committing. For hosted checks, run both:
 scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
 scripts/run_hosted_smoke_checks.sh https://jf-cmyk.github.io/open-perps-reliability-stack
 
-Continue with grant proposal adaptation and MVP proof checklist unless Helius access is fixed first.
+Continue with the read-only Helius proof design checklist unless Helius access is fixed first.
 
 After each completed task, commit and push, then report next steps split into:
 - can continue without access
