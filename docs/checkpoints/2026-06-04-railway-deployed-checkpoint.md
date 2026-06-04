@@ -48,6 +48,12 @@ Current execution scope remains strict:
 - Added `scripts/run_hosted_smoke_checks.sh` for public Railway proof-pack/dashboard marker checks, `.env` 404 checks, and public secret-marker checks.
 - Added service-boundary and public-artifact-boundary docs.
 - Excluded `docs/checkpoints/` from the Railway proof-pack image while keeping checkpoints in GitHub project memory.
+- Created M1 GitHub issues from Railway Deployment Review Agent and Solana Expert Research Agent findings:
+  - `#14` Add hosted uptime and secret-exposure monitoring.
+  - `#15` Add data reconstruction envelope schema.
+  - `#16` Design Helius read-only decode proof command.
+  - `#17` Expand replay failure taxonomy for Solana runtime outcomes.
+  - `#18` Add branded Railway domain and service naming.
 - Sent deployment-result context to the Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
 
@@ -104,16 +110,17 @@ GitHub Actions:
 
 No access needed:
 
-1. Expand future service-boundary docs for the later read-only decode worker and any commercial-only managed services.
-2. Keep adapting grant proposal language as the Railway MVP hardens.
-3. Review Solana Expert and Railway Deployment Review Agent outputs and turn findings into development QA tickets.
-4. Add an optional Helius-backed read-only decode proof command once exact account/source targets are selected.
+1. Implement `#15` data reconstruction envelope schema.
+2. Implement `#17` Solana runtime failure taxonomy expansion.
+3. Keep adapting grant proposal language as the Railway MVP hardens.
+4. Add hosted uptime or scheduled smoke monitoring from `#14`.
 
 Access or confirmation needed:
 
 1. Founder confirmation that Railway is the canonical MVP URL for grant reviewers.
 2. Drift account/source targets for the Helius read-only decode proof.
-3. Final grant submission approval/details.
+3. Branded domain/DNS and Railway service naming decision.
+4. Final grant submission approval/details.
 
 ## New Window Kickoff Prompt
 
