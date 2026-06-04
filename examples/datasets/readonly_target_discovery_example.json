@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0",
+  "report_id": "readonly_target_discovery",
+  "generated_at_unix": 1780600000,
+  "generated_by": "scripts/discover_readonly_targets.py",
+  "rpc": {
+    "provider_label": "local_HELIUS_RPC_URL",
+    "credential_printed": false,
+    "commitment": "confirmed",
+    "observed_slot": 0
+  },
+  "targets": [
+    {
+      "target_id": "drift_protocol_program",
+      "protocol": "drift",
+      "priority": 1,
+      "target_kind": "program_account",
+      "address": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
+      "readiness": "ready_for_readonly_decode_proof",
+      "probe": {
+        "address": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
+        "exists": true,
+        "context_slot": 0,
+        "lamports": 0,
+        "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+        "executable": true,
+        "rent_epoch": 0
+      },
+      "why": [
+        "Drift has public program/account/liquidation documentation.",
+        "Program account metadata can be fetched without signer or wallet access.",
+        "This is the safest first Helius proof target before user/market account decoding."
+      ],
+      "forbidden_actions": [
+        "sign",
+        "submit_transaction",
+        "retry_transaction",
+        "bid_priority_fee",
+        "load_keypair",
+        "manage_capital"
+      ]
+    },
+    {
+      "target_id": "jupiter_perps_pool_or_custody_state",
+      "protocol": "jupiter_perps",
+      "priority": 2,
+      "target_kind": "pool_or_custody_account",
+      "address": null,
+      "readiness": "needs_public_program_or_account_resolution",
+      "probe": null,
+      "why": [
+        "Jupiter Perps is relevant as a major trader-to-LP/JLP Solana perps venue.",
+        "It provides a pool/custody/oracle contrast to Drift's margin-account model."
+      ],
+      "next_step": "Resolve a public Jupiter Perps pool, custody, or program account from an official source before RPC probing."
+    }
+  ]
+}

@@ -105,3 +105,11 @@ The decode proof must not:
 - load keypairs
 - manage capital
 - call order, liquidation, or execution endpoints
+
+Current local discovery command:
+
+```bash
+scripts/discover_readonly_targets.py --out target/oprs-readonly-target-discovery/latest.json
+```
+
+This first command probes the Drift protocol program account through local `HELIUS_RPC_URL`, records Jupiter and Phoenix as follow-on target lanes, and emits a scrubbed data reconstruction envelope. It intentionally writes to `target/` and does not commit live RPC output.

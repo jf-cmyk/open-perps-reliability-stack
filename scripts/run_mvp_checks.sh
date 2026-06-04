@@ -25,6 +25,8 @@ echo "== Deployment config =="
 python3 -m json.tool railway.json >/dev/null
 python3 -m json.tool schemas/datasets/data-reconstruction-envelope-v0.json >/dev/null
 python3 -m json.tool examples/datasets/data_reconstruction_envelope.json >/dev/null
+python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/dev/null
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
@@ -33,6 +35,7 @@ test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
+test -f examples/datasets/readonly_target_discovery_example.json
 test -x scripts/run_hosted_smoke_checks.sh
 
 echo "== Local Helius configuration =="

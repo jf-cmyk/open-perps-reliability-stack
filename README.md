@@ -38,6 +38,7 @@ Hosted proof-pack MVP:
 - [Fixture catalog](datasets/sample/fixture_catalog.json)
 - [API response examples](examples/api/)
 - [Dataset provenance example](examples/datasets/data_reconstruction_envelope.json)
+- [Read-only target discovery example](examples/datasets/readonly_target_discovery_example.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification
@@ -58,4 +59,10 @@ Run the hosted Railway smoke check:
 
 ```bash
 scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
+```
+
+Run the local Helius-backed read-only target discovery proof:
+
+```bash
+scripts/discover_readonly_targets.py --out target/oprs-readonly-target-discovery/latest.json
 ```

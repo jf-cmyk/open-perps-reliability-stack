@@ -39,6 +39,11 @@ fetch "/examples/datasets/data_reconstruction_envelope.json" "$workdir/data_reco
 rg -q "reconstruction_type" "$workdir/data_reconstruction_envelope.json"
 rg -q "synthetic_fixture" "$workdir/data_reconstruction_envelope.json"
 
+echo "== Fetch target discovery example =="
+fetch "/examples/datasets/readonly_target_discovery_example.json" "$workdir/readonly_target_discovery_example.json"
+rg -q "drift_protocol_program" "$workdir/readonly_target_discovery_example.json"
+rg -q "jupiter_perps" "$workdir/readonly_target_discovery_example.json"
+
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"

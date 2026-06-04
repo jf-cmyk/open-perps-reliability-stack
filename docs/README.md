@@ -28,6 +28,7 @@ Schema and fixture artifacts:
 - [Fixture catalog](../datasets/sample/fixture_catalog.json)
 - [API response examples](../examples/api/)
 - [Dataset provenance example](../examples/datasets/data_reconstruction_envelope.json)
+- [Read-only target discovery example](../examples/datasets/readonly_target_discovery_example.json)
 - [Static dashboard demo](../apps/dashboard/index.html)
 
 Validation commands:

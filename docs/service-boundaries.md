@@ -56,11 +56,22 @@ Allowed inputs:
 Allowed outputs:
 
 - decoded account summaries
+- read-only target discovery reports
 - data reconstruction envelopes
 - adapter health summaries
 - oracle freshness and confidence summaries
 - dry-run/replay input datasets
 - scrubbed public datasets
+
+Current local proof command:
+
+```bash
+scripts/discover_readonly_targets.py --out target/oprs-readonly-target-discovery/latest.json
+```
+
+The command loads `HELIUS_RPC_URL` locally, never prints the URL, probes only public read-only Solana metadata, and writes scrubbed output under `target/`, which is not committed.
+
+If Helius returns `Unauthorized`, the command reached the provider but the local RPC URL is not accepted. Check that `.env` contains the full HTTPS endpoint from the Helius dashboard, including the API key query parameter, and that the key is active for Solana mainnet RPC access. Do not paste the key into chat or commit it.
 
 Forbidden outputs:
 
