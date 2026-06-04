@@ -1,0 +1,26 @@
+name: Hosted smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  hosted-smoke:
+    name: ${{ matrix.target.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - name: Railway canonical
+            url: https://refreshing-art-production-86de.up.railway.app
+          - name: GitHub Pages fallback
+            url: https://jf-cmyk.github.io/open-perps-reliability-stack
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run hosted proof-pack smoke checks
+        run: scripts/run_hosted_smoke_checks.sh "${{ matrix.target.url }}"

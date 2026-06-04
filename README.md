@@ -61,6 +61,12 @@ Run the hosted Railway smoke check:
 scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
 ```
 
+Run the GitHub Pages fallback smoke check:
+
+```bash
+scripts/run_hosted_smoke_checks.sh https://jf-cmyk.github.io/open-perps-reliability-stack
+```
+
 Run the local Helius-backed read-only target discovery proof:
 
 ```bash

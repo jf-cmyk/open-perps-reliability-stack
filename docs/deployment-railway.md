@@ -86,6 +86,23 @@ Current smoke-check target:
 scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.railway.app
 ```
 
+The same hosted smoke contract also runs against the GitHub Pages fallback:
+
+```bash
+scripts/run_hosted_smoke_checks.sh https://jf-cmyk.github.io/open-perps-reliability-stack
+```
+
+## Hosted Monitoring
+
+GitHub Actions workflow `.github/workflows/hosted-smoke.yml` runs the hosted proof-pack smoke contract hourly and on manual dispatch.
+
+The workflow checks both reviewer surfaces:
+
+- Railway canonical: `https://refreshing-art-production-86de.up.railway.app`
+- GitHub Pages fallback: `https://jf-cmyk.github.io/open-perps-reliability-stack`
+
+This monitor uses no secrets. It fetches only public pages and examples, verifies read-only/dry-run markers, checks static 404 behavior for sensitive or internal paths, and fails if hosted HTML includes forbidden secret markers such as `HELIUS_RPC_URL`, private keys, bearer tokens, seed phrases, or wallet-key language.
+
 ## QA Checklist
 
 - `/` returns the proof-pack index.

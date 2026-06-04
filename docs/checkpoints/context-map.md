@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-06-04-railway-deployed-checkpoint.md)
+1. [Current checkpoint](2026-06-04-hosted-monitoring-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -117,8 +117,10 @@ Read when changing Drift adapter shape, protocol priority, or venue metadata:
 Current protocol priority:
 
 1. Drift read-only adapter
-2. Phoenix/orderbook market-quality companion
-3. Jupiter Perps read-only contrast adapter
+2. Jupiter Perps read-only contrast adapter
+3. Phoenix/Rise orderbook market-quality telemetry companion
+4. FlashTrade and Adrena follow-on pool-perps/oracle/keeper comparison
+5. Pacifica API-centric diligence later
 
 ## Agent Threads
 
@@ -135,8 +137,8 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Dataset/scrub-policy failure fixtures and scrub checks.
-2. Expanded dry-run reason-code fixture coverage.
-3. Dry-run summary and gate invariant validation.
-4. Future service-boundary docs.
-5. Real Drift read-only decode proof once access/source inputs are confirmed.
+1. Adapt grant proposal language to reflect the running Railway MVP, hosted monitoring, data reconstruction envelope, runtime failure taxonomy, and read-only discovery command.
+2. Add a founder-facing MVP proof checklist that maps reviewer claims to hosted URLs, schemas, fixtures, and validation commands.
+3. Continue improving dry-run proof polish: summary/gate invariants, fixture coverage, and public dashboard copy.
+4. Keep the Railway and GitHub Pages mirrors equivalent.
+5. Real Drift/Jupiter read-only decode proof once the Helius endpoint/key is corrected.

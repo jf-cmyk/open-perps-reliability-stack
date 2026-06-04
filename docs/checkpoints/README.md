@@ -4,7 +4,8 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
-- [2026-06-04 Railway deployed MVP checkpoint](2026-06-04-railway-deployed-checkpoint.md)
+- [2026-06-04 hosted monitoring checkpoint](2026-06-04-hosted-monitoring-checkpoint.md)
+- Previous: [2026-06-04 Railway deployed MVP checkpoint](2026-06-04-railway-deployed-checkpoint.md)
 - Previous: [2026-06-04 Railway deploy-ready MVP checkpoint](2026-06-04-railway-mvp-checkpoint.md)
 - Previous: [2026-06-03 hosted MVP checkpoint](2026-06-03-hosted-mvp-checkpoint.md)
 - Previous: [2026-06-03 dashboard design checkpoint](2026-06-03-dashboard-design-checkpoint.md)
