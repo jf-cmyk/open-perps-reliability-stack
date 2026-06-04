@@ -62,6 +62,7 @@ Current execution scope remains strict:
   - public docs and homepage links.
 - Founder confirmed Railway as the canonical reviewer URL while keeping GitHub Pages equivalent as a fallback mirror.
 - Founder asked Codex to research Helius decode proof targets and venue relevance. Protocol target order is now Drift first, Jupiter second, Phoenix/Rise telemetry third, then FlashTrade/Adrena/Pacifica/Zeta-Bullet diligence.
+- Implemented `#17` Solana runtime failure taxonomy expansion with typed reason codes for account-state mismatch, invalid account sets, compute budget exhaustion, blockhash expiry, account-lock contention, priority-fee underbid, and unknown/dropped transactions.
 - Sent deployment-result context to the Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
 
@@ -118,10 +119,9 @@ GitHub Actions:
 
 No access needed:
 
-1. Implement `#17` Solana runtime failure taxonomy expansion.
-2. Continue `#16` by implementing a read-only target discovery command that prepares Drift/Jupiter/Phoenix targets without printing `HELIUS_RPC_URL`.
-3. Keep adapting grant proposal language as the Railway MVP hardens.
-4. Add hosted uptime or scheduled smoke monitoring from `#14`.
+1. Continue `#16` by implementing a read-only target discovery command that prepares Drift/Jupiter/Phoenix targets without printing `HELIUS_RPC_URL`.
+2. Keep adapting grant proposal language as the Railway MVP hardens.
+3. Add hosted uptime or scheduled smoke monitoring from `#14`.
 
 Access or confirmation needed:
 

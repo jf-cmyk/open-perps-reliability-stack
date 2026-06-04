@@ -621,6 +621,8 @@ fn risk_reason_code_name(code: RiskReasonCode) -> &'static str {
         RiskReasonCode::MissingOracle => "MissingOracle",
         RiskReasonCode::OracleMarkDivergence => "OracleMarkDivergence",
         RiskReasonCode::MissingPositionState => "MissingPositionState",
+        RiskReasonCode::AccountStateMismatch => "AccountStateMismatch",
+        RiskReasonCode::InvalidAccountSet => "InvalidAccountSet",
         RiskReasonCode::AdapterDecodeFailed => "AdapterDecodeFailed",
         RiskReasonCode::AdapterVersionMismatch => "AdapterVersionMismatch",
         RiskReasonCode::DataQualityLow => "DataQualityLow",
@@ -633,6 +635,11 @@ fn risk_reason_code_name(code: RiskReasonCode) -> &'static str {
         RiskReasonCode::FlashLoanRequired => "FlashLoanRequired",
         RiskReasonCode::TxBuildUnsupported => "TxBuildUnsupported",
         RiskReasonCode::SimulationFailed => "SimulationFailed",
+        RiskReasonCode::ComputeBudgetExceeded => "ComputeBudgetExceeded",
+        RiskReasonCode::BlockhashExpired => "BlockhashExpired",
+        RiskReasonCode::AccountLockContention => "AccountLockContention",
+        RiskReasonCode::PriorityFeeUnderbid => "PriorityFeeUnderbid",
+        RiskReasonCode::TransactionDroppedUnknown => "TransactionDroppedUnknown",
         RiskReasonCode::AccountLockRisk => "AccountLockRisk",
         RiskReasonCode::ComputeLimitRisk => "ComputeLimitRisk",
         RiskReasonCode::ProtocolReject => "ProtocolReject",
@@ -895,6 +902,8 @@ mod tests {
         let cases = [
             (RiskReasonCode::NotLiquidatable, DryRunStatus::Rejected),
             (RiskReasonCode::MissingPositionState, DryRunStatus::Rejected),
+            (RiskReasonCode::AccountStateMismatch, DryRunStatus::Rejected),
+            (RiskReasonCode::InvalidAccountSet, DryRunStatus::Rejected),
             (RiskReasonCode::AdapterDecodeFailed, DryRunStatus::Rejected),
             (RiskReasonCode::DataQualityLow, DryRunStatus::Rejected),
             (
@@ -908,6 +917,26 @@ mod tests {
             ),
             (
                 RiskReasonCode::SimulationFailed,
+                DryRunStatus::SimulationFailed,
+            ),
+            (
+                RiskReasonCode::ComputeBudgetExceeded,
+                DryRunStatus::SimulationFailed,
+            ),
+            (
+                RiskReasonCode::BlockhashExpired,
+                DryRunStatus::SimulationFailed,
+            ),
+            (
+                RiskReasonCode::AccountLockContention,
+                DryRunStatus::SimulationFailed,
+            ),
+            (
+                RiskReasonCode::PriorityFeeUnderbid,
+                DryRunStatus::SimulationFailed,
+            ),
+            (
+                RiskReasonCode::TransactionDroppedUnknown,
                 DryRunStatus::SimulationFailed,
             ),
             (RiskReasonCode::ComputeLimitRisk, DryRunStatus::Rejected),

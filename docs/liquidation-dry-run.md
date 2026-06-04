@@ -203,6 +203,8 @@ upper snake case in Rust/TypeScript enums.
 | `missing_oracle` | Required oracle snapshot is unavailable. |
 | `oracle_mark_divergence` | Oracle and executable venue price diverge too far. |
 | `missing_position_state` | Required position or margin account is unavailable. |
+| `account_state_mismatch` | Account data changed between candidate detection and replay/simulation. |
+| `invalid_account_set` | Required accounts are missing, malformed, duplicated, or ordered incorrectly. |
 | `adapter_decode_failed` | Adapter could not decode required state. |
 | `adapter_version_mismatch` | Fixture or state uses an unsupported schema version. |
 | `data_quality_low` | Inputs are proxy-only, incomplete, or not reproducible. |
@@ -215,10 +217,20 @@ upper snake case in Rust/TypeScript enums.
 | `flash_loan_required` | Viability depends on flash-loan execution. |
 | `tx_build_unsupported` | Adapter cannot produce a dry-run transaction plan. |
 | `simulation_failed` | Local or fixture simulation failed. |
+| `compute_budget_exceeded` | Simulation or historical evidence indicates compute budget exhaustion. |
+| `blockhash_expired` | Transaction validity window or recent blockhash expired before landing. |
+| `account_lock_contention` | Writable account scheduling or account-lock contention likely blocked execution. |
+| `priority_fee_underbid` | Priority fee or compute-unit price appears too low for the observed slot/window. |
+| `transaction_dropped_unknown` | Transaction was not observed as landed or failed with enough evidence to classify. |
 | `account_lock_risk` | Writable account set is likely contested. |
 | `compute_limit_risk` | Compute budget estimate is above policy. |
 | `protocol_reject` | Venue program rejects the constructed plan. |
 | `execution_disabled_dry_run` | Candidate is blocked because v0 cannot execute. |
+
+Runtime-oriented reason codes must remain explanatory only in v0. They can
+describe a failed historical or simulated path, but they must not trigger retry,
+priority-fee bidding, block-engine submission, or any other production execution
+behavior.
 
 ## Replay Fixtures
 
