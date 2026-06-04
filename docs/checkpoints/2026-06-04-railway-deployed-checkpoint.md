@@ -46,6 +46,8 @@ Current execution scope remains strict:
 - Confirmed the static Railway service does not need `HELIUS_RPC_URL`.
 - Hardened Railway static serving to return HTTP 404 for missing files instead of falling back to `/index.html`.
 - Added `scripts/run_hosted_smoke_checks.sh` for public Railway proof-pack/dashboard marker checks, `.env` 404 checks, and public secret-marker checks.
+- Added service-boundary and public-artifact-boundary docs.
+- Excluded `docs/checkpoints/` from the Railway proof-pack image while keeping checkpoints in GitHub project memory.
 - Sent deployment-result context to the Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
 
@@ -105,8 +107,7 @@ No access needed:
 1. Expand future service-boundary docs for the later read-only decode worker and any commercial-only managed services.
 2. Keep adapting grant proposal language as the Railway MVP hardens.
 3. Review Solana Expert and Railway Deployment Review Agent outputs and turn findings into development QA tickets.
-4. Decide whether `docs/checkpoints/` should remain public in the Railway proof-pack image.
-5. Add an optional Helius-backed read-only decode proof command once exact account/source targets are selected.
+4. Add an optional Helius-backed read-only decode proof command once exact account/source targets are selected.
 
 Access or confirmation needed:
 

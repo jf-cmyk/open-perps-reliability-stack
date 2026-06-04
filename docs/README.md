@@ -3,13 +3,6 @@
 - [Roadmap](roadmap.md)
 - [Agent work packages](agent-work-packages.md)
 - [Decision log](decision-log.md)
-- [Checkpoint system](checkpoints/README.md)
-- [Context map](checkpoints/context-map.md)
-- [Railway deployed MVP checkpoint: 2026-06-04](checkpoints/2026-06-04-railway-deployed-checkpoint.md)
-- [Railway deploy-ready MVP checkpoint: 2026-06-04](checkpoints/2026-06-04-railway-mvp-checkpoint.md)
-- [Hosted MVP checkpoint: 2026-06-03](checkpoints/2026-06-03-hosted-mvp-checkpoint.md)
-- [Dashboard design checkpoint: 2026-06-03](checkpoints/2026-06-03-dashboard-design-checkpoint.md)
-- [Development checkpoint: 2026-06-03](checkpoints/2026-06-03-development-checkpoint.md)
 - [Protocol targets](protocol-targets.md)
 - [Grant package](grant-package.md)
 - [Grant application draft](grant-application-draft.md)
@@ -21,6 +14,8 @@
 - [Data model](data-model.md)
 - [Liquidation dry-run and replay](liquidation-dry-run.md)
 - [OSS and commercial boundary](oss-commercial-boundary.md)
+- [Service boundaries](service-boundaries.md)
+- [Public artifact boundary](public-artifact-boundary.md)
 - [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
 
@@ -45,3 +40,5 @@ Planned detail areas:
 
 - Pyth-aware risk SDK
 - Execution reliability analytics
+
+Project-memory docs live under `docs/checkpoints/`. They are kept in the GitHub repo for development continuity but excluded from the Railway proof-pack image because reviewer artifacts should not include local resume prompts, operational notes, or local filesystem paths.

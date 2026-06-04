@@ -37,12 +37,17 @@ rg -q "AdapterVersionMismatch" "$workdir/dashboard.html"
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"
+checkpoint_status="$(status_code "/docs/checkpoints/")"
 if [ "$missing_status" != "404" ]; then
   echo "Expected 404 for missing path, got $missing_status" >&2
   exit 1
 fi
 if [ "$env_status" != "404" ]; then
   echo "Expected 404 for /.env, got $env_status" >&2
+  exit 1
+fi
+if [ "$checkpoint_status" != "404" ]; then
+  echo "Expected 404 for /docs/checkpoints/, got $checkpoint_status" >&2
   exit 1
 fi
 

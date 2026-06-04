@@ -26,6 +26,9 @@ python3 -m json.tool railway.json >/dev/null
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
+rg -q '^docs/checkpoints$' .dockerignore
+test -f docs/service-boundaries.md
+test -f docs/public-artifact-boundary.md
 test -x scripts/run_hosted_smoke_checks.sh
 
 echo "== Local Helius configuration =="

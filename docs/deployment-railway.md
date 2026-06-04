@@ -40,7 +40,7 @@ The public container includes only reviewer-facing static assets:
 - `README.md`
 - `LICENSE`
 
-The `.dockerignore` file excludes `.env`, `.git`, build outputs, and Word temp lock files.
+The `.dockerignore` file excludes `.env`, `.git`, build outputs, Word temp lock files, and `docs/checkpoints/`.
 
 Missing files return HTTP 404 rather than falling back to `/index.html`. This keeps broken reviewer links visible during proof-pack QA.
 
@@ -92,5 +92,6 @@ scripts/run_hosted_smoke_checks.sh https://refreshing-art-production-86de.up.rai
 - The site includes `Read-only`, `Dry-run`, and `No live execution` markers.
 - The dashboard includes `ExecutionDisabledDryRun` and `AdapterVersionMismatch`.
 - Missing paths return HTTP 404 instead of the proof-pack index.
+- `docs/checkpoints/` is not served from the Railway proof-pack image.
 - No `.env` content is served.
 - No `HELIUS_RPC_URL` value appears in hosted HTML.

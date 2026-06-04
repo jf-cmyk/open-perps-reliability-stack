@@ -27,6 +27,8 @@ Hosted proof-pack MVP:
 - [Data model](docs/data-model.md)
 - [Liquidation dry-run and replay](docs/liquidation-dry-run.md)
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
+- [Service boundaries](docs/service-boundaries.md)
+- [Public artifact boundary](docs/public-artifact-boundary.md)
 - [Reviewer proof-pack index](index.html)
 - [Railway deployment notes](docs/deployment-railway.md)
 - [Public API schema](schemas/api/public-api-v0.json)

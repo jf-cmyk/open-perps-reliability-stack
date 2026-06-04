@@ -83,6 +83,12 @@ Owns read-only access to normalized data and aggregate metrics. It must not expo
 
 Owns public views only. It must not expose private strategy, private routes, keys, wallet balances, capital allocations, or live execution controls.
 
+### Read-Only Decode Worker
+
+Owns optional RPC-backed decode proof for public or local datasets. It may fetch Solana accounts, transactions, blocks, and logs from a read-only provider, but it must not sign, submit, retry, bid priority fees, route transactions, hold wallet material, or manage capital.
+
+The static Railway proof-pack service is separate from this worker. It must not receive `HELIUS_RPC_URL` or any other private provider credential.
+
 ## Public Dashboard Views
 
 - Market Quality: spread, depth, open interest, volume, funding, venue health.
