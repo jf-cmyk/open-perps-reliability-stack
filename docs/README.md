@@ -19,6 +19,7 @@
 - [Data model](data-model.md)
 - [Liquidation dry-run and replay](liquidation-dry-run.md)
 - [OSS and commercial boundary](oss-commercial-boundary.md)
+- [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
 
 Schema and fixture artifacts:

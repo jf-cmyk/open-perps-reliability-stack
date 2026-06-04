@@ -8,6 +8,7 @@ Hosted proof-pack MVP:
 
 - Proof pack: https://jf-cmyk.github.io/open-perps-reliability-stack/
 - Dashboard: https://jf-cmyk.github.io/open-perps-reliability-stack/apps/dashboard/
+- Railway deployment notes: [docs/deployment-railway.md](docs/deployment-railway.md)
 
 ## Current Workstreams
 
@@ -26,6 +27,7 @@ Hosted proof-pack MVP:
 - [Liquidation dry-run and replay](docs/liquidation-dry-run.md)
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
 - [Reviewer proof-pack index](index.html)
+- [Railway deployment notes](docs/deployment-railway.md)
 - [Public API schema](schemas/api/public-api-v0.json)
 - [Public dashboard schema](schemas/dashboard/public-dashboard-v0.json)
 - [Sample Drift fixture dataset](datasets/sample/drift_synthetic_margin_001/manifest.json)
