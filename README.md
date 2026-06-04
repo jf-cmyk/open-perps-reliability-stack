@@ -26,6 +26,7 @@ Hosted proof-pack MVP:
 - [Adapter standard](docs/adapter-standard.md)
 - [Data model](docs/data-model.md)
 - [Liquidation dry-run and replay](docs/liquidation-dry-run.md)
+- [Helius read-only proof plan](docs/helius-readonly-proof.md)
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
 - [Service boundaries](docs/service-boundaries.md)
 - [Public artifact boundary](docs/public-artifact-boundary.md)

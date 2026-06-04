@@ -322,7 +322,7 @@ def main():
         "Replay fixture and dry-run output contracts.",
         "Data reconstruction envelope schema with provider, commitment, slot range, evidence references, known gaps, and scrub-policy validation.",
         "Expanded Solana runtime failure reason codes for deterministic dry-run explanation.",
-        "Read-only target discovery command for Helius-backed Drift/Jupiter proof setup, currently pending corrected local endpoint access.",
+        "Read-only target discovery command for Helius-backed Drift/Jupiter proof setup; first local run now succeeds and writes scrubbed output under target/.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
         "Hourly hosted smoke monitoring and public artifact boundary checks.",
         "Grant package and application draft.",
@@ -348,7 +348,7 @@ def main():
         ("Perps-specific historical liquidation data is thin.", "Start with fixture-backed Drift adapter shape tests, synthetic golden fixtures, and explicit data-quality caveats before claiming replay coverage."),
         ("Venue schemas drift.", "Adapter metadata includes program IDs, schema versions, supported account schema versions, IDL hash, source update timestamps, and caveats."),
         ("Public datasets leak private information.", "Publish gates and scrub policy remove RPC URLs, API keys, internal paths, route labels, private strategy thresholds, capital controls, and signer/custody metadata."),
-        ("Live Helius decode proof is not complete yet.", "The local read-only command exists, but the first provider run returned Unauthorized. Do not claim historical Drift/Jupiter decode coverage until the endpoint/key is corrected and a scrubbed proof output is generated."),
+        ("Historical Helius decode proof is not complete yet.", "The local read-only target discovery command succeeds, but deeper Drift market/oracle and Jupiter pool/custody decode coverage still needs public target resolution and scrubbed proof output before it can be claimed."),
         ("Project scope creeps into execution.", "Dry-run transaction plans require requires_signer=false and submission_disabled=true; production execution remains out of scope."),
         ("Commercial track could confuse grant reviewers.", "Grant-funded outputs are explicitly public-good OSS. Commercial services are disclosed as future/out-of-scope and cannot privatize grant-funded modules."),
     ]

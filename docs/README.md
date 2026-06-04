@@ -13,6 +13,7 @@
 - [Adapter standard](adapter-standard.md)
 - [Data model](data-model.md)
 - [Liquidation dry-run and replay](liquidation-dry-run.md)
+- [Helius read-only proof plan](helius-readonly-proof.md)
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)
 - [Public artifact boundary](public-artifact-boundary.md)

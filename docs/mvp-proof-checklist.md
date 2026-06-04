@@ -61,6 +61,6 @@ Do not claim these until evidence lands:
 - Perps market-share or revenue claims without timestamped source snapshots.
 - Production liquidation reliability, live execution, priority-fee bidding, custody, signing, or capital deployment.
 
-## Current Access Blocker
+## Current Helius Status
 
-The local Helius-backed command reached the provider but returned `Unauthorized`. The founder needs to correct the local `.env` `HELIUS_RPC_URL` value with the full active HTTPS mainnet RPC endpoint. Do not paste the API key into chat or commit it.
+Local Helius access is confirmed for the first read-only target discovery command. The command writes scrubbed live output under `target/` and does not print the RPC URL. The next blocker is not credentials; it is resolving public Drift market/oracle account targets and Jupiter Perps pool/custody/oracle targets for deeper decode proof.
