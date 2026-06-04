@@ -9,6 +9,7 @@ This deployment serves the proof-pack MVP as a static, read-only site on Railway
 - Service: `refreshing-art`
 - Public proof pack: `https://refreshing-art-production-86de.up.railway.app/`
 - Public dashboard: `https://refreshing-art-production-86de.up.railway.app/apps/dashboard/`
+- Canonical reviewer URL policy: Railway is canonical; GitHub Pages remains an equivalent fallback mirror.
 - Verification status: Railway service reported `SUCCESS`, Nginx served `/` with HTTP 200, and hosted smoke checks passed.
 
 Check the current deployment ID with:

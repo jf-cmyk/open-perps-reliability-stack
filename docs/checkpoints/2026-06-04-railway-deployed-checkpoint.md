@@ -17,6 +17,7 @@ This checkpoint is the resume point after deploying and smoke-checking the proof
 - GitHub Pages fallback:
   - `https://jf-cmyk.github.io/open-perps-reliability-stack/`
   - `https://jf-cmyk.github.io/open-perps-reliability-stack/apps/dashboard/`
+- URL policy: Railway is canonical for grant reviewers; GitHub Pages remains an equivalent fallback mirror.
 - Local untracked item to ignore: `deliverables/~$en Perps Reliability Stack - Solana Foundation Proposal.docx`
 
 ## Scope Lock
@@ -59,6 +60,8 @@ Current execution scope remains strict:
   - `examples/datasets/data_reconstruction_envelope.json`
   - `oprs-data` validation for required provenance, relative evidence refs, slot-range sanity, and scrub-policy rejection.
   - public docs and homepage links.
+- Founder confirmed Railway as the canonical reviewer URL while keeping GitHub Pages equivalent as a fallback mirror.
+- Founder asked Codex to research Helius decode proof targets and venue relevance. Protocol target order is now Drift first, Jupiter second, Phoenix/Rise telemetry third, then FlashTrade/Adrena/Pacifica/Zeta-Bullet diligence.
 - Sent deployment-result context to the Railway Deployment Review Agent:
   - `019e93bc-dbed-7a83-8243-63294099ecd2`
 
@@ -116,15 +119,14 @@ GitHub Actions:
 No access needed:
 
 1. Implement `#17` Solana runtime failure taxonomy expansion.
-2. Keep adapting grant proposal language as the Railway MVP hardens.
-3. Add hosted uptime or scheduled smoke monitoring from `#14`.
+2. Continue `#16` by implementing a read-only target discovery command that prepares Drift/Jupiter/Phoenix targets without printing `HELIUS_RPC_URL`.
+3. Keep adapting grant proposal language as the Railway MVP hardens.
+4. Add hosted uptime or scheduled smoke monitoring from `#14`.
 
 Access or confirmation needed:
 
-1. Founder confirmation that Railway is the canonical MVP URL for grant reviewers.
-2. Drift account/source targets for the Helius read-only decode proof.
-3. Branded domain/DNS and Railway service naming decision.
-4. Final grant submission approval/details.
+1. Branded domain/DNS and Railway service naming decision.
+2. Final grant submission approval/details.
 
 ## New Window Kickoff Prompt
 

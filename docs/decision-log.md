@@ -11,7 +11,7 @@ Use this file as the index for project decisions. Larger decisions should become
 | D-003 | Confirm grant milestone budget range | Founder + Grant | M5 draft | Open |
 | D-004 | Confirm dashboard/API public subset | Founder + Architecture + Data | M4 | Open |
 | D-005 | Confirm production execution remains out of scope through v0 | Founder + Coordinator | M0 | Accepted |
-| D-006 | Confirm Railway as canonical reviewer URL | Founder + DevOps | M1 | Open |
+| D-006 | Confirm Railway as canonical reviewer URL | Founder + DevOps | M1 | Accepted |
 | D-007 | Confirm Drift/read-only targets for Helius decode proof | Founder + Architecture + Data | M1 | Open |
 | D-008 | Confirm branded domain and Railway service naming | Founder + DevOps | M1 | Open |
 
@@ -54,3 +54,5 @@ Status: Proposed | Accepted | Rejected | Superseded
 | D-005 | Production execution, signing, custody, private-key handling, live transaction submission, and capital deployment remain out of scope through v0 | [ADR-0001](adr/0001-read-only-dry-run-first.md) |
 | D-009 | Railway proof-pack image excludes project-memory checkpoints while GitHub keeps them for development continuity | [Public artifact boundary](public-artifact-boundary.md) |
 | D-010 | Helius RPC belongs only in local or separate read-only decode-worker contexts, never in the static Railway proof-pack service | [Service boundaries](service-boundaries.md) |
+| D-006 | Railway is canonical for grant reviewers; GitHub Pages remains an equivalent fallback mirror | [Railway deployment](deployment-railway.md) |
+| D-011 | Protocol target order is Drift first, Jupiter second, Phoenix/Rise telemetry third, with FlashTrade/Adrena/Pacifica/Zeta-Bullet as follow-on diligence | [Protocol targets](protocol-targets.md) |
