@@ -68,6 +68,13 @@ fetch "/examples/datasets/drift_readonly_state_example.json" "$workdir/drift_rea
 assert_contains "drift_readonly_state_discovery" "$workdir/drift_readonly_state_example.json"
 assert_contains "drift_perp_market_0_sol_perp" "$workdir/drift_readonly_state_example.json"
 assert_contains "drift_spot_market_0_usdc" "$workdir/drift_readonly_state_example.json"
+assert_contains "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62" "$workdir/drift_readonly_state_example.json"
+
+echo "== Fetch Drift decoder provenance =="
+fetch "/docs/drift-decoder-provenance.md" "$workdir/drift-decoder-provenance.md"
+assert_contains "Drift Decoder Provenance" "$workdir/drift-decoder-provenance.md"
+assert_contains "2.163.0-beta.0" "$workdir/drift-decoder-provenance.md"
+assert_contains "9646dd6a893568d85d8dc47507e047010bf7e945" "$workdir/drift-decoder-provenance.md"
 
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
@@ -120,7 +127,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift-decoder-provenance.md"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi
