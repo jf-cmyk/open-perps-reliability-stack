@@ -184,7 +184,7 @@ The public repo already includes:
 - Replay fixture and dry-run output contracts.
 - Expanded Solana runtime failure reason codes for account mismatches, invalid account sets, compute budget exhaustion, blockhash expiry, account-lock contention, priority-fee underbids, and unknown dropped transactions.
 - Data reconstruction envelope schema with provider, commitment, slot range, query config, evidence refs, source limitations, known gaps, and scrub-policy validation.
-- Read-only target discovery command for Helius-backed Drift/Jupiter proof setup. The command is local-only, writes scrubbed output under `target/`, confirms the RPC credential is not printed, and has successfully read Drift public program account metadata.
+- Read-only target discovery commands for Helius-backed proof setup. The commands are local-only, write scrubbed output under `target/`, confirm the RPC credential is not printed, and have successfully read Drift public program, state, selected market, and selected oracle account metadata.
 - Hosted smoke monitoring for Railway canonical and GitHub Pages fallback URLs.
 - Filtered public proof-pack artifact generation so internal checkpoints, `.env.example`, deployment configs, and Word lock files are not served publicly.
 - Grant package and application draft.
@@ -213,7 +213,7 @@ The MVP target is:
 - Optional Helius-backed read-only decode proof loaded from local `.env`.
 - No signing, no private-key handling, no custody, no capital deployment, and no live transaction submission.
 
-The Helius integration is limited to read-only RPC account fetches for decode/provenance proof. RPC URLs and API keys remain local-only and are never committed to the repo or included in public datasets. The first target discovery run now succeeds; deeper Drift market/oracle and Jupiter pool/custody decode proof remains the next implementation step.
+The Helius integration is limited to read-only RPC account fetches for decode/provenance proof. RPC URLs and API keys remain local-only and are never committed to the repo or included in public datasets. Drift program, state, selected market, and selected oracle metadata discovery now succeeds; Drift binary decode proof and Jupiter pool/custody decode proof remain next implementation steps.
 
 ## Why Blocksize
 

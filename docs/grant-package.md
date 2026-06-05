@@ -76,7 +76,7 @@ The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation c
 
 ## Founder Decisions Needed
 
-- Helius endpoint correction for the first live read-only Drift/Jupiter proof.
+- Drift binary decode proof and Jupiter Perps public target resolution.
 - Grant ask size.
 - Preferred OSS license.
 - Public dataset depth.

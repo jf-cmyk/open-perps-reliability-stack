@@ -63,6 +63,12 @@ fetch "/examples/datasets/readonly_target_discovery_example.json" "$workdir/read
 assert_contains "drift_protocol_program" "$workdir/readonly_target_discovery_example.json"
 assert_contains "jupiter_perps" "$workdir/readonly_target_discovery_example.json"
 
+echo "== Fetch Drift state discovery example =="
+fetch "/examples/datasets/drift_readonly_state_example.json" "$workdir/drift_readonly_state_example.json"
+assert_contains "drift_readonly_state_discovery" "$workdir/drift_readonly_state_example.json"
+assert_contains "drift_perp_market_0_sol_perp" "$workdir/drift_readonly_state_example.json"
+assert_contains "drift_spot_market_0_usdc" "$workdir/drift_readonly_state_example.json"
+
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"
@@ -114,7 +120,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

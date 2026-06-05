@@ -41,6 +41,7 @@ Hosted proof-pack MVP:
 - [API response examples](examples/api/)
 - [Dataset provenance example](examples/datasets/data_reconstruction_envelope.json)
 - [Read-only target discovery example](examples/datasets/readonly_target_discovery_example.json)
+- [Drift read-only state discovery example](examples/datasets/drift_readonly_state_example.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification
@@ -79,4 +80,10 @@ Run the local Helius-backed read-only target discovery proof:
 
 ```bash
 scripts/discover_readonly_targets.py --out target/oprs-readonly-target-discovery/latest.json
+```
+
+Run the deeper Drift state, market, and oracle metadata proof:
+
+```bash
+scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
 ```

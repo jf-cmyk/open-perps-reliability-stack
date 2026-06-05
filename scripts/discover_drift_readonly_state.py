@@ -1,0 +1,419 @@
+#!/usr/bin/env python3
+"""Discover public Drift state, market, and oracle metadata through read-only RPC.
+
+This command intentionally writes only scrubbed public metadata. It must never
+print HELIUS_RPC_URL or any other RPC credential.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
+from pathlib import Path
+from typing import Any
+
+
+DRIFT_PROGRAM_ID = "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH"
+DRIFT_PROGRAM_BYTES = None
+
+BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+BASE58_INDEX = {char: index for index, char in enumerate(BASE58_ALPHABET)}
+PDA_MARKER = b"ProgramDerivedAddress"
+
+ED25519_P = 2**255 - 19
+ED25519_D = (-121665 * pow(121666, ED25519_P - 2, ED25519_P)) % ED25519_P
+
+DRIFT_SDK_SOURCE = "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/addresses/pda.ts"
+DRIFT_PERP_CONSTANTS_SOURCE = "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/perpMarkets.ts"
+DRIFT_SPOT_CONSTANTS_SOURCE = "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/spotMarkets.ts"
+DRIFT_ACCOUNT_MODEL_SOURCE = "https://docs.drift.trade/developers/concepts/account-model"
+
+PERP_MARKETS = [
+    {
+        "symbol": "SOL-PERP",
+        "base_asset_symbol": "SOL",
+        "market_index": 0,
+        "oracle": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+        "oracle_source": "PYTH_LAZER",
+        "pyth_feed_id": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
+    },
+    {
+        "symbol": "BTC-PERP",
+        "base_asset_symbol": "BTC",
+        "market_index": 1,
+        "oracle": "35MbvS1Juz2wf7GsyHrkCw8yfKciRLxVpEhfZDZFrB4R",
+        "oracle_source": "PYTH_LAZER",
+        "pyth_feed_id": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+    },
+    {
+        "symbol": "ETH-PERP",
+        "base_asset_symbol": "ETH",
+        "market_index": 2,
+        "oracle": "93FG52TzNKCnMiasV14Ba34BYcHDb9p4zK4GjZnLwqWR",
+        "oracle_source": "PYTH_LAZER",
+        "pyth_feed_id": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+    },
+]
+
+SPOT_MARKETS = [
+    {
+        "symbol": "USDC",
+        "market_index": 0,
+        "pool_id": 0,
+        "oracle": "9VCioxmni2gDLv11qufWzT3RDERhQE4iY5Gf7NTfYyAV",
+        "oracle_source": "PYTH_LAZER_STABLE_COIN",
+        "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "pyth_feed_id": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
+    },
+    {
+        "symbol": "SOL",
+        "market_index": 1,
+        "pool_id": 0,
+        "oracle": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+        "oracle_source": "PYTH_LAZER",
+        "mint": "So11111111111111111111111111111111111111112",
+        "pyth_feed_id": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
+    },
+]
+
+
+def load_dotenv(path: Path) -> None:
+    if not path.exists():
+        return
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+def b58decode(value: str) -> bytes:
+    number = 0
+    for char in value:
+        number = number * 58 + BASE58_INDEX[char]
+    raw = number.to_bytes((number.bit_length() + 7) // 8, "big") if number else b""
+    leading_zeroes = len(value) - len(value.lstrip("1"))
+    return b"\x00" * leading_zeroes + raw
+
+
+def b58encode(raw: bytes) -> str:
+    number = int.from_bytes(raw, "big")
+    encoded = ""
+    while number:
+        number, remainder = divmod(number, 58)
+        encoded = BASE58_ALPHABET[remainder] + encoded
+    leading_zeroes = len(raw) - len(raw.lstrip(b"\x00"))
+    return "1" * leading_zeroes + (encoded or "")
+
+
+def is_ed25519_curve_point(compressed: bytes) -> bool:
+    if len(compressed) != 32:
+        return False
+    y = int.from_bytes(compressed, "little") & ((1 << 255) - 1)
+    sign = compressed[31] >> 7
+    if y >= ED25519_P:
+        return False
+    y2 = (y * y) % ED25519_P
+    numerator = (y2 - 1) % ED25519_P
+    denominator = (ED25519_D * y2 + 1) % ED25519_P
+    if denominator == 0:
+        return False
+    x2 = (numerator * pow(denominator, ED25519_P - 2, ED25519_P)) % ED25519_P
+    if x2 == 0:
+        return sign == 0
+    return pow(x2, (ED25519_P - 1) // 2, ED25519_P) == 1
+
+
+def find_program_address(seeds: list[bytes], program_id: str) -> tuple[str, int]:
+    program_bytes = b58decode(program_id)
+    if len(program_bytes) != 32:
+        raise ValueError("program id must decode to 32 bytes")
+    for bump in range(255, -1, -1):
+        digest = hashlib.sha256(b"".join(seeds + [bytes([bump])]) + program_bytes + PDA_MARKER).digest()
+        if not is_ed25519_curve_point(digest):
+            return b58encode(digest), bump
+    raise ValueError("unable to find program address")
+
+
+def u16_le(value: int) -> bytes:
+    return value.to_bytes(2, "little")
+
+
+def rpc_call(rpc_url: str, method: str, params: list[Any] | None = None) -> Any:
+    body = json.dumps(
+        {
+            "jsonrpc": "2.0",
+            "id": "oprs-drift-readonly-state",
+            "method": method,
+            "params": params or [],
+        }
+    ).encode("utf-8")
+    request = urllib.request.Request(
+        rpc_url,
+        data=body,
+        headers={"content-type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=25) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except urllib.error.URLError as error:
+        raise SystemExit(f"RPC request failed for method {method}: {error.reason}") from error
+
+    if "error" in payload:
+        raise SystemExit(f"RPC method {method} returned error: {payload['error']}")
+    return payload.get("result")
+
+
+def account_probe(rpc_url: str, address: str) -> dict[str, Any]:
+    result = rpc_call(
+        rpc_url,
+        "getAccountInfo",
+        [
+            address,
+            {
+                "commitment": "confirmed",
+                "encoding": "base64",
+                "dataSlice": {"offset": 0, "length": 0},
+            },
+        ],
+    )
+    context = result.get("context", {}) if isinstance(result, dict) else {}
+    value = result.get("value") if isinstance(result, dict) else None
+    if value is None:
+        return {
+            "address": address,
+            "exists": False,
+            "context_slot": context.get("slot"),
+        }
+    return {
+        "address": address,
+        "exists": True,
+        "context_slot": context.get("slot"),
+        "lamports": value.get("lamports"),
+        "owner": value.get("owner"),
+        "executable": value.get("executable"),
+        "rent_epoch": value.get("rentEpoch"),
+    }
+
+
+def pda_target(target_id: str, target_kind: str, seeds: list[bytes], source: str) -> dict[str, Any]:
+    address, bump = find_program_address(seeds, DRIFT_PROGRAM_ID)
+    return {
+        "target_id": target_id,
+        "protocol": "drift",
+        "target_kind": target_kind,
+        "address": address,
+        "pda": {
+            "program_id": DRIFT_PROGRAM_ID,
+            "bump": bump,
+            "source": source,
+        },
+    }
+
+
+def build_report(rpc_url: str) -> dict[str, Any]:
+    observed_slot = rpc_call(rpc_url, "getSlot", [{"commitment": "confirmed"}])
+    now = int(time.time())
+
+    targets: list[dict[str, Any]] = []
+
+    state = pda_target(
+        "drift_state",
+        "state_account",
+        [b"drift_state"],
+        DRIFT_SDK_SOURCE,
+    )
+    state["readiness"] = "target_discovered"
+    state["probe"] = account_probe(rpc_url, state["address"])
+    targets.append(state)
+
+    oracle_addresses: dict[str, dict[str, Any]] = {}
+
+    for market in PERP_MARKETS:
+        target = pda_target(
+            f"drift_perp_market_{market['market_index']}_{market['symbol'].lower().replace('-', '_')}",
+            "perp_market_account",
+            [b"perp_market", u16_le(market["market_index"])],
+            DRIFT_SDK_SOURCE,
+        )
+        target.update(
+            {
+                "readiness": "target_discovered",
+                "market": market,
+                "probe": account_probe(rpc_url, target["address"]),
+            }
+        )
+        targets.append(target)
+        oracle_addresses[market["oracle"]] = {
+            "oracle": market["oracle"],
+            "oracle_source": market["oracle_source"],
+            "pyth_feed_id": market["pyth_feed_id"],
+            "used_by": oracle_addresses.get(market["oracle"], {}).get("used_by", []) + [market["symbol"]],
+        }
+
+    for market in SPOT_MARKETS:
+        target = pda_target(
+            f"drift_spot_market_{market['market_index']}_{market['symbol'].lower()}",
+            "spot_market_account",
+            [b"spot_market", u16_le(market["market_index"])],
+            DRIFT_SDK_SOURCE,
+        )
+        target.update(
+            {
+                "readiness": "target_discovered",
+                "market": market,
+                "probe": account_probe(rpc_url, target["address"]),
+            }
+        )
+        targets.append(target)
+        oracle_addresses[market["oracle"]] = {
+            "oracle": market["oracle"],
+            "oracle_source": market["oracle_source"],
+            "pyth_feed_id": market["pyth_feed_id"],
+            "used_by": oracle_addresses.get(market["oracle"], {}).get("used_by", []) + [market["symbol"]],
+        }
+
+    for address, oracle in sorted(oracle_addresses.items()):
+        targets.append(
+            {
+                "target_id": f"drift_oracle_{address}",
+                "protocol": "drift",
+                "target_kind": "oracle_account",
+                "address": address,
+                "readiness": "target_discovered",
+                "oracle": oracle,
+                "source": {
+                    "perp_constants": DRIFT_PERP_CONSTANTS_SOURCE,
+                    "spot_constants": DRIFT_SPOT_CONSTANTS_SOURCE,
+                },
+                "probe": account_probe(rpc_url, address),
+            }
+        )
+
+    methods = ["getSlot"] + ["getAccountInfo"] * len(targets)
+
+    return {
+        "schema_version": "0.1.0",
+        "report_id": "drift_readonly_state_discovery",
+        "generated_at_unix": now,
+        "generated_by": "scripts/discover_drift_readonly_state.py",
+        "rpc": {
+            "provider_label": "local_readonly_rpc_env",
+            "credential_printed": False,
+            "commitment": "confirmed",
+            "observed_slot": observed_slot,
+        },
+        "source_refs": {
+            "account_model": DRIFT_ACCOUNT_MODEL_SOURCE,
+            "pda_helpers": DRIFT_SDK_SOURCE,
+            "perp_market_constants": DRIFT_PERP_CONSTANTS_SOURCE,
+            "spot_market_constants": DRIFT_SPOT_CONSTANTS_SOURCE,
+        },
+        "targets": targets,
+        "data_reconstruction_envelope": {
+            "schema_version": "0.1.0",
+            "envelope_id": "drift_readonly_state_reconstruction",
+            "dataset_name": "drift_readonly_state_discovery",
+            "chain_id": "solana-mainnet-beta",
+            "protocol": "drift",
+            "reconstruction_type": "historical_rpc",
+            "sources": [
+                {
+                    "source_id": "local_helius_rpc_confirmed",
+                    "source_kind": "solana_rpc",
+                    "provider_label": "helius_hobby_plan",
+                    "commitment": "confirmed",
+                    "lifecycle_stage": "read_only_rpc_probe",
+                    "retention_boundary": "provider_default_retention_not_assessed",
+                },
+                {
+                    "source_id": "drift_protocol_v2_sdk_constants",
+                    "source_kind": "public_repository",
+                    "provider_label": "drift_labs_protocol_v2",
+                    "commitment": "not_applicable",
+                    "lifecycle_stage": "target_resolution",
+                    "retention_boundary": "public_git_history",
+                },
+            ],
+            "slot_range": {
+                "start_slot": observed_slot,
+                "end_slot": observed_slot,
+                "coverage": "partial",
+            },
+            "query_config": {
+                "methods": methods,
+                "transaction_details": None,
+                "max_supported_transaction_version": None,
+                "address_filter_count": len(targets),
+                "stream_gap_count": 0,
+                "unsupported_version_count": 0,
+            },
+            "evidence_refs": [
+                "target/oprs-drift-readonly-state/latest.json"
+            ],
+            "known_gaps": [
+                "This command probes account metadata and target resolution only; it does not decode account binary layouts yet.",
+                "No user account, pre-state, transaction history, or liquidation event reconstruction is performed.",
+                "Jupiter Perps pool/custody/oracle targets remain a separate proof lane.",
+            ],
+            "source_limitations": [
+                "Drift market/oracle targets are resolved from public SDK constants and PDA helper source.",
+                "RPC retention and provider backfill limits are not assessed in this metadata probe.",
+                "Oracle account binary data is not decoded in this command.",
+            ],
+            "generated_at_unix": now,
+            "generated_by": "scripts/discover_drift_readonly_state.py",
+        },
+        "forbidden_actions": [
+            "sign",
+            "submit_transaction",
+            "retry_transaction",
+            "bid_priority_fee",
+            "load_keypair",
+            "manage_capital",
+        ],
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--env-file", default=".env")
+    parser.add_argument(
+        "--out",
+        default="target/oprs-drift-readonly-state/latest.json",
+        help="Output path for scrubbed Drift read-only state report.",
+    )
+    args = parser.parse_args()
+
+    load_dotenv(Path(args.env_file))
+    rpc_url = os.environ.get("HELIUS_RPC_URL")
+    if not rpc_url:
+        print("HELIUS_RPC_URL is not configured; Drift state discovery skipped.", file=sys.stderr)
+        return 2
+    if not rpc_url.startswith("https://"):
+        print("HELIUS_RPC_URL must be an HTTPS RPC URL.", file=sys.stderr)
+        return 2
+
+    report = build_report(rpc_url)
+    output_path = Path(args.out)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    print(f"Wrote scrubbed Drift read-only state report to {output_path}")
+    print("HELIUS_RPC_URL loaded locally and was not printed.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

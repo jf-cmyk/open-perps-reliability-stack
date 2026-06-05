@@ -1,0 +1,146 @@
+{
+  "schema_version": "0.1.0",
+  "report_id": "drift_readonly_state_discovery",
+  "generated_at_unix": 1780620000,
+  "generated_by": "scripts/discover_drift_readonly_state.py",
+  "rpc": {
+    "provider_label": "local_readonly_rpc_env",
+    "credential_printed": false,
+    "commitment": "confirmed",
+    "observed_slot": 0
+  },
+  "source_refs": {
+    "account_model": "https://docs.drift.trade/developers/concepts/account-model",
+    "pda_helpers": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/addresses/pda.ts",
+    "perp_market_constants": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/perpMarkets.ts",
+    "spot_market_constants": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/spotMarkets.ts"
+  },
+  "targets": [
+    {
+      "target_id": "drift_state",
+      "protocol": "drift",
+      "target_kind": "state_account",
+      "address": "EXAMPLE_DERIVED_PDA",
+      "readiness": "target_discovered",
+      "pda": {
+        "program_id": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
+        "bump": 0,
+        "source": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/addresses/pda.ts"
+      },
+      "probe": {
+        "address": "EXAMPLE_DERIVED_PDA",
+        "exists": true,
+        "context_slot": 0,
+        "lamports": 0,
+        "owner": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
+        "executable": false,
+        "rent_epoch": 0
+      }
+    },
+    {
+      "target_id": "drift_perp_market_0_sol_perp",
+      "protocol": "drift",
+      "target_kind": "perp_market_account",
+      "address": "EXAMPLE_DERIVED_PDA",
+      "readiness": "target_discovered",
+      "market": {
+        "symbol": "SOL-PERP",
+        "base_asset_symbol": "SOL",
+        "market_index": 0,
+        "oracle": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+        "oracle_source": "PYTH_LAZER",
+        "pyth_feed_id": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d"
+      },
+      "probe": {
+        "address": "EXAMPLE_DERIVED_PDA",
+        "exists": true,
+        "context_slot": 0,
+        "lamports": 0,
+        "owner": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
+        "executable": false,
+        "rent_epoch": 0
+      }
+    },
+    {
+      "target_id": "drift_oracle_3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+      "protocol": "drift",
+      "target_kind": "oracle_account",
+      "address": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+      "readiness": "target_discovered",
+      "oracle": {
+        "oracle": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+        "oracle_source": "PYTH_LAZER",
+        "pyth_feed_id": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
+        "used_by": ["SOL-PERP", "SOL"]
+      },
+      "probe": {
+        "address": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+        "exists": true,
+        "context_slot": 0,
+        "lamports": 0,
+        "owner": "public_oracle_program",
+        "executable": false,
+        "rent_epoch": 0
+      }
+    }
+  ],
+  "data_reconstruction_envelope": {
+    "schema_version": "0.1.0",
+    "envelope_id": "drift_readonly_state_reconstruction",
+    "dataset_name": "drift_readonly_state_discovery",
+    "chain_id": "solana-mainnet-beta",
+    "protocol": "drift",
+    "reconstruction_type": "historical_rpc",
+    "sources": [
+      {
+        "source_id": "local_helius_rpc_confirmed",
+        "source_kind": "solana_rpc",
+        "provider_label": "helius_hobby_plan",
+        "commitment": "confirmed",
+        "lifecycle_stage": "read_only_rpc_probe",
+        "retention_boundary": "provider_default_retention_not_assessed"
+      },
+      {
+        "source_id": "drift_protocol_v2_sdk_constants",
+        "source_kind": "public_repository",
+        "provider_label": "drift_labs_protocol_v2",
+        "commitment": "not_applicable",
+        "lifecycle_stage": "target_resolution",
+        "retention_boundary": "public_git_history"
+      }
+    ],
+    "slot_range": {
+      "start_slot": 0,
+      "end_slot": 0,
+      "coverage": "partial"
+    },
+    "query_config": {
+      "methods": ["getSlot", "getAccountInfo"],
+      "transaction_details": null,
+      "max_supported_transaction_version": null,
+      "address_filter_count": 3,
+      "stream_gap_count": 0,
+      "unsupported_version_count": 0
+    },
+    "evidence_refs": [
+      "target/oprs-drift-readonly-state/latest.json"
+    ],
+    "known_gaps": [
+      "Example file only; live output is written under target/ and is not committed.",
+      "Account binary layouts are not decoded in this metadata example."
+    ],
+    "source_limitations": [
+      "Drift market/oracle targets are resolved from public SDK constants and PDA helper source."
+    ],
+    "generated_at_unix": 1780620000,
+    "generated_by": "scripts/discover_drift_readonly_state.py"
+  },
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "retry_transaction",
+    "bid_priority_fee",
+    "load_keypair",
+    "manage_capital"
+  ]
+}

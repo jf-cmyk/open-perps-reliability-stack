@@ -12,6 +12,14 @@ scripts/discover_readonly_targets.py --out target/oprs-readonly-target-discovery
 
 The command writes a scrubbed report under `target/`, confirms that the RPC credential was not printed, probes Drift's public program account metadata, and records Jupiter/Phoenix follow-on target lanes. Live output stays local and is not committed.
 
+Drift state, market, and oracle metadata discovery is also confirmed:
+
+```bash
+scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
+```
+
+This second command derives public Drift PDAs from official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding or historical liquidation replay.
+
 ## Scope Boundary
 
 Allowed:
@@ -70,7 +78,8 @@ Drift is first because it has public documentation for program accounts, markets
 
 2. Market and oracle state target resolution.
    - Resolve public `State`, `PerpMarketAccount`, `SpotMarketAccount`, and oracle accounts from official docs, SDK, or public registries.
-   - Record target source and update timestamp.
+   - Current status: `target_discovered` for Drift state, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and deduplicated oracle accounts.
+   - Evidence: derived PDA, bump, executable flag, owner, lamports, rent epoch, and context slot.
 
 3. Read-only account snapshots.
    - Fetch public account data with commitment and context slot.
@@ -147,8 +156,7 @@ Do not include:
 
 ## Next Implementation Tasks
 
-1. Resolve Drift market/oracle account targets from official public sources.
-2. Add a second read-only discovery mode for Drift market/oracle snapshots.
-3. Resolve Jupiter Perps public pool/custody/oracle targets.
-4. Extend the data reconstruction envelope example to represent `target_discovered` and `decoded_snapshot` proof states.
-5. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.
+1. Pin Drift decoder/IDL provenance and add a binary decode-safe snapshot mode for public fields only.
+2. Resolve Jupiter Perps public pool/custody/oracle targets.
+3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
+4. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.
