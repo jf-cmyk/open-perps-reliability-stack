@@ -30,6 +30,8 @@ scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-per
 
 This command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. It emits scrubbed local output under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding, request/fulfillment reconstruction, or liquidation replay.
 
+Jupiter IDL/source status is tracked in [Jupiter Perps provenance](jupiter-perps-provenance.md). The current docs-linked IDL sample is useful as a candidate, but not yet sufficient for `decoded_snapshot` claims.
+
 ## Scope Boundary
 
 Allowed:

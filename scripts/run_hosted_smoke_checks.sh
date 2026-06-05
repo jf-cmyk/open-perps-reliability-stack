@@ -83,6 +83,12 @@ assert_contains "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu" "$workdir/jupiter_
 assert_contains "jupiter_perps_custody_sol" "$workdir/jupiter_perps_readonly_targets_example.json"
 assert_contains "jupiter_perps_oracle_sol" "$workdir/jupiter_perps_readonly_targets_example.json"
 
+echo "== Fetch Jupiter Perps provenance =="
+fetch "/docs/jupiter-perps-provenance.md" "$workdir/jupiter-perps-provenance.md"
+assert_contains "Jupiter Perps Provenance" "$workdir/jupiter-perps-provenance.md"
+assert_contains "630cfd72cad499f45453a53383d7ac6d3e09e022" "$workdir/jupiter-perps-provenance.md"
+assert_contains "e7f21c9c44b077d0d10116305b97bbc152081b77" "$workdir/jupiter-perps-provenance.md"
+
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"
@@ -134,7 +140,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter-perps-provenance.md"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

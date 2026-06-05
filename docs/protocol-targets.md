@@ -136,5 +136,5 @@ Current status:
 - Drift program account, state account, selected perp/spot market accounts, and selected oracle account metadata are readable without signer or wallet access.
 - Drift decoder/IDL provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md); the next Drift step is public-field binary decode proof.
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
-- Jupiter Perps still needs canonical IDL/source provenance before binary decode proof.
+- Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md), but still needs canonical IDL/source confirmation before binary decode proof.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).
