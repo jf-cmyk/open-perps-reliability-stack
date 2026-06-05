@@ -75,6 +75,14 @@ fetch "/docs/drift-decoder-provenance.md" "$workdir/drift-decoder-provenance.md"
 assert_contains "Drift Decoder Provenance" "$workdir/drift-decoder-provenance.md"
 assert_contains "2.163.0-beta.0" "$workdir/drift-decoder-provenance.md"
 assert_contains "9646dd6a893568d85d8dc47507e047010bf7e945" "$workdir/drift-decoder-provenance.md"
+assert_contains "Shape Snapshot Scope" "$workdir/drift-decoder-provenance.md"
+
+echo "== Fetch Drift shape snapshot example =="
+fetch "/examples/datasets/drift_shape_snapshot_example.json" "$workdir/drift_shape_snapshot_example.json"
+assert_contains "shape_snapshot_only" "$workdir/drift_shape_snapshot_example.json"
+assert_contains "expected_account_type" "$workdir/drift_shape_snapshot_example.json"
+assert_contains "raw_account_data_committed" "$workdir/drift_shape_snapshot_example.json"
+assert_contains "field_decode_claimed" "$workdir/drift_shape_snapshot_example.json"
 
 echo "== Fetch Jupiter Perps target discovery example =="
 fetch "/examples/datasets/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_readonly_targets_example.json"
@@ -140,7 +148,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter-perps-provenance.md"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter-perps-provenance.md"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

@@ -27,6 +27,7 @@ python3 -m json.tool schemas/datasets/data-reconstruction-envelope-v0.json >/dev
 python3 -m json.tool examples/datasets/data_reconstruction_envelope.json >/dev/null
 python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_state_example.json >/dev/null
+python3 -m json.tool examples/datasets/drift_shape_snapshot_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
@@ -43,6 +44,7 @@ test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
+test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json
 test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh

@@ -16,9 +16,10 @@ Drift state, market, and oracle metadata discovery is also confirmed:
 
 ```bash
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
+scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/oprs-drift-readonly-state/latest-shape.json
 ```
 
-This second command derives public Drift PDAs from pinned official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding or historical liquidation replay.
+This second command derives public Drift PDAs from pinned official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. Its optional shape snapshot mode fetches selected account bytes in memory and emits only discriminator, account type, account-data length, and account-data hash evidence. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim decoded market fields or historical liquidation replay.
 
 Decoder provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md).
 
@@ -95,7 +96,8 @@ Drift is first because it has public documentation for program accounts, markets
 
 3. Read-only account snapshots.
    - Fetch public account data with commitment and context slot.
-   - Store only scrubbed metadata or decoded public fields.
+   - Current status: `shape_snapshot_only` for Drift state, SOL/BTC/ETH perp market accounts, and USDC/SOL spot market accounts.
+   - Store only scrubbed metadata, account-shape evidence, or decoded public fields after offset validation.
 
 4. Decoder and schema provenance.
    - Record adapter version, IDL/source version where available, supported account schema version, and parser caveats.

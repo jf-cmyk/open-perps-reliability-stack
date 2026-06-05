@@ -108,6 +108,7 @@ Wording guardrails:
 
 Read when changing Drift adapter shape, protocol priority, or venue metadata:
 
+- [Drift shape snapshot checkpoint](2026-06-05-drift-shape-snapshot-checkpoint.md)
 - [Protocol targets](../protocol-targets.md)
 - [Adapter standard](../adapter-standard.md)
 - `adapters/drift-readonly/src/lib.rs`
@@ -137,8 +138,8 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Adapt grant proposal language to reflect the running Railway MVP, hosted monitoring, data reconstruction envelope, runtime failure taxonomy, and read-only discovery command.
-2. Add a founder-facing MVP proof checklist that maps reviewer claims to hosted URLs, schemas, fixtures, and validation commands.
-3. Continue improving dry-run proof polish: summary/gate invariants, fixture coverage, and public dashboard copy.
-4. Keep the Railway and GitHub Pages mirrors equivalent.
-5. Real Drift/Jupiter read-only decode proof now that Drift and Jupiter metadata target discovery are working; next blockers are Drift binary decode implementation, Jupiter canonical IDL/source provenance, and Jupiter request/fulfillment transaction-history proof.
+1. Deploy and smoke-check the Drift shape snapshot package if not already deployed.
+2. Start Drift public-field decode only after offset validation against the pinned Drift IDL/SDK decoder.
+3. Start Jupiter request/fulfillment transaction-history proof as a separate read-only lane.
+4. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
+5. Keep Railway and GitHub Pages mirrors equivalent.

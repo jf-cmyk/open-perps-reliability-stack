@@ -8,6 +8,7 @@ print HELIUS_RPC_URL or any other RPC credential.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -38,6 +39,12 @@ DRIFT_SPOT_CONSTANTS_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{
 DRIFT_IDL_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/idl/drift.json"
 DRIFT_ACCOUNT_FETCH_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/accounts/fetch.ts"
 DRIFT_ACCOUNT_MODEL_SOURCE = "https://docs.drift.trade/developers/concepts/account-model"
+
+EXPECTED_ACCOUNT_TYPES = {
+    "state_account": "State",
+    "perp_market_account": "PerpMarket",
+    "spot_market_account": "SpotMarket",
+}
 
 PERP_MARKETS = [
     {
@@ -212,6 +219,63 @@ def account_probe(rpc_url: str, address: str) -> dict[str, Any]:
     }
 
 
+def anchor_account_discriminator(account_type: str) -> bytes:
+    return hashlib.sha256(f"account:{account_type}".encode("utf-8")).digest()[:8]
+
+
+def account_shape_snapshot(rpc_url: str, target: dict[str, Any]) -> dict[str, Any]:
+    account_type = EXPECTED_ACCOUNT_TYPES.get(target["target_kind"])
+    if account_type is None:
+        raise ValueError(f"unsupported shape snapshot target kind: {target['target_kind']}")
+
+    result = rpc_call(
+        rpc_url,
+        "getAccountInfo",
+        [
+            target["address"],
+            {
+                "commitment": "confirmed",
+                "encoding": "base64",
+            },
+        ],
+    )
+    context = result.get("context", {}) if isinstance(result, dict) else {}
+    value = result.get("value") if isinstance(result, dict) else None
+    if value is None:
+        return {
+            "readiness": "target_missing",
+            "context_slot": context.get("slot"),
+            "raw_account_data_committed": False,
+        }
+
+    data_value = value.get("data")
+    if not isinstance(data_value, list) or not data_value:
+        raise SystemExit(f"RPC account data had unexpected shape for {target['target_id']}")
+
+    raw = base64.b64decode(data_value[0])
+    observed_discriminator = raw[:8]
+    expected_discriminator = anchor_account_discriminator(account_type)
+
+    return {
+        "readiness": "shape_snapshot_only",
+        "decode_level": "anchor_discriminator_and_data_length",
+        "context_slot": context.get("slot"),
+        "expected_account_type": account_type,
+        "expected_anchor_discriminator_hex": expected_discriminator.hex(),
+        "observed_anchor_discriminator_hex": observed_discriminator.hex(),
+        "discriminator_match": observed_discriminator == expected_discriminator,
+        "data_length": len(raw),
+        "account_data_sha256": hashlib.sha256(raw).hexdigest(),
+        "owner": value.get("owner"),
+        "executable": value.get("executable"),
+        "raw_account_data_committed": False,
+        "field_decode_claimed": False,
+        "replay_ready": False,
+        "source_commit": DRIFT_PROTOCOL_V2_COMMIT,
+        "idl_blob_sha": DRIFT_IDL_BLOB_SHA,
+    }
+
+
 def pda_target(target_id: str, target_kind: str, seeds: list[bytes], source: str) -> dict[str, Any]:
     address, bump = find_program_address(seeds, DRIFT_PROGRAM_ID)
     return {
@@ -227,7 +291,13 @@ def pda_target(target_id: str, target_kind: str, seeds: list[bytes], source: str
     }
 
 
-def build_report(rpc_url: str) -> dict[str, Any]:
+def attach_shape_snapshot(rpc_url: str, target: dict[str, Any]) -> None:
+    if target["target_kind"] in EXPECTED_ACCOUNT_TYPES:
+        target["shape_snapshot"] = account_shape_snapshot(rpc_url, target)
+        target["readiness"] = "shape_snapshot_only"
+
+
+def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str, Any]:
     observed_slot = rpc_call(rpc_url, "getSlot", [{"commitment": "confirmed"}])
     now = int(time.time())
 
@@ -241,6 +311,8 @@ def build_report(rpc_url: str) -> dict[str, Any]:
     )
     state["readiness"] = "target_discovered"
     state["probe"] = account_probe(rpc_url, state["address"])
+    if include_shape_snapshot:
+        attach_shape_snapshot(rpc_url, state)
     targets.append(state)
 
     oracle_addresses: dict[str, dict[str, Any]] = {}
@@ -259,6 +331,8 @@ def build_report(rpc_url: str) -> dict[str, Any]:
                 "probe": account_probe(rpc_url, target["address"]),
             }
         )
+        if include_shape_snapshot:
+            attach_shape_snapshot(rpc_url, target)
         targets.append(target)
         oracle_addresses[market["oracle"]] = {
             "oracle": market["oracle"],
@@ -281,6 +355,8 @@ def build_report(rpc_url: str) -> dict[str, Any]:
                 "probe": account_probe(rpc_url, target["address"]),
             }
         )
+        if include_shape_snapshot:
+            attach_shape_snapshot(rpc_url, target)
         targets.append(target)
         oracle_addresses[market["oracle"]] = {
             "oracle": market["oracle"],
@@ -307,6 +383,8 @@ def build_report(rpc_url: str) -> dict[str, Any]:
         )
 
     methods = ["getSlot"] + ["getAccountInfo"] * len(targets)
+    if include_shape_snapshot:
+        methods.extend(["getAccountInfo"] * sum(1 for target in targets if target["target_kind"] in EXPECTED_ACCOUNT_TYPES))
 
     return {
         "schema_version": "0.1.0",
@@ -333,8 +411,10 @@ def build_report(rpc_url: str) -> dict[str, Any]:
             "sdk_version": DRIFT_SDK_VERSION,
             "drift_idl_source": DRIFT_IDL_SOURCE,
             "drift_idl_blob_sha": DRIFT_IDL_BLOB_SHA,
-            "decode_status": "target_discovered_not_binary_decoded",
-            "next_safe_decode_step": "account discriminator, account data length, IDL account type, and public market fields only",
+            "decode_status": "shape_snapshot_only" if include_shape_snapshot else "target_discovered_not_binary_decoded",
+            "shape_snapshot_included": include_shape_snapshot,
+            "shape_snapshot_scope": "account discriminator, account data length, account data SHA-256, and expected IDL account type only",
+            "next_safe_decode_step": "public market fields only after field offsets are validated against the pinned IDL or SDK decoder",
         },
         "targets": targets,
         "data_reconstruction_envelope": {
@@ -380,7 +460,7 @@ def build_report(rpc_url: str) -> dict[str, Any]:
                 "target/oprs-drift-readonly-state/latest.json"
             ],
             "known_gaps": [
-                "This command probes account metadata and target resolution only; it does not decode account binary layouts yet.",
+                "Shape snapshot mode decodes only account discriminator and account data length; it does not decode market economics, user state, or liquidation pre-state.",
                 "No user account, pre-state, transaction history, or liquidation event reconstruction is performed.",
                 "Jupiter Perps pool/custody/oracle targets remain a separate proof lane.",
             ],
@@ -388,6 +468,7 @@ def build_report(rpc_url: str) -> dict[str, Any]:
                 "Drift market/oracle targets are resolved from public SDK constants and PDA helper source.",
                 "RPC retention and provider backfill limits are not assessed in this metadata probe.",
                 "Oracle account binary data is not decoded in this command.",
+                "Raw account bytes are used in memory for shape checks only and are not written to output.",
             ],
             "generated_at_unix": now,
             "generated_by": "scripts/discover_drift_readonly_state.py",
@@ -411,6 +492,11 @@ def main() -> int:
         default="target/oprs-drift-readonly-state/latest.json",
         help="Output path for scrubbed Drift read-only state report.",
     )
+    parser.add_argument(
+        "--include-shape-snapshot",
+        action="store_true",
+        help="Fetch raw account bytes in memory and emit only discriminator/data-length shape checks.",
+    )
     args = parser.parse_args()
 
     load_dotenv(Path(args.env_file))
@@ -422,7 +508,7 @@ def main() -> int:
         print("HELIUS_RPC_URL must be an HTTPS RPC URL.", file=sys.stderr)
         return 2
 
-    report = build_report(rpc_url)
+    report = build_report(rpc_url, include_shape_snapshot=args.include_shape_snapshot)
     output_path = Path(args.out)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")

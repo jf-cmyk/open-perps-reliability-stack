@@ -28,12 +28,19 @@ Current local command:
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
 ```
 
+Optional shape snapshot command:
+
+```bash
+scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/oprs-drift-readonly-state/latest-shape.json
+```
+
 Confirmed:
 
 - Drift state PDA derivation and metadata read.
 - SOL/BTC/ETH perp market PDA derivation and metadata reads.
 - USDC/SOL spot market PDA derivation and metadata reads.
 - Deduplicated oracle metadata reads for those selected markets.
+- Optional shape snapshots for Drift state, selected perp markets, and selected spot markets.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
@@ -43,6 +50,20 @@ Not yet claimed:
 - Historical liquidation replay.
 - User account or pre-state reconstruction.
 - Jupiter Perps pool/custody/oracle target probing.
+
+## Shape Snapshot Scope
+
+The optional shape snapshot mode fetches account bytes through read-only RPC, uses them in memory, and emits only:
+
+- expected IDL account type
+- expected and observed Anchor account discriminator
+- discriminator match result
+- account data length
+- account data SHA-256
+- owner/executable metadata
+- explicit `raw_account_data_committed=false`, `field_decode_claimed=false`, and `replay_ready=false`
+
+Raw account bytes are not written to output.
 
 ## Next Safe Decode Step
 
