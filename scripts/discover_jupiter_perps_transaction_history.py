@@ -8,6 +8,7 @@ must never print HELIUS_RPC_URL or any other RPC credential.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import sys
@@ -24,6 +25,18 @@ JUPITER_DEVELOPER_DOCS = "https://developers.jup.ag/docs/get-started/index"
 JUPITER_TECHNICAL_REFERENCE = "https://docs.jup.ag/user-docs/trade/perps-and-jlp/technical-reference"
 JUPITER_POSITION_REQUEST_DOCS = "https://developers.jup.ag/docs/perps/position-request-account"
 JUPITER_POSITION_DOCS = "https://developers.jup.ag/docs/perps/position-account"
+
+COMMON_PROGRAM_ACCOUNTS = {
+    "11111111111111111111111111111111",
+    "ComputeBudget111111111111111111111111111111",
+    "SysvarRent111111111111111111111111111111111",
+    "SysvarC1ock11111111111111111111111111111111",
+    "Sysvar1nstructions1111111111111111111111111",
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+    "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+    JUPITER_PERPS_PROGRAM_ID,
+}
 
 
 def load_dotenv(path: Path) -> None:
@@ -75,6 +88,10 @@ def account_key_value(account_key: Any) -> str | None:
     return None
 
 
+def stable_hash(values: list[str]) -> str:
+    return hashlib.sha256("\n".join(sorted(values)).encode("utf-8")).hexdigest()
+
+
 def summarize_transaction(signature_row: dict[str, Any], transaction: dict[str, Any] | None) -> dict[str, Any]:
     summary: dict[str, Any] = {
         "signature": signature_row.get("signature"),
@@ -97,6 +114,7 @@ def summarize_transaction(signature_row: dict[str, Any], transaction: dict[str, 
     message = tx.get("message") if isinstance(tx, dict) else {}
     account_keys = [account_key_value(key) for key in message.get("accountKeys", [])]
     account_keys = [key for key in account_keys if key]
+    candidate_account_keys = sorted(set(account_keys) - COMMON_PROGRAM_ACCOUNTS)
     instructions = message.get("instructions", []) if isinstance(message, dict) else []
     inner_instructions = meta.get("innerInstructions", []) if isinstance(meta, dict) else []
     log_messages = meta.get("logMessages", []) if isinstance(meta, dict) else []
@@ -127,6 +145,8 @@ def summarize_transaction(signature_row: dict[str, Any], transaction: dict[str, 
             "fee": meta.get("fee") if isinstance(meta, dict) else None,
             "transaction_err": meta.get("err") if isinstance(meta, dict) else None,
             "account_key_count": len(account_keys),
+            "candidate_account_key_count": len(candidate_account_keys),
+            "account_keys_hash": stable_hash(account_keys),
             "top_level_instruction_count": len(instructions),
             "top_level_program_instruction_count": top_level_program_instruction_count,
             "inner_program_instruction_count": inner_program_instruction_count,
@@ -137,7 +157,64 @@ def summarize_transaction(signature_row: dict[str, Any], transaction: dict[str, 
     return summary
 
 
-def build_report(rpc_url: str, limit: int, transaction_limit: int) -> dict[str, Any]:
+def build_lifecycle_candidates(summaries: list[dict[str, Any]], min_shared_keys: int) -> list[dict[str, Any]]:
+    candidates = []
+    available = [summary for summary in summaries if summary.get("transaction_available")]
+    for index, first in enumerate(available):
+        first_sig = first.get("signature")
+        first_slot = first.get("slot")
+        if not isinstance(first_sig, str) or not isinstance(first_slot, int):
+            continue
+
+        for second in available[index + 1 :]:
+            second_sig = second.get("signature")
+            second_slot = second.get("slot")
+            if not isinstance(second_sig, str) or not isinstance(second_slot, int):
+                continue
+
+            first_keys = set(first.get("_candidate_account_keys", []))
+            second_keys = set(second.get("_candidate_account_keys", []))
+            shared_keys = sorted(first_keys & second_keys)
+            if len(shared_keys) < min_shared_keys:
+                continue
+
+            first_time = first.get("block_time")
+            second_time = second.get("block_time")
+            lifecycle_seed = [first_sig, second_sig] + shared_keys
+            candidates.append(
+                {
+                    "lifecycle_id": hashlib.sha256("\n".join(lifecycle_seed).encode("utf-8")).hexdigest(),
+                    "first_signature": first_sig,
+                    "second_signature": second_sig,
+                    "first_slot": first_slot,
+                    "second_slot": second_slot,
+                    "latency_slots_abs": abs(second_slot - first_slot),
+                    "latency_seconds_abs": (
+                        abs(second_time - first_time)
+                        if isinstance(first_time, int) and isinstance(second_time, int)
+                        else None
+                    ),
+                    "pairing_basis": "shared_public_account_keys_only",
+                    "shared_account_key_count": len(shared_keys),
+                    "shared_account_keys": shared_keys[:12],
+                    "shared_account_keys_truncated": len(shared_keys) > 12,
+                    "shared_account_keys_hash": stable_hash(shared_keys),
+                    "request_fulfillment_pair_candidate": True,
+                    "request_fulfillment_pair_claimed": False,
+                    "position_request_decoded": False,
+                    "raw_transaction_committed": False,
+                    "proof_status": "candidate_pair_unverified",
+                    "quality_flags": [
+                        "no_position_request_decode",
+                        "no_semantic_instruction_decode",
+                        "pairing_is_heuristic",
+                    ],
+                }
+            )
+    return candidates
+
+
+def build_report(rpc_url: str, limit: int, transaction_limit: int, min_shared_keys: int) -> dict[str, Any]:
     observed_slot = rpc_call(rpc_url, "getSlot", [{"commitment": "confirmed"}])
     now = int(time.time())
     signatures = rpc_call(
@@ -179,9 +256,21 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int) -> dict[str, 
                 transaction = None
             else:
                 raise
-        sampled.append(summarize_transaction(row, transaction))
+        summary = summarize_transaction(row, transaction)
+        if transaction is not None:
+            tx = transaction.get("transaction") if isinstance(transaction, dict) else {}
+            message = tx.get("message") if isinstance(tx, dict) else {}
+            account_keys = [account_key_value(key) for key in message.get("accountKeys", [])]
+            summary["_candidate_account_keys"] = sorted(set(key for key in account_keys if key) - COMMON_PROGRAM_ACCOUNTS)
+        sampled.append(summary)
 
     methods = ["getSlot", "getSignaturesForAddress"] + ["getTransaction"] * len(sampled)
+    lifecycle_candidates = build_lifecycle_candidates(sampled, min_shared_keys)
+    public_summaries = []
+    for summary in sampled:
+        clean = dict(summary)
+        clean.pop("_candidate_account_keys", None)
+        public_summaries.append(clean)
 
     return {
         "schema_version": "0.1.0",
@@ -205,7 +294,7 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int) -> dict[str, 
             "status": "transaction_history_sample_only",
             "claim": "public Jupiter Perps program signatures and transaction summaries can be sampled through read-only RPC",
             "not_claimed": [
-                "request_fulfillment_pairing",
+                "verified_request_fulfillment_pairing",
                 "position_request_binary_decode",
                 "keeper_identity_or_strategy",
                 "liquidation_replay",
@@ -213,7 +302,15 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int) -> dict[str, 
             ],
         },
         "signature_sample": signatures,
-        "transaction_summaries": sampled,
+        "transaction_summaries": public_summaries,
+        "lifecycle_candidates": lifecycle_candidates,
+        "pairing_heuristic": {
+            "status": "candidate_pairing_only",
+            "min_shared_non_common_account_keys": min_shared_keys,
+            "basis": "shared public transaction account keys after common program account exclusion",
+            "verified_request_fulfillment_pair_claimed": False,
+            "raw_account_key_sets_committed": False,
+        },
         "data_reconstruction_envelope": {
             "schema_version": "0.1.0",
             "envelope_id": "jupiter_perps_transaction_history_reconstruction",
@@ -257,7 +354,7 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int) -> dict[str, 
             ],
             "known_gaps": [
                 "This command samples public program signatures and transaction summaries only.",
-                "It does not pair request and fulfillment transactions.",
+                "Lifecycle candidates are shared-account-key heuristics only and are not verified request/fulfillment pairs.",
                 "It does not decode PositionRequest or Position account binary layouts.",
                 "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims.",
             ],
@@ -265,6 +362,7 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int) -> dict[str, 
                 "RPC retention and provider backfill limits are not assessed.",
                 "Raw transaction bodies, instruction data, and logs are not committed to output.",
                 "Program invocation counts are structural summaries, not semantic lifecycle labels.",
+                "Raw account key sets are not committed; only account-key hashes and bounded shared candidate keys are emitted.",
             ],
             "generated_at_unix": now,
             "generated_by": "scripts/discover_jupiter_perps_transaction_history.py",
@@ -302,6 +400,12 @@ def main() -> int:
         default=5,
         help="Number of sampled signatures to summarize with getTransaction.",
     )
+    parser.add_argument(
+        "--min-shared-keys",
+        type=int,
+        default=2,
+        help="Minimum non-common shared account keys required for an unverified lifecycle candidate.",
+    )
     args = parser.parse_args()
 
     if args.limit < 1 or args.limit > 100:
@@ -309,6 +413,9 @@ def main() -> int:
         return 2
     if args.transaction_limit < 0 or args.transaction_limit > args.limit:
         print("--transaction-limit must be between 0 and --limit.", file=sys.stderr)
+        return 2
+    if args.min_shared_keys < 1 or args.min_shared_keys > 20:
+        print("--min-shared-keys must be between 1 and 20.", file=sys.stderr)
         return 2
 
     load_dotenv(Path(args.env_file))
@@ -320,7 +427,7 @@ def main() -> int:
         print("HELIUS_RPC_URL must be an HTTPS RPC URL.", file=sys.stderr)
         return 2
 
-    report = build_report(rpc_url, args.limit, args.transaction_limit)
+    report = build_report(rpc_url, args.limit, args.transaction_limit, args.min_shared_keys)
     output_path = Path(args.out)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")

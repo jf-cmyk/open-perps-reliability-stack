@@ -25,7 +25,7 @@ scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-per
 Read-only transaction-history sample command:
 
 ```bash
-scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
+scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-limit 6 --min-shared-keys 2 --out target/oprs-jupiter-perps-transaction-history/latest-pairs.json
 ```
 
 Confirmed:
@@ -37,7 +37,7 @@ Confirmed:
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
-The transaction-history sample is intentionally not a request/fulfillment reconstruction. It emits `transaction_history_sample_only`, `request_fulfillment_pair_claimed=false`, `position_request_decoded=false`, and `raw_transaction_committed=false`.
+The transaction-history sample now emits shared-account-key lifecycle candidates as `candidate_pair_unverified`. This is intentionally not a verified request/fulfillment reconstruction. It emits `verified_request_fulfillment_pair_claimed=false`, `request_fulfillment_pair_claimed=false`, `position_request_decoded=false`, and `raw_transaction_committed=false`.
 
 ## IDL Candidate
 

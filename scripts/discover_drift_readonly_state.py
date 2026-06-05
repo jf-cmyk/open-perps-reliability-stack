@@ -46,6 +46,76 @@ EXPECTED_ACCOUNT_TYPES = {
     "spot_market_account": "SpotMarket",
 }
 
+PUBLIC_FIELD_LAYOUTS = {
+    "state_account": [
+        {
+            "name": "admin",
+            "type": "publicKey",
+            "offset": 8,
+            "length": 32,
+            "source_field": "State.admin",
+        },
+        {
+            "name": "signer",
+            "type": "publicKey",
+            "offset": 104,
+            "length": 32,
+            "source_field": "State.signer",
+        },
+    ],
+    "perp_market_account": [
+        {
+            "name": "pubkey",
+            "type": "publicKey",
+            "offset": 8,
+            "length": 32,
+            "source_field": "PerpMarket.pubkey",
+            "expected_from": "target_address",
+        },
+    ],
+    "spot_market_account": [
+        {
+            "name": "pubkey",
+            "type": "publicKey",
+            "offset": 8,
+            "length": 32,
+            "source_field": "SpotMarket.pubkey",
+            "expected_from": "target_address",
+        },
+        {
+            "name": "oracle",
+            "type": "publicKey",
+            "offset": 40,
+            "length": 32,
+            "source_field": "SpotMarket.oracle",
+            "expected_from": "market.oracle",
+        },
+        {
+            "name": "mint",
+            "type": "publicKey",
+            "offset": 72,
+            "length": 32,
+            "source_field": "SpotMarket.mint",
+            "expected_from": "market.mint",
+        },
+        {
+            "name": "vault",
+            "type": "publicKey",
+            "offset": 104,
+            "length": 32,
+            "source_field": "SpotMarket.vault",
+        },
+        {
+            "name": "name",
+            "type": "bytes32String",
+            "offset": 136,
+            "length": 32,
+            "source_field": "SpotMarket.name",
+            "expected_from": "market.symbol",
+        },
+    ],
+}
+
 PERP_MARKETS = [
     {
         "symbol": "SOL-PERP",
@@ -223,7 +293,72 @@ def anchor_account_discriminator(account_type: str) -> bytes:
     return hashlib.sha256(f"account:{account_type}".encode("utf-8")).digest()[:8]
 
 
-def account_shape_snapshot(rpc_url: str, target: dict[str, Any]) -> dict[str, Any]:
+def expected_field_value(target: dict[str, Any], expected_from: str | None) -> str | None:
+    if expected_from is None:
+        return None
+    if expected_from == "target_address":
+        return target["address"]
+    if expected_from.startswith("market."):
+        market = target.get("market", {})
+        value = market.get(expected_from.split(".", 1)[1])
+        return value if isinstance(value, str) else None
+    return None
+
+
+def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
+    layout = PUBLIC_FIELD_LAYOUTS.get(target["target_kind"], [])
+    decoded = []
+    validation_failures = []
+    for field in layout:
+        offset = field["offset"]
+        length = field["length"]
+        if offset + length > len(raw):
+            validation_failures.append(f"{field['name']}:offset_out_of_bounds")
+            continue
+
+        field_bytes = raw[offset : offset + length]
+        if field["type"] == "publicKey":
+            value = b58encode(field_bytes)
+        elif field["type"] == "bytes32String":
+            value = field_bytes.decode("utf-8", errors="replace").rstrip("\x00 ")
+        else:
+            validation_failures.append(f"{field['name']}:unsupported_type")
+            continue
+
+        expected = expected_field_value(target, field.get("expected_from"))
+        matches_expected = expected is None or value == expected
+        if not matches_expected:
+            validation_failures.append(f"{field['name']}:expected_mismatch")
+
+        decoded.append(
+            {
+                "field": field["name"],
+                "source_field": field["source_field"],
+                "type": field["type"],
+                "offset": offset,
+                "length": length,
+                "value": value,
+                "expected": expected,
+                "matches_expected": matches_expected,
+            }
+        )
+
+    return {
+        "readiness": "public_fields_decoded",
+        "decode_level": "offset_validated_public_identity_fields",
+        "source_commit": DRIFT_PROTOCOL_V2_COMMIT,
+        "idl_blob_sha": DRIFT_IDL_BLOB_SHA,
+        "offset_source": "pinned Drift Rust repr(C) account field order and Anchor discriminator prefix",
+        "fields": decoded,
+        "validation_failures": validation_failures,
+        "field_decode_claimed": len(decoded) > 0 and not validation_failures,
+        "user_state_decoded": False,
+        "market_economics_decoded": False,
+        "replay_ready": False,
+    }
+
+
+def account_shape_snapshot(rpc_url: str, target: dict[str, Any], include_public_fields: bool = False) -> dict[str, Any]:
     account_type = EXPECTED_ACCOUNT_TYPES.get(target["target_kind"])
     if account_type is None:
         raise ValueError(f"unsupported shape snapshot target kind: {target['target_kind']}")
@@ -256,7 +391,7 @@ def account_shape_snapshot(rpc_url: str, target: dict[str, Any]) -> dict[str, An
     observed_discriminator = raw[:8]
     expected_discriminator = anchor_account_discriminator(account_type)
 
-    return {
+    snapshot = {
         "readiness": "shape_snapshot_only",
         "decode_level": "anchor_discriminator_and_data_length",
         "context_slot": context.get("slot"),
@@ -274,6 +409,13 @@ def account_shape_snapshot(rpc_url: str, target: dict[str, Any]) -> dict[str, An
         "source_commit": DRIFT_PROTOCOL_V2_COMMIT,
         "idl_blob_sha": DRIFT_IDL_BLOB_SHA,
     }
+    if include_public_fields and snapshot["discriminator_match"]:
+        snapshot["public_field_decode"] = decode_public_fields(raw, target)
+        if snapshot["public_field_decode"]["field_decode_claimed"]:
+            snapshot["readiness"] = "public_fields_decoded"
+            snapshot["decode_level"] = "anchor_discriminator_data_length_and_public_fields"
+            snapshot["field_decode_claimed"] = True
+    return snapshot
 
 
 def pda_target(target_id: str, target_kind: str, seeds: list[bytes], source: str) -> dict[str, Any]:
@@ -291,13 +433,15 @@ def pda_target(target_id: str, target_kind: str, seeds: list[bytes], source: str
     }
 
 
-def attach_shape_snapshot(rpc_url: str, target: dict[str, Any]) -> None:
+def attach_shape_snapshot(rpc_url: str, target: dict[str, Any], include_public_fields: bool = False) -> None:
     if target["target_kind"] in EXPECTED_ACCOUNT_TYPES:
-        target["shape_snapshot"] = account_shape_snapshot(rpc_url, target)
-        target["readiness"] = "shape_snapshot_only"
+        target["shape_snapshot"] = account_shape_snapshot(rpc_url, target, include_public_fields)
+        target["readiness"] = target["shape_snapshot"]["readiness"]
 
 
-def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str, Any]:
+def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_public_fields: bool = False) -> dict[str, Any]:
+    if include_public_fields:
+        include_shape_snapshot = True
     observed_slot = rpc_call(rpc_url, "getSlot", [{"commitment": "confirmed"}])
     now = int(time.time())
 
@@ -312,7 +456,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str
     state["readiness"] = "target_discovered"
     state["probe"] = account_probe(rpc_url, state["address"])
     if include_shape_snapshot:
-        attach_shape_snapshot(rpc_url, state)
+        attach_shape_snapshot(rpc_url, state, include_public_fields)
     targets.append(state)
 
     oracle_addresses: dict[str, dict[str, Any]] = {}
@@ -332,7 +476,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str
             }
         )
         if include_shape_snapshot:
-            attach_shape_snapshot(rpc_url, target)
+            attach_shape_snapshot(rpc_url, target, include_public_fields)
         targets.append(target)
         oracle_addresses[market["oracle"]] = {
             "oracle": market["oracle"],
@@ -356,7 +500,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str
             }
         )
         if include_shape_snapshot:
-            attach_shape_snapshot(rpc_url, target)
+            attach_shape_snapshot(rpc_url, target, include_public_fields)
         targets.append(target)
         oracle_addresses[market["oracle"]] = {
             "oracle": market["oracle"],
@@ -411,9 +555,17 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str
             "sdk_version": DRIFT_SDK_VERSION,
             "drift_idl_source": DRIFT_IDL_SOURCE,
             "drift_idl_blob_sha": DRIFT_IDL_BLOB_SHA,
-            "decode_status": "shape_snapshot_only" if include_shape_snapshot else "target_discovered_not_binary_decoded",
+            "decode_status": (
+                "public_fields_decoded"
+                if include_public_fields
+                else "shape_snapshot_only"
+                if include_shape_snapshot
+                else "target_discovered_not_binary_decoded"
+            ),
             "shape_snapshot_included": include_shape_snapshot,
             "shape_snapshot_scope": "account discriminator, account data length, account data SHA-256, and expected IDL account type only",
+            "public_field_decode_included": include_public_fields,
+            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and SpotMarket pubkey/oracle/mint/vault/name identity fields only",
             "next_safe_decode_step": "public market fields only after field offsets are validated against the pinned IDL or SDK decoder",
         },
         "targets": targets,
@@ -460,7 +612,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False) -> dict[str
                 "target/oprs-drift-readonly-state/latest.json"
             ],
             "known_gaps": [
-                "Shape snapshot mode decodes only account discriminator and account data length; it does not decode market economics, user state, or liquidation pre-state.",
+                "Shape snapshot mode decodes only account discriminator and account data length; optional public-field mode decodes only identity fields.",
                 "No user account, pre-state, transaction history, or liquidation event reconstruction is performed.",
                 "Jupiter Perps pool/custody/oracle targets remain a separate proof lane.",
             ],
@@ -497,6 +649,11 @@ def main() -> int:
         action="store_true",
         help="Fetch raw account bytes in memory and emit only discriminator/data-length shape checks.",
     )
+    parser.add_argument(
+        "--include-public-fields",
+        action="store_true",
+        help="Also emit offset-validated public identity fields from selected Drift accounts.",
+    )
     args = parser.parse_args()
 
     load_dotenv(Path(args.env_file))
@@ -508,7 +665,11 @@ def main() -> int:
         print("HELIUS_RPC_URL must be an HTTPS RPC URL.", file=sys.stderr)
         return 2
 
-    report = build_report(rpc_url, include_shape_snapshot=args.include_shape_snapshot)
+    report = build_report(
+        rpc_url,
+        include_shape_snapshot=args.include_shape_snapshot,
+        include_public_fields=args.include_public_fields,
+    )
     output_path = Path(args.out)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")

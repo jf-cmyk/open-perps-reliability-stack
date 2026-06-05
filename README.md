@@ -92,11 +92,12 @@ Run the deeper Drift state, market, and oracle metadata proof:
 ```bash
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
 scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/oprs-drift-readonly-state/latest-shape.json
+scripts/discover_drift_readonly_state.py --include-public-fields --out target/oprs-drift-readonly-state/latest-public-fields.json
 ```
 
 Run the Jupiter Perps program, custody, and oracle metadata proof:
 
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
-scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
+scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-limit 6 --min-shared-keys 2 --out target/oprs-jupiter-perps-transaction-history/latest-pairs.json
 ```

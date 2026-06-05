@@ -20,7 +20,7 @@
     "status": "transaction_history_sample_only",
     "claim": "public Jupiter Perps program signatures and transaction summaries can be sampled through read-only RPC",
     "not_claimed": [
-      "request_fulfillment_pairing",
+      "verified_request_fulfillment_pairing",
       "position_request_binary_decode",
       "keeper_identity_or_strategy",
       "liquidation_replay",
@@ -54,6 +54,8 @@
       "fee": 0,
       "transaction_err": null,
       "account_key_count": 0,
+      "candidate_account_key_count": 2,
+      "account_keys_hash": "EXAMPLE_ACCOUNT_KEYS_SHA256",
       "top_level_instruction_count": 0,
       "top_level_program_instruction_count": 1,
       "inner_program_instruction_count": 0,
@@ -61,6 +63,42 @@
       "version": 0
     }
   ],
+  "lifecycle_candidates": [
+    {
+      "lifecycle_id": "EXAMPLE_LIFECYCLE_SHA256",
+      "first_signature": "EXAMPLE_PUBLIC_SIGNATURE",
+      "second_signature": "EXAMPLE_PUBLIC_SIGNATURE_2",
+      "first_slot": 0,
+      "second_slot": 1,
+      "latency_slots_abs": 1,
+      "latency_seconds_abs": 1,
+      "pairing_basis": "shared_public_account_keys_only",
+      "shared_account_key_count": 2,
+      "shared_account_keys": [
+        "EXAMPLE_SHARED_PUBLIC_ACCOUNT_1",
+        "EXAMPLE_SHARED_PUBLIC_ACCOUNT_2"
+      ],
+      "shared_account_keys_truncated": false,
+      "shared_account_keys_hash": "EXAMPLE_SHARED_KEYS_SHA256",
+      "request_fulfillment_pair_candidate": true,
+      "request_fulfillment_pair_claimed": false,
+      "position_request_decoded": false,
+      "raw_transaction_committed": false,
+      "proof_status": "candidate_pair_unverified",
+      "quality_flags": [
+        "no_position_request_decode",
+        "no_semantic_instruction_decode",
+        "pairing_is_heuristic"
+      ]
+    }
+  ],
+  "pairing_heuristic": {
+    "status": "candidate_pairing_only",
+    "min_shared_non_common_account_keys": 2,
+    "basis": "shared public transaction account keys after common program account exclusion",
+    "verified_request_fulfillment_pair_claimed": false,
+    "raw_account_key_sets_committed": false
+  },
   "data_reconstruction_envelope": {
     "schema_version": "0.1.0",
     "envelope_id": "jupiter_perps_transaction_history_reconstruction",
@@ -109,14 +147,15 @@
     "known_gaps": [
       "Example file only; live output is written under target/ and is not committed.",
       "This command samples public program signatures and transaction summaries only.",
-      "It does not pair request and fulfillment transactions.",
+      "Lifecycle candidates are shared-account-key heuristics only and are not verified request/fulfillment pairs.",
       "It does not decode PositionRequest or Position account binary layouts.",
       "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims."
     ],
     "source_limitations": [
       "RPC retention and provider backfill limits are not assessed.",
       "Raw transaction bodies, instruction data, and logs are not committed to output.",
-      "Program invocation counts are structural summaries, not semantic lifecycle labels."
+      "Program invocation counts are structural summaries, not semantic lifecycle labels.",
+      "Raw account key sets are not committed; only account-key hashes and bounded shared candidate keys are emitted."
     ],
     "generated_at_unix": 1780624200,
     "generated_by": "scripts/discover_jupiter_perps_transaction_history.py"

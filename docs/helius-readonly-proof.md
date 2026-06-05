@@ -17,9 +17,10 @@ Drift state, market, and oracle metadata discovery is also confirmed:
 ```bash
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
 scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/oprs-drift-readonly-state/latest-shape.json
+scripts/discover_drift_readonly_state.py --include-public-fields --out target/oprs-drift-readonly-state/latest-public-fields.json
 ```
 
-This second command derives public Drift PDAs from pinned official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. Its optional shape snapshot mode fetches selected account bytes in memory and emits only discriminator, account type, account-data length, and account-data hash evidence. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim decoded market fields or historical liquidation replay.
+This second command derives public Drift PDAs from pinned official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. Its optional shape snapshot mode fetches selected account bytes in memory and emits only discriminator, account type, account-data length, and account-data hash evidence. Its optional public-field mode emits only identity fields with pinned offsets. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim decoded market economics or historical liquidation replay.
 
 Decoder provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md).
 
@@ -27,10 +28,10 @@ Jupiter Perps program, custody, and oracle metadata discovery is confirmed:
 
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
-scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
+scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-limit 6 --min-shared-keys 2 --out target/oprs-jupiter-perps-transaction-history/latest-pairs.json
 ```
 
-The target command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. The transaction-history command samples public program signatures with `getSignaturesForAddress` and transaction summaries with `getTransaction`. Both emit scrubbed local output under `target/`, keep the Helius RPC URL local-only, and do not claim binary account decoding, request/fulfillment pairing, or liquidation replay.
+The target command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. The transaction-history command samples public program signatures with `getSignaturesForAddress`, transaction summaries with `getTransaction`, and shared-account-key lifecycle candidates. Both emit scrubbed local output under `target/`, keep the Helius RPC URL local-only, and do not claim binary account decoding, verified request/fulfillment pairing, or liquidation replay.
 
 Jupiter IDL/source status is tracked in [Jupiter Perps provenance](jupiter-perps-provenance.md). The current docs-linked IDL sample is useful as a candidate, but not yet sufficient for `decoded_snapshot` claims.
 
@@ -97,7 +98,7 @@ Drift is first because it has public documentation for program accounts, markets
 
 3. Read-only account snapshots.
    - Fetch public account data with commitment and context slot.
-   - Current status: `shape_snapshot_only` for Drift state, SOL/BTC/ETH perp market accounts, and USDC/SOL spot market accounts.
+   - Current status: `public_fields_decoded` for selected Drift identity fields only.
    - Store only scrubbed metadata, account-shape evidence, or decoded public fields after offset validation.
 
 4. Decoder and schema provenance.
@@ -117,8 +118,8 @@ Jupiter Perps is second because its trader-to-LP/JLP model is structurally diffe
 
 2. Lifecycle evidence model.
    - Treat Jupiter flows as request and fulfillment lifecycle evidence, not only as a final signature.
-   - Current status: `transaction_history_sample_only` for public program signatures and structural transaction summaries.
-   - Next status requires linking request transaction, fulfillment transaction, oracle selection/fallback context where public, custody state, and liquidation-price relation when reconstructable.
+   - Current status: `candidate_pair_unverified` for shared-account-key lifecycle candidates.
+   - Next status requires verified request transaction, fulfillment transaction, oracle selection/fallback context where public, custody state, and liquidation-price relation when reconstructable.
 
 3. Public-safe output.
    - Publish only public signatures, slots, account addresses, decoded state summaries, and explicit caveats.

@@ -32,6 +32,7 @@ Optional shape snapshot command:
 
 ```bash
 scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/oprs-drift-readonly-state/latest-shape.json
+scripts/discover_drift_readonly_state.py --include-public-fields --out target/oprs-drift-readonly-state/latest-public-fields.json
 ```
 
 Confirmed:
@@ -41,6 +42,7 @@ Confirmed:
 - USDC/SOL spot market PDA derivation and metadata reads.
 - Deduplicated oracle metadata reads for those selected markets.
 - Optional shape snapshots for Drift state, selected perp markets, and selected spot markets.
+- Optional public-field decode for State admin/signer, PerpMarket pubkey, and SpotMarket pubkey/oracle/mint/vault/name identity fields.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
@@ -65,13 +67,23 @@ The optional shape snapshot mode fetches account bytes through read-only RPC, us
 
 Raw account bytes are not written to output.
 
+## Public Field Decode Scope
+
+The optional public-field mode is intentionally limited to identity fields with simple, pinned offsets:
+
+- `State.admin` and `State.signer`
+- `PerpMarket.pubkey`
+- `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, and `SpotMarket.name`
+
+The command validates expected PDA, oracle, mint, and symbol values where the selected target already has a public source. It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
+
 ## Next Safe Decode Step
 
 The next decode command should stay deliberately narrow:
 
 1. Fetch account data through read-only RPC.
 2. Decode only the account discriminator and IDL account type first.
-3. Decode public market fields only after field offsets are validated against the pinned IDL or SDK decoder.
+3. Decode additional public market fields only after field offsets are validated against the pinned IDL or SDK decoder.
 4. Emit decoded fields into `target/` only until scrub review passes.
 5. Keep `decoded_snapshot` separate from `replay_ready`; do not claim replay readiness from a market/account snapshot alone.
 
