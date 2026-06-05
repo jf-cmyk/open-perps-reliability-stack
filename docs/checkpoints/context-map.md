@@ -108,6 +108,7 @@ Wording guardrails:
 
 Read when changing Drift adapter shape, protocol priority, or venue metadata:
 
+- [Jupiter transaction history checkpoint](2026-06-05-jupiter-transaction-history-checkpoint.md)
 - [Drift shape snapshot checkpoint](2026-06-05-drift-shape-snapshot-checkpoint.md)
 - [Protocol targets](../protocol-targets.md)
 - [Adapter standard](../adapter-standard.md)
@@ -138,8 +139,8 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Deploy and smoke-check the Drift shape snapshot package if not already deployed.
-2. Start Drift public-field decode only after offset validation against the pinned Drift IDL/SDK decoder.
-3. Start Jupiter request/fulfillment transaction-history proof as a separate read-only lane.
+1. Deploy and smoke-check the Jupiter transaction-history sample package if not already deployed.
+2. Add Jupiter request/fulfillment pairing only after identifying safe shared-account heuristics from public transaction keys.
+3. Start Drift public-field decode only after offset validation against the pinned Drift IDL/SDK decoder.
 4. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
 5. Keep Railway and GitHub Pages mirrors equivalent.

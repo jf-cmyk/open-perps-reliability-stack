@@ -29,9 +29,11 @@ python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/
 python3 -m json.tool examples/datasets/drift_readonly_state_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_shape_snapshot_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.json >/dev/null
+python3 -m json.tool examples/datasets/jupiter_perps_transaction_history_example.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
@@ -46,10 +48,12 @@ test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
 test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json
+test -f examples/datasets/jupiter_perps_transaction_history_example.json
 test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh
 test -x scripts/discover_drift_readonly_state.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
+test -x scripts/discover_jupiter_perps_transaction_history.py
 
 echo "== Public artifact boundary =="
 artifact_dir="target/public-proof-pack-mvp-check-$$"

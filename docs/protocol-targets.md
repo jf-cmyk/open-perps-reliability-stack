@@ -127,9 +127,10 @@ Current Jupiter Perps target discovery command:
 
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
+scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
 ```
 
-This command resolves the Jupiter Perpetuals program, documented custody accounts, and documented oracle accounts from current official Jupiter docs and probes public metadata through Helius `getAccountInfo` data slices. It emits scrubbed local output under `target/`, does not print the RPC URL, and does not call `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or signing paths.
+The target command resolves the Jupiter Perpetuals program, documented custody accounts, and documented oracle accounts from current official Jupiter docs and probes public metadata through Helius `getAccountInfo` data slices. The transaction-history command samples public program signatures and structural transaction summaries through read-only Solana RPC. Both emit scrubbed local output under `target/`, do not print the RPC URL, and do not call `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or signing paths.
 
 Current status:
 
@@ -137,5 +138,6 @@ Current status:
 - Drift program account, state account, selected perp/spot market accounts, and selected oracle account metadata are readable without signer or wallet access.
 - Drift decoder/IDL provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md), and optional Drift shape snapshots now confirm account discriminator/type and data length before public-field decode.
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
+- Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, but request/fulfillment pairing is not yet claimed.
 - Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md), but still needs canonical IDL/source confirmation before binary decode proof.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

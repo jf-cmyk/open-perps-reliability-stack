@@ -27,9 +27,10 @@ Jupiter Perps program, custody, and oracle metadata discovery is confirmed:
 
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
+scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
 ```
 
-This command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. It emits scrubbed local output under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding, request/fulfillment reconstruction, or liquidation replay.
+The target command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. The transaction-history command samples public program signatures with `getSignaturesForAddress` and transaction summaries with `getTransaction`. Both emit scrubbed local output under `target/`, keep the Helius RPC URL local-only, and do not claim binary account decoding, request/fulfillment pairing, or liquidation replay.
 
 Jupiter IDL/source status is tracked in [Jupiter Perps provenance](jupiter-perps-provenance.md). The current docs-linked IDL sample is useful as a candidate, but not yet sufficient for `decoded_snapshot` claims.
 
@@ -116,7 +117,8 @@ Jupiter Perps is second because its trader-to-LP/JLP model is structurally diffe
 
 2. Lifecycle evidence model.
    - Treat Jupiter flows as request and fulfillment lifecycle evidence, not only as a final signature.
-   - Record request transaction, keeper fulfillment transaction, oracle selection/fallback context where public, custody state, and liquidation-price relation when reconstructable.
+   - Current status: `transaction_history_sample_only` for public program signatures and structural transaction summaries.
+   - Next status requires linking request transaction, fulfillment transaction, oracle selection/fallback context where public, custody state, and liquidation-price relation when reconstructable.
 
 3. Public-safe output.
    - Publish only public signatures, slots, account addresses, decoded state summaries, and explicit caveats.

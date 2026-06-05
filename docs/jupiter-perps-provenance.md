@@ -22,13 +22,22 @@ Current local command:
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
 ```
 
+Read-only transaction-history sample command:
+
+```bash
+scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
+```
+
 Confirmed:
 
 - Jupiter Perpetuals program metadata.
 - SOL/ETH/BTC/USDC/USDT custody account metadata.
 - SOL/ETH/BTC/USDC/USDT documented oracle account metadata.
+- Public Jupiter Perps program signatures and transaction summaries can be sampled with read-only Solana RPC.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
+
+The transaction-history sample is intentionally not a request/fulfillment reconstruction. It emits `transaction_history_sample_only`, `request_fulfillment_pair_claimed=false`, `position_request_decoded=false`, and `raw_transaction_committed=false`.
 
 ## IDL Candidate
 
@@ -61,6 +70,6 @@ Until then, OPRS may claim Jupiter program/custody/oracle metadata discovery, bu
 1. Use the docs-linked IDL only to plan candidate public fields.
 2. Keep any decode experiment under `target/` until source authority is resolved.
 3. Start with account discriminator/type, data length, owner, and documented public fields only.
-4. Keep request/fulfillment proof separate from account decode; it needs public transaction-history evidence.
+4. Use the transaction-history sample as the foundation for later request/fulfillment pairing, but do not claim pairing until shared PositionRequest/Position evidence is linked.
 
 Forbidden actions remain unchanged: no signing, no transaction submission, no priority-fee bidding, no keypair loading, no custody, no capital management, and no calls to `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or RFQ/order-routing paths.

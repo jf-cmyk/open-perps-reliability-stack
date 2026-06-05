@@ -46,6 +46,7 @@ Hosted proof-pack MVP:
 - [Drift read-only state discovery example](examples/datasets/drift_readonly_state_example.json)
 - [Drift shape snapshot example](examples/datasets/drift_shape_snapshot_example.json)
 - [Jupiter Perps read-only target example](examples/datasets/jupiter_perps_readonly_targets_example.json)
+- [Jupiter Perps transaction history example](examples/datasets/jupiter_perps_transaction_history_example.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification
@@ -97,4 +98,5 @@ Run the Jupiter Perps program, custody, and oracle metadata proof:
 
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
+scripts/discover_jupiter_perps_transaction_history.py --out target/oprs-jupiter-perps-transaction-history/latest.json
 ```

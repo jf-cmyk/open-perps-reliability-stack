@@ -1,0 +1,139 @@
+{
+  "schema_version": "0.1.0",
+  "report_id": "jupiter_perps_transaction_history_sample",
+  "generated_at_unix": 1780624200,
+  "generated_by": "scripts/discover_jupiter_perps_transaction_history.py",
+  "rpc": {
+    "provider_label": "local_readonly_rpc_env",
+    "credential_printed": false,
+    "commitment": "confirmed",
+    "observed_slot": 0
+  },
+  "source_refs": {
+    "jupiter_developer_docs": "https://developers.jup.ag/docs/get-started/index",
+    "technical_reference": "https://docs.jup.ag/user-docs/trade/perps-and-jlp/technical-reference",
+    "position_request_docs": "https://developers.jup.ag/docs/perps/position-request-account",
+    "position_docs": "https://developers.jup.ag/docs/perps/position-account"
+  },
+  "history_scope": {
+    "program_id": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
+    "status": "transaction_history_sample_only",
+    "claim": "public Jupiter Perps program signatures and transaction summaries can be sampled through read-only RPC",
+    "not_claimed": [
+      "request_fulfillment_pairing",
+      "position_request_binary_decode",
+      "keeper_identity_or_strategy",
+      "liquidation_replay",
+      "order_submission"
+    ]
+  },
+  "signature_sample": [
+    {
+      "blockTime": 0,
+      "confirmationStatus": "confirmed",
+      "err": null,
+      "memo": null,
+      "signature": "EXAMPLE_PUBLIC_SIGNATURE",
+      "slot": 0
+    }
+  ],
+  "transaction_summaries": [
+    {
+      "signature": "EXAMPLE_PUBLIC_SIGNATURE",
+      "slot": 0,
+      "block_time": 0,
+      "confirmation_status": "confirmed",
+      "signature_err": null,
+      "transaction_available": true,
+      "lifecycle_claim": "program_invocation_observed_only",
+      "request_fulfillment_pair_claimed": false,
+      "position_request_decoded": false,
+      "raw_transaction_committed": false,
+      "transaction_slot": 0,
+      "transaction_block_time": 0,
+      "fee": 0,
+      "transaction_err": null,
+      "account_key_count": 0,
+      "top_level_instruction_count": 0,
+      "top_level_program_instruction_count": 1,
+      "inner_program_instruction_count": 0,
+      "log_message_count": 0,
+      "version": 0
+    }
+  ],
+  "data_reconstruction_envelope": {
+    "schema_version": "0.1.0",
+    "envelope_id": "jupiter_perps_transaction_history_reconstruction",
+    "dataset_name": "jupiter_perps_transaction_history_sample",
+    "chain_id": "solana-mainnet-beta",
+    "protocol": "jupiter_perps",
+    "reconstruction_type": "historical_rpc",
+    "sources": [
+      {
+        "source_id": "local_helius_rpc_confirmed",
+        "source_kind": "solana_rpc",
+        "provider_label": "helius_hobby_plan",
+        "commitment": "confirmed",
+        "lifecycle_stage": "read_only_transaction_history_sample",
+        "retention_boundary": "provider_default_retention_not_assessed"
+      },
+      {
+        "source_id": "jupiter_perps_official_docs",
+        "source_kind": "protocol_docs",
+        "provider_label": "jupiter_developer_docs",
+        "commitment": "not_applicable",
+        "lifecycle_stage": "request_fulfillment_model_context",
+        "retention_boundary": "public_docs_current_version"
+      }
+    ],
+    "slot_range": {
+      "start_slot": 0,
+      "end_slot": 0,
+      "coverage": "partial"
+    },
+    "query_config": {
+      "methods": [
+        "getSlot",
+        "getSignaturesForAddress",
+        "getTransaction"
+      ],
+      "transaction_details": "json_summary_only",
+      "max_supported_transaction_version": 0,
+      "address_filter_count": 1,
+      "stream_gap_count": 0,
+      "unsupported_version_count": 0
+    },
+    "evidence_refs": [
+      "target/oprs-jupiter-perps-transaction-history/latest.json"
+    ],
+    "known_gaps": [
+      "Example file only; live output is written under target/ and is not committed.",
+      "This command samples public program signatures and transaction summaries only.",
+      "It does not pair request and fulfillment transactions.",
+      "It does not decode PositionRequest or Position account binary layouts.",
+      "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims."
+    ],
+    "source_limitations": [
+      "RPC retention and provider backfill limits are not assessed.",
+      "Raw transaction bodies, instruction data, and logs are not committed to output.",
+      "Program invocation counts are structural summaries, not semantic lifecycle labels."
+    ],
+    "generated_at_unix": 1780624200,
+    "generated_by": "scripts/discover_jupiter_perps_transaction_history.py"
+  },
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "retry_transaction",
+    "bid_priority_fee",
+    "load_keypair",
+    "manage_capital",
+    "call_order_endpoint",
+    "call_execute_endpoint",
+    "call_build_endpoint",
+    "call_submit_endpoint",
+    "call_auth_endpoint",
+    "keeper_operation",
+    "rfq_or_order_routing"
+  ]
+}
