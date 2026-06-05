@@ -43,6 +43,7 @@ Hosted proof-pack MVP:
 - [Dataset provenance example](examples/datasets/data_reconstruction_envelope.json)
 - [Read-only target discovery example](examples/datasets/readonly_target_discovery_example.json)
 - [Drift read-only state discovery example](examples/datasets/drift_readonly_state_example.json)
+- [Jupiter Perps read-only target example](examples/datasets/jupiter_perps_readonly_targets_example.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification
@@ -87,4 +88,10 @@ Run the deeper Drift state, market, and oracle metadata proof:
 
 ```bash
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
+```
+
+Run the Jupiter Perps program, custody, and oracle metadata proof:
+
+```bash
+scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
 ```

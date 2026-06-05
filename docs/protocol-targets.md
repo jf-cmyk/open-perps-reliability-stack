@@ -122,10 +122,19 @@ scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/
 
 This command derives public Drift PDAs from pinned official SDK source and probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and deduplicated oracle accounts through Helius `getAccountInfo` data slices. It emits only scrubbed local output under `target/`, does not print the RPC URL, and does not claim binary decoding or historical liquidation replay.
 
+Current Jupiter Perps target discovery command:
+
+```bash
+scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
+```
+
+This command resolves the Jupiter Perpetuals program, documented custody accounts, and documented oracle accounts from current official Jupiter docs and probes public metadata through Helius `getAccountInfo` data slices. It emits scrubbed local output under `target/`, does not print the RPC URL, and does not call `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or signing paths.
+
 Current status:
 
 - Local Helius access is confirmed for target discovery.
 - Drift program account, state account, selected perp/spot market accounts, and selected oracle account metadata are readable without signer or wallet access.
 - Drift decoder/IDL provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md); the next Drift step is public-field binary decode proof.
-- Jupiter Perps still needs a public pool, custody, oracle, or program-account target resolved from official sources before RPC probing.
+- Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
+- Jupiter Perps still needs canonical IDL/source provenance before binary decode proof.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

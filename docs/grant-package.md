@@ -76,7 +76,7 @@ The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation c
 
 ## Founder Decisions Needed
 
-- Drift binary decode proof and Jupiter Perps public target resolution.
+- Drift binary decode proof, Jupiter Perps canonical IDL/source provenance, and Jupiter request/fulfillment proof.
 - Grant ask size.
 - Preferred OSS license.
 - Public dataset depth.

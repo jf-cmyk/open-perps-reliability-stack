@@ -33,6 +33,7 @@ Schema and fixture artifacts:
 - [Dataset provenance example](../examples/datasets/data_reconstruction_envelope.json)
 - [Read-only target discovery example](../examples/datasets/readonly_target_discovery_example.json)
 - [Drift read-only state discovery example](../examples/datasets/drift_readonly_state_example.json)
+- [Jupiter Perps read-only target example](../examples/datasets/jupiter_perps_readonly_targets_example.json)
 - [Static dashboard demo](../apps/dashboard/index.html)
 
 Validation commands:

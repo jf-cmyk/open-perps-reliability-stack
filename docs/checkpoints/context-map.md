@@ -141,4 +141,4 @@ When agent guidance affects implementation order, summarize it in the next check
 2. Add a founder-facing MVP proof checklist that maps reviewer claims to hosted URLs, schemas, fixtures, and validation commands.
 3. Continue improving dry-run proof polish: summary/gate invariants, fixture coverage, and public dashboard copy.
 4. Keep the Railway and GitHub Pages mirrors equivalent.
-5. Real Drift/Jupiter read-only decode proof now that Drift metadata target discovery is working; next blockers are Drift binary decoder/IDL provenance and Jupiter public pool/custody/oracle target resolution.
+5. Real Drift/Jupiter read-only decode proof now that Drift and Jupiter metadata target discovery are working; next blockers are Drift binary decode implementation, Jupiter canonical IDL/source provenance, and Jupiter request/fulfillment transaction-history proof.

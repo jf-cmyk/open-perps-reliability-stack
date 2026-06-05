@@ -22,6 +22,14 @@ This second command derives public Drift PDAs from pinned official SDK source, p
 
 Decoder provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md).
 
+Jupiter Perps program, custody, and oracle metadata discovery is confirmed:
+
+```bash
+scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
+```
+
+This command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. It emits scrubbed local output under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding, request/fulfillment reconstruction, or liquidation replay.
+
 ## Scope Boundary
 
 Allowed:
@@ -99,7 +107,8 @@ Jupiter Perps is second because its trader-to-LP/JLP model is structurally diffe
 
 1. Public target resolution.
    - Resolve pool, custody, oracle, and relevant program/account targets from official Jupiter docs or public source references.
-   - Current status: `deferred` until public targets are resolved.
+   - Current status: `target_discovered` for the Jupiter Perpetuals program account, documented SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts.
+   - Evidence: official docs source refs, executable flag, owner, lamports, rent epoch, and context slot.
 
 2. Lifecycle evidence model.
    - Treat Jupiter flows as request and fulfillment lifecycle evidence, not only as a final signature.
@@ -159,6 +168,7 @@ Do not include:
 ## Next Implementation Tasks
 
 1. Add a binary decode-safe snapshot mode for Drift account discriminator, IDL account type, and public market fields only.
-2. Resolve Jupiter Perps public pool/custody/oracle targets.
-3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
-4. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.
+2. Pin canonical Jupiter Perps IDL/source provenance before any Jupiter `decoded_snapshot` claim.
+3. Add Jupiter request/fulfillment lifecycle evidence using public transaction history only.
+4. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
+5. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.

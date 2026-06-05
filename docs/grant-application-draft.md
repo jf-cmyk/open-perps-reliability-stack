@@ -136,7 +136,7 @@ Grant-funded outputs remain public, reproducible, read-only, and dry-run only.
 ## Risks and Mitigations
 
 - Perps-specific decoded liquidation data is thin: start with Drift adapter scaffolding and fixture-backed shape tests.
-- Helius target discovery now succeeds for Drift program, state, selected market, and selected oracle metadata, but historical Drift/Jupiter decode coverage still needs decoder provenance, Jupiter target resolution, and scrubbed proof output before it can be claimed.
+- Helius target discovery now succeeds for Drift program/state/selected market/selected oracle metadata and Jupiter Perps program/custody/oracle metadata, but historical Drift/Jupiter decode coverage still needs decoder provenance, binary decode implementation, request/fulfillment reconstruction, and scrubbed proof output before it can be claimed.
 - Live execution is high risk: explicitly out of scope.
 - Public datasets may leak secrets or private strategy: enforce scrubbing policy and publish gates.
 - Venue schemas may drift: adapter metadata includes schema and IDL versioning.
