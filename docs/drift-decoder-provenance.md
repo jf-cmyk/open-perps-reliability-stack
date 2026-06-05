@@ -1,0 +1,57 @@
+# Drift Decoder Provenance
+
+This document pins the public Drift sources used for the current read-only metadata proof and the next binary decode step. It does not claim decoded account snapshots yet.
+
+## Pinned Source
+
+| Item | Value |
+| --- | --- |
+| Repository | `drift-labs/protocol-v2` |
+| Commit | `0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62` |
+| Commit message | `sdk: release v2.163.0-beta.0` |
+| SDK version | `2.163.0-beta.0` |
+| Drift IDL blob SHA | `9646dd6a893568d85d8dc47507e047010bf7e945` |
+
+## Source Files
+
+- PDA helpers: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/addresses/pda.ts`
+- Perp market constants: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/constants/perpMarkets.ts`
+- Spot market constants: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/constants/spotMarkets.ts`
+- Drift IDL: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/idl/drift.json`
+- Account fetch helpers: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/accounts/fetch.ts`
+
+## Current Proof Level
+
+Current local command:
+
+```bash
+scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
+```
+
+Confirmed:
+
+- Drift state PDA derivation and metadata read.
+- SOL/BTC/ETH perp market PDA derivation and metadata reads.
+- USDC/SOL spot market PDA derivation and metadata reads.
+- Deduplicated oracle metadata reads for those selected markets.
+- Scrubbed local output under `target/`.
+- No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
+
+Not yet claimed:
+
+- Binary account decoding.
+- Historical liquidation replay.
+- User account or pre-state reconstruction.
+- Jupiter Perps pool/custody/oracle target probing.
+
+## Next Safe Decode Step
+
+The next decode command should stay deliberately narrow:
+
+1. Fetch account data through read-only RPC.
+2. Decode only the account discriminator and IDL account type first.
+3. Decode public market fields only after field offsets are validated against the pinned IDL or SDK decoder.
+4. Emit decoded fields into `target/` only until scrub review passes.
+5. Keep `decoded_snapshot` separate from `replay_ready`; do not claim replay readiness from a market/account snapshot alone.
+
+Forbidden actions remain unchanged: no signing, no transaction submission, no priority-fee bidding, no keypair loading, no custody, and no capital management.

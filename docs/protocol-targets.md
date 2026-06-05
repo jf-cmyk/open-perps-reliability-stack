@@ -120,12 +120,12 @@ Current Drift state/market/oracle discovery command:
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
 ```
 
-This command derives public Drift PDAs from official SDK source and probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and deduplicated oracle accounts through Helius `getAccountInfo` data slices. It emits only scrubbed local output under `target/`, does not print the RPC URL, and does not claim binary decoding or historical liquidation replay.
+This command derives public Drift PDAs from pinned official SDK source and probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and deduplicated oracle accounts through Helius `getAccountInfo` data slices. It emits only scrubbed local output under `target/`, does not print the RPC URL, and does not claim binary decoding or historical liquidation replay.
 
 Current status:
 
 - Local Helius access is confirmed for target discovery.
 - Drift program account, state account, selected perp/spot market accounts, and selected oracle account metadata are readable without signer or wallet access.
-- The next Drift step is decoder/IDL provenance and public-field binary decode proof.
+- Drift decoder/IDL provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md); the next Drift step is public-field binary decode proof.
 - Jupiter Perps still needs a public pool, custody, oracle, or program-account target resolved from official sources before RPC probing.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

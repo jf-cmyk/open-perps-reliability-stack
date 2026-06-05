@@ -21,6 +21,9 @@ from typing import Any
 
 DRIFT_PROGRAM_ID = "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH"
 DRIFT_PROGRAM_BYTES = None
+DRIFT_PROTOCOL_V2_COMMIT = "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62"
+DRIFT_SDK_VERSION = "2.163.0-beta.0"
+DRIFT_IDL_BLOB_SHA = "9646dd6a893568d85d8dc47507e047010bf7e945"
 
 BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 BASE58_INDEX = {char: index for index, char in enumerate(BASE58_ALPHABET)}
@@ -29,9 +32,11 @@ PDA_MARKER = b"ProgramDerivedAddress"
 ED25519_P = 2**255 - 19
 ED25519_D = (-121665 * pow(121666, ED25519_P - 2, ED25519_P)) % ED25519_P
 
-DRIFT_SDK_SOURCE = "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/addresses/pda.ts"
-DRIFT_PERP_CONSTANTS_SOURCE = "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/perpMarkets.ts"
-DRIFT_SPOT_CONSTANTS_SOURCE = "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/spotMarkets.ts"
+DRIFT_SDK_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/addresses/pda.ts"
+DRIFT_PERP_CONSTANTS_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/constants/perpMarkets.ts"
+DRIFT_SPOT_CONSTANTS_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/constants/spotMarkets.ts"
+DRIFT_IDL_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/idl/drift.json"
+DRIFT_ACCOUNT_FETCH_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/accounts/fetch.ts"
 DRIFT_ACCOUNT_MODEL_SOURCE = "https://docs.drift.trade/developers/concepts/account-model"
 
 PERP_MARKETS = [
@@ -319,6 +324,17 @@ def build_report(rpc_url: str) -> dict[str, Any]:
             "pda_helpers": DRIFT_SDK_SOURCE,
             "perp_market_constants": DRIFT_PERP_CONSTANTS_SOURCE,
             "spot_market_constants": DRIFT_SPOT_CONSTANTS_SOURCE,
+            "drift_idl": DRIFT_IDL_SOURCE,
+            "account_fetch_helpers": DRIFT_ACCOUNT_FETCH_SOURCE,
+        },
+        "decoder_provenance": {
+            "protocol_repo": "drift-labs/protocol-v2",
+            "protocol_repo_commit": DRIFT_PROTOCOL_V2_COMMIT,
+            "sdk_version": DRIFT_SDK_VERSION,
+            "drift_idl_source": DRIFT_IDL_SOURCE,
+            "drift_idl_blob_sha": DRIFT_IDL_BLOB_SHA,
+            "decode_status": "target_discovered_not_binary_decoded",
+            "next_safe_decode_step": "account discriminator, account data length, IDL account type, and public market fields only",
         },
         "targets": targets,
         "data_reconstruction_envelope": {
@@ -344,6 +360,7 @@ def build_report(rpc_url: str) -> dict[str, Any]:
                     "commitment": "not_applicable",
                     "lifecycle_stage": "target_resolution",
                     "retention_boundary": "public_git_history",
+                    "source_revision": DRIFT_PROTOCOL_V2_COMMIT,
                 },
             ],
             "slot_range": {

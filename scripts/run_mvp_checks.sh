@@ -35,6 +35,7 @@ rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
 rg -q '^docs/checkpoints$' .dockerignore
 test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
+test -f docs/drift-decoder-provenance.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json

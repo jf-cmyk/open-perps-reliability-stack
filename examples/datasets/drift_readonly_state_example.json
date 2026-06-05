@@ -11,9 +11,20 @@
   },
   "source_refs": {
     "account_model": "https://docs.drift.trade/developers/concepts/account-model",
-    "pda_helpers": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/addresses/pda.ts",
-    "perp_market_constants": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/perpMarkets.ts",
-    "spot_market_constants": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/constants/spotMarkets.ts"
+    "pda_helpers": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/addresses/pda.ts",
+    "perp_market_constants": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/constants/perpMarkets.ts",
+    "spot_market_constants": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/constants/spotMarkets.ts",
+    "drift_idl": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/idl/drift.json",
+    "account_fetch_helpers": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/accounts/fetch.ts"
+  },
+  "decoder_provenance": {
+    "protocol_repo": "drift-labs/protocol-v2",
+    "protocol_repo_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
+    "sdk_version": "2.163.0-beta.0",
+    "drift_idl_source": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/idl/drift.json",
+    "drift_idl_blob_sha": "9646dd6a893568d85d8dc47507e047010bf7e945",
+    "decode_status": "target_discovered_not_binary_decoded",
+    "next_safe_decode_step": "account discriminator, account data length, IDL account type, and public market fields only"
   },
   "targets": [
     {
@@ -25,7 +36,7 @@
       "pda": {
         "program_id": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
         "bump": 0,
-        "source": "https://github.com/drift-labs/protocol-v2/blob/master/sdk/src/addresses/pda.ts"
+        "source": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/addresses/pda.ts"
       },
       "probe": {
         "address": "EXAMPLE_DERIVED_PDA",
@@ -131,7 +142,8 @@
         "provider_label": "drift_labs_protocol_v2",
         "commitment": "not_applicable",
         "lifecycle_stage": "target_resolution",
-        "retention_boundary": "public_git_history"
+        "retention_boundary": "public_git_history",
+        "source_revision": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62"
       }
     ],
     "slot_range": {

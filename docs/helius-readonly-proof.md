@@ -18,7 +18,9 @@ Drift state, market, and oracle metadata discovery is also confirmed:
 scripts/discover_drift_readonly_state.py --out target/oprs-drift-readonly-state/latest.json
 ```
 
-This second command derives public Drift PDAs from official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding or historical liquidation replay.
+This second command derives public Drift PDAs from pinned official SDK source, probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and the deduplicated oracle accounts with `getAccountInfo` data slices. It emits a scrubbed local report under `target/`, keeps the Helius RPC URL local-only, and does not claim binary account decoding or historical liquidation replay.
+
+Decoder provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md).
 
 ## Scope Boundary
 
@@ -156,7 +158,7 @@ Do not include:
 
 ## Next Implementation Tasks
 
-1. Pin Drift decoder/IDL provenance and add a binary decode-safe snapshot mode for public fields only.
+1. Add a binary decode-safe snapshot mode for Drift account discriminator, IDL account type, and public market fields only.
 2. Resolve Jupiter Perps public pool/custody/oracle targets.
 3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
 4. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.
