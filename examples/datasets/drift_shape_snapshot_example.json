@@ -199,6 +199,26 @@
               "value": "USDC",
               "expected": "USDC",
               "matches_expected": true
+            },
+            {
+              "field": "decimals",
+              "source_field": "SpotMarket.decimals",
+              "type": "u32",
+              "offset": 680,
+              "length": 4,
+              "value": 6,
+              "expected": 6,
+              "matches_expected": true
+            },
+            {
+              "field": "market_index",
+              "source_field": "SpotMarket.market_index",
+              "type": "u16",
+              "offset": 684,
+              "length": 2,
+              "value": 0,
+              "expected": 0,
+              "matches_expected": true
             }
           ],
           "validation_failures": [],

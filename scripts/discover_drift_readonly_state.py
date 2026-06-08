@@ -113,6 +113,22 @@ PUBLIC_FIELD_LAYOUTS = {
             "source_field": "SpotMarket.name",
             "expected_from": "market.symbol",
         },
+        {
+            "name": "decimals",
+            "type": "u32",
+            "offset": 680,
+            "length": 4,
+            "source_field": "SpotMarket.decimals",
+            "expected_from": "market.decimals",
+        },
+        {
+            "name": "market_index",
+            "type": "u16",
+            "offset": 684,
+            "length": 2,
+            "source_field": "SpotMarket.market_index",
+            "expected_from": "market.market_index",
+        },
     ],
 }
 
@@ -151,6 +167,7 @@ SPOT_MARKETS = [
         "oracle": "9VCioxmni2gDLv11qufWzT3RDERhQE4iY5Gf7NTfYyAV",
         "oracle_source": "PYTH_LAZER_STABLE_COIN",
         "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "decimals": 6,
         "pyth_feed_id": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
     },
     {
@@ -160,6 +177,7 @@ SPOT_MARKETS = [
         "oracle": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
         "oracle_source": "PYTH_LAZER",
         "mint": "So11111111111111111111111111111111111111112",
+        "decimals": 9,
         "pyth_feed_id": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
     },
 ]
@@ -293,15 +311,14 @@ def anchor_account_discriminator(account_type: str) -> bytes:
     return hashlib.sha256(f"account:{account_type}".encode("utf-8")).digest()[:8]
 
 
-def expected_field_value(target: dict[str, Any], expected_from: str | None) -> str | None:
+def expected_field_value(target: dict[str, Any], expected_from: str | None) -> Any:
     if expected_from is None:
         return None
     if expected_from == "target_address":
         return target["address"]
     if expected_from.startswith("market."):
         market = target.get("market", {})
-        value = market.get(expected_from.split(".", 1)[1])
-        return value if isinstance(value, str) else None
+        return market.get(expected_from.split(".", 1)[1])
     return None
 
 
@@ -321,6 +338,10 @@ def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
             value = b58encode(field_bytes)
         elif field["type"] == "bytes32String":
             value = field_bytes.decode("utf-8", errors="replace").rstrip("\x00 ")
+        elif field["type"] == "u32":
+            value = int.from_bytes(field_bytes, "little", signed=False)
+        elif field["type"] == "u16":
+            value = int.from_bytes(field_bytes, "little", signed=False)
         else:
             validation_failures.append(f"{field['name']}:unsupported_type")
             continue

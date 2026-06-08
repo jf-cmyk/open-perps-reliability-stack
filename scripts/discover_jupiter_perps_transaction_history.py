@@ -157,7 +157,51 @@ def summarize_transaction(signature_row: dict[str, Any], transaction: dict[str, 
     return summary
 
 
-def build_lifecycle_candidates(summaries: list[dict[str, Any]], min_shared_keys: int) -> list[dict[str, Any]]:
+def account_metadata_batch(rpc_url: str, addresses: list[str]) -> dict[str, dict[str, Any]]:
+    metadata: dict[str, dict[str, Any]] = {}
+    if not addresses:
+        return metadata
+
+    for start in range(0, len(addresses), 100):
+        chunk = addresses[start : start + 100]
+        result = rpc_call(
+            rpc_url,
+            "getMultipleAccounts",
+            [
+                chunk,
+                {
+                    "commitment": "confirmed",
+                    "encoding": "base64",
+                    "dataSlice": {"offset": 0, "length": 0},
+                },
+            ],
+        )
+        values = result.get("value", []) if isinstance(result, dict) else []
+        for address, value in zip(chunk, values):
+            if value is None:
+                metadata[address] = {
+                    "exists": False,
+                    "owner": None,
+                    "executable": None,
+                    "perps_owned_non_executable": False,
+                }
+            else:
+                owner = value.get("owner")
+                executable = value.get("executable")
+                metadata[address] = {
+                    "exists": True,
+                    "owner": owner,
+                    "executable": executable,
+                    "perps_owned_non_executable": owner == JUPITER_PERPS_PROGRAM_ID and executable is False,
+                }
+    return metadata
+
+
+def build_lifecycle_candidates(
+    summaries: list[dict[str, Any]],
+    min_shared_keys: int,
+    account_metadata: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
     candidates = []
     available = [summary for summary in summaries if summary.get("transaction_available")]
     for index, first in enumerate(available):
@@ -178,9 +222,23 @@ def build_lifecycle_candidates(summaries: list[dict[str, Any]], min_shared_keys:
             if len(shared_keys) < min_shared_keys:
                 continue
 
+            perps_owned_shared_keys = [
+                key
+                for key in shared_keys
+                if account_metadata.get(key, {}).get("perps_owned_non_executable") is True
+            ]
             first_time = first.get("block_time")
             second_time = second.get("block_time")
             lifecycle_seed = [first_sig, second_sig] + shared_keys
+            quality_flags = [
+                "no_position_request_decode",
+                "no_semantic_instruction_decode",
+                "pairing_is_heuristic",
+            ]
+            if perps_owned_shared_keys:
+                quality_flags.append("shared_perps_owned_non_executable_account_seen")
+            else:
+                quality_flags.append("no_shared_perps_owned_non_executable_account_seen")
             candidates.append(
                 {
                     "lifecycle_id": hashlib.sha256("\n".join(lifecycle_seed).encode("utf-8")).hexdigest(),
@@ -199,22 +257,28 @@ def build_lifecycle_candidates(summaries: list[dict[str, Any]], min_shared_keys:
                     "shared_account_keys": shared_keys[:12],
                     "shared_account_keys_truncated": len(shared_keys) > 12,
                     "shared_account_keys_hash": stable_hash(shared_keys),
+                    "shared_perps_owned_non_executable_count": len(perps_owned_shared_keys),
+                    "shared_perps_owned_non_executable_keys": perps_owned_shared_keys[:12],
+                    "shared_perps_owned_non_executable_keys_truncated": len(perps_owned_shared_keys) > 12,
+                    "shared_perps_owned_non_executable_keys_hash": stable_hash(perps_owned_shared_keys),
                     "request_fulfillment_pair_candidate": True,
                     "request_fulfillment_pair_claimed": False,
                     "position_request_decoded": False,
                     "raw_transaction_committed": False,
                     "proof_status": "candidate_pair_unverified",
-                    "quality_flags": [
-                        "no_position_request_decode",
-                        "no_semantic_instruction_decode",
-                        "pairing_is_heuristic",
-                    ],
+                    "quality_flags": quality_flags,
                 }
             )
     return candidates
 
 
-def build_report(rpc_url: str, limit: int, transaction_limit: int, min_shared_keys: int) -> dict[str, Any]:
+def build_report(
+    rpc_url: str,
+    limit: int,
+    transaction_limit: int,
+    min_shared_keys: int,
+    probe_shared_accounts: bool,
+) -> dict[str, Any]:
     observed_slot = rpc_call(rpc_url, "getSlot", [{"commitment": "confirmed"}])
     now = int(time.time())
     signatures = rpc_call(
@@ -265,7 +329,18 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int, min_shared_ke
         sampled.append(summary)
 
     methods = ["getSlot", "getSignaturesForAddress"] + ["getTransaction"] * len(sampled)
-    lifecycle_candidates = build_lifecycle_candidates(sampled, min_shared_keys)
+    shared_account_candidates = sorted(
+        {
+            key
+            for index, first in enumerate(sampled)
+            for second in sampled[index + 1 :]
+            for key in set(first.get("_candidate_account_keys", [])) & set(second.get("_candidate_account_keys", []))
+        }
+    )
+    account_metadata = account_metadata_batch(rpc_url, shared_account_candidates) if probe_shared_accounts else {}
+    if probe_shared_accounts and shared_account_candidates:
+        methods.append("getMultipleAccounts")
+    lifecycle_candidates = build_lifecycle_candidates(sampled, min_shared_keys, account_metadata)
     public_summaries = []
     for summary in sampled:
         clean = dict(summary)
@@ -308,6 +383,9 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int, min_shared_ke
             "status": "candidate_pairing_only",
             "min_shared_non_common_account_keys": min_shared_keys,
             "basis": "shared public transaction account keys after common program account exclusion",
+            "shared_account_metadata_probe": probe_shared_accounts,
+            "shared_account_metadata_probe_count": len(shared_account_candidates) if probe_shared_accounts else 0,
+            "shared_account_metadata_probe_methods": ["getMultipleAccounts"] if probe_shared_accounts else [],
             "verified_request_fulfillment_pair_claimed": False,
             "raw_account_key_sets_committed": False,
         },
@@ -363,6 +441,7 @@ def build_report(rpc_url: str, limit: int, transaction_limit: int, min_shared_ke
                 "Raw transaction bodies, instruction data, and logs are not committed to output.",
                 "Program invocation counts are structural summaries, not semantic lifecycle labels.",
                 "Raw account key sets are not committed; only account-key hashes and bounded shared candidate keys are emitted.",
+                "Shared account metadata probes use dataSlice length 0 and do not emit raw account bytes.",
             ],
             "generated_at_unix": now,
             "generated_by": "scripts/discover_jupiter_perps_transaction_history.py",
@@ -406,6 +485,11 @@ def main() -> int:
         default=2,
         help="Minimum non-common shared account keys required for an unverified lifecycle candidate.",
     )
+    parser.add_argument(
+        "--skip-shared-account-probe",
+        action="store_true",
+        help="Skip metadata-only getMultipleAccounts probes for shared candidate accounts.",
+    )
     args = parser.parse_args()
 
     if args.limit < 1 or args.limit > 100:
@@ -427,7 +511,13 @@ def main() -> int:
         print("HELIUS_RPC_URL must be an HTTPS RPC URL.", file=sys.stderr)
         return 2
 
-    report = build_report(rpc_url, args.limit, args.transaction_limit, args.min_shared_keys)
+    report = build_report(
+        rpc_url,
+        args.limit,
+        args.transaction_limit,
+        args.min_shared_keys,
+        probe_shared_accounts=not args.skip_shared_account_probe,
+    )
     output_path = Path(args.out)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")

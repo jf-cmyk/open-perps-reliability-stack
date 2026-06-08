@@ -80,6 +80,10 @@
       ],
       "shared_account_keys_truncated": false,
       "shared_account_keys_hash": "EXAMPLE_SHARED_KEYS_SHA256",
+      "shared_perps_owned_non_executable_count": 0,
+      "shared_perps_owned_non_executable_keys": [],
+      "shared_perps_owned_non_executable_keys_truncated": false,
+      "shared_perps_owned_non_executable_keys_hash": "EXAMPLE_EMPTY_SET_SHA256",
       "request_fulfillment_pair_candidate": true,
       "request_fulfillment_pair_claimed": false,
       "position_request_decoded": false,
@@ -88,7 +92,8 @@
       "quality_flags": [
         "no_position_request_decode",
         "no_semantic_instruction_decode",
-        "pairing_is_heuristic"
+        "pairing_is_heuristic",
+        "no_shared_perps_owned_non_executable_account_seen"
       ]
     }
   ],
@@ -96,6 +101,11 @@
     "status": "candidate_pairing_only",
     "min_shared_non_common_account_keys": 2,
     "basis": "shared public transaction account keys after common program account exclusion",
+    "shared_account_metadata_probe": true,
+    "shared_account_metadata_probe_count": 2,
+    "shared_account_metadata_probe_methods": [
+      "getMultipleAccounts"
+    ],
     "verified_request_fulfillment_pair_claimed": false,
     "raw_account_key_sets_committed": false
   },
@@ -133,7 +143,8 @@
       "methods": [
         "getSlot",
         "getSignaturesForAddress",
-        "getTransaction"
+        "getTransaction",
+        "getMultipleAccounts"
       ],
       "transaction_details": "json_summary_only",
       "max_supported_transaction_version": 0,
@@ -155,7 +166,8 @@
       "RPC retention and provider backfill limits are not assessed.",
       "Raw transaction bodies, instruction data, and logs are not committed to output.",
       "Program invocation counts are structural summaries, not semantic lifecycle labels.",
-      "Raw account key sets are not committed; only account-key hashes and bounded shared candidate keys are emitted."
+      "Raw account key sets are not committed; only account-key hashes and bounded shared candidate keys are emitted.",
+      "Shared account metadata probes use dataSlice length 0 and do not emit raw account bytes."
     ],
     "generated_at_unix": 1780624200,
     "generated_by": "scripts/discover_jupiter_perps_transaction_history.py"

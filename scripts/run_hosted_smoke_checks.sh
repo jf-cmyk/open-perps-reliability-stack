@@ -83,6 +83,8 @@ assert_contains "public_fields_decoded" "$workdir/drift_shape_snapshot_example.j
 assert_contains "expected_account_type" "$workdir/drift_shape_snapshot_example.json"
 assert_contains "public_field_decode" "$workdir/drift_shape_snapshot_example.json"
 assert_contains "market_economics_decoded" "$workdir/drift_shape_snapshot_example.json"
+assert_contains '"field": "decimals"' "$workdir/drift_shape_snapshot_example.json"
+assert_contains '"field": "market_index"' "$workdir/drift_shape_snapshot_example.json"
 assert_contains "raw_account_data_committed" "$workdir/drift_shape_snapshot_example.json"
 assert_contains "field_decode_claimed" "$workdir/drift_shape_snapshot_example.json"
 
@@ -106,6 +108,8 @@ assert_contains "jupiter_perps_transaction_history_sample" "$workdir/jupiter_per
 assert_contains "transaction_history_sample_only" "$workdir/jupiter_perps_transaction_history_example.json"
 assert_contains "candidate_pair_unverified" "$workdir/jupiter_perps_transaction_history_example.json"
 assert_contains "verified_request_fulfillment_pair_claimed" "$workdir/jupiter_perps_transaction_history_example.json"
+assert_contains "shared_account_metadata_probe" "$workdir/jupiter_perps_transaction_history_example.json"
+assert_contains "shared_perps_owned_non_executable_count" "$workdir/jupiter_perps_transaction_history_example.json"
 assert_contains "request_fulfillment_pair_claimed" "$workdir/jupiter_perps_transaction_history_example.json"
 assert_contains "raw_transaction_committed" "$workdir/jupiter_perps_transaction_history_example.json"
 

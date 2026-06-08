@@ -73,9 +73,9 @@ The optional public-field mode is intentionally limited to identity fields with 
 
 - `State.admin` and `State.signer`
 - `PerpMarket.pubkey`
-- `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, and `SpotMarket.name`
+- `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, `SpotMarket.name`, `SpotMarket.decimals`, and `SpotMarket.market_index`
 
-The command validates expected PDA, oracle, mint, and symbol values where the selected target already has a public source. It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
+The command validates expected PDA, oracle, mint, symbol, decimals, and market-index values where the selected target already has a public source. It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
 
 ## Next Safe Decode Step
 
