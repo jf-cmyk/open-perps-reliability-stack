@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "run_id": "drift_synthetic_perp_pause_flag_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "drift-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "drift-public-guardrails-v0",
+    "started_at_unix": 1781045520,
+    "completed_at_unix": 1781045521,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"]
+  },
+  "opportunities": [],
+  "gate_results": [
+    {
+      "gate_id": "perp_guardrail_pause_flag",
+      "status": "Warn",
+      "reason_codes": ["DataQualityLow"],
+      "message": "Synthetic ETH-PERP guardrail fixture preserves observed PerpMarket.paused_operations label SettleRevPool for review only."
+    },
+    {
+      "gate_id": "no_signing",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture dry-run contains no signer, custody, submission, or capital controls."
+    }
+  ],
+  "simulation_results": [
+    {
+      "status": "Rejected",
+      "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"],
+      "error": null
+    }
+  ]
+}

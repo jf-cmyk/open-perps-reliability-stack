@@ -137,6 +137,14 @@ PUBLIC_FIELD_LAYOUTS = {
             "expected_from": "target_address",
         },
         {
+            "name": "amm_oracle",
+            "type": "publicKey",
+            "offset": 40,
+            "length": 32,
+            "source_field": "PerpMarket.amm.oracle",
+            "expected_from": "market.oracle",
+        },
+        {
             "name": "market_index",
             "type": "u16",
             "offset": 1160,
@@ -829,7 +837,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_pub
                 "target/oprs-drift-readonly-state/latest.json"
             ],
             "known_gaps": [
-                "Shape snapshot mode decodes only account discriminator and account data length; optional public-field mode decodes selected identity and spot metadata fields.",
+                "Shape snapshot mode decodes only account discriminator and account data length; optional public-field mode decodes selected identity, metadata, and guardrail fields.",
                 "No user account, pre-state, transaction history, or liquidation event reconstruction is performed.",
                 "Jupiter Perps pool/custody/oracle targets remain a separate proof lane.",
             ],
@@ -869,7 +877,7 @@ def main() -> int:
     parser.add_argument(
         "--include-public-fields",
         action="store_true",
-        help="Also emit offset-validated public identity and spot metadata fields from selected Drift accounts.",
+        help="Also emit offset-validated public identity, metadata, and guardrail fields from selected Drift accounts.",
     )
     args = parser.parse_args()
 

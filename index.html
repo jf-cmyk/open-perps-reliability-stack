@@ -306,7 +306,7 @@
       <section class="metrics" aria-label="proof pack summary">
         <div class="panel">
           <div class="label">Fixture Cases</div>
-          <div class="metric">7</div>
+          <div class="metric">8</div>
           <div class="note">Synthetic Drift replay and guardrail scenarios</div>
         </div>
         <div class="panel">
@@ -316,8 +316,8 @@
         </div>
         <div class="panel">
           <div class="label">Replay Tests</div>
-          <div class="metric">9</div>
-          <div class="note">Includes checksum and guardrail rejection</div>
+          <div class="metric">10</div>
+          <div class="note">Includes checksum and pause-flag rejection</div>
         </div>
         <div class="panel">
           <div class="label">Access Needed</div>
@@ -360,11 +360,15 @@
             </div>
             <div class="link-row">
               <a class="link-title" href="datasets/sample/fixture_catalog.json">Fixture Catalog</a>
-              <p class="link-copy">Seven synthetic Drift cases covering oracle, adapter, guardrail, and execution-disabled outcomes.</p>
+              <p class="link-copy">Eight synthetic Drift cases covering oracle, adapter, guardrail, and execution-disabled outcomes.</p>
             </div>
             <div class="link-row">
-              <a class="link-title" href="examples/public/drift-guardrails-v0/guardrails.json">Guardrail Snapshot</a>
-              <p class="link-copy">Scrubbed public example for decoded Drift guardrail labels and DQ gates.</p>
+              <a class="link-title" href="examples/public/drift-guardrails-v0/spot_guardrails.json">Spot Guardrails</a>
+              <p class="link-copy">Scrubbed public example for decoded Drift spot guardrail labels and DQ gates.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="examples/public/drift-guardrails-v0/perp_guardrails.json">Perp Guardrails</a>
+              <p class="link-copy">Scrubbed public example for decoded Drift perp status, tier, oracle, and pause labels.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="examples/datasets/data_reconstruction_envelope.json">Reconstruction Envelope</a>
@@ -399,27 +403,27 @@ cargo test</pre>
             <div class="bar-row">
               <span>Execution Boundary</span>
               <div class="bar"><span class="fill green" style="width: 100%"></span></div>
-              <span>7/7</span>
+              <span>8/8</span>
             </div>
             <div class="bar-row">
               <span>Oracle Risk</span>
-              <div class="bar"><span class="fill blue" style="width: 57%"></span></div>
-              <span>4/7</span>
+              <div class="bar"><span class="fill blue" style="width: 50%"></span></div>
+              <span>4/8</span>
             </div>
             <div class="bar-row">
               <span>Adapter Health</span>
-              <div class="bar"><span class="fill amber" style="width: 14%"></span></div>
-              <span>1/7</span>
+              <div class="bar"><span class="fill amber" style="width: 13%"></span></div>
+              <span>1/8</span>
             </div>
             <div class="bar-row">
               <span>Guardrail DQ</span>
-              <div class="bar"><span class="fill red" style="width: 14%"></span></div>
-              <span>1/7</span>
+              <div class="bar"><span class="fill red" style="width: 25%"></span></div>
+              <span>2/8</span>
             </div>
             <div class="bar-row">
               <span>Content Checksums</span>
               <div class="bar"><span class="fill teal" style="width: 100%"></span></div>
-              <span>7/7</span>
+              <span>8/8</span>
             </div>
           </div>
         </div>

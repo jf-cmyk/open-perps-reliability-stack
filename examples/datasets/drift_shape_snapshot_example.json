@@ -124,6 +124,16 @@
               "matches_expected": true
             },
             {
+              "field": "amm_oracle",
+              "source_field": "PerpMarket.amm.oracle",
+              "type": "publicKey",
+              "offset": 40,
+              "length": 32,
+              "value": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+              "expected": "3m6i4RFWEDw2Ft4tFHPJtYgmpPe21k56M3FHeWYrgGBz",
+              "matches_expected": true
+            },
+            {
               "field": "market_index",
               "source_field": "PerpMarket.market_index",
               "type": "u16",
@@ -365,7 +375,7 @@
   "known_gaps": [
     "Example file only; live output is written under target/ and is not committed.",
     "Shape snapshot mode decodes only account discriminator and account data length.",
-    "Public-field mode decodes only selected identity, spot metadata, and source-backed guardrail labels with pinned offsets.",
+    "Public-field mode decodes only selected identity, oracle identity, spot metadata, and source-backed guardrail labels with pinned offsets.",
     "No market economics, user accounts, liquidation pre-state, or historical replay are claimed."
   ],
   "forbidden_actions": [

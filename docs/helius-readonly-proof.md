@@ -174,8 +174,8 @@ Do not include:
 
 ## Next Implementation Tasks
 
-1. Add a binary decode-safe snapshot mode for Drift account discriminator, IDL account type, and public market fields only.
-2. Pin canonical Jupiter Perps IDL/source provenance before any Jupiter `decoded_snapshot` claim.
-3. Add Jupiter request/fulfillment lifecycle evidence using public transaction history only.
-4. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
+1. Pin canonical Jupiter Perps IDL/source provenance before any Jupiter `decoded_snapshot` claim.
+2. Add Jupiter request/fulfillment lifecycle evidence using public transaction history only.
+3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
+4. Add any further Drift public fields only after source/offset validation and scrub review.
 5. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.

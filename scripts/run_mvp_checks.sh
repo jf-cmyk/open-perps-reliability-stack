@@ -29,9 +29,11 @@ python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/
 python3 -m json.tool examples/datasets/drift_readonly_state_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_shape_snapshot_example.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-decode-worker-run-v0.json >/dev/null
-python3 -m json.tool schemas/datasets/guardrail-snapshot-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
-python3 -m json.tool examples/public/drift-guardrails-v0/guardrails.json >/dev/null
+python3 -m json.tool examples/public/drift-guardrails-v0/spot_guardrails.json >/dev/null
+python3 -m json.tool examples/public/drift-guardrails-v0/perp_guardrails.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/manifest.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/dq.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.json >/dev/null
@@ -55,13 +57,15 @@ test -f docs/jupiter-source-authority-audit.md
 test -f docs/read-only-decode-worker.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f schemas/datasets/readonly-decode-worker-run-v0.json
-test -f schemas/datasets/guardrail-snapshot-v0.json
+test -f schemas/datasets/spot-guardrail-snapshot-v0.json
+test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
 test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/drift_readonly_decode_worker_run_example.json
-test -f examples/public/drift-guardrails-v0/guardrails.json
+test -f examples/public/drift-guardrails-v0/spot_guardrails.json
+test -f examples/public/drift-guardrails-v0/perp_guardrails.json
 test -f examples/public/drift-guardrails-v0/manifest.json
 test -f examples/public/drift-guardrails-v0/dq.json
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json

@@ -49,10 +49,11 @@ def scan_blocked_text(path: Path, text: str) -> list[str]:
 def validate_package(package_dir: Path) -> list[str]:
     failures: list[str] = []
     manifest_path = package_dir / "manifest.json"
-    guardrails_path = package_dir / "guardrails.json"
+    spot_guardrails_path = package_dir / "spot_guardrails.json"
+    perp_guardrails_path = package_dir / "perp_guardrails.json"
     dq_path = package_dir / "dq.json"
 
-    for required in [manifest_path, guardrails_path, dq_path]:
+    for required in [manifest_path, spot_guardrails_path, perp_guardrails_path, dq_path]:
         if not required.exists():
             failures.append(f"missing required file: {required}")
 
@@ -60,10 +61,11 @@ def validate_package(package_dir: Path) -> list[str]:
         return failures
 
     manifest = load_json(manifest_path)
-    guardrails = load_json(guardrails_path)
+    spot_guardrails = load_json(spot_guardrails_path)
+    perp_guardrails = load_json(perp_guardrails_path)
     dq = load_json(dq_path)
 
-    for path in [manifest_path, guardrails_path, dq_path]:
+    for path in [manifest_path, spot_guardrails_path, perp_guardrails_path, dq_path]:
         failures.extend(scan_blocked_text(path, path.read_text(encoding="utf-8")))
 
     if manifest.get("capability") != "read_only_dry_run":
@@ -73,17 +75,24 @@ def validate_package(package_dir: Path) -> list[str]:
     if manifest.get("dq", {}).get("blocking_failures") != 0:
         failures.append("manifest dq.blocking_failures must be 0")
 
-    readiness = guardrails.get("readiness", {})
-    required_false = ["user_state_decoded", "market_economics_decoded", "replay_ready"]
-    for key in required_false:
-        if readiness.get(key) is not False:
-            failures.append(f"guardrails readiness.{key} must be false")
-    if readiness.get("public_guardrails_decoded") is not True:
-        failures.append("guardrails readiness.public_guardrails_decoded must be true")
-
-    records = guardrails.get("records", [])
-    if not isinstance(records, list) or not records:
-        failures.append("guardrails.records must be a non-empty array")
+    records_by_path = {
+        "spot_guardrails.json": spot_guardrails.get("records", []),
+        "perp_guardrails.json": perp_guardrails.get("records", []),
+    }
+    for label, payload in [
+        ("spot_guardrails", spot_guardrails),
+        ("perp_guardrails", perp_guardrails),
+    ]:
+        readiness = payload.get("readiness", {})
+        required_false = ["user_state_decoded", "market_economics_decoded", "replay_ready"]
+        for key in required_false:
+            if readiness.get(key) is not False:
+                failures.append(f"{label} readiness.{key} must be false")
+        if readiness.get("public_guardrails_decoded") is not True:
+            failures.append(f"{label} readiness.public_guardrails_decoded must be true")
+        records = payload.get("records", [])
+        if not isinstance(records, list) or not records:
+            failures.append(f"{label}.records must be a non-empty array")
 
     output_specs = manifest.get("outputs", [])
     for output in output_specs:
@@ -98,8 +107,8 @@ def validate_package(package_dir: Path) -> list[str]:
         observed_sha = sha256_file(output_path)
         if observed_sha != output.get("sha256"):
             failures.append(f"{relative_path} sha256 mismatch: {observed_sha}")
-        if relative_path == "guardrails.json":
-            observed_rows = len(records)
+        if relative_path in records_by_path:
+            observed_rows = len(records_by_path[relative_path])
         elif relative_path == "dq.json":
             observed_rows = len(dq.get("checks", []))
         else:

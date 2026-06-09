@@ -1,0 +1,67 @@
+{
+  "schema_version": "oprs.perp_guardrail_snapshot.v0",
+  "dataset_name": "drift_perp_guardrails_v0_example",
+  "protocol": "drift_v2",
+  "chain_id": "solana-mainnet-beta",
+  "source_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
+  "generated_from": "examples/datasets/drift_shape_snapshot_example.json",
+  "records": [
+    {
+      "record_id": "drift_perp_market_0_sol_guardrails",
+      "market": "SOL-PERP",
+      "market_index": 0,
+      "base_asset": "SOL",
+      "status": {
+        "raw_value": 1,
+        "label": "Active",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "contract_type": {
+        "raw_value": 0,
+        "label": "Perpetual",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "contract_tier": {
+        "raw_value": 1,
+        "label": "B",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "perp_pause_flags": [],
+      "quality_flags": []
+    },
+    {
+      "record_id": "drift_perp_market_2_eth_guardrails",
+      "market": "ETH-PERP",
+      "market_index": 2,
+      "base_asset": "ETH",
+      "status": {
+        "raw_value": 1,
+        "label": "Active",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "contract_type": {
+        "raw_value": 0,
+        "label": "Perpetual",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "contract_tier": {
+        "raw_value": 1,
+        "label": "B",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "perp_pause_flags": ["SettleRevPool"],
+      "quality_flags": ["limited_public_guardrail_context"]
+    }
+  ],
+  "readiness": {
+    "public_guardrails_decoded": true,
+    "user_state_decoded": false,
+    "market_economics_decoded": false,
+    "replay_ready": false
+  },
+  "known_gaps": [
+    "Example package only; live read-only output is written under target/ and is not committed.",
+    "Only selected Drift perp-market public guardrails are represented.",
+    "No user accounts, positions, margin health, market economics, or historical liquidation replay are claimed."
+  ]
+}

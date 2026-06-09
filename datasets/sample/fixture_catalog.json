@@ -84,6 +84,18 @@
       "health_ratio_bps": null,
       "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"],
       "manifest_path": "datasets/sample/drift_synthetic_guardrail_unknown_pause_bit_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_perp_pause_flag_001",
+      "protocol": "drift",
+      "market_id": "ETH-PERP",
+      "case": "perp_pause_flag_rejected_for_replay_promotion",
+      "status": "Rejected",
+      "oracle_confidence_bps": null,
+      "oracle_staleness_secs": null,
+      "health_ratio_bps": null,
+      "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_perp_pause_flag_001/manifest.json"
     }
   ]
 }

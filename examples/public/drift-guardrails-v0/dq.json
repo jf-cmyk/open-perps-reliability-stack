@@ -37,7 +37,7 @@
       "gate_id": "limited_market_coverage",
       "severity": "warn_public",
       "status": "warn",
-      "message": "Package covers only selected Drift spot guardrails."
+      "message": "Package covers only selected Drift spot and perp guardrails."
     },
     {
       "gate_id": "example_not_live_backfill",

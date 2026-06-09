@@ -688,6 +688,11 @@ mod tests {
     const GUARDRAIL_UNKNOWN_DRY_RUN: &str = include_str!(
         "../../../datasets/sample/drift_synthetic_guardrail_unknown_pause_bit_001/dry_run_output.json"
     );
+    const PERP_PAUSE_MANIFEST: &str =
+        include_str!("../../../datasets/sample/drift_synthetic_perp_pause_flag_001/manifest.json");
+    const PERP_PAUSE_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/drift_synthetic_perp_pause_flag_001/dry_run_output.json"
+    );
     const CATALOG: &str = include_str!("../../../datasets/sample/fixture_catalog.json");
 
     #[test]
@@ -702,6 +707,7 @@ mod tests {
                 "drift_synthetic_oracle_divergence_001",
                 "drift_synthetic_adapter_version_mismatch_001",
                 "drift_synthetic_guardrail_unknown_pause_bit_001",
+                "drift_synthetic_perp_pause_flag_001",
             ],
         )
         .assert_passed();
@@ -807,6 +813,22 @@ mod tests {
             manifest_json: GUARDRAIL_UNKNOWN_MANIFEST,
             dry_run_output_json: GUARDRAIL_UNKNOWN_DRY_RUN,
             content_files: guardrail_unknown_content_files(),
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::DataQualityLow,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn validates_perp_pause_flag_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_perp_pause_flag_001",
+            manifest_json: PERP_PAUSE_MANIFEST,
+            dry_run_output_json: PERP_PAUSE_DRY_RUN,
+            content_files: perp_pause_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::DataQualityLow,
@@ -1167,6 +1189,15 @@ mod tests {
         &[FixtureContent {
             path: "datasets/sample/drift_synthetic_guardrail_unknown_pause_bit_001/dry_run_output.json",
             bytes: include_bytes!("../../../datasets/sample/drift_synthetic_guardrail_unknown_pause_bit_001/dry_run_output.json"),
+        }]
+    }
+
+    fn perp_pause_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/drift_synthetic_perp_pause_flag_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/drift_synthetic_perp_pause_flag_001/dry_run_output.json"
+            ),
         }]
     }
 }

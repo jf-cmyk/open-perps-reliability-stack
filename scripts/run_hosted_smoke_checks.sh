@@ -96,6 +96,7 @@ assert_contains "raw_account_data_committed" "$workdir/drift_shape_snapshot_exam
 assert_contains "field_decode_claimed" "$workdir/drift_shape_snapshot_example.json"
 assert_contains '"field": "contract_type"' "$workdir/drift_shape_snapshot_example.json"
 assert_contains '"field": "contract_tier"' "$workdir/drift_shape_snapshot_example.json"
+assert_contains '"field": "amm_oracle"' "$workdir/drift_shape_snapshot_example.json"
 assert_contains '"semantic_value": "Perpetual"' "$workdir/drift_shape_snapshot_example.json"
 
 echo "== Fetch read-only decode worker example =="
@@ -105,10 +106,13 @@ assert_contains "one_shot_local_read_only" "$workdir/drift_readonly_decode_worke
 assert_contains '"transaction_submission_enabled": false' "$workdir/drift_readonly_decode_worker_run_example.json"
 
 echo "== Fetch public Drift guardrail package =="
-fetch "/examples/public/drift-guardrails-v0/guardrails.json" "$workdir/drift_guardrails.json"
+fetch "/examples/public/drift-guardrails-v0/spot_guardrails.json" "$workdir/drift_spot_guardrails.json"
+fetch "/examples/public/drift-guardrails-v0/perp_guardrails.json" "$workdir/drift_perp_guardrails.json"
 fetch "/examples/public/drift-guardrails-v0/manifest.json" "$workdir/drift_guardrail_manifest.json"
 fetch "/examples/public/drift-guardrails-v0/dq.json" "$workdir/drift_guardrail_dq.json"
-assert_contains "oprs.guardrail_snapshot.v0" "$workdir/drift_guardrails.json"
+assert_contains "oprs.spot_guardrail_snapshot.v0" "$workdir/drift_spot_guardrails.json"
+assert_contains "oprs.perp_guardrail_snapshot.v0" "$workdir/drift_perp_guardrails.json"
+assert_contains "SettleRevPool" "$workdir/drift_perp_guardrails.json"
 assert_contains "drift_guardrails_v0_example" "$workdir/drift_guardrail_manifest.json"
 assert_contains "no_user_state_claims" "$workdir/drift_guardrail_dq.json"
 
@@ -197,7 +201,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/drift_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

@@ -1,7 +1,7 @@
 {
   "manifest_version": "oprs.public_dataset_manifest.v0",
   "dataset_name": "drift_guardrails_v0_example",
-  "schema_version": "oprs.guardrail_snapshot.v0",
+  "schema_version": "oprs.public_guardrail_package.v0",
   "protocol": "drift_v2",
   "chain_id": "solana-mainnet-beta",
   "capability": "read_only_dry_run",
@@ -10,16 +10,22 @@
   "generated_from": "examples/datasets/drift_shape_snapshot_example.json",
   "outputs": [
     {
-      "path": "guardrails.json",
+      "path": "spot_guardrails.json",
       "format": "json",
       "row_count": 2,
-      "sha256": "dca80bc6df3fec673d53ad05bddb087f3347acee3e3fa7546991163a27269e09"
+      "sha256": "a2d3a49d0e6e09e6627b6f3fb7c179940ef3a978ffdf57f5f2a01a05fc2d824b"
+    },
+    {
+      "path": "perp_guardrails.json",
+      "format": "json",
+      "row_count": 2,
+      "sha256": "eab4e20e21a4997a1db19c20aa044b85921b10be0ed6204f46925d7b3aac011d"
     },
     {
       "path": "dq.json",
       "format": "json",
       "row_count": 7,
-      "sha256": "8e23b67c54f0125dc30e5fb28fa45884a59f7686f7dea7b517ab6531c64a8553"
+      "sha256": "1090fe06e17c041a982d3c6a77c6ef71f439529feff89b934ced2073dbe22af1"
     }
   ],
   "dq": {

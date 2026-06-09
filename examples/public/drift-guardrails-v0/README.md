@@ -6,6 +6,7 @@ It does not contain raw account bytes, RPC credentials, user accounts, positions
 
 Files:
 
-- `guardrails.json`: public guardrail snapshot records
+- `spot_guardrails.json`: public spot-market guardrail snapshot records
+- `perp_guardrails.json`: public perp-market guardrail snapshot records
 - `manifest.json`: dataset packaging and source limitations
 - `dq.json`: publish gates and scrub status

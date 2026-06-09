@@ -1,6 +1,6 @@
 {
-  "schema_version": "oprs.guardrail_snapshot.v0",
-  "dataset_name": "drift_guardrails_v0_example",
+  "schema_version": "oprs.spot_guardrail_snapshot.v0",
+  "dataset_name": "drift_spot_guardrails_v0_example",
   "protocol": "drift_v2",
   "chain_id": "solana-mainnet-beta",
   "source_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
@@ -9,6 +9,7 @@
     {
       "record_id": "drift_spot_market_0_usdc_guardrails",
       "market": "USDC-SPOT",
+      "market_index": 0,
       "asset": "USDC",
       "asset_role": "quote_stable",
       "orders_enabled": false,
@@ -29,6 +30,7 @@
     {
       "record_id": "drift_spot_market_1_sol_guardrails",
       "market": "SOL-SPOT",
+      "market_index": 1,
       "asset": "SOL",
       "asset_role": "collateral",
       "orders_enabled": true,
