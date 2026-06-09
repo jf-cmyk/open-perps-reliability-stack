@@ -129,6 +129,14 @@ PUBLIC_FIELD_LAYOUTS = {
             "source_field": "SpotMarket.market_index",
             "expected_from": "market.market_index",
         },
+        {
+            "name": "pool_id",
+            "type": "u8",
+            "offset": 735,
+            "length": 1,
+            "source_field": "SpotMarket.pool_id",
+            "expected_from": "market.pool_id",
+        },
     ],
 }
 
@@ -341,6 +349,8 @@ def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
         elif field["type"] == "u32":
             value = int.from_bytes(field_bytes, "little", signed=False)
         elif field["type"] == "u16":
+            value = int.from_bytes(field_bytes, "little", signed=False)
+        elif field["type"] == "u8":
             value = int.from_bytes(field_bytes, "little", signed=False)
         else:
             validation_failures.append(f"{field['name']}:unsupported_type")
@@ -586,7 +596,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_pub
             "shape_snapshot_included": include_shape_snapshot,
             "shape_snapshot_scope": "account discriminator, account data length, account data SHA-256, and expected IDL account type only",
             "public_field_decode_included": include_public_fields,
-            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and SpotMarket pubkey/oracle/mint/vault/name identity fields only",
+            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata fields only",
             "next_safe_decode_step": "public market fields only after field offsets are validated against the pinned IDL or SDK decoder",
         },
         "targets": targets,
@@ -633,7 +643,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_pub
                 "target/oprs-drift-readonly-state/latest.json"
             ],
             "known_gaps": [
-                "Shape snapshot mode decodes only account discriminator and account data length; optional public-field mode decodes only identity fields.",
+                "Shape snapshot mode decodes only account discriminator and account data length; optional public-field mode decodes selected identity and spot metadata fields.",
                 "No user account, pre-state, transaction history, or liquidation event reconstruction is performed.",
                 "Jupiter Perps pool/custody/oracle targets remain a separate proof lane.",
             ],
@@ -673,7 +683,7 @@ def main() -> int:
     parser.add_argument(
         "--include-public-fields",
         action="store_true",
-        help="Also emit offset-validated public identity fields from selected Drift accounts.",
+        help="Also emit offset-validated public identity and spot metadata fields from selected Drift accounts.",
     )
     args = parser.parse_args()
 

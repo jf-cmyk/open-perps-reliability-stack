@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-06-04-hosted-monitoring-checkpoint.md)
+1. [Current checkpoint](2026-06-09-stronger-jupiter-candidates-and-spot-pool-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -108,6 +108,7 @@ Wording guardrails:
 
 Read when changing Drift adapter shape, protocol priority, or venue metadata:
 
+- [Stronger Jupiter candidates and spot pool checkpoint](2026-06-09-stronger-jupiter-candidates-and-spot-pool-checkpoint.md)
 - [Spot metadata and shared account probes checkpoint](2026-06-08-spot-metadata-and-shared-account-probes-checkpoint.md)
 - [Public fields and candidate pairs checkpoint](2026-06-05-public-fields-and-candidate-pairs-checkpoint.md)
 - [Jupiter transaction history checkpoint](2026-06-05-jupiter-transaction-history-checkpoint.md)
@@ -141,8 +142,8 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Deploy and smoke-check the spot-metadata/shared-account-probes package if not already deployed.
-2. Upgrade Jupiter pairing only after a sample exposes shared Jupiter-owned non-executable accounts or a safe PositionRequest/Position heuristic.
+1. Commit, push, deploy, and smoke-check the stronger-candidate/spot-pool package if not already deployed.
+2. Keep Jupiter pairing unverified until PositionRequest/Position semantics are linked from canonical source or a reviewed source-authoritative heuristic.
 3. Decode additional Drift fields only after offset/source validation and explicit scrub review.
 4. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
 5. Keep Railway and GitHub Pages mirrors equivalent.

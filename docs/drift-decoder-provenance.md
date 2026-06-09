@@ -42,7 +42,7 @@ Confirmed:
 - USDC/SOL spot market PDA derivation and metadata reads.
 - Deduplicated oracle metadata reads for those selected markets.
 - Optional shape snapshots for Drift state, selected perp markets, and selected spot markets.
-- Optional public-field decode for State admin/signer, PerpMarket pubkey, and SpotMarket pubkey/oracle/mint/vault/name identity fields.
+- Optional public-field decode for State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata fields.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
@@ -69,13 +69,13 @@ Raw account bytes are not written to output.
 
 ## Public Field Decode Scope
 
-The optional public-field mode is intentionally limited to identity fields with simple, pinned offsets:
+The optional public-field mode is intentionally limited to selected public identity and spot metadata fields with simple, pinned offsets:
 
 - `State.admin` and `State.signer`
 - `PerpMarket.pubkey`
-- `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, `SpotMarket.name`, `SpotMarket.decimals`, and `SpotMarket.market_index`
+- `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, `SpotMarket.name`, `SpotMarket.decimals`, `SpotMarket.market_index`, and `SpotMarket.pool_id`
 
-The command validates expected PDA, oracle, mint, symbol, decimals, and market-index values where the selected target already has a public source. It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
+The command validates expected PDA, oracle, mint, symbol, decimals, market-index, and pool-id values where the selected target already has a public source. It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
 
 ## Next Safe Decode Step
 

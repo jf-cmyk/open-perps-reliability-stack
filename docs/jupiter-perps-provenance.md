@@ -37,7 +37,7 @@ Confirmed:
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
-The transaction-history sample now emits shared-account-key lifecycle candidates as `candidate_pair_unverified` and probes shared account metadata with `getMultipleAccounts` using `dataSlice` length 0. This is intentionally not a verified request/fulfillment reconstruction. It emits `verified_request_fulfillment_pair_claimed=false`, `request_fulfillment_pair_claimed=false`, `position_request_decoded=false`, and `raw_transaction_committed=false`.
+The transaction-history sample now emits shared-account-key lifecycle candidates as `candidate_pair_unverified` and probes shared account metadata with `getMultipleAccounts` using `dataSlice` length 0. A shared Jupiter-owned non-executable account is labeled as a stronger candidate signal, but it is intentionally not a verified request/fulfillment reconstruction. It emits `verified_request_fulfillment_pair_claimed=false`, `request_fulfillment_pair_claimed=false`, `position_request_decoded=false`, and `raw_transaction_committed=false`.
 
 ## IDL Candidate
 

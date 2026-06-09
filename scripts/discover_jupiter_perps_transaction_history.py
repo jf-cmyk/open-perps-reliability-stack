@@ -92,6 +92,45 @@ def stable_hash(values: list[str]) -> str:
     return hashlib.sha256("\n".join(sorted(values)).encode("utf-8")).hexdigest()
 
 
+def shared_account_owner_summary(shared_keys: list[str], account_metadata: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    owner_counts: dict[str, int] = {}
+    existing_count = 0
+    metadata_known_count = 0
+    executable_count = 0
+    non_executable_count = 0
+    missing_count = 0
+    for key in shared_keys:
+        metadata = account_metadata.get(key)
+        if not metadata:
+            continue
+        metadata_known_count += 1
+        if metadata.get("exists") is not True:
+            missing_count += 1
+            continue
+        existing_count += 1
+        if metadata.get("executable") is True:
+            executable_count += 1
+        elif metadata.get("executable") is False:
+            non_executable_count += 1
+        owner = metadata.get("owner")
+        if isinstance(owner, str):
+            owner_counts[owner] = owner_counts.get(owner, 0) + 1
+
+    top_owners = [
+        {"owner": owner, "count": count}
+        for owner, count in sorted(owner_counts.items(), key=lambda item: (-item[1], item[0]))[:8]
+    ]
+    return {
+        "metadata_known_count": metadata_known_count,
+        "existing_count": existing_count,
+        "missing_count": missing_count,
+        "executable_count": executable_count,
+        "non_executable_count": non_executable_count,
+        "owner_counts_top": top_owners,
+        "owner_counts_truncated": len(owner_counts) > len(top_owners),
+    }
+
+
 def summarize_transaction(signature_row: dict[str, Any], transaction: dict[str, Any] | None) -> dict[str, Any]:
     summary: dict[str, Any] = {
         "signature": signature_row.get("signature"),
@@ -237,8 +276,10 @@ def build_lifecycle_candidates(
             ]
             if perps_owned_shared_keys:
                 quality_flags.append("shared_perps_owned_non_executable_account_seen")
+                candidate_strength = "shared_perps_owned_non_executable_account_seen_unverified"
             else:
                 quality_flags.append("no_shared_perps_owned_non_executable_account_seen")
+                candidate_strength = "shared_keys_only_unverified"
             candidates.append(
                 {
                     "lifecycle_id": hashlib.sha256("\n".join(lifecycle_seed).encode("utf-8")).hexdigest(),
@@ -257,6 +298,7 @@ def build_lifecycle_candidates(
                     "shared_account_keys": shared_keys[:12],
                     "shared_account_keys_truncated": len(shared_keys) > 12,
                     "shared_account_keys_hash": stable_hash(shared_keys),
+                    "shared_account_owner_summary": shared_account_owner_summary(shared_keys, account_metadata),
                     "shared_perps_owned_non_executable_count": len(perps_owned_shared_keys),
                     "shared_perps_owned_non_executable_keys": perps_owned_shared_keys[:12],
                     "shared_perps_owned_non_executable_keys_truncated": len(perps_owned_shared_keys) > 12,
@@ -266,10 +308,20 @@ def build_lifecycle_candidates(
                     "position_request_decoded": False,
                     "raw_transaction_committed": False,
                     "proof_status": "candidate_pair_unverified",
+                    "candidate_strength": candidate_strength,
                     "quality_flags": quality_flags,
                 }
             )
-    return candidates
+    return sorted(
+        candidates,
+        key=lambda candidate: (
+            -candidate["shared_perps_owned_non_executable_count"],
+            -candidate["shared_account_key_count"],
+            candidate["latency_slots_abs"],
+            candidate["first_signature"],
+            candidate["second_signature"],
+        ),
+    )
 
 
 def build_report(
@@ -341,6 +393,11 @@ def build_report(
     if probe_shared_accounts and shared_account_candidates:
         methods.append("getMultipleAccounts")
     lifecycle_candidates = build_lifecycle_candidates(sampled, min_shared_keys, account_metadata)
+    stronger_candidate_count = sum(
+        1
+        for candidate in lifecycle_candidates
+        if candidate.get("shared_perps_owned_non_executable_count", 0) > 0
+    )
     public_summaries = []
     for summary in sampled:
         clean = dict(summary)
@@ -386,6 +443,8 @@ def build_report(
             "shared_account_metadata_probe": probe_shared_accounts,
             "shared_account_metadata_probe_count": len(shared_account_candidates) if probe_shared_accounts else 0,
             "shared_account_metadata_probe_methods": ["getMultipleAccounts"] if probe_shared_accounts else [],
+            "stronger_candidate_count": stronger_candidate_count,
+            "stronger_candidate_basis": "shared Jupiter-owned non-executable account seen, still unverified without PositionRequest/Position decode",
             "verified_request_fulfillment_pair_claimed": False,
             "raw_account_key_sets_committed": False,
         },
@@ -433,6 +492,7 @@ def build_report(
             "known_gaps": [
                 "This command samples public program signatures and transaction summaries only.",
                 "Lifecycle candidates are shared-account-key heuristics only and are not verified request/fulfillment pairs.",
+                "A shared Jupiter-owned non-executable account strengthens a candidate but is not sufficient to claim request/fulfillment pairing.",
                 "It does not decode PositionRequest or Position account binary layouts.",
                 "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims.",
             ],

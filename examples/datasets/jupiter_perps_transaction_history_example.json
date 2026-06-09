@@ -80,20 +80,41 @@
       ],
       "shared_account_keys_truncated": false,
       "shared_account_keys_hash": "EXAMPLE_SHARED_KEYS_SHA256",
-      "shared_perps_owned_non_executable_count": 0,
-      "shared_perps_owned_non_executable_keys": [],
+      "shared_account_owner_summary": {
+        "metadata_known_count": 2,
+        "existing_count": 2,
+        "missing_count": 0,
+        "executable_count": 0,
+        "non_executable_count": 2,
+        "owner_counts_top": [
+          {
+            "owner": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
+            "count": 1
+          },
+          {
+            "owner": "EXAMPLE_OTHER_PUBLIC_OWNER",
+            "count": 1
+          }
+        ],
+        "owner_counts_truncated": false
+      },
+      "shared_perps_owned_non_executable_count": 1,
+      "shared_perps_owned_non_executable_keys": [
+        "EXAMPLE_SHARED_PUBLIC_ACCOUNT_1"
+      ],
       "shared_perps_owned_non_executable_keys_truncated": false,
-      "shared_perps_owned_non_executable_keys_hash": "EXAMPLE_EMPTY_SET_SHA256",
+      "shared_perps_owned_non_executable_keys_hash": "EXAMPLE_PERPS_OWNED_KEYS_SHA256",
       "request_fulfillment_pair_candidate": true,
       "request_fulfillment_pair_claimed": false,
       "position_request_decoded": false,
       "raw_transaction_committed": false,
       "proof_status": "candidate_pair_unverified",
+      "candidate_strength": "shared_perps_owned_non_executable_account_seen_unverified",
       "quality_flags": [
         "no_position_request_decode",
         "no_semantic_instruction_decode",
         "pairing_is_heuristic",
-        "no_shared_perps_owned_non_executable_account_seen"
+        "shared_perps_owned_non_executable_account_seen"
       ]
     }
   ],
@@ -106,6 +127,8 @@
     "shared_account_metadata_probe_methods": [
       "getMultipleAccounts"
     ],
+    "stronger_candidate_count": 1,
+    "stronger_candidate_basis": "shared Jupiter-owned non-executable account seen, still unverified without PositionRequest/Position decode",
     "verified_request_fulfillment_pair_claimed": false,
     "raw_account_key_sets_committed": false
   },
@@ -159,6 +182,7 @@
       "Example file only; live output is written under target/ and is not committed.",
       "This command samples public program signatures and transaction summaries only.",
       "Lifecycle candidates are shared-account-key heuristics only and are not verified request/fulfillment pairs.",
+      "A shared Jupiter-owned non-executable account strengthens a candidate but is not sufficient to claim request/fulfillment pairing.",
       "It does not decode PositionRequest or Position account binary layouts.",
       "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims."
     ],
