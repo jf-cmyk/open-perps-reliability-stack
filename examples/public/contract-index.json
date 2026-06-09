@@ -1,0 +1,77 @@
+{
+  "contract_index_version": "oprs.public_contract_index.v0",
+  "packages": [
+    {
+      "package_id": "drift-guardrails-v0",
+      "package_type": "guardrail_snapshot",
+      "protocol": "drift_v2",
+      "capability": "read_only_dry_run",
+      "manifest_path": "examples/public/drift-guardrails-v0/manifest.json",
+      "dq_path": "examples/public/drift-guardrails-v0/dq.json",
+      "payloads": [
+        {
+          "role": "spot_guardrails",
+          "path": "examples/public/drift-guardrails-v0/spot_guardrails.json",
+          "schema_path": "schemas/datasets/spot-guardrail-snapshot-v0.json",
+          "schema_version": "oprs.spot_guardrail_snapshot.v0"
+        },
+        {
+          "role": "perp_guardrails",
+          "path": "examples/public/drift-guardrails-v0/perp_guardrails.json",
+          "schema_path": "schemas/datasets/perp-guardrail-snapshot-v0.json",
+          "schema_version": "oprs.perp_guardrail_snapshot.v0"
+        }
+      ],
+      "validator": "scripts/validate_public_guardrail_package.py",
+      "publishable": true,
+      "claim_boundary": {
+        "allowed_claims": [
+          "selected public Drift spot/perp guardrail fields are decoded",
+          "source-backed enum labels are attached where pinned source exists",
+          "public package checksums and DQ gates passed",
+          "read-only and dry-run only"
+        ],
+        "blocked_claims": [
+          "user-state decoded",
+          "market economics decoded",
+          "historical liquidation replay ready",
+          "verified liquidation opportunity",
+          "signing or transaction submission supported"
+        ]
+      }
+    },
+    {
+      "package_id": "jupiter-authority-gap-v0",
+      "package_type": "authority_gap",
+      "protocol": "jupiter_perps",
+      "capability": "read_only_dry_run",
+      "manifest_path": "examples/public/jupiter-authority-gap-v0/manifest.json",
+      "dq_path": "examples/public/jupiter-authority-gap-v0/dq.json",
+      "payloads": [
+        {
+          "role": "gap_report",
+          "path": "examples/public/jupiter-authority-gap-v0/gap_report.json",
+          "schema_path": "schemas/datasets/jupiter-authority-gap-v0.json",
+          "schema_version": "oprs.jupiter_authority_gap.v0"
+        }
+      ],
+      "validator": "scripts/validate_public_jupiter_authority_gap.py",
+      "publishable": true,
+      "claim_boundary": {
+        "allowed_claims": [
+          "Jupiter lifecycle candidates are public metadata evidence only",
+          "canonical source authority is not yet confirmed",
+          "verified request/fulfillment pairing is not claimed",
+          "read-only and dry-run only"
+        ],
+        "blocked_claims": [
+          "Jupiter binary account decode",
+          "verified request/fulfillment lifecycle pairing",
+          "historical Jupiter liquidation replay",
+          "keeper semantics confirmed",
+          "signing or transaction submission supported"
+        ]
+      }
+    }
+  ]
+}

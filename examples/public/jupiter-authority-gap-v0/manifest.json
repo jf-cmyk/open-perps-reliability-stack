@@ -1,0 +1,40 @@
+{
+  "manifest_version": "oprs.public_dataset_manifest.v0",
+  "dataset_name": "jupiter_authority_gap_v0_example",
+  "schema_version": "oprs.jupiter_authority_gap_package.v0",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "capability": "read_only_dry_run",
+  "source_type": "scrubbed_example",
+  "generated_from": "examples/datasets/jupiter_perps_transaction_history_example.json",
+  "outputs": [
+    {
+      "path": "gap_report.json",
+      "format": "json",
+      "row_count": 3,
+      "sha256": "af198999e4fb859e3f4a37e75de4e8ce2c980ea7f4324e982fbf0c95e401eead"
+    },
+    {
+      "path": "dq.json",
+      "format": "json",
+      "row_count": 6,
+      "sha256": "462490674c5cad11138fb5d4813915a6d9b39d8e141e6ec9b733454dd2ade986"
+    }
+  ],
+  "dq": {
+    "status": "passed",
+    "report_path": "dq.json",
+    "blocking_failures": 0,
+    "warnings": 3
+  },
+  "scrub": {
+    "policy_version": "oprs.public_artifact_scrub.v0",
+    "status": "passed",
+    "blocked_pattern_count": 0
+  },
+  "known_limitations": [
+    "Authority-gap package only; not a Jupiter decode claim.",
+    "Request/fulfillment lifecycle pairing remains unverified."
+  ],
+  "generated_at_unix": 1781046700
+}

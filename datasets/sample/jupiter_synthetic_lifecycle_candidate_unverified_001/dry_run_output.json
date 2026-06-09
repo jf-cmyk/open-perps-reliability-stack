@@ -1,0 +1,63 @@
+{
+  "summary": {
+    "run_id": "jupiter_synthetic_lifecycle_candidate_unverified_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "jupiter-perps-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "jupiter-lifecycle-candidates-v0",
+    "started_at_unix": 1781046600,
+    "completed_at_unix": 1781046601,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["AdapterDecodeFailed", "DataQualityLow", "ExecutionDisabledDryRun"]
+  },
+  "evidence_boundary": {
+    "protocol": "jupiter_perps",
+    "source_authority_status": "docs_linked_example_not_canonical",
+    "canonical_decode_authorized": false,
+    "verified_request_fulfillment_pair_claimed": false,
+    "request_account_decoded": false,
+    "position_account_decoded": false,
+    "raw_transaction_committed": false,
+    "raw_instruction_data_committed": false,
+    "raw_logs_committed": false,
+    "candidate_strength": "stronger_candidate_unverified",
+    "shared_jupiter_owned_non_executable_account_observed": true,
+    "shared_account_count": 3,
+    "public_evidence_refs": [
+      "docs/jupiter-perps-provenance.md",
+      "docs/jupiter-source-authority-audit.md",
+      "examples/datasets/jupiter_perps_transaction_history_example.json"
+    ]
+  },
+  "opportunities": [],
+  "gate_results": [
+    {
+      "gate_id": "jupiter_source_authority_gap",
+      "status": "Warn",
+      "reason_codes": ["DataQualityLow"],
+      "message": "Fixture preserves a stronger Jupiter-owned shared-account lifecycle candidate, but source authority is not canonical."
+    },
+    {
+      "gate_id": "jupiter_decode_blocked",
+      "status": "Fail",
+      "reason_codes": ["AdapterDecodeFailed"],
+      "message": "No PositionRequest or Position binary decode claim is allowed without canonical Jupiter Perps source authority."
+    },
+    {
+      "gate_id": "no_execution",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture contains only public metadata summaries and no signing, submission, route, or capital controls."
+    }
+  ],
+  "simulation_results": [
+    {
+      "status": "Rejected",
+      "reason_codes": ["AdapterDecodeFailed", "DataQualityLow", "ExecutionDisabledDryRun"],
+      "error": null
+    }
+  ]
+}

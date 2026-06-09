@@ -17,6 +17,8 @@ from typing import Any
 
 
 DEFAULT_PACKAGE = Path("examples/public/drift-guardrails-v0")
+DEFAULT_CONTRACT_INDEX = Path("examples/public/contract-index.json")
+DEFAULT_PACKAGE_ID = "drift-guardrails-v0"
 
 BLOCKED_PATTERNS = {
     "rpc_url": re.compile(r"https://[^\"'\s]*(helius|rpc|api-key|apikey)[^\"'\s]*", re.IGNORECASE),
@@ -38,6 +40,11 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def is_safe_relative_path(path: str) -> bool:
+    candidate = Path(path)
+    return bool(path) and not candidate.is_absolute() and ".." not in candidate.parts
+
+
 def scan_blocked_text(path: Path, text: str) -> list[str]:
     failures = []
     for label, pattern in BLOCKED_PATTERNS.items():
@@ -46,26 +53,90 @@ def scan_blocked_text(path: Path, text: str) -> list[str]:
     return failures
 
 
-def validate_package(package_dir: Path) -> list[str]:
+def load_contract_entry(index_path: Path, package_id: str) -> tuple[dict[str, Any] | None, list[str]]:
+    failures: list[str] = []
+    if not index_path.exists():
+        return None, [f"missing contract index: {index_path}"]
+    index = load_json(index_path)
+    if index.get("contract_index_version") != "oprs.public_contract_index.v0":
+        failures.append("contract index version must be oprs.public_contract_index.v0")
+    packages = index.get("packages", [])
+    if not isinstance(packages, list):
+        failures.append("contract index packages must be an array")
+        return None, failures
+    matches = [package for package in packages if package.get("package_id") == package_id]
+    if len(matches) != 1:
+        failures.append(f"contract index must contain exactly one `{package_id}` package")
+        return None, failures
+    entry = matches[0]
+    if entry.get("capability") != "read_only_dry_run":
+        failures.append("contract index package capability must be read_only_dry_run")
+    if entry.get("publishable") is not True:
+        failures.append("contract index package must be publishable")
+    if entry.get("validator") != "scripts/validate_public_guardrail_package.py":
+        failures.append("contract index validator must point to scripts/validate_public_guardrail_package.py")
+    boundary = entry.get("claim_boundary", {})
+    if not boundary.get("allowed_claims") or not boundary.get("blocked_claims"):
+        failures.append("contract index claim_boundary must include allowed_claims and blocked_claims")
+    for key in ["manifest_path", "dq_path", "validator"]:
+        value = entry.get(key, "")
+        if not is_safe_relative_path(value):
+            failures.append(f"contract index {key} must be a package-safe relative path")
+    for payload in entry.get("payloads", []):
+        for key in ["path", "schema_path"]:
+            value = payload.get(key, "")
+            if not is_safe_relative_path(value):
+                failures.append(f"contract index payload {key} must be a package-safe relative path")
+    return entry, failures
+
+
+def validate_package(package_dir: Path, contract_entry: dict[str, Any] | None = None) -> list[str]:
     failures: list[str] = []
     manifest_path = package_dir / "manifest.json"
-    spot_guardrails_path = package_dir / "spot_guardrails.json"
-    perp_guardrails_path = package_dir / "perp_guardrails.json"
     dq_path = package_dir / "dq.json"
+    if contract_entry is not None:
+        expected_manifest = Path(contract_entry.get("manifest_path", ""))
+        expected_dq = Path(contract_entry.get("dq_path", ""))
+        if expected_manifest != manifest_path:
+            failures.append(f"contract index manifest_path mismatch: {expected_manifest} != {manifest_path}")
+        if expected_dq != dq_path:
+            failures.append(f"contract index dq_path mismatch: {expected_dq} != {dq_path}")
 
-    for required in [manifest_path, spot_guardrails_path, perp_guardrails_path, dq_path]:
+    if contract_entry is None:
+        payload_specs = [
+            {
+                "role": "spot_guardrails",
+                "path": str(package_dir / "spot_guardrails.json"),
+                "schema_path": "schemas/datasets/spot-guardrail-snapshot-v0.json",
+                "schema_version": "oprs.spot_guardrail_snapshot.v0",
+            },
+            {
+                "role": "perp_guardrails",
+                "path": str(package_dir / "perp_guardrails.json"),
+                "schema_path": "schemas/datasets/perp-guardrail-snapshot-v0.json",
+                "schema_version": "oprs.perp_guardrail_snapshot.v0",
+            },
+        ]
+    else:
+        payload_specs = contract_entry.get("payloads", [])
+    payload_paths = [Path(spec.get("path", "")) for spec in payload_specs]
+
+    for required in [manifest_path, *payload_paths, dq_path]:
         if not required.exists():
             failures.append(f"missing required file: {required}")
+    for spec in payload_specs:
+        schema_path = Path(spec.get("schema_path", ""))
+        if not schema_path.exists():
+            failures.append(f"missing payload schema: {schema_path}")
 
     if failures:
         return failures
 
     manifest = load_json(manifest_path)
-    spot_guardrails = load_json(spot_guardrails_path)
-    perp_guardrails = load_json(perp_guardrails_path)
     dq = load_json(dq_path)
+    payloads = [(spec, load_json(Path(spec["path"]))) for spec in payload_specs]
 
-    for path in [manifest_path, spot_guardrails_path, perp_guardrails_path, dq_path]:
+    for path in [manifest_path, *payload_paths, dq_path]:
         failures.extend(scan_blocked_text(path, path.read_text(encoding="utf-8")))
 
     if manifest.get("capability") != "read_only_dry_run":
@@ -75,14 +146,13 @@ def validate_package(package_dir: Path) -> list[str]:
     if manifest.get("dq", {}).get("blocking_failures") != 0:
         failures.append("manifest dq.blocking_failures must be 0")
 
-    records_by_path = {
-        "spot_guardrails.json": spot_guardrails.get("records", []),
-        "perp_guardrails.json": perp_guardrails.get("records", []),
-    }
-    for label, payload in [
-        ("spot_guardrails", spot_guardrails),
-        ("perp_guardrails", perp_guardrails),
-    ]:
+    records_by_path = {Path(spec["path"]).name: payload.get("records", []) for spec, payload in payloads}
+    for spec, payload in payloads:
+        label = spec.get("role", Path(spec["path"]).name)
+        if payload.get("schema_version") != spec.get("schema_version"):
+            failures.append(
+                f"{label} schema_version mismatch: {payload.get('schema_version')} != {spec.get('schema_version')}"
+            )
         readiness = payload.get("readiness", {})
         required_false = ["user_state_decoded", "market_economics_decoded", "replay_ready"]
         for key in required_false:
@@ -127,7 +197,8 @@ def validate_package(package_dir: Path) -> list[str]:
 
 def main() -> int:
     package_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PACKAGE
-    failures = validate_package(package_dir)
+    contract_entry, index_failures = load_contract_entry(DEFAULT_CONTRACT_INDEX, DEFAULT_PACKAGE_ID)
+    failures = index_failures + validate_package(package_dir, contract_entry)
     if failures:
         print("Public guardrail package validation failed:", file=sys.stderr)
         for failure in failures:

@@ -96,6 +96,18 @@
       "health_ratio_bps": null,
       "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"],
       "manifest_path": "datasets/sample/drift_synthetic_perp_pause_flag_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "jupiter_synthetic_lifecycle_candidate_unverified_001",
+      "protocol": "jupiter_perps",
+      "market_id": "JUPITER-PERPS",
+      "case": "lifecycle_candidate_unverified_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": null,
+      "oracle_staleness_secs": null,
+      "health_ratio_bps": null,
+      "reason_codes": ["AdapterDecodeFailed", "DataQualityLow", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/manifest.json"
     }
   ]
 }

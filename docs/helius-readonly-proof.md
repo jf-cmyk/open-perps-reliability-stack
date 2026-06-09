@@ -31,7 +31,7 @@ scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-per
 scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-limit 6 --min-shared-keys 2 --out target/oprs-jupiter-perps-transaction-history/latest-pairs.json
 ```
 
-The target command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. The transaction-history command samples public program signatures with `getSignaturesForAddress`, transaction summaries with `getTransaction`, shared-account-key lifecycle candidates, and metadata-only `getMultipleAccounts` probes for shared candidate accounts. Wider live samples have exposed stronger candidates where a shared Jupiter-owned non-executable account is present, but those candidates remain unverified until PositionRequest/Position semantics are decoded from canonical source. Both emit scrubbed local output under `target/`, keep the Helius RPC URL local-only, and do not claim binary account decoding, verified request/fulfillment pairing, or liquidation replay.
+The target command resolves targets from current official Jupiter docs, probes the Jupiter Perpetuals program account, SOL/ETH/BTC/USDC/USDT custody accounts, and documented oracle accounts through `getAccountInfo` data slices. The transaction-history command samples public program signatures with `getSignaturesForAddress`, transaction summaries with `getTransaction`, shared-account-key lifecycle candidates, and metadata-only `getMultipleAccounts` probes for shared candidate accounts. Wider live samples have exposed stronger candidates where a shared Jupiter-owned non-executable account is present, but those candidates remain unverified until PositionRequest/Position semantics are decoded from canonical source. The public proof pack includes a Jupiter authority-gap package and an unverified lifecycle fixture to make that blocker reviewable. Both live commands emit scrubbed local output under `target/`, keep the Helius RPC URL local-only, and do not claim binary account decoding, verified request/fulfillment pairing, or liquidation replay.
 
 Jupiter IDL/source status is tracked in [Jupiter Perps provenance](jupiter-perps-provenance.md). The current docs-linked IDL sample is useful as a candidate, but not yet sufficient for `decoded_snapshot` claims.
 
@@ -175,7 +175,7 @@ Do not include:
 ## Next Implementation Tasks
 
 1. Pin canonical Jupiter Perps IDL/source provenance before any Jupiter `decoded_snapshot` claim.
-2. Add Jupiter request/fulfillment lifecycle evidence using public transaction history only.
+2. Upgrade Jupiter lifecycle evidence from `candidate_pair_unverified` only after source-backed request/position account roles are confirmed.
 3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
 4. Add any further Drift public fields only after source/offset validation and scrub review.
 5. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.

@@ -29,13 +29,19 @@ python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/
 python3 -m json.tool examples/datasets/drift_readonly_state_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_shape_snapshot_example.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-decode-worker-run-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/public-contract-index-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
+python3 -m json.tool examples/public/contract-index.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/spot_guardrails.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/perp_guardrails.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/manifest.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/dq.json >/dev/null
+python3 -m json.tool examples/public/jupiter-authority-gap-v0/gap_report.json >/dev/null
+python3 -m json.tool examples/public/jupiter-authority-gap-v0/manifest.json >/dev/null
+python3 -m json.tool examples/public/jupiter-authority-gap-v0/dq.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_transaction_history_example.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
@@ -43,8 +49,12 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_contract_index.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_guardrail_package.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_jupiter_authority_gap.py
+scripts/validate_public_contract_index.py
 scripts/validate_public_guardrail_package.py
+scripts/validate_public_jupiter_authority_gap.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
@@ -57,17 +67,23 @@ test -f docs/jupiter-source-authority-audit.md
 test -f docs/read-only-decode-worker.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f schemas/datasets/readonly-decode-worker-run-v0.json
+test -f schemas/datasets/public-contract-index-v0.json
 test -f schemas/datasets/spot-guardrail-snapshot-v0.json
 test -f schemas/datasets/perp-guardrail-snapshot-v0.json
+test -f schemas/datasets/jupiter-authority-gap-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
 test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/drift_readonly_decode_worker_run_example.json
+test -f examples/public/contract-index.json
 test -f examples/public/drift-guardrails-v0/spot_guardrails.json
 test -f examples/public/drift-guardrails-v0/perp_guardrails.json
 test -f examples/public/drift-guardrails-v0/manifest.json
 test -f examples/public/drift-guardrails-v0/dq.json
+test -f examples/public/jupiter-authority-gap-v0/gap_report.json
+test -f examples/public/jupiter-authority-gap-v0/manifest.json
+test -f examples/public/jupiter-authority-gap-v0/dq.json
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json
 test -f examples/datasets/jupiter_perps_transaction_history_example.json
 test -x scripts/build_public_artifact.sh
@@ -76,7 +92,9 @@ test -x scripts/discover_drift_readonly_state.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/audit_jupiter_source_authority.py
+test -x scripts/validate_public_contract_index.py
 test -x scripts/validate_public_guardrail_package.py
+test -x scripts/validate_public_jupiter_authority_gap.py
 
 echo "== Public artifact boundary =="
 artifact_dir="target/public-proof-pack-mvp-check-$$"

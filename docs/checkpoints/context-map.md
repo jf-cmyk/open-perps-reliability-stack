@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-06-09-split-guardrails-and-oracle-identity-checkpoint.md)
+1. [Current checkpoint](2026-06-09-contract-index-and-jupiter-gap-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -110,6 +110,7 @@ Read when changing Drift adapter shape, protocol priority, or venue metadata:
 
 - [Source authority and guardrails checkpoint](2026-06-09-source-authority-and-guardrails-checkpoint.md)
 - [Drift guardrail labels checkpoint](2026-06-09-drift-guardrail-labels-checkpoint.md)
+- [Contract index and Jupiter gap checkpoint](2026-06-09-contract-index-and-jupiter-gap-checkpoint.md)
 - [Split guardrails and oracle identity checkpoint](2026-06-09-split-guardrails-and-oracle-identity-checkpoint.md)
 - [Worker and guardrail package checkpoint](2026-06-09-worker-and-guardrail-package-checkpoint.md)
 - [Stronger Jupiter candidates and spot pool checkpoint](2026-06-09-stronger-jupiter-candidates-and-spot-pool-checkpoint.md)
@@ -146,8 +147,9 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Commit, push, deploy, and smoke-check the split guardrail/oracle identity package if not already deployed.
+1. Commit, push, deploy, and smoke-check the contract-index/Jupiter-gap package if not already deployed.
 2. Keep Jupiter pairing unverified until PositionRequest/Position semantics are linked from canonical source or a reviewed source-authoritative heuristic.
-3. Decode additional Drift fields only after offset/source validation and explicit scrub review.
-4. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
-5. Keep Railway and GitHub Pages mirrors equivalent.
+3. Add a second Jupiter negative fixture only after choosing weak-candidate versus no-shared-Jupiter-owned-account coverage.
+4. Decode additional Drift fields only after offset/source validation and explicit scrub review.
+5. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
+6. Keep Railway and GitHub Pages mirrors equivalent.

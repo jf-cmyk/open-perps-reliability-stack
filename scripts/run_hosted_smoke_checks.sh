@@ -106,6 +106,7 @@ assert_contains "one_shot_local_read_only" "$workdir/drift_readonly_decode_worke
 assert_contains '"transaction_submission_enabled": false' "$workdir/drift_readonly_decode_worker_run_example.json"
 
 echo "== Fetch public Drift guardrail package =="
+fetch "/examples/public/contract-index.json" "$workdir/public_contract_index.json"
 fetch "/examples/public/drift-guardrails-v0/spot_guardrails.json" "$workdir/drift_spot_guardrails.json"
 fetch "/examples/public/drift-guardrails-v0/perp_guardrails.json" "$workdir/drift_perp_guardrails.json"
 fetch "/examples/public/drift-guardrails-v0/manifest.json" "$workdir/drift_guardrail_manifest.json"
@@ -115,6 +116,7 @@ assert_contains "oprs.perp_guardrail_snapshot.v0" "$workdir/drift_perp_guardrail
 assert_contains "SettleRevPool" "$workdir/drift_perp_guardrails.json"
 assert_contains "drift_guardrails_v0_example" "$workdir/drift_guardrail_manifest.json"
 assert_contains "no_user_state_claims" "$workdir/drift_guardrail_dq.json"
+assert_contains "jupiter-authority-gap-v0" "$workdir/public_contract_index.json"
 
 echo "== Fetch Jupiter Perps target discovery example =="
 fetch "/examples/datasets/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_readonly_targets_example.json"
@@ -149,6 +151,21 @@ assert_contains "candidate_strength" "$workdir/jupiter_perps_transaction_history
 assert_contains "stronger_candidate_count" "$workdir/jupiter_perps_transaction_history_example.json"
 assert_contains "request_fulfillment_pair_claimed" "$workdir/jupiter_perps_transaction_history_example.json"
 assert_contains "raw_transaction_committed" "$workdir/jupiter_perps_transaction_history_example.json"
+
+echo "== Fetch Jupiter authority-gap package =="
+fetch "/examples/public/jupiter-authority-gap-v0/gap_report.json" "$workdir/jupiter_authority_gap.json"
+fetch "/examples/public/jupiter-authority-gap-v0/manifest.json" "$workdir/jupiter_authority_gap_manifest.json"
+fetch "/examples/public/jupiter-authority-gap-v0/dq.json" "$workdir/jupiter_authority_gap_dq.json"
+fetch "/datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json" "$workdir/jupiter_lifecycle_fixture.json"
+assert_contains "oprs.jupiter_authority_gap.v0" "$workdir/jupiter_authority_gap.json"
+assert_contains "canonical_idl_or_source" "$workdir/jupiter_authority_gap.json"
+assert_contains "candidate_pair_unverified" "$workdir/jupiter_authority_gap.json"
+assert_contains '"verified_pairing_claimed": false' "$workdir/jupiter_authority_gap.json"
+assert_contains "jupiter_authority_gap_v0_example" "$workdir/jupiter_authority_gap_manifest.json"
+assert_contains "no_verified_pairing_claim" "$workdir/jupiter_authority_gap_dq.json"
+assert_contains "jupiter_synthetic_lifecycle_candidate_unverified_001" "$workdir/jupiter_lifecycle_fixture.json"
+assert_contains '"canonical_decode_authorized": false' "$workdir/jupiter_lifecycle_fixture.json"
+assert_contains '"verified_request_fulfillment_pair_claimed": false' "$workdir/jupiter_lifecycle_fixture.json"
 
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
@@ -201,7 +218,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

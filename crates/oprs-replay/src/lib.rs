@@ -159,6 +159,7 @@ pub fn validate_fixture_case(case: FixtureValidationCase<'_>) -> FixtureValidati
         }
 
         validate_dry_run_invariants(&dry_run, &mut failures);
+        validate_jupiter_lifecycle_boundary(&dry_run, &mut failures);
 
         for opportunity in &dry_run.opportunities {
             if let Some(plan) = &opportunity.tx_plan {
@@ -255,6 +256,7 @@ struct SampleFixtureCatalogEntry {
 #[derive(Debug, Deserialize)]
 struct SampleDryRunOutput {
     summary: SampleDryRunSummary,
+    evidence_boundary: Option<SampleEvidenceBoundary>,
     opportunities: Vec<SampleOpportunity>,
     gate_results: Vec<SampleGateResult>,
     simulation_results: Vec<SampleSimulationResult>,
@@ -289,6 +291,23 @@ impl SampleDryRunOutput {
                 .iter()
                 .any(|result| result.reason_codes.iter().any(|code| code == reason_code))
     }
+}
+
+#[derive(Debug, Deserialize)]
+struct SampleEvidenceBoundary {
+    protocol: String,
+    source_authority_status: String,
+    canonical_decode_authorized: bool,
+    verified_request_fulfillment_pair_claimed: bool,
+    request_account_decoded: bool,
+    position_account_decoded: bool,
+    raw_transaction_committed: bool,
+    raw_instruction_data_committed: bool,
+    raw_logs_committed: bool,
+    candidate_strength: String,
+    shared_jupiter_owned_non_executable_account_observed: bool,
+    shared_account_count: u64,
+    public_evidence_refs: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -550,6 +569,76 @@ fn is_rejected_status(status: &str) -> bool {
     )
 }
 
+fn validate_jupiter_lifecycle_boundary(
+    dry_run: &SampleDryRunOutput,
+    failures: &mut Vec<String>,
+) {
+    let is_jupiter_fixture = dry_run.summary.run_id.starts_with("jupiter_");
+    let Some(boundary) = &dry_run.evidence_boundary else {
+        if is_jupiter_fixture {
+            failures.push("Jupiter fixtures must include evidence_boundary".to_string());
+        }
+        return;
+    };
+
+    if boundary.protocol != "jupiter_perps" {
+        failures.push(format!(
+            "Jupiter evidence_boundary.protocol `{}` must be jupiter_perps",
+            boundary.protocol
+        ));
+    }
+    if boundary.source_authority_status == "canonical_confirmed" {
+        failures.push("Jupiter fixture must not claim canonical source authority yet".to_string());
+    }
+    if boundary.canonical_decode_authorized {
+        failures.push("Jupiter fixture must keep canonical_decode_authorized=false".to_string());
+    }
+    if boundary.verified_request_fulfillment_pair_claimed {
+        failures.push(
+            "Jupiter fixture must keep verified_request_fulfillment_pair_claimed=false"
+                .to_string(),
+        );
+    }
+    if boundary.request_account_decoded {
+        failures.push("Jupiter fixture must keep request_account_decoded=false".to_string());
+    }
+    if boundary.position_account_decoded {
+        failures.push("Jupiter fixture must keep position_account_decoded=false".to_string());
+    }
+    if boundary.raw_transaction_committed
+        || boundary.raw_instruction_data_committed
+        || boundary.raw_logs_committed
+    {
+        failures
+            .push("Jupiter fixture must not commit raw transaction, instruction, or log data".to_string());
+    }
+    if !boundary.candidate_strength.ends_with("_unverified") {
+        failures.push(format!(
+            "Jupiter candidate_strength `{}` must stay explicitly unverified",
+            boundary.candidate_strength
+        ));
+    }
+    if boundary.shared_jupiter_owned_non_executable_account_observed
+        && boundary.shared_account_count == 0
+    {
+        failures.push(
+            "Jupiter shared-account evidence must include shared_account_count > 0".to_string(),
+        );
+    }
+    for evidence_ref in &boundary.public_evidence_refs {
+        if evidence_ref.is_empty()
+            || evidence_ref.starts_with('/')
+            || evidence_ref.contains("..")
+            || evidence_ref.starts_with("http://")
+            || evidence_ref.starts_with("https://")
+        {
+            failures.push(format!(
+                "Jupiter public evidence ref `{evidence_ref}` must be repo-relative"
+            ));
+        }
+    }
+}
+
 fn validate_fixture_scrub_policy(case: &FixtureValidationCase<'_>, failures: &mut Vec<String>) {
     let manifest_path = format!("datasets/sample/{}/manifest.json", case.fixture_set_id);
     append_scrub_failures(
@@ -693,6 +782,12 @@ mod tests {
     const PERP_PAUSE_DRY_RUN: &str = include_str!(
         "../../../datasets/sample/drift_synthetic_perp_pause_flag_001/dry_run_output.json"
     );
+    const JUPITER_LIFECYCLE_MANIFEST: &str = include_str!(
+        "../../../datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/manifest.json"
+    );
+    const JUPITER_LIFECYCLE_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json"
+    );
     const CATALOG: &str = include_str!("../../../datasets/sample/fixture_catalog.json");
 
     #[test]
@@ -708,6 +803,7 @@ mod tests {
                 "drift_synthetic_adapter_version_mismatch_001",
                 "drift_synthetic_guardrail_unknown_pause_bit_001",
                 "drift_synthetic_perp_pause_flag_001",
+                "jupiter_synthetic_lifecycle_candidate_unverified_001",
             ],
         )
         .assert_passed();
@@ -836,6 +932,64 @@ mod tests {
             ],
         })
         .assert_passed();
+    }
+
+    #[test]
+    fn validates_jupiter_lifecycle_candidate_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "jupiter_synthetic_lifecycle_candidate_unverified_001",
+            manifest_json: JUPITER_LIFECYCLE_MANIFEST,
+            dry_run_output_json: JUPITER_LIFECYCLE_DRY_RUN,
+            content_files: jupiter_lifecycle_content_files(),
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::AdapterDecodeFailed,
+                RiskReasonCode::DataQualityLow,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn rejects_jupiter_lifecycle_overclaims() {
+        let overclaim = JUPITER_LIFECYCLE_DRY_RUN
+            .replace(
+                r#""canonical_decode_authorized": false"#,
+                r#""canonical_decode_authorized": true"#,
+            )
+            .replace(
+                r#""verified_request_fulfillment_pair_claimed": false"#,
+                r#""verified_request_fulfillment_pair_claimed": true"#,
+            );
+
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "jupiter_synthetic_lifecycle_candidate_unverified_001",
+            manifest_json: JUPITER_LIFECYCLE_MANIFEST,
+            dry_run_output_json: &overclaim,
+            content_files: jupiter_lifecycle_content_files(),
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::AdapterDecodeFailed,
+                RiskReasonCode::DataQualityLow,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        });
+
+        assert!(!report.passed);
+        for expected in [
+            "canonical_decode_authorized=false",
+            "verified_request_fulfillment_pair_claimed=false",
+        ] {
+            assert!(
+                report
+                    .failures
+                    .iter()
+                    .any(|failure| failure.contains(expected)),
+                "missing {expected} in {:?}",
+                report.failures
+            );
+        }
     }
 
     #[test]
@@ -1197,6 +1351,15 @@ mod tests {
             path: "datasets/sample/drift_synthetic_perp_pause_flag_001/dry_run_output.json",
             bytes: include_bytes!(
                 "../../../datasets/sample/drift_synthetic_perp_pause_flag_001/dry_run_output.json"
+            ),
+        }]
+    }
+
+    fn jupiter_lifecycle_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json"
             ),
         }]
     }

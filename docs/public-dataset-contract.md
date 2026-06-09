@@ -9,6 +9,7 @@ Each public dataset package must include:
 - `manifest.json`
 - one or more payload files
 - `dq.json`
+- an entry in `examples/public/contract-index.json`
 - package-local relative paths only
 - deterministic SHA-256 checksums for every listed payload
 - row counts for every listed payload
@@ -34,6 +35,8 @@ Allowed public content includes public program IDs, public account addresses, pu
 
 ## Current Package Profiles
 
-The first package profile is `drift-guardrails-v0`.
+The first package profile is `drift-guardrails-v0`. The second package profile is `jupiter-authority-gap-v0`.
 
-It intentionally remains specialized until another package type applies pressure to the shared contract. Generalization should happen only after a second package type, such as replay fixtures or oracle snapshots, shares most of the same validation logic.
+Validators intentionally remain specialized until another package type applies pressure to the shared contract. Generalization should happen only when multiple package types share most of the same validation logic without weakening their domain-specific claim boundaries.
+
+The public contract index is intentionally small. It records package IDs, payload schema paths, validators, publishability, and claim boundaries so future packages can share discovery and review conventions without forcing a generic validator too early.

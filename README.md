@@ -32,12 +32,14 @@ Hosted proof-pack MVP:
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
 - [Service boundaries](docs/service-boundaries.md)
 - [Public artifact boundary](docs/public-artifact-boundary.md)
+- [Public dataset contract](docs/public-dataset-contract.md)
 - [MVP proof checklist](docs/mvp-proof-checklist.md)
 - [Reviewer proof-pack index](index.html)
 - [Railway deployment notes](docs/deployment-railway.md)
 - [Public API schema](schemas/api/public-api-v0.json)
 - [Public dashboard schema](schemas/dashboard/public-dashboard-v0.json)
 - [Data reconstruction envelope schema](schemas/datasets/data-reconstruction-envelope-v0.json)
+- [Public contract index](examples/public/contract-index.json)
 - [Sample Drift fixture dataset](datasets/sample/drift_synthetic_margin_001/manifest.json)
 - [Fixture catalog](datasets/sample/fixture_catalog.json)
 - [API response examples](examples/api/)
@@ -47,6 +49,7 @@ Hosted proof-pack MVP:
 - [Drift shape snapshot example](examples/datasets/drift_shape_snapshot_example.json)
 - [Jupiter Perps read-only target example](examples/datasets/jupiter_perps_readonly_targets_example.json)
 - [Jupiter Perps transaction history example](examples/datasets/jupiter_perps_transaction_history_example.json)
+- [Jupiter authority-gap package](examples/public/jupiter-authority-gap-v0/gap_report.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification

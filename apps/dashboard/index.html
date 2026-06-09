@@ -1021,6 +1021,11 @@
               <h4>Replay Evidence</h4>
               <p>Dry-run liquidation outcomes that produce reviewer-friendly traces without touching wallets or submitting orders.</p>
             </article>
+            <article class="feature-card">
+              <div class="feature-icon">J</div>
+              <h4>Jupiter Authority</h4>
+              <p>Source-authority gaps and unverified lifecycle candidates stay visible without claiming binary decode or pairing.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -1055,6 +1060,13 @@
               <div>
                 <h4>Reviewer Proof Pack</h4>
                 <p>Publish dry-run replay outputs, guardrail DQ gates, reason-code counts, and static evidence for grants, maintainers, and integrators.</p>
+              </div>
+            </article>
+            <article class="step">
+              <div class="step-number">04</div>
+              <div>
+                <h4>Source Authority Gaps</h4>
+                <p>Keep Jupiter request/fulfillment evidence candidate-only until canonical source proves the account roles and lifecycle keys.</p>
               </div>
             </article>
           </div>
@@ -1287,6 +1299,14 @@
           oracle_staleness_secs: null,
           health_ratio_bps: null,
           reason_codes: ["DataQualityLow", "ExecutionDisabledDryRun"]
+        },
+        {
+          fixture_set_id: "jupiter_synthetic_lifecycle_candidate_unverified_001",
+          status: "Rejected",
+          oracle_confidence_bps: null,
+          oracle_staleness_secs: null,
+          health_ratio_bps: null,
+          reason_codes: ["AdapterDecodeFailed", "DataQualityLow", "ExecutionDisabledDryRun"]
         }
       ];
 

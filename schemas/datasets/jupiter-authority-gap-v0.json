@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/jupiter-authority-gap-v0.json",
+  "title": "Open Perps Reliability Stack Jupiter Authority Gap v0",
+  "type": "object",
+  "required": ["schema_version", "dataset_name", "protocol", "chain_id", "generated_from", "records", "readiness", "known_gaps"],
+  "properties": {
+    "schema_version": { "const": "oprs.jupiter_authority_gap.v0" },
+    "dataset_name": { "type": "string", "minLength": 1 },
+    "protocol": { "const": "jupiter_perps" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "generated_from": { "type": "string", "minLength": 1 },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["gap_id", "claim", "status", "required_source", "current_evidence", "blocked_until", "safe_interim_label", "public_evidence_refs"],
+        "properties": {
+          "gap_id": { "type": "string", "minLength": 1 },
+          "claim": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["blocked", "unverified"] },
+          "required_source": { "type": "string", "minLength": 1 },
+          "current_evidence": { "type": "string", "minLength": 1 },
+          "blocked_until": { "type": "string", "minLength": 1 },
+          "safe_interim_label": { "type": "string", "minLength": 1 },
+          "public_evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["canonical_source_confirmed", "binary_decode_claimed", "verified_pairing_claimed", "replay_ready"],
+      "properties": {
+        "canonical_source_confirmed": { "const": false },
+        "binary_decode_claimed": { "const": false },
+        "verified_pairing_claimed": { "const": false },
+        "replay_ready": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "known_gaps": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  },
+  "additionalProperties": false
+}

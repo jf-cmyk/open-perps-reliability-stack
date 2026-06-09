@@ -1,0 +1,45 @@
+{
+  "schema_version": "oprs.public_dq_report.v0",
+  "dataset_name": "jupiter_authority_gap_v0_example",
+  "status": "passed",
+  "blocking_failures": 0,
+  "warnings": 3,
+  "checks": [
+    {
+      "gate_id": "no_verified_pairing_claim",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Package keeps verified_pairing_claimed=false."
+    },
+    {
+      "gate_id": "no_binary_decode_claim",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Package keeps binary_decode_claimed=false."
+    },
+    {
+      "gate_id": "public_refs_only",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Evidence references are repo-relative public paths."
+    },
+    {
+      "gate_id": "canonical_source_gap",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "Canonical Jupiter source authority remains unconfirmed."
+    },
+    {
+      "gate_id": "candidate_pair_gap",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "Shared-account lifecycle candidates remain unverified."
+    },
+    {
+      "gate_id": "replay_gap",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "Historical Jupiter liquidation replay is not claimed."
+    }
+  ]
+}
