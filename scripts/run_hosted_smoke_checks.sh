@@ -161,7 +161,7 @@ fetch "/datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_accou
 assert_contains "oprs.jupiter_authority_gap.v0" "$workdir/jupiter_authority_gap.json"
 assert_contains "canonical_idl_or_source" "$workdir/jupiter_authority_gap.json"
 assert_contains "candidate_pair_unverified" "$workdir/jupiter_authority_gap.json"
-assert_contains "weak_candidate" "$workdir/jupiter_authority_gap.json"
+assert_contains "weak candidates" "$workdir/jupiter_authority_gap.json"
 assert_contains '"verified_pairing_claimed": false' "$workdir/jupiter_authority_gap.json"
 assert_contains "jupiter_authority_gap_v0_example" "$workdir/jupiter_authority_gap_manifest.json"
 assert_contains "no_verified_pairing_claim" "$workdir/jupiter_authority_gap_dq.json"
