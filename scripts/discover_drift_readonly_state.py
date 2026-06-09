@@ -39,11 +39,49 @@ DRIFT_SPOT_CONSTANTS_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{
 DRIFT_IDL_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/idl/drift.json"
 DRIFT_ACCOUNT_FETCH_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/sdk/src/accounts/fetch.ts"
 DRIFT_ACCOUNT_MODEL_SOURCE = "https://docs.drift.trade/developers/concepts/account-model"
+DRIFT_PERP_MARKET_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/programs/drift/src/state/perp_market.rs"
+DRIFT_SPOT_MARKET_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/programs/drift/src/state/spot_market.rs"
+DRIFT_PAUSED_OPERATIONS_SOURCE = f"https://github.com/drift-labs/protocol-v2/blob/{DRIFT_PROTOCOL_V2_COMMIT}/programs/drift/src/state/paused_operations.rs"
 
 EXPECTED_ACCOUNT_TYPES = {
     "state_account": "State",
     "perp_market_account": "PerpMarket",
     "spot_market_account": "SpotMarket",
+}
+
+MARKET_STATUS_LABELS = {
+    0: "Initialized",
+    1: "Active",
+    2: "FundingPaused",
+    3: "AmmPaused",
+    4: "FillPaused",
+    5: "WithdrawPaused",
+    6: "ReduceOnly",
+    7: "Settlement",
+    8: "Delisted",
+}
+
+ASSET_TIER_LABELS = {
+    0: "Collateral",
+    1: "Protected",
+    2: "Cross",
+    3: "Isolated",
+    4: "Unlisted",
+}
+
+SPOT_OPERATION_BITS = {
+    0b00000001: "UpdateCumulativeInterest",
+    0b00000010: "Fill",
+    0b00000100: "Deposit",
+    0b00001000: "Withdraw",
+    0b00010000: "Liquidation",
+}
+
+INSURANCE_FUND_OPERATION_BITS = {
+    0b00000001: "Init",
+    0b00000010: "Add",
+    0b00000100: "RequestRemove",
+    0b00001000: "Remove",
 }
 
 PUBLIC_FIELD_LAYOUTS = {
@@ -365,6 +403,36 @@ def expected_field_value(target: dict[str, Any], expected_from: str | None) -> A
     return None
 
 
+def active_operation_labels(value: int, operation_bits: dict[int, str]) -> list[str]:
+    return [label for bit, label in operation_bits.items() if value & bit]
+
+
+def semantic_public_field(field_name: str, value: Any) -> dict[str, Any]:
+    if field_name == "status":
+        return {
+            "semantic_value": MARKET_STATUS_LABELS.get(value, "Unknown"),
+            "semantic_source": DRIFT_PERP_MARKET_SOURCE,
+        }
+    if field_name == "asset_tier":
+        return {
+            "semantic_value": ASSET_TIER_LABELS.get(value, "Unknown"),
+            "semantic_source": DRIFT_SPOT_MARKET_SOURCE,
+        }
+    if field_name == "paused_operations":
+        return {
+            "semantic_value": active_operation_labels(value, SPOT_OPERATION_BITS),
+            "semantic_encoding": "bitset",
+            "semantic_source": DRIFT_PAUSED_OPERATIONS_SOURCE,
+        }
+    if field_name == "if_paused_operations":
+        return {
+            "semantic_value": active_operation_labels(value, INSURANCE_FUND_OPERATION_BITS),
+            "semantic_encoding": "bitset",
+            "semantic_source": DRIFT_PAUSED_OPERATIONS_SOURCE,
+        }
+    return {}
+
+
 def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
     layout = PUBLIC_FIELD_LAYOUTS.get(target["target_kind"], [])
     decoded = []
@@ -398,25 +466,26 @@ def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
         if not matches_expected:
             validation_failures.append(f"{field['name']}:expected_mismatch")
 
-        decoded.append(
-            {
-                "field": field["name"],
-                "source_field": field["source_field"],
-                "type": field["type"],
-                "offset": offset,
-                "length": length,
-                "value": value,
-                "expected": expected,
-                "matches_expected": matches_expected,
-            }
-        )
+        decoded_field = {
+            "field": field["name"],
+            "source_field": field["source_field"],
+            "type": field["type"],
+            "offset": offset,
+            "length": length,
+            "value": value,
+            "expected": expected,
+            "matches_expected": matches_expected,
+        }
+        decoded_field.update(semantic_public_field(field["name"], value))
+        decoded.append(decoded_field)
 
     return {
         "readiness": "public_fields_decoded",
-        "decode_level": "offset_validated_public_identity_fields",
+        "decode_level": "offset_validated_public_identity_metadata_guardrail_fields",
         "source_commit": DRIFT_PROTOCOL_V2_COMMIT,
         "idl_blob_sha": DRIFT_IDL_BLOB_SHA,
         "offset_source": "pinned Drift Rust repr(C) account field order and Anchor discriminator prefix",
+        "semantic_source_scope": "MarketStatus, AssetTier, SpotOperation, and InsuranceFundOperation labels from pinned Drift Rust source",
         "fields": decoded,
         "validation_failures": validation_failures,
         "field_decode_claimed": len(decoded) > 0 and not validation_failures,
@@ -616,6 +685,9 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_pub
             "spot_market_constants": DRIFT_SPOT_CONSTANTS_SOURCE,
             "drift_idl": DRIFT_IDL_SOURCE,
             "account_fetch_helpers": DRIFT_ACCOUNT_FETCH_SOURCE,
+            "perp_market_state": DRIFT_PERP_MARKET_SOURCE,
+            "spot_market_state": DRIFT_SPOT_MARKET_SOURCE,
+            "paused_operations_state": DRIFT_PAUSED_OPERATIONS_SOURCE,
         },
         "decoder_provenance": {
             "protocol_repo": "drift-labs/protocol-v2",
@@ -633,7 +705,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_pub
             "shape_snapshot_included": include_shape_snapshot,
             "shape_snapshot_scope": "account discriminator, account data length, account data SHA-256, and expected IDL account type only",
             "public_field_decode_included": include_public_fields,
-            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata/guardrail fields only",
+            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata/guardrail fields with source-backed guardrail labels only",
             "next_safe_decode_step": "public market fields only after field offsets are validated against the pinned IDL or SDK decoder",
         },
         "targets": targets,

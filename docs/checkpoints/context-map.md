@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-06-09-source-authority-and-guardrails-checkpoint.md)
+1. [Current checkpoint](2026-06-09-drift-guardrail-labels-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -109,6 +109,7 @@ Wording guardrails:
 Read when changing Drift adapter shape, protocol priority, or venue metadata:
 
 - [Source authority and guardrails checkpoint](2026-06-09-source-authority-and-guardrails-checkpoint.md)
+- [Drift guardrail labels checkpoint](2026-06-09-drift-guardrail-labels-checkpoint.md)
 - [Stronger Jupiter candidates and spot pool checkpoint](2026-06-09-stronger-jupiter-candidates-and-spot-pool-checkpoint.md)
 - [Spot metadata and shared account probes checkpoint](2026-06-08-spot-metadata-and-shared-account-probes-checkpoint.md)
 - [Public fields and candidate pairs checkpoint](2026-06-05-public-fields-and-candidate-pairs-checkpoint.md)
@@ -143,7 +144,7 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Commit, push, deploy, and smoke-check the source-authority/guardrail package if not already deployed.
+1. Commit, push, deploy, and smoke-check the Drift guardrail label package if not already deployed.
 2. Keep Jupiter pairing unverified until PositionRequest/Position semantics are linked from canonical source or a reviewed source-authoritative heuristic.
 3. Decode additional Drift fields only after offset/source validation and explicit scrub review.
 4. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.

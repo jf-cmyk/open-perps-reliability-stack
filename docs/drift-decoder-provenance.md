@@ -1,6 +1,6 @@
 # Drift Decoder Provenance
 
-This document pins the public Drift sources used for the current read-only metadata proof and the next binary decode step. It does not claim decoded account snapshots yet.
+This document pins the public Drift sources used for the current read-only metadata proof and narrow public-field decode. It does not claim user-state, market economics, or replay-ready account decoding.
 
 ## Pinned Source
 
@@ -19,6 +19,9 @@ This document pins the public Drift sources used for the current read-only metad
 - Spot market constants: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/constants/spotMarkets.ts`
 - Drift IDL: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/idl/drift.json`
 - Account fetch helpers: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/sdk/src/accounts/fetch.ts`
+- Perp market state: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/perp_market.rs`
+- Spot market state: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/spot_market.rs`
+- Paused operation bitsets: `https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/paused_operations.rs`
 
 ## Current Proof Level
 
@@ -43,6 +46,7 @@ Confirmed:
 - Deduplicated oracle metadata reads for those selected markets.
 - Optional shape snapshots for Drift state, selected perp markets, and selected spot markets.
 - Optional public-field decode for State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata/guardrail fields.
+- Source-backed semantic labels for `SpotMarket.status`, `SpotMarket.asset_tier`, `SpotMarket.paused_operations`, and `SpotMarket.if_paused_operations`.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
@@ -75,7 +79,14 @@ The optional public-field mode is intentionally limited to selected public ident
 - `PerpMarket.pubkey`
 - `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, `SpotMarket.name`, `SpotMarket.decimals`, `SpotMarket.market_index`, `SpotMarket.orders_enabled`, `SpotMarket.status`, `SpotMarket.asset_tier`, `SpotMarket.paused_operations`, `SpotMarket.if_paused_operations`, and `SpotMarket.pool_id`
 
-The command validates expected PDA, oracle, mint, symbol, decimals, market-index, and pool-id values where the selected target already has a public source. Guardrail fields are emitted as observed public bytes/booleans until a semantic enum mapping is reviewed. It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
+The command validates expected PDA, oracle, mint, symbol, decimals, market-index, and pool-id values where the selected target already has a public source. It also labels selected guardrail fields from pinned Drift Rust source:
+
+- `status`: `MarketStatus` enum labels from `perp_market.rs`
+- `asset_tier`: `AssetTier` enum labels from `spot_market.rs`
+- `paused_operations`: `SpotOperation` bitset labels from `paused_operations.rs`
+- `if_paused_operations`: `InsuranceFundOperation` bitset labels from `paused_operations.rs`
+
+It still emits `user_state_decoded=false`, `market_economics_decoded=false`, and `replay_ready=false`.
 
 ## Next Safe Decode Step
 

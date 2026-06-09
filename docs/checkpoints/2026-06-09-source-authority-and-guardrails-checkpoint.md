@@ -52,7 +52,7 @@ Command:
 scripts/discover_drift_readonly_state.py --include-public-fields --out target/oprs-drift-readonly-state/latest-public-fields.json
 ```
 
-New guardrail fields are emitted as observed public values. Semantic enum labels are not claimed until reviewed separately.
+New guardrail fields are emitted as observed public values. Follow-on checkpoint `2026-06-09-drift-guardrail-labels-checkpoint.md` adds source-backed semantic labels for selected Drift guardrail enums and bitsets.
 
 Required invariant:
 
@@ -66,5 +66,5 @@ Required invariant:
 
 1. Validate, commit, push, deploy Railway, and smoke-check hosted mirrors.
 2. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
-3. Review source-backed semantic labels for Drift/Jupiter enum fields before rendering them as names.
+3. Review additional source-backed semantic labels before rendering more Drift/Jupiter fields as names.
 4. Continue grant proposal refinement from the updated MVP proof language.
