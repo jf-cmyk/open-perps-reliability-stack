@@ -188,7 +188,7 @@ The public repo already includes:
 - Read-only decode worker v0 contract and example run manifest. The worker is documented as a one-shot local command shape, not a hosted service, and keeps raw account bytes, user state, market economics, replay readiness, signing, submission, priority-fee bidding, custody, and capital management disabled.
 - Scrubbed split Drift guardrail package with manifest, DQ gates, checksums, and public-ready example records for selected Drift spot and perp guardrails.
 - Public contract index with package-level claim boundaries for Drift guardrail and Jupiter authority-gap packages.
-- Nine synthetic replay scenarios: eight Drift cases plus one Jupiter lifecycle-candidate fixture. The Jupiter fixture is intentionally rejected with `AdapterDecodeFailed`, `DataQualityLow`, and `ExecutionDisabledDryRun` because request/fulfillment pairing remains unverified.
+- Ten synthetic replay scenarios: eight Drift cases plus two Jupiter lifecycle-candidate fixtures. The Jupiter fixtures are intentionally rejected with `AdapterDecodeFailed`, `DataQualityLow`, and `ExecutionDisabledDryRun` because request/fulfillment pairing remains unverified.
 - Public Jupiter authority-gap package that explains which source-authority, account-role, pairing, and replay prerequisites block verified Jupiter decode claims.
 - Hosted smoke monitoring for Railway canonical and GitHub Pages fallback URLs.
 - Filtered public proof-pack artifact generation so internal checkpoints, `.env.example`, deployment configs, and Word lock files are not served publicly.

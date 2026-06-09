@@ -1,0 +1,37 @@
+{
+  "manifest_version": "0.1.0",
+  "dataset_name": "jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001",
+  "schema_version": "0.1.0",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "adapter_version": "0.1.0",
+  "event_types": ["jupiter_lifecycle_candidate_weak", "dry_run_output"],
+  "source_window": "synthetic-fixture",
+  "source_start_slot": null,
+  "source_end_slot": null,
+  "partition_paths": ["datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001"],
+  "row_count": 2,
+  "distinct_event_count": 2,
+  "raw_refs_count": 1,
+  "raw_hash_algorithm": "sha256",
+  "checksum": "sha256:ae27cafa2700523387d297b24b190f001dbf74534d26053a64cdd1f2334b2c49",
+  "content_checksums": [
+    "sha256:ae27cafa2700523387d297b24b190f001dbf74534d26053a64cdd1f2334b2c49 datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
+  ],
+  "dq_status": "Warn",
+  "dq_results_ref": null,
+  "quality_score_bps": 4300,
+  "known_gaps": [
+    "Synthetic fixture only; it represents weak Jupiter lifecycle evidence, not a verified request/fulfillment pair.",
+    "No shared Jupiter-owned non-executable account evidence is present.",
+    "No binary account decode, historical liquidation replay, or keeper semantics are claimed."
+  ],
+  "source_limitations": [
+    "No live RPC reads.",
+    "No raw transaction body, raw logs, or binary account payload is committed.",
+    "No signing or transaction submission."
+  ],
+  "scrub_policy_version": "0.1.0",
+  "generated_at_unix": 1781049000,
+  "generated_by": "blocksize-oprs"
+}

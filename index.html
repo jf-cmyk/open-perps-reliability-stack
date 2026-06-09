@@ -306,7 +306,7 @@
       <section class="metrics" aria-label="proof pack summary">
         <div class="panel">
           <div class="label">Fixture Cases</div>
-          <div class="metric">9</div>
+          <div class="metric">10</div>
           <div class="note">Synthetic Drift and Jupiter replay scenarios</div>
         </div>
         <div class="panel">
@@ -316,8 +316,8 @@
         </div>
         <div class="panel">
           <div class="label">Replay Tests</div>
-          <div class="metric">15</div>
-          <div class="note">Includes Jupiter overclaim rejection</div>
+          <div class="metric">16</div>
+          <div class="note">Includes Jupiter weak-candidate rejection</div>
         </div>
         <div class="panel">
           <div class="label">Access Needed</div>
@@ -360,7 +360,7 @@
             </div>
             <div class="link-row">
               <a class="link-title" href="datasets/sample/fixture_catalog.json">Fixture Catalog</a>
-              <p class="link-copy">Nine synthetic cases covering Drift oracle/guardrail outcomes and Jupiter unverified lifecycle evidence.</p>
+              <p class="link-copy">Ten synthetic cases covering Drift oracle/guardrail outcomes and Jupiter unverified lifecycle evidence.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="examples/public/drift-guardrails-v0/spot_guardrails.json">Spot Guardrails</a>
@@ -376,7 +376,11 @@
             </div>
             <div class="link-row">
               <a class="link-title" href="datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json">Jupiter Fixture</a>
-              <p class="link-copy">Rejected unverified lifecycle candidate fixture with explicit no-decode and no-pairing claims.</p>
+              <p class="link-copy">Rejected stronger unverified lifecycle candidate fixture with explicit no-decode and no-pairing claims.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json">Weak Jupiter Fixture</a>
+              <p class="link-copy">Rejected weak lifecycle candidate without shared Jupiter-owned non-executable account evidence.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="examples/datasets/data_reconstruction_envelope.json">Reconstruction Envelope</a>
@@ -411,32 +415,32 @@ cargo test</pre>
             <div class="bar-row">
               <span>Execution Boundary</span>
               <div class="bar"><span class="fill green" style="width: 100%"></span></div>
-              <span>9/9</span>
+              <span>10/10</span>
             </div>
             <div class="bar-row">
               <span>Oracle Risk</span>
-              <div class="bar"><span class="fill blue" style="width: 44%"></span></div>
-              <span>4/9</span>
+              <div class="bar"><span class="fill blue" style="width: 40%"></span></div>
+              <span>4/10</span>
             </div>
             <div class="bar-row">
               <span>Adapter Health</span>
-              <div class="bar"><span class="fill amber" style="width: 22%"></span></div>
-              <span>2/9</span>
+              <div class="bar"><span class="fill amber" style="width: 30%"></span></div>
+              <span>3/10</span>
             </div>
             <div class="bar-row">
               <span>Guardrail DQ</span>
-              <div class="bar"><span class="fill red" style="width: 33%"></span></div>
-              <span>3/9</span>
+              <div class="bar"><span class="fill red" style="width: 40%"></span></div>
+              <span>4/10</span>
             </div>
             <div class="bar-row">
               <span>Jupiter Authority Gap</span>
-              <div class="bar"><span class="fill amber" style="width: 11%"></span></div>
-              <span>1/9</span>
+              <div class="bar"><span class="fill amber" style="width: 20%"></span></div>
+              <span>2/10</span>
             </div>
             <div class="bar-row">
               <span>Content Checksums</span>
               <div class="bar"><span class="fill teal" style="width: 100%"></span></div>
-              <span>9/9</span>
+              <span>10/10</span>
             </div>
           </div>
         </div>

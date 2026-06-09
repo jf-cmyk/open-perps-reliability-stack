@@ -3,22 +3,13 @@
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
-from typing import Any
+
+from public_package_contract import is_safe_relative_path, load_json
 
 
 DEFAULT_INDEX = Path("examples/public/contract-index.json")
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def is_safe_relative_path(path: str) -> bool:
-    candidate = Path(path)
-    return bool(path) and not candidate.is_absolute() and ".." not in candidate.parts
 
 
 def validate_index(index_path: Path) -> list[str]:
@@ -95,9 +86,37 @@ def validate_index(index_path: Path) -> list[str]:
     return failures
 
 
+def run_self_tests() -> list[str]:
+    failures: list[str] = []
+    index = load_json(DEFAULT_INDEX)
+    packages = index["packages"]
+    original = packages[0]["payloads"][0]["schema_version"]
+    packages[0]["payloads"][0]["schema_version"] = "oprs.invalid_schema.v0"
+    tmp_path = Path("target/contract-index-negative-self-test.json")
+    tmp_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path.write_text(json_dumps(index), encoding="utf-8")
+    observed = validate_index(tmp_path)
+    packages[0]["payloads"][0]["schema_version"] = original
+    try:
+        tmp_path.unlink()
+    except FileNotFoundError:
+        pass
+    if not any("payload schema_version mismatch" in failure for failure in observed):
+        failures.append("self-test expected payload schema_version mismatch")
+    return failures
+
+
+def json_dumps(value: object) -> str:
+    import json
+
+    return json.dumps(value, indent=2, sort_keys=True)
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_INDEX
     failures = validate_index(index_path)
+    if len(sys.argv) == 1:
+        failures.extend(run_self_tests())
     if failures:
         print("Public contract index validation failed:", file=sys.stderr)
         for failure in failures:

@@ -49,6 +49,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/public_package_contract.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_contract_index.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_guardrail_package.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_jupiter_authority_gap.py
@@ -84,6 +85,8 @@ test -f examples/public/drift-guardrails-v0/dq.json
 test -f examples/public/jupiter-authority-gap-v0/gap_report.json
 test -f examples/public/jupiter-authority-gap-v0/manifest.json
 test -f examples/public/jupiter-authority-gap-v0/dq.json
+test -f datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json
+test -f datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json
 test -f examples/datasets/jupiter_perps_transaction_history_example.json
 test -x scripts/build_public_artifact.sh

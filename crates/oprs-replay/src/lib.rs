@@ -612,9 +612,11 @@ fn validate_jupiter_lifecycle_boundary(
         failures
             .push("Jupiter fixture must not commit raw transaction, instruction, or log data".to_string());
     }
-    if !boundary.candidate_strength.ends_with("_unverified") {
+    if boundary.candidate_strength != "weak_candidate"
+        && !boundary.candidate_strength.ends_with("_unverified")
+    {
         failures.push(format!(
-            "Jupiter candidate_strength `{}` must stay explicitly unverified",
+            "Jupiter candidate_strength `{}` must stay weak or explicitly unverified",
             boundary.candidate_strength
         ));
     }
@@ -788,6 +790,12 @@ mod tests {
     const JUPITER_LIFECYCLE_DRY_RUN: &str = include_str!(
         "../../../datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json"
     );
+    const JUPITER_WEAK_LIFECYCLE_MANIFEST: &str = include_str!(
+        "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/manifest.json"
+    );
+    const JUPITER_WEAK_LIFECYCLE_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
+    );
     const CATALOG: &str = include_str!("../../../datasets/sample/fixture_catalog.json");
 
     #[test]
@@ -804,6 +812,7 @@ mod tests {
                 "drift_synthetic_guardrail_unknown_pause_bit_001",
                 "drift_synthetic_perp_pause_flag_001",
                 "jupiter_synthetic_lifecycle_candidate_unverified_001",
+                "jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001",
             ],
         )
         .assert_passed();
@@ -941,6 +950,23 @@ mod tests {
             manifest_json: JUPITER_LIFECYCLE_MANIFEST,
             dry_run_output_json: JUPITER_LIFECYCLE_DRY_RUN,
             content_files: jupiter_lifecycle_content_files(),
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::AdapterDecodeFailed,
+                RiskReasonCode::DataQualityLow,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn validates_jupiter_weak_lifecycle_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001",
+            manifest_json: JUPITER_WEAK_LIFECYCLE_MANIFEST,
+            dry_run_output_json: JUPITER_WEAK_LIFECYCLE_DRY_RUN,
+            content_files: jupiter_weak_lifecycle_content_files(),
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::AdapterDecodeFailed,
@@ -1360,6 +1386,15 @@ mod tests {
             path: "datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json",
             bytes: include_bytes!(
                 "../../../datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json"
+            ),
+        }]
+    }
+
+    fn jupiter_weak_lifecycle_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
             ),
         }]
     }

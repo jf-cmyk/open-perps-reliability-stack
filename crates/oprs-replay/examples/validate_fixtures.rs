@@ -211,6 +211,27 @@ const CASES: &[Case<'_>] = &[
             RiskReasonCode::ExecutionDisabledDryRun,
         ],
     },
+    Case {
+        fixture_set_id: "jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001",
+        manifest_json: include_str!(
+            "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/manifest.json"
+        ),
+        dry_run_output_json: include_str!(
+            "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
+        ),
+        content_files: &[FixtureContent {
+            path: "datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
+            ),
+        }],
+        expected_status: DryRunStatus::Rejected,
+        expected_reason_codes: &[
+            RiskReasonCode::AdapterDecodeFailed,
+            RiskReasonCode::DataQualityLow,
+            RiskReasonCode::ExecutionDisabledDryRun,
+        ],
+    },
 ];
 
 fn main() {

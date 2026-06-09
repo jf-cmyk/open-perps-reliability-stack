@@ -3,41 +3,17 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
-import re
 import sys
 from pathlib import Path
-from typing import Any
+
+from public_package_contract import (
+    load_json,
+    scan_blocked_text,
+    validate_manifest_dq_and_outputs,
+)
 
 
 DEFAULT_PACKAGE = Path("examples/public/jupiter-authority-gap-v0")
-
-BLOCKED_PATTERNS = {
-    "rpc_url": re.compile(r"https://[^\"'\s]*(helius|rpc|api-key|apikey)[^\"'\s]*", re.IGNORECASE),
-    "env_file": re.compile(r"(^|[/:])\.env(\b|$)"),
-    "local_path": re.compile(r"/Users/|/Volumes/|/private/"),
-    "bearer_token": re.compile(r"bearer\s+[a-z0-9._-]+", re.IGNORECASE),
-    "private_key": re.compile(r"private[_ -]?key|seed phrase|keypair|wallet secret", re.IGNORECASE),
-    "raw_payload": re.compile(r"raw_account_bytes|account_data_base64|raw_bytes", re.IGNORECASE),
-    "execution_claim": re.compile(r"submit_transaction|priority_fee_bid|capital_limit|wallet_inventory", re.IGNORECASE),
-}
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def scan_blocked_text(path: Path, text: str) -> list[str]:
-    failures = []
-    for label, pattern in BLOCKED_PATTERNS.items():
-        if pattern.search(text):
-            failures.append(f"{path}: blocked marker `{label}`")
-    return failures
 
 
 def validate_package(package_dir: Path) -> list[str]:
@@ -58,13 +34,6 @@ def validate_package(package_dir: Path) -> list[str]:
 
     for path in [manifest_path, gap_path, dq_path]:
         failures.extend(scan_blocked_text(path, path.read_text(encoding="utf-8")))
-
-    if manifest.get("capability") != "read_only_dry_run":
-        failures.append("manifest capability must be read_only_dry_run")
-    if manifest.get("scrub", {}).get("status") != "passed":
-        failures.append("manifest scrub.status must be passed")
-    if manifest.get("dq", {}).get("blocking_failures") != 0:
-        failures.append("manifest dq.blocking_failures must be 0")
 
     readiness = gap_report.get("readiness", {})
     for key in [
@@ -93,39 +62,48 @@ def validate_package(package_dir: Path) -> list[str]:
             ):
                 failures.append(f"gap record {record.get('gap_id')} has unsafe evidence ref")
 
-    output_specs = manifest.get("outputs", [])
-    records_by_path = {
-        "gap_report.json": gap_report.get("records", []),
-        "dq.json": dq.get("checks", []),
-    }
-    for output in output_specs:
-        relative_path = output.get("path")
-        if not relative_path:
-            failures.append("manifest output missing path")
-            continue
-        output_path = package_dir / relative_path
-        if not output_path.exists():
-            failures.append(f"manifest output missing file: {relative_path}")
-            continue
-        observed_sha = sha256_file(output_path)
-        if observed_sha != output.get("sha256"):
-            failures.append(f"{relative_path} sha256 mismatch: {observed_sha}")
-        observed_rows = len(records_by_path.get(relative_path, []))
-        if observed_rows != output.get("row_count"):
-            failures.append(
-                f"{relative_path} row_count mismatch: {observed_rows} != {output.get('row_count')}"
-            )
-
-    for check in dq.get("checks", []):
-        if check.get("severity") == "block_publish" and check.get("status") != "pass":
-            failures.append(f"blocking DQ gate did not pass: {check.get('gate_id')}")
+    failures.extend(
+        validate_manifest_dq_and_outputs(
+            package_dir=package_dir,
+            manifest=manifest,
+            dq=dq,
+            row_counts_by_output_path={
+                "gap_report.json": len(gap_report.get("records", [])),
+                "dq.json": len(dq.get("checks", [])),
+            },
+        )
+    )
 
     return failures
+
+
+def run_self_tests() -> list[str]:
+    failures: list[str] = []
+    package_dir = DEFAULT_PACKAGE
+    gap_report = load_json(package_dir / "gap_report.json")
+    gap_report["readiness"]["verified_pairing_claimed"] = True
+    tmp_dir = Path("target/jupiter-authority-gap-negative-self-test")
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    for path in ["manifest.json", "dq.json"]:
+        (tmp_dir / path).write_text((package_dir / path).read_text(encoding="utf-8"), encoding="utf-8")
+    (tmp_dir / "gap_report.json").write_text(json_dumps(gap_report), encoding="utf-8")
+    observed = validate_package(tmp_dir)
+    if not any("verified_pairing_claimed" in failure for failure in observed):
+        failures.append("self-test expected verified_pairing_claimed failure")
+    return failures
+
+
+def json_dumps(value: object) -> str:
+    import json
+
+    return json.dumps(value, indent=2, sort_keys=True)
 
 
 def main() -> int:
     package_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PACKAGE
     failures = validate_package(package_dir)
+    if len(sys.argv) == 1:
+        failures.extend(run_self_tests())
     if failures:
         print("Public Jupiter authority-gap package validation failed:", file=sys.stderr)
         for failure in failures:

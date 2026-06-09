@@ -23,12 +23,13 @@
       "claim": "Verified request/fulfillment lifecycle pairing",
       "status": "unverified",
       "required_source": "Source-backed account-role map for request, position, pool, oracle, authority, and trader roles.",
-      "current_evidence": "Public transaction samples can expose shared account-key candidates, including stronger candidates when a shared Jupiter-owned non-executable account is observed.",
+      "current_evidence": "Public transaction samples can expose shared account-key candidates, including stronger candidates when a shared Jupiter-owned non-executable account is observed and weak candidates when that account evidence is absent.",
       "blocked_until": "The shared lifecycle key is source-proven as the request or position account for the observed flow.",
       "safe_interim_label": "candidate_pair_unverified",
       "public_evidence_refs": [
         "examples/datasets/jupiter_perps_transaction_history_example.json",
-        "datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json"
+        "datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json",
+        "datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
       ]
     },
     {

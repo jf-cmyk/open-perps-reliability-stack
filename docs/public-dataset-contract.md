@@ -40,3 +40,5 @@ The first package profile is `drift-guardrails-v0`. The second package profile i
 Validators intentionally remain specialized until another package type applies pressure to the shared contract. Generalization should happen only when multiple package types share most of the same validation logic without weakening their domain-specific claim boundaries.
 
 The public contract index is intentionally small. It records package IDs, payload schema paths, validators, publishability, and claim boundaries so future packages can share discovery and review conventions without forcing a generic validator too early.
+
+The shared validator helper in `scripts/public_package_contract.py` owns mechanical checks only: JSON loading, safe relative paths, blocked public-text patterns, contract-index lookup, payload schema-version agreement, checksums, row counts, and manifest/DQ publish gates. Package-specific validators still own semantic claims such as Drift guardrail readiness or Jupiter verified-pairing blockers.

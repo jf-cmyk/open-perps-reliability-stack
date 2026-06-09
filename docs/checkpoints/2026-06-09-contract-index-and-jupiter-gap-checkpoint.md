@@ -23,6 +23,13 @@ Latest development slice:
   - `datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/`
   - Status: `Rejected`
   - Reason codes: `AdapterDecodeFailed`, `DataQualityLow`, `ExecutionDisabledDryRun`
+- Added the tenth replay fixture:
+  - `datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/`
+  - Status: `Rejected`
+  - Reason codes: `AdapterDecodeFailed`, `DataQualityLow`, `ExecutionDisabledDryRun`
+- Extracted a minimal shared validation helper:
+  - `scripts/public_package_contract.py`
+  - Shared checks cover paths, contract index lookup, blocked public-text patterns, checksums, row counts, and manifest/DQ publish gates.
 - Added Rust replay validation for Jupiter evidence boundaries, including a negative test that rejects canonical decode or verified-pairing overclaims.
 - Updated proof-pack index, dashboard, MVP checks, hosted smoke checks, README, protocol docs, Helius proof docs, and grant proposal language.
 
@@ -73,6 +80,7 @@ scripts/run_hosted_smoke_checks.sh https://jf-cmyk.github.io/open-perps-reliabil
 ## Next Queue
 
 1. Run full validation, commit, push, deploy Railway, and smoke-check both hosted surfaces.
-2. Add a second Jupiter negative fixture only after deciding whether it represents weak candidate evidence or no shared Jupiter-owned account evidence.
-3. Keep Jupiter verified pairing blocked until canonical source authority proves request/position account roles and lifecycle keys.
-4. Keep Drift expansion paused unless a very small source-backed field is explicitly needed for the grant story.
+2. Add negative package fixtures for forbidden public claims and index/package drift.
+3. Research Jupiter `PositionRequest` source authority as the next protocol blocker.
+4. Keep Jupiter verified pairing blocked until canonical source authority proves request/position account roles and lifecycle keys.
+5. Keep Drift expansion paused unless a very small source-backed field is explicitly needed for the grant story.
