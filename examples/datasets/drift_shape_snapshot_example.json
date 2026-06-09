@@ -122,6 +122,65 @@
               "value": "EXAMPLE_DERIVED_PDA",
               "expected": "EXAMPLE_DERIVED_PDA",
               "matches_expected": true
+            },
+            {
+              "field": "market_index",
+              "source_field": "PerpMarket.market_index",
+              "type": "u16",
+              "offset": 1160,
+              "length": 2,
+              "value": 0,
+              "expected": 0,
+              "matches_expected": true
+            },
+            {
+              "field": "status",
+              "source_field": "PerpMarket.status",
+              "type": "u8",
+              "offset": 1162,
+              "length": 1,
+              "value": 1,
+              "expected": null,
+              "matches_expected": true,
+              "semantic_value": "Active",
+              "semantic_source": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/perp_market.rs"
+            },
+            {
+              "field": "contract_type",
+              "source_field": "PerpMarket.contract_type",
+              "type": "u8",
+              "offset": 1163,
+              "length": 1,
+              "value": 0,
+              "expected": null,
+              "matches_expected": true,
+              "semantic_value": "Perpetual",
+              "semantic_source": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/perp_market.rs"
+            },
+            {
+              "field": "contract_tier",
+              "source_field": "PerpMarket.contract_tier",
+              "type": "u8",
+              "offset": 1164,
+              "length": 1,
+              "value": 1,
+              "expected": null,
+              "matches_expected": true,
+              "semantic_value": "B",
+              "semantic_source": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/perp_market.rs"
+            },
+            {
+              "field": "paused_operations",
+              "source_field": "PerpMarket.paused_operations",
+              "type": "u8",
+              "offset": 1165,
+              "length": 1,
+              "value": 0,
+              "expected": null,
+              "matches_expected": true,
+              "semantic_value": [],
+              "semantic_encoding": "bitset",
+              "semantic_source": "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/paused_operations.rs"
             }
           ],
           "validation_failures": [],

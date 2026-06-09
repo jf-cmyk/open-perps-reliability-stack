@@ -69,6 +69,32 @@ ASSET_TIER_LABELS = {
     4: "Unlisted",
 }
 
+CONTRACT_TYPE_LABELS = {
+    0: "Perpetual",
+    1: "Future",
+    2: "Prediction",
+}
+
+CONTRACT_TIER_LABELS = {
+    0: "A",
+    1: "B",
+    2: "C",
+    3: "Speculative",
+    4: "HighlySpeculative",
+    5: "Isolated",
+}
+
+PERP_OPERATION_BITS = {
+    0b00000001: "UpdateFunding",
+    0b00000010: "AmmFill",
+    0b00000100: "Fill",
+    0b00001000: "SettlePnl",
+    0b00010000: "SettlePnlWithPosition",
+    0b00100000: "Liquidation",
+    0b01000000: "AmmImmediateFill",
+    0b10000000: "SettleRevPool",
+}
+
 SPOT_OPERATION_BITS = {
     0b00000001: "UpdateCumulativeInterest",
     0b00000010: "Fill",
@@ -109,6 +135,42 @@ PUBLIC_FIELD_LAYOUTS = {
             "length": 32,
             "source_field": "PerpMarket.pubkey",
             "expected_from": "target_address",
+        },
+        {
+            "name": "market_index",
+            "type": "u16",
+            "offset": 1160,
+            "length": 2,
+            "source_field": "PerpMarket.market_index",
+            "expected_from": "market.market_index",
+        },
+        {
+            "name": "status",
+            "type": "u8",
+            "offset": 1162,
+            "length": 1,
+            "source_field": "PerpMarket.status",
+        },
+        {
+            "name": "contract_type",
+            "type": "u8",
+            "offset": 1163,
+            "length": 1,
+            "source_field": "PerpMarket.contract_type",
+        },
+        {
+            "name": "contract_tier",
+            "type": "u8",
+            "offset": 1164,
+            "length": 1,
+            "source_field": "PerpMarket.contract_tier",
+        },
+        {
+            "name": "paused_operations",
+            "type": "u8",
+            "offset": 1165,
+            "length": 1,
+            "source_field": "PerpMarket.paused_operations",
         },
     ],
     "spot_market_account": [
@@ -407,10 +469,20 @@ def active_operation_labels(value: int, operation_bits: dict[int, str]) -> list[
     return [label for bit, label in operation_bits.items() if value & bit]
 
 
-def semantic_public_field(field_name: str, value: Any) -> dict[str, Any]:
+def semantic_public_field(target_kind: str, field_name: str, value: Any) -> dict[str, Any]:
     if field_name == "status":
         return {
             "semantic_value": MARKET_STATUS_LABELS.get(value, "Unknown"),
+            "semantic_source": DRIFT_PERP_MARKET_SOURCE,
+        }
+    if field_name == "contract_type":
+        return {
+            "semantic_value": CONTRACT_TYPE_LABELS.get(value, "Unknown"),
+            "semantic_source": DRIFT_PERP_MARKET_SOURCE,
+        }
+    if field_name == "contract_tier":
+        return {
+            "semantic_value": CONTRACT_TIER_LABELS.get(value, "Unknown"),
             "semantic_source": DRIFT_PERP_MARKET_SOURCE,
         }
     if field_name == "asset_tier":
@@ -419,8 +491,13 @@ def semantic_public_field(field_name: str, value: Any) -> dict[str, Any]:
             "semantic_source": DRIFT_SPOT_MARKET_SOURCE,
         }
     if field_name == "paused_operations":
+        operation_bits = (
+            PERP_OPERATION_BITS
+            if target_kind == "perp_market_account"
+            else SPOT_OPERATION_BITS
+        )
         return {
-            "semantic_value": active_operation_labels(value, SPOT_OPERATION_BITS),
+            "semantic_value": active_operation_labels(value, operation_bits),
             "semantic_encoding": "bitset",
             "semantic_source": DRIFT_PAUSED_OPERATIONS_SOURCE,
         }
@@ -476,7 +553,7 @@ def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
             "expected": expected,
             "matches_expected": matches_expected,
         }
-        decoded_field.update(semantic_public_field(field["name"], value))
+        decoded_field.update(semantic_public_field(target["target_kind"], field["name"], value))
         decoded.append(decoded_field)
 
     return {

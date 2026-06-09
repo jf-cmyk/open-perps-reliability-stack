@@ -306,8 +306,8 @@
       <section class="metrics" aria-label="proof pack summary">
         <div class="panel">
           <div class="label">Fixture Cases</div>
-          <div class="metric">6</div>
-          <div class="note">Synthetic Drift replay scenarios</div>
+          <div class="metric">7</div>
+          <div class="note">Synthetic Drift replay and guardrail scenarios</div>
         </div>
         <div class="panel">
           <div class="label">API Examples</div>
@@ -316,8 +316,8 @@
         </div>
         <div class="panel">
           <div class="label">Replay Tests</div>
-          <div class="metric">8</div>
-          <div class="note">Includes checksum mutation rejection</div>
+          <div class="metric">9</div>
+          <div class="note">Includes checksum and guardrail rejection</div>
         </div>
         <div class="panel">
           <div class="label">Access Needed</div>
@@ -351,12 +351,20 @@
               <p class="link-copy">Static proof-pack, future read-only decode worker, and commercial-service separation.</p>
             </div>
             <div class="link-row">
+              <a class="link-title" href="docs/read-only-decode-worker.md">Decode Worker Contract</a>
+              <p class="link-copy">One-shot local worker shape for scrubbed Drift public-field proof without hosting secrets.</p>
+            </div>
+            <div class="link-row">
               <a class="link-title" href="docs/public-artifact-boundary.md">Public Artifacts</a>
               <p class="link-copy">What is served to reviewers, what stays in GitHub project memory, and what is never public.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="datasets/sample/fixture_catalog.json">Fixture Catalog</a>
-              <p class="link-copy">Six synthetic Drift cases covering oracle, adapter, and execution-disabled outcomes.</p>
+              <p class="link-copy">Seven synthetic Drift cases covering oracle, adapter, guardrail, and execution-disabled outcomes.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="examples/public/drift-guardrails-v0/guardrails.json">Guardrail Snapshot</a>
+              <p class="link-copy">Scrubbed public example for decoded Drift guardrail labels and DQ gates.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="examples/datasets/data_reconstruction_envelope.json">Reconstruction Envelope</a>
@@ -391,22 +399,27 @@ cargo test</pre>
             <div class="bar-row">
               <span>Execution Boundary</span>
               <div class="bar"><span class="fill green" style="width: 100%"></span></div>
-              <span>6/6</span>
+              <span>7/7</span>
             </div>
             <div class="bar-row">
               <span>Oracle Risk</span>
-              <div class="bar"><span class="fill blue" style="width: 67%"></span></div>
-              <span>4/6</span>
+              <div class="bar"><span class="fill blue" style="width: 57%"></span></div>
+              <span>4/7</span>
             </div>
             <div class="bar-row">
               <span>Adapter Health</span>
-              <div class="bar"><span class="fill amber" style="width: 17%"></span></div>
-              <span>1/6</span>
+              <div class="bar"><span class="fill amber" style="width: 14%"></span></div>
+              <span>1/7</span>
+            </div>
+            <div class="bar-row">
+              <span>Guardrail DQ</span>
+              <div class="bar"><span class="fill red" style="width: 14%"></span></div>
+              <span>1/7</span>
             </div>
             <div class="bar-row">
               <span>Content Checksums</span>
               <div class="bar"><span class="fill teal" style="width: 100%"></span></div>
-              <span>6/6</span>
+              <span>7/7</span>
             </div>
           </div>
         </div>
@@ -420,6 +433,7 @@ cargo test</pre>
             <span class="tag">MissingOracle</span>
             <span class="tag">OracleMarkDivergence</span>
             <span class="tag">AdapterVersionMismatch</span>
+            <span class="tag">DataQualityLow</span>
           </div>
           <p class="foot">
             Fixture labels are synthetic and intentionally marked with warning-level dataset quality until real read-only Drift decode proof is added.

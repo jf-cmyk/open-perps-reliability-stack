@@ -1,0 +1,41 @@
+{
+  "manifest_version": "oprs.public_dataset_manifest.v0",
+  "dataset_name": "drift_guardrails_v0_example",
+  "schema_version": "oprs.guardrail_snapshot.v0",
+  "protocol": "drift_v2",
+  "chain_id": "solana-mainnet-beta",
+  "capability": "read_only_dry_run",
+  "source_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
+  "source_type": "scrubbed_example",
+  "generated_from": "examples/datasets/drift_shape_snapshot_example.json",
+  "outputs": [
+    {
+      "path": "guardrails.json",
+      "format": "json",
+      "row_count": 2,
+      "sha256": "dca80bc6df3fec673d53ad05bddb087f3347acee3e3fa7546991163a27269e09"
+    },
+    {
+      "path": "dq.json",
+      "format": "json",
+      "row_count": 7,
+      "sha256": "8e23b67c54f0125dc30e5fb28fa45884a59f7686f7dea7b517ab6531c64a8553"
+    }
+  ],
+  "dq": {
+    "status": "passed",
+    "report_path": "dq.json",
+    "blocking_failures": 0,
+    "warnings": 2
+  },
+  "scrub": {
+    "policy_version": "oprs.public_artifact_scrub.v0",
+    "status": "passed",
+    "blocked_pattern_count": 0
+  },
+  "known_limitations": [
+    "Small public example package; not protocol-wide coverage.",
+    "Guardrails are public account configuration context, not user-state or liquidation readiness."
+  ],
+  "generated_at_unix": 1781043660
+}

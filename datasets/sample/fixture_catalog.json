@@ -72,6 +72,18 @@
       "health_ratio_bps": 8800,
       "reason_codes": ["AdapterVersionMismatch", "ExecutionDisabledDryRun"],
       "manifest_path": "datasets/sample/drift_synthetic_adapter_version_mismatch_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "drift_synthetic_guardrail_unknown_pause_bit_001",
+      "protocol": "drift",
+      "market_id": "SOL-SPOT",
+      "case": "unknown_guardrail_pause_bit_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": null,
+      "oracle_staleness_secs": null,
+      "health_ratio_bps": null,
+      "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/drift_synthetic_guardrail_unknown_pause_bit_001/manifest.json"
     }
   ]
 }

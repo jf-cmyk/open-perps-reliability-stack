@@ -1,0 +1,61 @@
+{
+  "schema_version": "oprs.guardrail_snapshot.v0",
+  "dataset_name": "drift_guardrails_v0_example",
+  "protocol": "drift_v2",
+  "chain_id": "solana-mainnet-beta",
+  "source_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
+  "generated_from": "examples/datasets/drift_shape_snapshot_example.json",
+  "records": [
+    {
+      "record_id": "drift_spot_market_0_usdc_guardrails",
+      "market": "USDC-SPOT",
+      "asset": "USDC",
+      "asset_role": "quote_stable",
+      "orders_enabled": false,
+      "status": {
+        "raw_value": 1,
+        "label": "Active",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "asset_tier": {
+        "raw_value": 0,
+        "label": "Collateral",
+        "semantic_source": "programs/drift/src/state/spot_market.rs"
+      },
+      "pause_flags": [],
+      "if_pause_flags": [],
+      "quality_flags": []
+    },
+    {
+      "record_id": "drift_spot_market_1_sol_guardrails",
+      "market": "SOL-SPOT",
+      "asset": "SOL",
+      "asset_role": "collateral",
+      "orders_enabled": true,
+      "status": {
+        "raw_value": 1,
+        "label": "Active",
+        "semantic_source": "programs/drift/src/state/perp_market.rs"
+      },
+      "asset_tier": {
+        "raw_value": 0,
+        "label": "Collateral",
+        "semantic_source": "programs/drift/src/state/spot_market.rs"
+      },
+      "pause_flags": [],
+      "if_pause_flags": [],
+      "quality_flags": []
+    }
+  ],
+  "readiness": {
+    "public_guardrails_decoded": true,
+    "user_state_decoded": false,
+    "market_economics_decoded": false,
+    "replay_ready": false
+  },
+  "known_gaps": [
+    "Example package only; live read-only output is written under target/ and is not committed.",
+    "Only selected Drift spot-market public guardrails are represented.",
+    "No user accounts, positions, margin health, market economics, or historical liquidation replay are claimed."
+  ]
+}

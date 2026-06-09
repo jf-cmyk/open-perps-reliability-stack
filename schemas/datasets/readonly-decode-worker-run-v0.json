@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/readonly-decode-worker-run-v0.json",
+  "title": "Open Perps Reliability Stack Read-Only Decode Worker Run v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "worker",
+    "scope",
+    "inputs",
+    "outputs",
+    "readiness",
+    "safety_invariants",
+    "forbidden_actions"
+  ],
+  "properties": {
+    "schema_version": { "const": "oprs.readonly_decode_worker_run.v0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "worker": {
+      "type": "object",
+      "required": ["name", "mode", "lifecycle_stage", "generated_by"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "mode": { "const": "one_shot_local_read_only" },
+        "lifecycle_stage": {
+          "enum": ["local_probe", "scrubbed_example", "public_dataset_candidate"]
+        },
+        "generated_by": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": ["protocol", "chain_id", "source_commit", "source_refs", "target_set"],
+      "properties": {
+        "protocol": { "const": "drift_v2" },
+        "chain_id": { "const": "solana-mainnet-beta" },
+        "source_commit": { "type": "string", "minLength": 40, "maxLength": 40 },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "target_set": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "inputs": {
+      "type": "object",
+      "required": [
+        "rpc_provider_label",
+        "rpc_credential_printed",
+        "commitment",
+        "allowlisted_targets_only"
+      ],
+      "properties": {
+        "rpc_provider_label": { "type": "string", "minLength": 1 },
+        "rpc_credential_printed": { "const": false },
+        "commitment": { "enum": ["confirmed", "finalized"] },
+        "allowlisted_targets_only": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "outputs": {
+      "type": "object",
+      "required": [
+        "default_output_dir",
+        "raw_account_data_committed",
+        "emitted_artifacts"
+      ],
+      "properties": {
+        "default_output_dir": { "const": "target/oprs-drift-readonly-state/" },
+        "raw_account_data_committed": { "const": false },
+        "emitted_artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "readiness": {
+      "type": "object",
+      "required": [
+        "public_fields_decoded",
+        "user_state_decoded",
+        "market_economics_decoded",
+        "replay_ready"
+      ],
+      "properties": {
+        "public_fields_decoded": { "type": "boolean" },
+        "user_state_decoded": { "const": false },
+        "market_economics_decoded": { "const": false },
+        "replay_ready": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "safety_invariants": {
+      "type": "object",
+      "required": [
+        "signing_enabled",
+        "transaction_submission_enabled",
+        "priority_fee_bidding_enabled",
+        "keypair_loading_enabled",
+        "custody_enabled",
+        "capital_management_enabled"
+      ],
+      "properties": {
+        "signing_enabled": { "const": false },
+        "transaction_submission_enabled": { "const": false },
+        "priority_fee_bidding_enabled": { "const": false },
+        "keypair_loading_enabled": { "const": false },
+        "custody_enabled": { "const": false },
+        "capital_management_enabled": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "sign",
+          "submit_transaction",
+          "retry_transaction",
+          "bid_priority_fee",
+          "load_keypair",
+          "manage_custody",
+          "manage_capital"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

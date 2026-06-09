@@ -185,6 +185,9 @@ The public repo already includes:
 - Expanded Solana runtime failure reason codes for account mismatches, invalid account sets, compute budget exhaustion, blockhash expiry, account-lock contention, priority-fee underbids, and unknown dropped transactions.
 - Data reconstruction envelope schema with provider, commitment, slot range, query config, evidence refs, source limitations, known gaps, and scrub-policy validation.
 - Read-only target discovery and source-authority commands for Helius-backed proof setup. The commands are local-only or public HTTPS only, write scrubbed output under `target/`, confirm credentials are not printed, and have successfully read Drift public program/state/selected market/selected oracle metadata plus Jupiter Perps public program/custody/oracle metadata. Drift now emits selected public identity, spot metadata, and guardrail fields. Jupiter now emits stronger unverified lifecycle candidates when shared Jupiter-owned non-executable accounts are observed, while its source-authority audit keeps binary decode blocked until a canonical IDL/source is confirmed.
+- Read-only decode worker v0 contract and example run manifest. The worker is documented as a one-shot local command shape, not a hosted service, and keeps raw account bytes, user state, market economics, replay readiness, signing, submission, priority-fee bidding, custody, and capital management disabled.
+- Scrubbed Drift guardrail snapshot package with manifest, DQ gates, checksums, and public-ready example records for selected Drift spot guardrails.
+- Seven synthetic Drift replay scenarios, including an unknown public guardrail pause-bit case that is rejected with `DataQualityLow` plus `ExecutionDisabledDryRun`.
 - Hosted smoke monitoring for Railway canonical and GitHub Pages fallback URLs.
 - Filtered public proof-pack artifact generation so internal checkpoints, `.env.example`, deployment configs, and Word lock files are not served publicly.
 - Grant package and application draft.
@@ -213,7 +216,7 @@ The MVP target is:
 - Optional Helius-backed read-only decode proof loaded from local `.env`.
 - No signing, no private-key handling, no custody, no capital deployment, and no live transaction submission.
 
-The Helius integration is limited to read-only RPC account fetches for decode/provenance proof. RPC URLs and API keys remain local-only and are never committed to the repo or included in public datasets. Drift program/state/selected market/selected oracle metadata discovery now succeeds, selected Drift public guardrail fields are decoded with pinned offsets, and Jupiter Perps program/custody/oracle metadata discovery plus unverified stronger lifecycle candidate labeling now succeed. Jupiter canonical IDL/source confirmation and verified request/fulfillment reconstruction remain next implementation steps.
+The Helius integration is limited to read-only RPC account fetches for decode/provenance proof. RPC URLs and API keys remain local-only and are never committed to the repo or included in public datasets. Drift program/state/selected market/selected oracle metadata discovery now succeeds, selected Drift perp and spot public guardrail fields are decoded with pinned offsets, and Jupiter Perps program/custody/oracle metadata discovery plus unverified stronger lifecycle candidate labeling now succeed. Jupiter canonical IDL/source confirmation and verified request/fulfillment reconstruction remain next implementation steps.
 
 ## Why Blocksize
 

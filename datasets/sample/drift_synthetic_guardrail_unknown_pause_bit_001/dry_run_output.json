@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "run_id": "drift_synthetic_guardrail_unknown_pause_bit_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "drift-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "drift-public-guardrails-v0",
+    "started_at_unix": 1781043660,
+    "completed_at_unix": 1781043661,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"]
+  },
+  "opportunities": [],
+  "gate_results": [
+    {
+      "gate_id": "guardrail_pause_bitset",
+      "status": "Fail",
+      "reason_codes": ["DataQualityLow"],
+      "message": "Synthetic guardrail fixture contains an unknown pause bit and cannot be promoted."
+    },
+    {
+      "gate_id": "no_signing",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture dry-run contains no signer, custody, submission, or capital controls."
+    }
+  ],
+  "simulation_results": [
+    {
+      "status": "Rejected",
+      "reason_codes": ["DataQualityLow", "ExecutionDisabledDryRun"],
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "oprs.readonly_decode_worker_run.v0",
+  "run_id": "example_drift_readonly_decode_worker_run_001",
+  "worker": {
+    "name": "drift_readonly_decode_worker_v0",
+    "mode": "one_shot_local_read_only",
+    "lifecycle_stage": "scrubbed_example",
+    "generated_by": "scripts/discover_drift_readonly_state.py"
+  },
+  "scope": {
+    "protocol": "drift_v2",
+    "chain_id": "solana-mainnet-beta",
+    "source_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
+    "source_refs": [
+      "docs/drift-decoder-provenance.md",
+      "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/spot_market.rs",
+      "https://github.com/drift-labs/protocol-v2/blob/0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62/programs/drift/src/state/paused_operations.rs"
+    ],
+    "target_set": [
+      "drift_state",
+      "drift_spot_market_0_usdc",
+      "drift_spot_market_1_sol"
+    ]
+  },
+  "inputs": {
+    "rpc_provider_label": "local_readonly_rpc_env",
+    "rpc_credential_printed": false,
+    "commitment": "confirmed",
+    "allowlisted_targets_only": true
+  },
+  "outputs": {
+    "default_output_dir": "target/oprs-drift-readonly-state/",
+    "raw_account_data_committed": false,
+    "emitted_artifacts": [
+      "target/oprs-drift-readonly-state/latest-public-fields.json"
+    ]
+  },
+  "readiness": {
+    "public_fields_decoded": true,
+    "user_state_decoded": false,
+    "market_economics_decoded": false,
+    "replay_ready": false
+  },
+  "safety_invariants": {
+    "signing_enabled": false,
+    "transaction_submission_enabled": false,
+    "priority_fee_bidding_enabled": false,
+    "keypair_loading_enabled": false,
+    "custody_enabled": false,
+    "capital_management_enabled": false
+  },
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "retry_transaction",
+    "bid_priority_fee",
+    "load_keypair",
+    "manage_custody",
+    "manage_capital"
+  ]
+}

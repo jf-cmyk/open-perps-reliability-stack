@@ -63,6 +63,19 @@ Allowed outputs:
 - dry-run/replay input datasets
 - scrubbed public datasets
 
+Current contract files:
+
+- `docs/read-only-decode-worker.md`
+- `schemas/datasets/readonly-decode-worker-run-v0.json`
+- `examples/datasets/drift_readonly_decode_worker_run_example.json`
+
+Worker lifecycle states:
+
+- `local_probe`: live output stays under `target/`.
+- `scrubbed_example`: committed public examples with no raw bytes or secrets.
+- `public_dataset_candidate`: candidate public datasets after manifest, checksum, DQ, and scrub validation.
+- `replay_candidate`: future status only when public snapshots are sufficient for deterministic replay; current Drift guardrail outputs remain `replay_ready=false`.
+
 Current local proof command:
 
 ```bash

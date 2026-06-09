@@ -1040,7 +1040,7 @@
               <div class="step-number">01</div>
               <div>
                 <h4>Fixture and Adapter Setup</h4>
-                <p>Define read-only protocol fixtures, expected account shapes, version gates, and sample market state.</p>
+                <p>Define read-only protocol fixtures, public guardrail labels, expected account shapes, version gates, and sample market state.</p>
               </div>
             </article>
             <article class="step">
@@ -1054,7 +1054,7 @@
               <div class="step-number">03</div>
               <div>
                 <h4>Reviewer Proof Pack</h4>
-                <p>Publish dry-run replay outputs, reason-code counts, and static evidence for grants, maintainers, and integrators.</p>
+                <p>Publish dry-run replay outputs, guardrail DQ gates, reason-code counts, and static evidence for grants, maintainers, and integrators.</p>
               </div>
             </article>
           </div>
@@ -1111,6 +1111,11 @@
               <div class="label">Dry-run Gate</div>
               <strong>No signing or live execution</strong>
               <p>The replay layer is deliberately dry-run only and records blocked outcomes for reliability review.</p>
+            </article>
+            <article class="access-card">
+              <div class="label">Decode Worker</div>
+              <strong>Local-only contract</strong>
+              <p>The read-only decode worker is documented as a one-shot local command shape; Railway remains a static proof-pack service.</p>
             </article>
           </div>
         </div>
@@ -1266,6 +1271,14 @@
           oracle_staleness_secs: 3,
           health_ratio_bps: 8800,
           reason_codes: ["AdapterVersionMismatch", "ExecutionDisabledDryRun"]
+        },
+        {
+          fixture_set_id: "drift_synthetic_guardrail_unknown_pause_bit_001",
+          status: "Rejected",
+          oracle_confidence_bps: null,
+          oracle_staleness_secs: null,
+          health_ratio_bps: null,
+          reason_codes: ["DataQualityLow", "ExecutionDisabledDryRun"]
         }
       ];
 
@@ -1297,7 +1310,7 @@
 
       document.getElementById("fixtureRows").innerHTML = fixtures.map((item) => {
         const confidenceWidth = Math.min(100, (item.oracle_confidence_bps || 0) / 4);
-        const healthWidth = Math.min(100, item.health_ratio_bps / 100);
+        const healthWidth = item.health_ratio_bps === null ? 0 : Math.min(100, item.health_ratio_bps / 100);
         const oracleLabel = item.oracle_confidence_bps === null
           ? "missing"
           : `${item.oracle_confidence_bps} bps / ${item.oracle_staleness_secs}s`;
@@ -1311,7 +1324,7 @@
               <div class="quality-bar" aria-hidden="true"><span style="width: ${confidenceWidth}%"></span></div>
             </td>
             <td data-label="Health">
-              ${item.health_ratio_bps} bps
+              ${item.health_ratio_bps === null ? "n/a" : `${item.health_ratio_bps} bps`}
               <div class="quality-bar" aria-hidden="true"><span style="width: ${healthWidth}%"></span></div>
             </td>
             <td data-label="Reason Codes">

@@ -1,0 +1,49 @@
+{
+  "schema_version": "oprs.public_dq_report.v0",
+  "dataset_name": "drift_guardrails_v0_example",
+  "status": "passed",
+  "checks": [
+    {
+      "gate_id": "schema_version_present",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Guardrail snapshot declares oprs.guardrail_snapshot.v0."
+    },
+    {
+      "gate_id": "source_commit_present",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Pinned Drift source commit is present."
+    },
+    {
+      "gate_id": "no_raw_byte_payloads",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Package contains no raw byte payloads."
+    },
+    {
+      "gate_id": "no_secret_markers",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Package contains no provider credentials, local machine references, privileged account controls, or execution-resource fields."
+    },
+    {
+      "gate_id": "no_user_state_claims",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Readiness flags keep user_state_decoded, market_economics_decoded, and replay_ready false."
+    },
+    {
+      "gate_id": "limited_market_coverage",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "Package covers only selected Drift spot guardrails."
+    },
+    {
+      "gate_id": "example_not_live_backfill",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "Package is a committed example derived from the proof shape, not a full live backfill."
+    }
+  ]
+}

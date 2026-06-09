@@ -46,7 +46,7 @@ Confirmed:
 - Deduplicated oracle metadata reads for those selected markets.
 - Optional shape snapshots for Drift state, selected perp markets, and selected spot markets.
 - Optional public-field decode for State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata/guardrail fields.
-- Source-backed semantic labels for `SpotMarket.status`, `SpotMarket.asset_tier`, `SpotMarket.paused_operations`, and `SpotMarket.if_paused_operations`.
+- Source-backed semantic labels for selected `PerpMarket` and `SpotMarket` guardrails, including market status, contract type/tier, asset tier, and pause bitsets.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
@@ -76,13 +76,16 @@ Raw account bytes are not written to output.
 The optional public-field mode is intentionally limited to selected public identity, spot metadata, and guardrail fields with simple, pinned offsets:
 
 - `State.admin` and `State.signer`
-- `PerpMarket.pubkey`
+- `PerpMarket.pubkey`, `PerpMarket.market_index`, `PerpMarket.status`, `PerpMarket.contract_type`, `PerpMarket.contract_tier`, and `PerpMarket.paused_operations`
 - `SpotMarket.pubkey`, `SpotMarket.oracle`, `SpotMarket.mint`, `SpotMarket.vault`, `SpotMarket.name`, `SpotMarket.decimals`, `SpotMarket.market_index`, `SpotMarket.orders_enabled`, `SpotMarket.status`, `SpotMarket.asset_tier`, `SpotMarket.paused_operations`, `SpotMarket.if_paused_operations`, and `SpotMarket.pool_id`
 
 The command validates expected PDA, oracle, mint, symbol, decimals, market-index, and pool-id values where the selected target already has a public source. It also labels selected guardrail fields from pinned Drift Rust source:
 
 - `status`: `MarketStatus` enum labels from `perp_market.rs`
+- `contract_type`: `ContractType` enum labels from `perp_market.rs`
+- `contract_tier`: `ContractTier` enum labels from `perp_market.rs`
 - `asset_tier`: `AssetTier` enum labels from `spot_market.rs`
+- `PerpMarket.paused_operations`: `PerpOperation` bitset labels from `paused_operations.rs`
 - `paused_operations`: `SpotOperation` bitset labels from `paused_operations.rs`
 - `if_paused_operations`: `InsuranceFundOperation` bitset labels from `paused_operations.rs`
 
