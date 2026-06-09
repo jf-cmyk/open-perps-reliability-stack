@@ -130,6 +130,41 @@ PUBLIC_FIELD_LAYOUTS = {
             "expected_from": "market.market_index",
         },
         {
+            "name": "orders_enabled",
+            "type": "bool",
+            "offset": 686,
+            "length": 1,
+            "source_field": "SpotMarket.orders_enabled",
+        },
+        {
+            "name": "status",
+            "type": "u8",
+            "offset": 688,
+            "length": 1,
+            "source_field": "SpotMarket.status",
+        },
+        {
+            "name": "asset_tier",
+            "type": "u8",
+            "offset": 689,
+            "length": 1,
+            "source_field": "SpotMarket.asset_tier",
+        },
+        {
+            "name": "paused_operations",
+            "type": "u8",
+            "offset": 690,
+            "length": 1,
+            "source_field": "SpotMarket.paused_operations",
+        },
+        {
+            "name": "if_paused_operations",
+            "type": "u8",
+            "offset": 691,
+            "length": 1,
+            "source_field": "SpotMarket.if_paused_operations",
+        },
+        {
             "name": "pool_id",
             "type": "u8",
             "offset": 735,
@@ -352,6 +387,8 @@ def decode_public_fields(raw: bytes, target: dict[str, Any]) -> dict[str, Any]:
             value = int.from_bytes(field_bytes, "little", signed=False)
         elif field["type"] == "u8":
             value = int.from_bytes(field_bytes, "little", signed=False)
+        elif field["type"] == "bool":
+            value = field_bytes != b"\x00"
         else:
             validation_failures.append(f"{field['name']}:unsupported_type")
             continue
@@ -596,7 +633,7 @@ def build_report(rpc_url: str, include_shape_snapshot: bool = False, include_pub
             "shape_snapshot_included": include_shape_snapshot,
             "shape_snapshot_scope": "account discriminator, account data length, account data SHA-256, and expected IDL account type only",
             "public_field_decode_included": include_public_fields,
-            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata fields only",
+            "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata/guardrail fields only",
             "next_safe_decode_step": "public market fields only after field offsets are validated against the pinned IDL or SDK decoder",
         },
         "targets": targets,

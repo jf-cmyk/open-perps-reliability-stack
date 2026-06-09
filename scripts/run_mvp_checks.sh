@@ -34,6 +34,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readon
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
@@ -42,6 +43,7 @@ test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
 test -f docs/drift-decoder-provenance.md
 test -f docs/jupiter-perps-provenance.md
+test -f docs/jupiter-source-authority-audit.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
@@ -54,6 +56,7 @@ test -x scripts/run_hosted_smoke_checks.sh
 test -x scripts/discover_drift_readonly_state.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
+test -x scripts/audit_jupiter_source_authority.py
 
 echo "== Public artifact boundary =="
 artifact_dir="target/public-proof-pack-mvp-check-$$"

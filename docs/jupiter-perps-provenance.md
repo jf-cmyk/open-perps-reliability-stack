@@ -1,6 +1,6 @@
 # Jupiter Perps Provenance
 
-This document records the current Jupiter Perps target and decoder provenance status. It supports read-only target discovery but does not yet authorize binary decode claims.
+This document records the current Jupiter Perps target and decoder provenance status. It supports read-only target discovery and field planning but does not yet authorize binary decode claims.
 
 ## Official Target Sources
 
@@ -13,6 +13,7 @@ This document records the current Jupiter Perps target and decoder provenance st
 | Pool account field guide | `https://developers.jup.ag/docs/perps/pool-account` |
 | Position account field guide | `https://developers.jup.ag/docs/perps/position-account` |
 | PositionRequest account field guide | `https://developers.jup.ag/docs/perps/position-request-account` |
+| Source-authority audit | `jupiter-source-authority-audit.md` |
 
 ## Current Target Proof
 
@@ -49,21 +50,23 @@ Jupiter's custody-account docs link to a sample repository for working with the 
 | Repository URL | `https://github.com/julianfssen/jupiter-perps-anchor-idl-parsing` |
 | Current inspected commit | `630cfd72cad499f45453a53383d7ac6d3e09e022` |
 | Commit message | `Add examples on swaps and mint/burn` |
+| Commit verification | `unsigned` |
 | IDL path | `src/idl/jupiter-perpetuals-idl.ts` |
-| IDL blob SHA | `e7f21c9c44b077d0d10116305b97bbc152081b77` |
+| IDL Git blob SHA | `e7f21c9c44b077d0d10116305b97bbc152081b77` |
+| IDL content SHA-256 | `8a150cee26dc07c040ca7c1640dc7ec36ba9a0f063923ec50b2438e306b19cab` |
 | IDL source URL | `https://github.com/julianfssen/jupiter-perps-anchor-idl-parsing/blob/630cfd72cad499f45453a53383d7ac6d3e09e022/src/idl/jupiter-perpetuals-idl.ts` |
 
 ## Provenance Status
 
-Status: `target_discovered_not_binary_decoded`.
+Status: `docs_linked_example_not_canonical`.
 
-The docs-linked IDL sample is useful for research and field planning, but it should remain a candidate until one of these is true:
+The docs-linked IDL sample is useful for research and field planning, but it should remain a candidate. It does not authorize binary decode claims until one of these is true:
 
 - Jupiter publishes or confirms a canonical Perps IDL/source revision.
 - The docs-linked IDL is explicitly confirmed as canonical for the current onchain program.
 - An independent onchain/program-IDL extraction path is reviewed and hashed.
 
-Until then, OPRS may claim Jupiter program/custody/oracle metadata discovery, but not Jupiter binary account decoding or historical replay.
+Until then, OPRS may claim Jupiter program/custody/oracle metadata discovery, public transaction-history sampling, and unverified stronger candidate labeling, but not Jupiter binary account decoding, verified request/fulfillment pairing, or historical replay.
 
 ## Safe Next Steps
 

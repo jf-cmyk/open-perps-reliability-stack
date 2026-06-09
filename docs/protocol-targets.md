@@ -122,13 +122,14 @@ scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/o
 scripts/discover_drift_readonly_state.py --include-public-fields --out target/oprs-drift-readonly-state/latest-public-fields.json
 ```
 
-This command derives public Drift PDAs from pinned official SDK source and probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and deduplicated oracle accounts through Helius `getAccountInfo` data slices. Its optional public-field mode confirms identity fields plus spot decimals, market index, and pool id for selected Drift accounts without emitting raw bytes. It emits only scrubbed local output under `target/`, does not print the RPC URL, and does not claim market-economics decoding or historical liquidation replay.
+This command derives public Drift PDAs from pinned official SDK source and probes the Drift state account, SOL/BTC/ETH perp market accounts, USDC/SOL spot market accounts, and deduplicated oracle accounts through Helius `getAccountInfo` data slices. Its optional public-field mode confirms identity fields plus spot decimals, market index, pool id, and selected guardrail fields for selected Drift accounts without emitting raw bytes. It emits only scrubbed local output under `target/`, does not print the RPC URL, and does not claim market-economics decoding or historical liquidation replay.
 
 Current Jupiter Perps target discovery command:
 
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
 scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-limit 6 --min-shared-keys 2 --out target/oprs-jupiter-perps-transaction-history/latest-pairs.json
+scripts/audit_jupiter_source_authority.py --out target/oprs-jupiter-source-authority/latest.json
 ```
 
 The target command resolves the Jupiter Perpetuals program, documented custody accounts, and documented oracle accounts from current official Jupiter docs and probes public metadata through Helius `getAccountInfo` data slices. The transaction-history command samples public program signatures, structural transaction summaries, shared-account-key lifecycle candidates, and metadata-only shared-account probes through read-only Solana RPC. It labels stronger unverified candidates when shared Jupiter-owned non-executable accounts are seen, but does not claim request/fulfillment pairing. Both emit scrubbed local output under `target/`, do not print the RPC URL, and do not call `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or signing paths.
@@ -140,5 +141,5 @@ Current status:
 - Drift decoder/IDL provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md), and optional Drift public-field decode now confirms identity and spot metadata fields without market-economics decode.
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
 - Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, and candidate lifecycle pairs can be produced from shared public account keys plus metadata-only account probes. Wider samples can label stronger candidates when shared Jupiter-owned non-executable accounts are seen, but verified request/fulfillment pairing is not yet claimed.
-- Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md), but still needs canonical IDL/source confirmation before binary decode proof.
+- Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), but still needs canonical IDL/source confirmation before binary decode proof.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

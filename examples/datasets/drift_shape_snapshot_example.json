@@ -18,7 +18,7 @@
     "shape_snapshot_included": true,
     "shape_snapshot_scope": "account discriminator, account data length, account data SHA-256, and expected IDL account type only",
     "public_field_decode_included": true,
-    "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata fields only",
+    "public_field_decode_scope": "State admin/signer, PerpMarket pubkey, and selected SpotMarket identity/metadata/guardrail fields only",
     "next_safe_decode_step": "public market fields only after field offsets are validated against the pinned IDL or SDK decoder"
   },
   "targets": [
@@ -218,6 +218,56 @@
               "length": 2,
               "value": 0,
               "expected": 0,
+              "matches_expected": true
+            },
+            {
+              "field": "orders_enabled",
+              "source_field": "SpotMarket.orders_enabled",
+              "type": "bool",
+              "offset": 686,
+              "length": 1,
+              "value": true,
+              "expected": null,
+              "matches_expected": true
+            },
+            {
+              "field": "status",
+              "source_field": "SpotMarket.status",
+              "type": "u8",
+              "offset": 688,
+              "length": 1,
+              "value": 1,
+              "expected": null,
+              "matches_expected": true
+            },
+            {
+              "field": "asset_tier",
+              "source_field": "SpotMarket.asset_tier",
+              "type": "u8",
+              "offset": 689,
+              "length": 1,
+              "value": 0,
+              "expected": null,
+              "matches_expected": true
+            },
+            {
+              "field": "paused_operations",
+              "source_field": "SpotMarket.paused_operations",
+              "type": "u8",
+              "offset": 690,
+              "length": 1,
+              "value": 0,
+              "expected": null,
+              "matches_expected": true
+            },
+            {
+              "field": "if_paused_operations",
+              "source_field": "SpotMarket.if_paused_operations",
+              "type": "u8",
+              "offset": 691,
+              "length": 1,
+              "value": 0,
+              "expected": null,
               "matches_expected": true
             },
             {
