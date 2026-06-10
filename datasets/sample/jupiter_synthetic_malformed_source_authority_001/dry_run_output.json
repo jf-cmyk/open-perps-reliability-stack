@@ -1,0 +1,62 @@
+{
+  "summary": {
+    "run_id": "jupiter_synthetic_malformed_source_authority_001",
+    "schema_version": "0.1.0",
+    "mode": "Fixture",
+    "adapter": "jupiter-perps-readonly",
+    "adapter_version": "0.1.0",
+    "policy_id": "jupiter-source-authority-v0",
+    "started_at_unix": 1781061120,
+    "completed_at_unix": 1781061121,
+    "opportunities_scanned": 1,
+    "opportunities_accepted": 0,
+    "opportunities_rejected": 1,
+    "reason_codes": ["AdapterDecodeFailed", "AdapterVersionMismatch", "DataQualityLow", "ExecutionDisabledDryRun"]
+  },
+  "evidence_boundary": {
+    "protocol": "jupiter_perps",
+    "source_authority_status": "invalid_source_authority",
+    "docs_linked_idl_canonical": false,
+    "idl_or_source_hash_status": "mismatched",
+    "canonical_decode_authorized": false,
+    "verified_request_fulfillment_pair_claimed": false,
+    "request_fulfillment_pair_claimed": false,
+    "request_account_decoded": false,
+    "position_request_decoded": false,
+    "position_account_decoded": false,
+    "raw_transaction_committed": false,
+    "raw_instruction_data_committed": false,
+    "raw_logs_committed": false,
+    "candidate_strength": "source_authority_invalid",
+    "shared_jupiter_owned_non_executable_account_observed": false,
+    "shared_account_count": 0,
+    "public_transaction_summary_only": true,
+    "replay_ready": false,
+    "public_evidence_refs": [
+      "docs/jupiter-perps-provenance.md",
+      "docs/jupiter-source-authority-audit.md"
+    ]
+  },
+  "opportunities": [],
+  "gate_results": [
+    {
+      "gate_id": "jupiter_source_authority_invalid",
+      "status": "Fail",
+      "reason_codes": ["AdapterDecodeFailed", "AdapterVersionMismatch", "DataQualityLow"],
+      "message": "Fixture models malformed or mismatched Jupiter source authority and blocks any binary decode or lifecycle pairing claim."
+    },
+    {
+      "gate_id": "no_execution",
+      "status": "Pass",
+      "reason_codes": ["ExecutionDisabledDryRun"],
+      "message": "Fixture contains only public source-authority metadata and no signing, submission, route, or capital controls."
+    }
+  ],
+  "simulation_results": [
+    {
+      "status": "Rejected",
+      "reason_codes": ["AdapterDecodeFailed", "AdapterVersionMismatch", "DataQualityLow", "ExecutionDisabledDryRun"],
+      "error": null
+    }
+  ]
+}

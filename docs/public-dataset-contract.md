@@ -42,3 +42,5 @@ Validators intentionally remain specialized until another package type applies p
 The public contract index is intentionally small. It records package IDs, payload schema paths, validators, publishability, and claim boundaries so future packages can share discovery and review conventions without forcing a generic validator too early.
 
 The shared validator helper in `scripts/public_package_contract.py` owns mechanical checks only: JSON loading, safe relative paths, blocked public-text patterns, contract-index lookup, payload schema-version agreement, checksums, row counts, and manifest/DQ publish gates. Package-specific validators still own semantic claims such as Drift guardrail readiness or Jupiter verified-pairing blockers.
+
+Invalid package fixtures live under `tests/fixtures/public-packages/invalid/`. They are not served publicly; they mutate otherwise valid packages to prove validators reject replay-readiness overclaims, raw-payload leaks, Jupiter verified-pairing overclaims, RPC URL leaks, and contract-index schema drift.

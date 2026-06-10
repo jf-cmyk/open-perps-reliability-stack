@@ -120,6 +120,18 @@
       "health_ratio_bps": null,
       "reason_codes": ["AdapterDecodeFailed", "DataQualityLow", "ExecutionDisabledDryRun"],
       "manifest_path": "datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/manifest.json"
+    },
+    {
+      "fixture_set_id": "jupiter_synthetic_malformed_source_authority_001",
+      "protocol": "jupiter_perps",
+      "market_id": "JUPITER-PERPS",
+      "case": "malformed_source_authority_rejected",
+      "status": "Rejected",
+      "oracle_confidence_bps": null,
+      "oracle_staleness_secs": null,
+      "health_ratio_bps": null,
+      "reason_codes": ["AdapterDecodeFailed", "AdapterVersionMismatch", "DataQualityLow", "ExecutionDisabledDryRun"],
+      "manifest_path": "datasets/sample/jupiter_synthetic_malformed_source_authority_001/manifest.json"
     }
   ]
 }

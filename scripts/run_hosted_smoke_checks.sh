@@ -158,10 +158,12 @@ fetch "/examples/public/jupiter-authority-gap-v0/manifest.json" "$workdir/jupite
 fetch "/examples/public/jupiter-authority-gap-v0/dq.json" "$workdir/jupiter_authority_gap_dq.json"
 fetch "/datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json" "$workdir/jupiter_lifecycle_fixture.json"
 fetch "/datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json" "$workdir/jupiter_weak_lifecycle_fixture.json"
+fetch "/datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json" "$workdir/jupiter_malformed_source_fixture.json"
 assert_contains "oprs.jupiter_authority_gap.v0" "$workdir/jupiter_authority_gap.json"
 assert_contains "canonical_idl_or_source" "$workdir/jupiter_authority_gap.json"
 assert_contains "candidate_pair_unverified" "$workdir/jupiter_authority_gap.json"
 assert_contains "weak candidates" "$workdir/jupiter_authority_gap.json"
+assert_contains "malformed source-authority evidence" "$workdir/jupiter_authority_gap.json"
 assert_contains '"verified_pairing_claimed": false' "$workdir/jupiter_authority_gap.json"
 assert_contains "jupiter_authority_gap_v0_example" "$workdir/jupiter_authority_gap_manifest.json"
 assert_contains "no_verified_pairing_claim" "$workdir/jupiter_authority_gap_dq.json"
@@ -171,6 +173,10 @@ assert_contains '"verified_request_fulfillment_pair_claimed": false' "$workdir/j
 assert_contains "jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001" "$workdir/jupiter_weak_lifecycle_fixture.json"
 assert_contains '"candidate_strength": "weak_candidate"' "$workdir/jupiter_weak_lifecycle_fixture.json"
 assert_contains '"shared_jupiter_owned_non_executable_account_observed": false' "$workdir/jupiter_weak_lifecycle_fixture.json"
+assert_contains "jupiter_synthetic_malformed_source_authority_001" "$workdir/jupiter_malformed_source_fixture.json"
+assert_contains '"source_authority_status": "invalid_source_authority"' "$workdir/jupiter_malformed_source_fixture.json"
+assert_contains '"candidate_strength": "source_authority_invalid"' "$workdir/jupiter_malformed_source_fixture.json"
+assert_contains '"docs_linked_idl_canonical": false' "$workdir/jupiter_malformed_source_fixture.json"
 
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
@@ -223,7 +229,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

@@ -10,12 +10,13 @@
       "claim": "Jupiter Perps binary account decode",
       "status": "blocked",
       "required_source": "Canonical Jupiter Perps IDL or source tied to the live program ID.",
-      "current_evidence": "Docs-linked example source is useful for planning but is not enough for a decode claim.",
+      "current_evidence": "Docs-linked example source is useful for planning but is not enough for a decode claim; malformed source-authority evidence is rejected explicitly.",
       "blocked_until": "A canonical IDL/source reference is confirmed and hash-pinned.",
       "safe_interim_label": "source_authority_gap",
       "public_evidence_refs": [
         "docs/jupiter-perps-provenance.md",
-        "docs/jupiter-source-authority-audit.md"
+        "docs/jupiter-source-authority-audit.md",
+        "datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json"
       ]
     },
     {

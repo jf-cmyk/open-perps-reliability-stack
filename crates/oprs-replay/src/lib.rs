@@ -569,10 +569,7 @@ fn is_rejected_status(status: &str) -> bool {
     )
 }
 
-fn validate_jupiter_lifecycle_boundary(
-    dry_run: &SampleDryRunOutput,
-    failures: &mut Vec<String>,
-) {
+fn validate_jupiter_lifecycle_boundary(dry_run: &SampleDryRunOutput, failures: &mut Vec<String>) {
     let is_jupiter_fixture = dry_run.summary.run_id.starts_with("jupiter_");
     let Some(boundary) = &dry_run.evidence_boundary else {
         if is_jupiter_fixture {
@@ -595,8 +592,7 @@ fn validate_jupiter_lifecycle_boundary(
     }
     if boundary.verified_request_fulfillment_pair_claimed {
         failures.push(
-            "Jupiter fixture must keep verified_request_fulfillment_pair_claimed=false"
-                .to_string(),
+            "Jupiter fixture must keep verified_request_fulfillment_pair_claimed=false".to_string(),
         );
     }
     if boundary.request_account_decoded {
@@ -609,14 +605,16 @@ fn validate_jupiter_lifecycle_boundary(
         || boundary.raw_instruction_data_committed
         || boundary.raw_logs_committed
     {
-        failures
-            .push("Jupiter fixture must not commit raw transaction, instruction, or log data".to_string());
+        failures.push(
+            "Jupiter fixture must not commit raw transaction, instruction, or log data".to_string(),
+        );
     }
     if boundary.candidate_strength != "weak_candidate"
+        && boundary.candidate_strength != "source_authority_invalid"
         && !boundary.candidate_strength.ends_with("_unverified")
     {
         failures.push(format!(
-            "Jupiter candidate_strength `{}` must stay weak or explicitly unverified",
+            "Jupiter candidate_strength `{}` must stay weak, invalid-source, or explicitly unverified",
             boundary.candidate_strength
         ));
     }
@@ -796,6 +794,12 @@ mod tests {
     const JUPITER_WEAK_LIFECYCLE_DRY_RUN: &str = include_str!(
         "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
     );
+    const JUPITER_MALFORMED_SOURCE_MANIFEST: &str = include_str!(
+        "../../../datasets/sample/jupiter_synthetic_malformed_source_authority_001/manifest.json"
+    );
+    const JUPITER_MALFORMED_SOURCE_DRY_RUN: &str = include_str!(
+        "../../../datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json"
+    );
     const CATALOG: &str = include_str!("../../../datasets/sample/fixture_catalog.json");
 
     #[test]
@@ -813,6 +817,7 @@ mod tests {
                 "drift_synthetic_perp_pause_flag_001",
                 "jupiter_synthetic_lifecycle_candidate_unverified_001",
                 "jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001",
+                "jupiter_synthetic_malformed_source_authority_001",
             ],
         )
         .assert_passed();
@@ -970,6 +975,24 @@ mod tests {
             expected_status: DryRunStatus::Rejected,
             expected_reason_codes: &[
                 RiskReasonCode::AdapterDecodeFailed,
+                RiskReasonCode::DataQualityLow,
+                RiskReasonCode::ExecutionDisabledDryRun,
+            ],
+        })
+        .assert_passed();
+    }
+
+    #[test]
+    fn validates_jupiter_malformed_source_authority_fixture_guardrails() {
+        validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "jupiter_synthetic_malformed_source_authority_001",
+            manifest_json: JUPITER_MALFORMED_SOURCE_MANIFEST,
+            dry_run_output_json: JUPITER_MALFORMED_SOURCE_DRY_RUN,
+            content_files: jupiter_malformed_source_content_files(),
+            expected_status: DryRunStatus::Rejected,
+            expected_reason_codes: &[
+                RiskReasonCode::AdapterDecodeFailed,
+                RiskReasonCode::AdapterVersionMismatch,
                 RiskReasonCode::DataQualityLow,
                 RiskReasonCode::ExecutionDisabledDryRun,
             ],
@@ -1395,6 +1418,15 @@ mod tests {
             path: "datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json",
             bytes: include_bytes!(
                 "../../../datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json"
+            ),
+        }]
+    }
+
+    fn jupiter_malformed_source_content_files() -> &'static [FixtureContent<'static>] {
+        &[FixtureContent {
+            path: "datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json",
+            bytes: include_bytes!(
+                "../../../datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json"
             ),
         }]
     }

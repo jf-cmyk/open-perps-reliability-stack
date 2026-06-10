@@ -1,0 +1,41 @@
+{
+  "schema_version": "oprs.invalid_public_package_cases.v0",
+  "cases": [
+    {
+      "case_id": "drift_replay_ready_overclaim",
+      "validator": "drift_guardrails",
+      "mutation": "set_spot_replay_ready_true",
+      "expected_failure": "spot_guardrails readiness.replay_ready must be false"
+    },
+    {
+      "case_id": "drift_raw_account_bytes_marker",
+      "validator": "drift_guardrails",
+      "mutation": "add_raw_account_bytes_marker",
+      "expected_failure": "blocked marker `raw_payload`"
+    },
+    {
+      "case_id": "jupiter_verified_pairing_overclaim",
+      "validator": "jupiter_authority_gap",
+      "mutation": "set_verified_pairing_true",
+      "expected_failure": "gap_report readiness.verified_pairing_claimed must be false"
+    },
+    {
+      "case_id": "jupiter_verified_record_status",
+      "validator": "jupiter_authority_gap",
+      "mutation": "set_record_status_verified",
+      "expected_failure": "must stay blocked or unverified"
+    },
+    {
+      "case_id": "jupiter_rpc_url_leak",
+      "validator": "jupiter_authority_gap",
+      "mutation": "add_rpc_url_evidence_ref",
+      "expected_failure": "blocked marker `rpc_url`"
+    },
+    {
+      "case_id": "contract_index_schema_version_mismatch",
+      "validator": "contract_index",
+      "mutation": "set_contract_payload_schema_version_invalid",
+      "expected_failure": "payload schema_version mismatch"
+    }
+  ]
+}

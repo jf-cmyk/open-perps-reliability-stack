@@ -51,6 +51,8 @@ Hosted proof-pack MVP:
 - [Jupiter Perps transaction history example](examples/datasets/jupiter_perps_transaction_history_example.json)
 - [Jupiter authority-gap package](examples/public/jupiter-authority-gap-v0/gap_report.json)
 - [Weak Jupiter lifecycle fixture](datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json)
+- [Malformed Jupiter source-authority fixture](datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json)
+- [Invalid public-package fixture corpus](tests/fixtures/public-packages/invalid/cases.json)
 - [Static dashboard demo](apps/dashboard/index.html)
 
 ## Local Verification
