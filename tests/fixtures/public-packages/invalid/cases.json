@@ -14,6 +14,18 @@
       "expected_failure": "blocked marker `raw_payload`"
     },
     {
+      "case_id": "drift_manifest_checksum_mismatch",
+      "validator": "drift_guardrails",
+      "mutation": "set_manifest_checksum_invalid",
+      "expected_failure": "sha256 mismatch"
+    },
+    {
+      "case_id": "drift_manifest_absolute_path_leak",
+      "validator": "drift_guardrails",
+      "mutation": "add_manifest_absolute_path",
+      "expected_failure": "blocked marker `local_path`"
+    },
+    {
       "case_id": "jupiter_verified_pairing_overclaim",
       "validator": "jupiter_authority_gap",
       "mutation": "set_verified_pairing_true",
@@ -32,10 +44,46 @@
       "expected_failure": "blocked marker `rpc_url`"
     },
     {
+      "case_id": "jupiter_bearer_token_leak",
+      "validator": "jupiter_authority_gap",
+      "mutation": "add_bearer_token_marker",
+      "expected_failure": "blocked marker `bearer_token`"
+    },
+    {
+      "case_id": "jupiter_unsafe_absolute_evidence_ref",
+      "validator": "jupiter_authority_gap",
+      "mutation": "add_absolute_evidence_ref",
+      "expected_failure": "has unsafe evidence ref"
+    },
+    {
       "case_id": "contract_index_schema_version_mismatch",
       "validator": "contract_index",
       "mutation": "set_contract_payload_schema_version_invalid",
       "expected_failure": "payload schema_version mismatch"
+    },
+    {
+      "case_id": "contract_index_duplicate_package_id",
+      "validator": "contract_index",
+      "mutation": "duplicate_first_package",
+      "expected_failure": "duplicate package_id"
+    },
+    {
+      "case_id": "contract_index_missing_validator",
+      "validator": "contract_index",
+      "mutation": "set_validator_missing",
+      "expected_failure": "validator does not exist"
+    },
+    {
+      "case_id": "contract_index_missing_schema_path",
+      "validator": "contract_index",
+      "mutation": "set_schema_path_missing",
+      "expected_failure": "schema_path does not exist"
+    },
+    {
+      "case_id": "contract_index_missing_manifest_path",
+      "validator": "contract_index",
+      "mutation": "set_manifest_path_missing",
+      "expected_failure": "manifest_path does not exist"
     }
   ]
 }

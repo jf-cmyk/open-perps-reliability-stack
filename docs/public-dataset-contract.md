@@ -43,4 +43,4 @@ The public contract index is intentionally small. It records package IDs, payloa
 
 The shared validator helper in `scripts/public_package_contract.py` owns mechanical checks only: JSON loading, safe relative paths, blocked public-text patterns, contract-index lookup, payload schema-version agreement, checksums, row counts, and manifest/DQ publish gates. Package-specific validators still own semantic claims such as Drift guardrail readiness or Jupiter verified-pairing blockers.
 
-Invalid package fixtures live under `tests/fixtures/public-packages/invalid/`. They are not served publicly; they mutate otherwise valid packages to prove validators reject replay-readiness overclaims, raw-payload leaks, Jupiter verified-pairing overclaims, RPC URL leaks, and contract-index schema drift.
+Invalid package fixtures live under `tests/fixtures/public-packages/invalid/`. They are not served publicly; they mutate otherwise valid packages to prove validators reject replay-readiness overclaims, raw-payload leaks, checksum drift, local path leaks, Jupiter verified-pairing overclaims, unsafe evidence refs, secret markers, and contract-index drift.
