@@ -6,7 +6,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from public_package_contract import is_safe_relative_path, load_json
+from public_package_contract import is_safe_relative_path, load_json, validate_json_schema
 
 
 DEFAULT_INDEX = Path("examples/public/contract-index.json")
@@ -18,6 +18,9 @@ def validate_index(index_path: Path) -> list[str]:
         return [f"missing contract index: {index_path}"]
 
     index = load_json(index_path)
+    schema = load_json(Path("schemas/datasets/public-contract-index-v0.json"))
+    failures.extend(validate_json_schema(index, schema, "contract-index"))
+
     if index.get("contract_index_version") != "oprs.public_contract_index.v0":
         failures.append("contract_index_version must be oprs.public_contract_index.v0")
 

@@ -45,6 +45,134 @@ def scan_blocked_text(path: Path, text: str) -> list[str]:
     return failures
 
 
+def validate_json_schema(instance: Any, schema: dict[str, Any], label: str) -> list[str]:
+    """Validate the bounded JSON Schema subset used by checked-in package schemas."""
+
+    return _validate_schema_node(instance, schema, schema, label)
+
+
+def _validate_schema_node(
+    instance: Any,
+    schema: dict[str, Any],
+    root_schema: dict[str, Any],
+    path: str,
+) -> list[str]:
+    failures: list[str] = []
+
+    if "$ref" in schema:
+        ref = schema["$ref"]
+        if not isinstance(ref, str) or not ref.startswith("#/$defs/"):
+            return [f"{path}: unsupported schema ref {ref!r}"]
+        def_name = ref.removeprefix("#/$defs/")
+        target = root_schema.get("$defs", {}).get(def_name)
+        if not isinstance(target, dict):
+            return [f"{path}: missing schema ref {ref}"]
+        return _validate_schema_node(instance, target, root_schema, path)
+
+    if "not" in schema and _schema_matches(instance, schema["not"], root_schema):
+        failures.append(f"{path}: must not match forbidden schema")
+
+    if "anyOf" in schema:
+        options = schema["anyOf"]
+        if not isinstance(options, list) or not any(
+            _schema_matches(instance, option, root_schema)
+            for option in options
+            if isinstance(option, dict)
+        ):
+            failures.append(f"{path}: must match at least one anyOf schema")
+
+    if "const" in schema and instance != schema["const"]:
+        failures.append(f"{path}: expected const {schema['const']!r}, got {instance!r}")
+
+    if "enum" in schema and instance not in schema["enum"]:
+        failures.append(f"{path}: value {instance!r} not in enum {schema['enum']!r}")
+
+    expected_type = schema.get("type")
+    if expected_type is not None and not _matches_json_type(instance, expected_type):
+        failures.append(f"{path}: expected type {expected_type}, got {_json_type_name(instance)}")
+        return failures
+
+    if isinstance(instance, str):
+        if "minLength" in schema and len(instance) < schema["minLength"]:
+            failures.append(f"{path}: length must be >= {schema['minLength']}")
+        if "maxLength" in schema and len(instance) > schema["maxLength"]:
+            failures.append(f"{path}: length must be <= {schema['maxLength']}")
+        if "pattern" in schema and not re.search(schema["pattern"], instance):
+            failures.append(f"{path}: does not match pattern {schema['pattern']!r}")
+
+    if isinstance(instance, int) and not isinstance(instance, bool):
+        if "minimum" in schema and instance < schema["minimum"]:
+            failures.append(f"{path}: value must be >= {schema['minimum']}")
+
+    if isinstance(instance, list):
+        if "minItems" in schema and len(instance) < schema["minItems"]:
+            failures.append(f"{path}: item count must be >= {schema['minItems']}")
+        item_schema = schema.get("items")
+        if isinstance(item_schema, dict):
+            for index, item in enumerate(instance):
+                failures.extend(
+                    _validate_schema_node(item, item_schema, root_schema, f"{path}[{index}]")
+                )
+
+    if isinstance(instance, dict):
+        properties = schema.get("properties", {})
+        required = schema.get("required", [])
+        if isinstance(required, list):
+            for key in required:
+                if key not in instance:
+                    failures.append(f"{path}: missing required property `{key}`")
+
+        if isinstance(properties, dict):
+            for key, property_schema in properties.items():
+                if key in instance and isinstance(property_schema, dict):
+                    failures.extend(
+                        _validate_schema_node(
+                            instance[key], property_schema, root_schema, f"{path}.{key}"
+                        )
+                    )
+
+            if schema.get("additionalProperties") is False:
+                extra = sorted(key for key in instance if key not in properties)
+                for key in extra:
+                    failures.append(f"{path}: additional property `{key}` is not allowed")
+
+    return failures
+
+
+def _schema_matches(instance: Any, schema: dict[str, Any], root_schema: dict[str, Any]) -> bool:
+    return not _validate_schema_node(instance, schema, root_schema, "<match>")
+
+
+def _matches_json_type(value: Any, expected_type: str) -> bool:
+    if expected_type == "object":
+        return isinstance(value, dict)
+    if expected_type == "array":
+        return isinstance(value, list)
+    if expected_type == "string":
+        return isinstance(value, str)
+    if expected_type == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if expected_type == "boolean":
+        return isinstance(value, bool)
+    return False
+
+
+def _json_type_name(value: Any) -> str:
+    if isinstance(value, bool):
+        return "boolean"
+    if isinstance(value, dict):
+        return "object"
+    if isinstance(value, list):
+        return "array"
+    if isinstance(value, str):
+        return "string"
+    if isinstance(value, int):
+        return "integer"
+    if value is None:
+        return "null"
+    return type(value).__name__
+
+
 def load_contract_entry(
     package_id: str,
     expected_validator: str,

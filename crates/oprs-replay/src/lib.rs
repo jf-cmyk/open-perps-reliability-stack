@@ -1270,6 +1270,118 @@ mod tests {
         }
     }
 
+    #[test]
+    fn rejects_tx_plan_signer_or_submission_enabled() {
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: MARGIN_MANIFEST,
+            dry_run_output_json: r#"{
+                "summary": {
+                  "run_id": "drift_synthetic_margin_001",
+                  "schema_version": "0.1.0",
+                  "mode": "Fixture",
+                  "started_at_unix": 1780447600,
+                  "completed_at_unix": 1780447601,
+                  "opportunities_scanned": 1,
+                  "opportunities_accepted": 0,
+                  "opportunities_rejected": 1,
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                },
+                "opportunities": [{
+                  "id": "invalid_tx_plan_signer",
+                  "tx_plan": {"requires_signer": true, "submission_disabled": false},
+                  "decision": {
+                    "status": "Unsupported",
+                    "reason_codes": ["ExecutionDisabledDryRun"]
+                  }
+                }],
+                "gate_results": [{
+                  "gate_id": "execution_boundary",
+                  "status": "Fail",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                }],
+                "simulation_results": [{
+                  "status": "Unsupported",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                }]
+            }"#,
+            content_files: margin_content_files(),
+            expected_status: DryRunStatus::Unsupported,
+            expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
+        });
+
+        assert!(!report.passed);
+        for expected in [
+            "opportunity `invalid_tx_plan_signer` has requires_signer=true",
+            "opportunity `invalid_tx_plan_signer` has submission_disabled=false",
+        ] {
+            assert!(
+                report
+                    .failures
+                    .iter()
+                    .any(|failure| failure.contains(expected)),
+                "missing {expected} in {:?}",
+                report.failures
+            );
+        }
+    }
+
+    #[test]
+    fn rejects_tx_plan_execution_surface_markers() {
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: MARGIN_MANIFEST,
+            dry_run_output_json: r#"{
+                "summary": {
+                  "run_id": "drift_synthetic_margin_001",
+                  "schema_version": "0.1.0",
+                  "mode": "Fixture",
+                  "started_at_unix": 1780447600,
+                  "completed_at_unix": 1780447601,
+                  "opportunities_scanned": 1,
+                  "opportunities_accepted": 0,
+                  "opportunities_rejected": 1,
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                },
+                "opportunities": [{
+                  "id": "invalid_execution_surface",
+                  "signer_id": "should-never-appear",
+                  "custody_wallet": "should-never-appear",
+                  "execution_policy": {"priority_fee_bid": 1},
+                  "tx_plan": {"requires_signer": false, "submission_disabled": true},
+                  "decision": {
+                    "status": "Unsupported",
+                    "reason_codes": ["ExecutionDisabledDryRun"]
+                  }
+                }],
+                "gate_results": [{
+                  "gate_id": "execution_boundary",
+                  "status": "Fail",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                }],
+                "simulation_results": [{
+                  "status": "Unsupported",
+                  "reason_codes": ["ExecutionDisabledDryRun"]
+                }]
+            }"#,
+            content_files: margin_content_files(),
+            expected_status: DryRunStatus::Unsupported,
+            expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
+        });
+
+        assert!(!report.passed);
+        for expected in ["signer_or_wallet_metadata", "capital_or_execution_policy"] {
+            assert!(
+                report
+                    .failures
+                    .iter()
+                    .any(|failure| failure.contains(expected)),
+                "missing {expected} in {:?}",
+                report.failures
+            );
+        }
+    }
+
     fn dry_run_fixture_with_reason(reason_code: &str, status: DryRunStatus) -> String {
         let status_name = dry_run_status_name(status);
         format!(

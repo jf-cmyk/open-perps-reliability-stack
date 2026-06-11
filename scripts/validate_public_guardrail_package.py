@@ -17,6 +17,7 @@ from public_package_contract import (
     load_json,
     scan_blocked_text,
     validate_manifest_dq_and_outputs,
+    validate_json_schema,
     validate_payload_schema_versions,
 )
 
@@ -70,6 +71,12 @@ def validate_package(package_dir: Path, contract_entry: dict[str, Any] | None = 
     manifest = load_json(manifest_path)
     dq = load_json(dq_path)
     payloads = [(spec, load_json(Path(spec["path"]))) for spec in payload_specs]
+
+    for spec, payload in payloads:
+        schema_path = Path(spec["schema_path"])
+        schema = load_json(schema_path)
+        label = spec.get("role", Path(spec["path"]).name)
+        failures.extend(validate_json_schema(payload, schema, label))
 
     for path in [manifest_path, *payload_paths, dq_path]:
         failures.extend(scan_blocked_text(path, path.read_text(encoding="utf-8")))

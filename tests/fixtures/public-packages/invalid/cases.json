@@ -26,6 +26,12 @@
       "expected_failure": "blocked marker `local_path`"
     },
     {
+      "case_id": "drift_schema_missing_required_field",
+      "validator": "drift_guardrails",
+      "mutation": "remove_spot_required_asset",
+      "expected_failure": "missing required property `asset`"
+    },
+    {
       "case_id": "jupiter_verified_pairing_overclaim",
       "validator": "jupiter_authority_gap",
       "mutation": "set_verified_pairing_true",
@@ -54,6 +60,12 @@
       "validator": "jupiter_authority_gap",
       "mutation": "add_absolute_evidence_ref",
       "expected_failure": "has unsafe evidence ref"
+    },
+    {
+      "case_id": "jupiter_schema_extra_record_property",
+      "validator": "jupiter_authority_gap",
+      "mutation": "add_record_extra_property",
+      "expected_failure": "additional property `decoded` is not allowed"
     },
     {
       "case_id": "contract_index_schema_version_mismatch",

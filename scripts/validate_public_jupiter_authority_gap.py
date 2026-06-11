@@ -9,6 +9,7 @@ from pathlib import Path
 from public_package_contract import (
     load_json,
     scan_blocked_text,
+    validate_json_schema,
     validate_manifest_dq_and_outputs,
 )
 
@@ -31,6 +32,8 @@ def validate_package(package_dir: Path) -> list[str]:
     manifest = load_json(manifest_path)
     gap_report = load_json(gap_path)
     dq = load_json(dq_path)
+    schema = load_json(Path("schemas/datasets/jupiter-authority-gap-v0.json"))
+    failures.extend(validate_json_schema(gap_report, schema, "jupiter-authority-gap"))
 
     for path in [manifest_path, gap_path, dq_path]:
         failures.extend(scan_blocked_text(path, path.read_text(encoding="utf-8")))

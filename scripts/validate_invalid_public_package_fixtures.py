@@ -97,6 +97,12 @@ def mutate_drift_package(package_dir: Path, mutation: str) -> None:
         )
         write_json(manifest_path, manifest)
         return
+    if mutation == "remove_spot_required_asset":
+        payload_path = package_dir / "spot_guardrails.json"
+        payload = load_json(payload_path)
+        payload["records"][0].pop("asset", None)
+        write_json(payload_path, payload)
+        return
     raise ValueError(f"unknown Drift mutation `{mutation}`")
 
 
@@ -117,6 +123,8 @@ def mutate_jupiter_package(package_dir: Path, mutation: str) -> None:
         payload["records"][0]["public_evidence_refs"].append(
             "/Users/example/private/jupiter-source.json"
         )
+    elif mutation == "add_record_extra_property":
+        payload["records"][0]["decoded"] = True
     else:
         raise ValueError(f"unknown Jupiter mutation `{mutation}`")
     write_json(payload_path, payload)
