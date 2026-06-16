@@ -42,6 +42,14 @@ Add Phoenix/Rise telemetry in parallel when practical for spread, depth, fills, 
 
 Current Phoenix/Rise public package status: `examples/public/phoenix-market-telemetry-v0/` maps source-backed public HTTP and WebSocket market-data surfaces for exchange snapshots, market configuration, L2 orderbook snapshots, market-statistics history, funding-rate history, and live L2 streams. It is a static market-telemetry readiness package only. It does not claim live API capture, trader-state decode, instruction-builder use, order operations, signing, transaction submission, or historical replay.
 
+Current local Phoenix public HTTP probe command:
+
+```bash
+scripts/discover_phoenix_market_telemetry.py --out target/oprs-phoenix-market-telemetry/latest.json
+```
+
+This command calls only the public `GET /v1/exchange/snapshot` endpoint, records capped shape summaries, and does not commit raw response bodies, account addresses, auth material, trader state, instruction-builder output, order routes, signing, transaction submission, or replay evidence.
+
 ## Source-Backed Notes: 2026-06-04
 
 Drift:
@@ -144,5 +152,5 @@ Current status:
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
 - Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, and candidate lifecycle pairs can be produced from shared public account keys plus metadata-only account probes. Wider samples can label stronger candidates when shared Jupiter-owned non-executable accounts are seen. The authority-gap package records the exact blockers, and verified request/fulfillment pairing is not yet claimed.
 - Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), but still needs canonical IDL/source confirmation before binary decode proof.
-- Phoenix/Rise now has a source-backed public market-telemetry readiness package. The next Phoenix step is a bounded local public HTTP probe only if external API calls belong in local proof scripts; no live Phoenix responses are currently committed.
+- Phoenix/Rise now has a source-backed public market-telemetry readiness package and a bounded local public HTTP probe. No live Phoenix responses are committed.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

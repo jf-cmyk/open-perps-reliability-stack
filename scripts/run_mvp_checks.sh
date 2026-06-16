@@ -56,6 +56,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/public_package_contract.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_contract_index.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_guardrail_package.py
@@ -112,6 +113,7 @@ test -x scripts/discover_drift_readonly_state.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/audit_jupiter_source_authority.py
+test -x scripts/discover_phoenix_market_telemetry.py
 test -x scripts/validate_public_contract_index.py
 test -x scripts/validate_public_guardrail_package.py
 test -x scripts/validate_public_jupiter_authority_gap.py

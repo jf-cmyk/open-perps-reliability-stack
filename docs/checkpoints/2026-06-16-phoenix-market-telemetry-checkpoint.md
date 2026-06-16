@@ -24,6 +24,7 @@
 - Expanded invalid public-package fixtures from 16 to 20 cases with Phoenix execution/instruction/source/schema negatives.
 - Wired Phoenix package validation into local MVP checks and hosted smoke checks.
 - Updated grant-safe docs to distinguish current synthetic dry-run evidence from deferred historical reconstruction.
+- Added `scripts/discover_phoenix_market_telemetry.py` as a local-only public HTTP probe that writes capped scrubbed summaries under `target/`.
 
 ## Claim Boundary
 
@@ -46,6 +47,7 @@ scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_public_contract_index.py
 scripts/validate_invalid_public_package_fixtures.py
 scripts/run_mvp_checks.sh
+scripts/discover_phoenix_market_telemetry.py --out target/oprs-phoenix-market-telemetry/latest.json
 cargo fmt --check
 git diff --check
 ```
@@ -67,7 +69,7 @@ scripts/run_hosted_smoke_checks.sh https://jf-cmyk.github.io/open-perps-reliabil
 Can continue without access:
 
 1. Run full validation, commit, push, deploy Railway, and smoke-check Railway plus GitHub Pages.
-2. Decide whether a bounded Phoenix public HTTP probe belongs in local scripts; if yes, add strict timeout, symbol, and row caps before committing any sample.
+2. Consider adding a non-served Phoenix probe example schema only if the scrubbed target output stabilizes and does not weaken the no-raw-response boundary.
 3. Continue Drift field expansion only after offset/source validation and scrub review.
 
 Needs access or founder confirmation:
