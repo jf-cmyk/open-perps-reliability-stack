@@ -72,6 +72,39 @@
           "signing or transaction submission supported"
         ]
       }
+    },
+    {
+      "package_id": "phoenix-market-telemetry-v0",
+      "package_type": "market_telemetry_readiness",
+      "protocol": "phoenix_rise",
+      "capability": "read_only_dry_run",
+      "manifest_path": "examples/public/phoenix-market-telemetry-v0/manifest.json",
+      "dq_path": "examples/public/phoenix-market-telemetry-v0/dq.json",
+      "payloads": [
+        {
+          "role": "telemetry_surfaces",
+          "path": "examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json",
+          "schema_path": "schemas/datasets/phoenix-market-telemetry-v0.json",
+          "schema_version": "oprs.phoenix_market_telemetry.v0"
+        }
+      ],
+      "validator": "scripts/validate_public_phoenix_market_telemetry.py",
+      "publishable": true,
+      "claim_boundary": {
+        "allowed_claims": [
+          "Phoenix/Rise public HTTP and WebSocket market-data surfaces are mapped",
+          "market-quality telemetry candidates are source-backed",
+          "public package checksums and DQ gates passed",
+          "read-only and dry-run only"
+        ],
+        "blocked_claims": [
+          "trader state decoded",
+          "instruction builders used",
+          "wallet-authenticated routes used",
+          "historical replay ready",
+          "signing or transaction submission supported"
+        ]
+      }
     }
   ]
 }

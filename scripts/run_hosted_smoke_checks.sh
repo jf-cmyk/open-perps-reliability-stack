@@ -117,6 +117,7 @@ assert_contains "SettleRevPool" "$workdir/drift_perp_guardrails.json"
 assert_contains "drift_guardrails_v0_example" "$workdir/drift_guardrail_manifest.json"
 assert_contains "no_user_state_claims" "$workdir/drift_guardrail_dq.json"
 assert_contains "jupiter-authority-gap-v0" "$workdir/public_contract_index.json"
+assert_contains "phoenix-market-telemetry-v0" "$workdir/public_contract_index.json"
 
 echo "== Fetch Jupiter Perps target discovery example =="
 fetch "/examples/datasets/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_readonly_targets_example.json"
@@ -178,6 +179,21 @@ assert_contains '"source_authority_status": "invalid_source_authority"' "$workdi
 assert_contains '"candidate_strength": "source_authority_invalid"' "$workdir/jupiter_malformed_source_fixture.json"
 assert_contains '"docs_linked_idl_canonical": false' "$workdir/jupiter_malformed_source_fixture.json"
 
+echo "== Fetch Phoenix market telemetry package =="
+fetch "/examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json" "$workdir/phoenix_market_telemetry.json"
+fetch "/examples/public/phoenix-market-telemetry-v0/manifest.json" "$workdir/phoenix_market_telemetry_manifest.json"
+fetch "/examples/public/phoenix-market-telemetry-v0/dq.json" "$workdir/phoenix_market_telemetry_dq.json"
+assert_contains "oprs.phoenix_market_telemetry.v0" "$workdir/phoenix_market_telemetry.json"
+assert_contains "phoenix_http_l2_orderbook" "$workdir/phoenix_market_telemetry.json"
+assert_contains "phoenix_funding_rate_history" "$workdir/phoenix_market_telemetry.json"
+assert_contains "phoenix_ws_l2_stream" "$workdir/phoenix_market_telemetry.json"
+assert_contains '"instruction_builder_claimed": false' "$workdir/phoenix_market_telemetry.json"
+assert_contains '"execution_claimed": false' "$workdir/phoenix_market_telemetry.json"
+assert_contains '"replay_ready": false' "$workdir/phoenix_market_telemetry.json"
+assert_contains "phoenix_market_telemetry_v0_example" "$workdir/phoenix_market_telemetry_manifest.json"
+assert_contains "no_execution_surface_claim" "$workdir/phoenix_market_telemetry_dq.json"
+assert_contains "read_only_surfaces_only" "$workdir/phoenix_market_telemetry_dq.json"
+
 echo "== Static 404 behavior =="
 missing_status="$(status_code "/does-not-exist-oprs-smoke")"
 env_status="$(status_code "/.env")"
@@ -229,7 +245,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

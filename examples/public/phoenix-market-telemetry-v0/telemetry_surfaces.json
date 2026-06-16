@@ -1,0 +1,125 @@
+{
+  "schema_version": "oprs.phoenix_market_telemetry.v0",
+  "dataset_name": "phoenix_market_telemetry_v0_example",
+  "protocol": "phoenix_rise",
+  "chain_id": "solana-mainnet-beta",
+  "generated_from": "Phoenix Rise SDK documentation reviewed 2026-06-16",
+  "records": [
+    {
+      "surface_id": "phoenix_exchange_snapshot",
+      "surface_type": "exchange_snapshot",
+      "symbol_scope": "all markets exposed by the exchange snapshot",
+      "access_surface": "public_http",
+      "read_only_supported": true,
+      "telemetry_value": "Exchange-wide state and market configuration snapshots can seed market-quality baselines without wallet authority.",
+      "public_source_refs": [
+        "https://docs.phoenix.trade/sdk/rise"
+      ],
+      "blocked_operations": [
+        "order placement",
+        "order cancellation",
+        "instruction building",
+        "wallet authentication"
+      ]
+    },
+    {
+      "surface_id": "phoenix_market_config",
+      "surface_type": "market_config",
+      "symbol_scope": "single market symbol such as SOL",
+      "access_surface": "public_http",
+      "read_only_supported": true,
+      "telemetry_value": "Per-market fees, risk parameters, funding cadence, and configuration snapshots are a safe first adapter target.",
+      "public_source_refs": [
+        "https://docs.phoenix.trade/sdk/rise"
+      ],
+      "blocked_operations": [
+        "order placement",
+        "order cancellation",
+        "instruction building",
+        "wallet authentication"
+      ]
+    },
+    {
+      "surface_id": "phoenix_http_l2_orderbook",
+      "surface_type": "http_l2_orderbook",
+      "symbol_scope": "single market symbol such as SOL",
+      "access_surface": "public_http",
+      "read_only_supported": true,
+      "telemetry_value": "HTTP L2 orderbook snapshots support spread, depth, and stale-book checks for public reliability metrics.",
+      "public_source_refs": [
+        "https://docs.phoenix.trade/sdk/rise"
+      ],
+      "blocked_operations": [
+        "order placement",
+        "order cancellation",
+        "instruction building",
+        "wallet authentication"
+      ]
+    },
+    {
+      "surface_id": "phoenix_market_stats_history",
+      "surface_type": "market_stats_history",
+      "symbol_scope": "market time series",
+      "access_surface": "public_http",
+      "read_only_supported": true,
+      "telemetry_value": "Market statistics history can become a source-backed comparison lane for venue health and liquidity conditions.",
+      "public_source_refs": [
+        "https://docs.phoenix.trade/sdk/rise"
+      ],
+      "blocked_operations": [
+        "order placement",
+        "order cancellation",
+        "instruction building",
+        "wallet authentication"
+      ]
+    },
+    {
+      "surface_id": "phoenix_funding_rate_history",
+      "surface_type": "funding_rate_history",
+      "symbol_scope": "market time series",
+      "access_surface": "public_http",
+      "read_only_supported": true,
+      "telemetry_value": "Funding-rate history can support public funding anomaly and market-regime checks after source normalization.",
+      "public_source_refs": [
+        "https://docs.phoenix.trade/sdk/rise"
+      ],
+      "blocked_operations": [
+        "order placement",
+        "order cancellation",
+        "instruction building",
+        "wallet authentication"
+      ]
+    },
+    {
+      "surface_id": "phoenix_ws_l2_stream",
+      "surface_type": "ws_l2_stream",
+      "symbol_scope": "single market symbol stream such as SOL",
+      "access_surface": "public_websocket",
+      "read_only_supported": true,
+      "telemetry_value": "Typed live L2 streams can be used later for latency and stale-data checks, but this package does not claim continuous monitoring.",
+      "public_source_refs": [
+        "https://docs.phoenix.trade/sdk/rise"
+      ],
+      "blocked_operations": [
+        "order placement",
+        "order cancellation",
+        "instruction building",
+        "wallet authentication"
+      ]
+    }
+  ],
+  "readiness": {
+    "market_metadata_supported": true,
+    "orderbook_snapshot_supported": true,
+    "live_stream_supported": true,
+    "trader_state_claimed": false,
+    "instruction_builder_claimed": false,
+    "execution_claimed": false,
+    "replay_ready": false
+  },
+  "known_gaps": [
+    "Static source-backed package only; no live Phoenix API capture is committed.",
+    "No trader state, wallet-authenticated route, instruction-builder path, or execution path is in scope.",
+    "Continuous WebSocket monitoring and historical replay are not claimed."
+  ]
+}

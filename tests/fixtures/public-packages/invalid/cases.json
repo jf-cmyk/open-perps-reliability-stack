@@ -68,6 +68,30 @@
       "expected_failure": "additional property `decoded` is not allowed"
     },
     {
+      "case_id": "phoenix_execution_overclaim",
+      "validator": "phoenix_market_telemetry",
+      "mutation": "set_execution_claimed_true",
+      "expected_failure": "telemetry readiness.execution_claimed must be false"
+    },
+    {
+      "case_id": "phoenix_instruction_builder_overclaim",
+      "validator": "phoenix_market_telemetry",
+      "mutation": "set_instruction_builder_claimed_true",
+      "expected_failure": "telemetry readiness.instruction_builder_claimed must be false"
+    },
+    {
+      "case_id": "phoenix_unsafe_source_ref",
+      "validator": "phoenix_market_telemetry",
+      "mutation": "add_unsafe_source_ref",
+      "expected_failure": "unsupported public source ref"
+    },
+    {
+      "case_id": "phoenix_schema_extra_record_property",
+      "validator": "phoenix_market_telemetry",
+      "mutation": "add_record_extra_property",
+      "expected_failure": "additional property `decoded` is not allowed"
+    },
+    {
       "case_id": "contract_index_schema_version_mismatch",
       "validator": "contract_index",
       "mutation": "set_contract_payload_schema_version_invalid",

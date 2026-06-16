@@ -40,6 +40,8 @@ Add Jupiter next because it is economically and product-wise relevant to Solana 
 
 Add Phoenix/Rise telemetry in parallel when practical for spread, depth, fills, orderbook, funding, and latency baselines. Add FlashTrade and Adrena after the first two perps adapters to compare pool-perps oracle and keeper designs.
 
+Current Phoenix/Rise public package status: `examples/public/phoenix-market-telemetry-v0/` maps source-backed public HTTP and WebSocket market-data surfaces for exchange snapshots, market configuration, L2 orderbook snapshots, market-statistics history, funding-rate history, and live L2 streams. It is a static market-telemetry readiness package only. It does not claim live API capture, trader-state decode, instruction-builder use, order operations, signing, transaction submission, or historical replay.
+
 ## Source-Backed Notes: 2026-06-04
 
 Drift:
@@ -142,4 +144,5 @@ Current status:
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
 - Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, and candidate lifecycle pairs can be produced from shared public account keys plus metadata-only account probes. Wider samples can label stronger candidates when shared Jupiter-owned non-executable accounts are seen. The authority-gap package records the exact blockers, and verified request/fulfillment pairing is not yet claimed.
 - Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), but still needs canonical IDL/source confirmation before binary decode proof.
+- Phoenix/Rise now has a source-backed public market-telemetry readiness package. The next Phoenix step is a bounded local public HTTP probe only if external API calls belong in local proof scripts; no live Phoenix responses are currently committed.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

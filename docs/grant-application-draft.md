@@ -24,6 +24,7 @@ Blocksize will build the Open Perps Reliability Stack as open-source, read-only,
 - Normalized perps data schemas and public sample datasets.
 - Dry-run liquidation replay and reason-code classification.
 - Public dashboard/API schemas for market quality, oracle risk, liquidation health, and adapter health.
+- Public proof-package contracts for Drift guardrails, Jupiter source-authority gaps, and Phoenix/Rise market telemetry readiness.
 
 The first grant phase will not include production trading, custody, private-key handling, live liquidation submission, or capital deployment.
 
@@ -135,8 +136,10 @@ Grant-funded outputs remain public, reproducible, read-only, and dry-run only.
 
 ## Risks and Mitigations
 
-- Perps-specific decoded liquidation data is thin: start with Drift adapter scaffolding and fixture-backed shape tests.
-- Helius target discovery now succeeds for Drift program/state/selected market/selected oracle metadata and Jupiter Perps program/custody/oracle metadata, but historical Drift/Jupiter decode coverage still needs decoder provenance, binary decode implementation, request/fulfillment reconstruction, and scrubbed proof output before it can be claimed.
+- Historical perps-specific decoded liquidation data is thin: current replay claims are synthetic dry-run scenarios, not live historical reconstruction.
+- Helius target discovery now succeeds for Drift program/state/selected market/selected oracle metadata and Jupiter Perps program/custody/oracle metadata. Drift selected public guardrail fields are source-backed and package-validated, but Drift market-economics decode and historical replay still need source-backed proof before they can be claimed.
+- Jupiter Perps has an authority-gap package with negative evidence and blockers, but canonical source/IDL authority and verified request/fulfillment reconstruction remain blocked.
+- Phoenix/Rise has a source-backed static market-telemetry readiness package; live API capture and continuous monitoring are not claimed.
 - Live execution is high risk: explicitly out of scope.
 - Public datasets may leak secrets or private strategy: enforce scrubbing policy and publish gates.
 - Venue schemas may drift: adapter metadata includes schema and IDL versioning.

@@ -1,0 +1,46 @@
+{
+  "dq_version": "oprs.public_dataset_dq.v0",
+  "dataset_name": "phoenix_market_telemetry_v0_example",
+  "checks": [
+    {
+      "gate_id": "schema_valid",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Telemetry surface payload validates against schemas/datasets/phoenix-market-telemetry-v0.json."
+    },
+    {
+      "gate_id": "no_execution_surface_claim",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Package does not claim instruction-builder, order route, wallet-authenticated, or execution readiness."
+    },
+    {
+      "gate_id": "read_only_surfaces_only",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "All records are limited to public HTTP or public WebSocket telemetry surfaces."
+    },
+    {
+      "gate_id": "no_live_api_capture",
+      "severity": "warn_public",
+      "status": "warn",
+      "notes": "This package is source-backed documentation evidence only; it does not commit live API response bodies."
+    },
+    {
+      "gate_id": "no_trader_state_claim",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Trader state is intentionally excluded from the public package claim boundary."
+    },
+    {
+      "gate_id": "scrubbed_public_artifact",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "No local paths, RPC endpoints, provider credentials, signer material, raw account payloads, or execution-resource settings are present."
+    }
+  ],
+  "summary": {
+    "blocking_failures": 0,
+    "warnings": 1
+  }
+}

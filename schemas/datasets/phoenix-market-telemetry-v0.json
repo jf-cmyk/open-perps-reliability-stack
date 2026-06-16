@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/phoenix-market-telemetry-v0.json",
+  "title": "Open Perps Reliability Stack Phoenix Market Telemetry v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_name",
+    "protocol",
+    "chain_id",
+    "generated_from",
+    "records",
+    "readiness",
+    "known_gaps"
+  ],
+  "properties": {
+    "schema_version": { "const": "oprs.phoenix_market_telemetry.v0" },
+    "dataset_name": { "type": "string", "minLength": 1 },
+    "protocol": { "const": "phoenix_rise" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "generated_from": { "type": "string", "minLength": 1 },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "surface_id",
+          "surface_type",
+          "symbol_scope",
+          "access_surface",
+          "read_only_supported",
+          "telemetry_value",
+          "public_source_refs",
+          "blocked_operations"
+        ],
+        "properties": {
+          "surface_id": { "type": "string", "minLength": 1 },
+          "surface_type": {
+            "enum": [
+              "exchange_snapshot",
+              "market_config",
+              "http_l2_orderbook",
+              "market_stats_history",
+              "funding_rate_history",
+              "ws_l2_stream"
+            ]
+          },
+          "symbol_scope": { "type": "string", "minLength": 1 },
+          "access_surface": { "enum": ["public_http", "public_websocket"] },
+          "read_only_supported": { "const": true },
+          "telemetry_value": { "type": "string", "minLength": 1 },
+          "public_source_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "blocked_operations": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": [
+        "market_metadata_supported",
+        "orderbook_snapshot_supported",
+        "live_stream_supported",
+        "trader_state_claimed",
+        "instruction_builder_claimed",
+        "execution_claimed",
+        "replay_ready"
+      ],
+      "properties": {
+        "market_metadata_supported": { "const": true },
+        "orderbook_snapshot_supported": { "const": true },
+        "live_stream_supported": { "const": true },
+        "trader_state_claimed": { "const": false },
+        "instruction_builder_claimed": { "const": false },
+        "execution_claimed": { "const": false },
+        "replay_ready": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "known_gaps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false
+}

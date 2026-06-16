@@ -16,7 +16,7 @@ This is not a new perp venue. It is the missing reliability substrate around Sol
 2. First read-only adapter: ship one supported venue adapter with fixtures, decode-health reporting, and reproducible backfill docs.
 3. Pyth-aware risk SDK: open-source stale-price, confidence, divergence, liquidation-price, and stress-scenario helpers.
 4. Market-quality data layer: publish normalized sample datasets for open interest, funding, fills, liquidations, oracle divergence, and adapter health.
-5. Dry-run liquidation replay: detect and classify historical opportunities as safe, unsafe, stale-oracle, thin-liquidity, unprofitable, or execution-failed. No signing.
+5. Dry-run liquidation replay: detect and classify synthetic dry-run scenarios as safe, unsafe, stale-oracle, thin-liquidity, unprofitable, or execution-failed. Historical reconstruction is deferred until source-backed decode and replay evidence lands. No signing.
 6. Public dashboard/API: read-only views for market quality, oracle risk, liquidation health, and execution reliability methodology.
 7. Docs and grant report: integration guide, data schema, methodology, limitations, and final milestone evidence.
 
@@ -61,8 +61,10 @@ Grant-funded work stays read-only, public, reproducible, and no-signing. Commerc
 
 ## Diligence Risks
 
-- Perps-specific decoded datasets are still thin.
-- Drift is the likely first adapter, but decoded perps liquidation fixtures still need to be built.
+- Historical perps-specific decoded datasets are still thin.
+- Drift is the first adapter lane with source-backed selected public guardrail fields; market-economics decode and historical liquidation reconstruction still need to be built before they can be claimed.
+- Jupiter Perps remains useful as negative evidence and source-authority diligence, but canonical source/IDL authority and verified request/fulfillment pairing remain blocked.
+- Phoenix/Rise is now a market-telemetry readiness lane, not a liquidation replay lane.
 - Validator/RPC telemetry access may vary.
 - Public data must be scrubbed for secrets.
 - License boundaries between Apache and BUSL/private components require care.
@@ -70,7 +72,7 @@ Grant-funded work stays read-only, public, reproducible, and no-signing. Commerc
 
 ## Demo Narrative
 
-Here is the current Open Perps Reliability Stack proof pack running as a public, read-only MVP. Railway is the canonical reviewer URL, with an equivalent GitHub Pages fallback. The dashboard shows market quality, oracle confidence/staleness, liquidation-risk bands, adapter health, and dry-run guardrails. The replay fixtures explain why opportunities are accepted or rejected without keys, custody, capital, signing, or transaction submission.
+Here is the current Open Perps Reliability Stack proof pack running as a public, read-only MVP. Railway is the canonical reviewer URL, with an equivalent GitHub Pages fallback. The dashboard shows market quality, oracle confidence/staleness, liquidation-risk bands, adapter health, and dry-run guardrails. The replay fixtures explain why synthetic opportunities are accepted or rejected without keys, custody, capital, signing, or transaction submission. The public proof pack also includes package-level claim boundaries for Drift guardrails, Jupiter authority gaps, and Phoenix/Rise market telemetry readiness.
 
 The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation commands: [MVP proof checklist](mvp-proof-checklist.md).
 

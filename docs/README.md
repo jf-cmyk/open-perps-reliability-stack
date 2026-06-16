@@ -19,6 +19,7 @@
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)
 - [Public artifact boundary](public-artifact-boundary.md)
+- [Public dataset contract](public-dataset-contract.md)
 - [MVP proof checklist](mvp-proof-checklist.md)
 - [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
@@ -37,6 +38,11 @@ Schema and fixture artifacts:
 - [Drift shape snapshot example](../examples/datasets/drift_shape_snapshot_example.json)
 - [Jupiter Perps read-only target example](../examples/datasets/jupiter_perps_readonly_targets_example.json)
 - [Jupiter Perps transaction history example](../examples/datasets/jupiter_perps_transaction_history_example.json)
+- [Public package contract index](../examples/public/contract-index.json)
+- [Drift guardrails public package](../examples/public/drift-guardrails-v0/)
+- [Jupiter authority-gap public package](../examples/public/jupiter-authority-gap-v0/)
+- [Phoenix market telemetry public package](../examples/public/phoenix-market-telemetry-v0/)
+- [Invalid public package corpus](../tests/fixtures/public-packages/invalid/cases.json)
 - [Static dashboard demo](../apps/dashboard/index.html)
 
 Validation commands:

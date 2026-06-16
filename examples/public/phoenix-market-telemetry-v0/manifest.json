@@ -1,0 +1,41 @@
+{
+  "manifest_version": "oprs.public_dataset_manifest.v0",
+  "dataset_name": "phoenix_market_telemetry_v0_example",
+  "schema_version": "oprs.phoenix_market_telemetry_package.v0",
+  "protocol": "phoenix_rise",
+  "chain_id": "solana-mainnet-beta",
+  "capability": "read_only_dry_run",
+  "source_type": "source_backed_static_example",
+  "generated_from": "Phoenix Rise SDK documentation reviewed 2026-06-16",
+  "outputs": [
+    {
+      "path": "telemetry_surfaces.json",
+      "format": "json",
+      "row_count": 6,
+      "sha256": "09d2cd73059697df145e94dca00e642f168e0832263ff212cb98f8f9363c4e9b"
+    },
+    {
+      "path": "dq.json",
+      "format": "json",
+      "row_count": 6,
+      "sha256": "fa44206279b821289d996cd6475a345e4bf0519d5aaad390cb45b2c16eba75db"
+    }
+  ],
+  "dq": {
+    "status": "passed",
+    "report_path": "dq.json",
+    "blocking_failures": 0,
+    "warnings": 1
+  },
+  "scrub": {
+    "policy_version": "oprs.public_artifact_scrub.v0",
+    "status": "passed",
+    "blocked_pattern_count": 0
+  },
+  "known_limitations": [
+    "Static source-backed package only; no live Phoenix API capture is committed.",
+    "Phoenix instruction-builder, authenticated, and order-operation surfaces are explicitly out of scope.",
+    "Historical replay and continuous WebSocket monitoring are not claimed."
+  ],
+  "generated_at_unix": 1781614800
+}

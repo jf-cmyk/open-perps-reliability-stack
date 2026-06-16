@@ -15,6 +15,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 import validate_public_contract_index
 import validate_public_guardrail_package
 import validate_public_jupiter_authority_gap
+import validate_public_phoenix_market_telemetry
 
 
 CASES_PATH = Path("tests/fixtures/public-packages/invalid/cases.json")
@@ -51,6 +52,10 @@ def run_case(case: dict[str, str]) -> list[str]:
         copy_package(Path("examples/public/jupiter-authority-gap-v0"), workspace)
         mutate_jupiter_package(workspace, mutation)
         failures = validate_public_jupiter_authority_gap.validate_package(workspace)
+    elif validator == "phoenix_market_telemetry":
+        copy_package(Path("examples/public/phoenix-market-telemetry-v0"), workspace)
+        mutate_phoenix_package(workspace, mutation)
+        failures = validate_public_phoenix_market_telemetry.validate_package(workspace, None)
     elif validator == "contract_index":
         workspace.mkdir(parents=True, exist_ok=True)
         index_path = workspace / "contract-index.json"
@@ -127,6 +132,24 @@ def mutate_jupiter_package(package_dir: Path, mutation: str) -> None:
         payload["records"][0]["decoded"] = True
     else:
         raise ValueError(f"unknown Jupiter mutation `{mutation}`")
+    write_json(payload_path, payload)
+
+
+def mutate_phoenix_package(package_dir: Path, mutation: str) -> None:
+    payload_path = package_dir / "telemetry_surfaces.json"
+    payload = load_json(payload_path)
+    if mutation == "set_execution_claimed_true":
+        payload["readiness"]["execution_claimed"] = True
+    elif mutation == "set_instruction_builder_claimed_true":
+        payload["readiness"]["instruction_builder_claimed"] = True
+    elif mutation == "add_unsafe_source_ref":
+        payload["records"][0]["public_source_refs"].append(
+            "https://example.com/private-phoenix-notes"
+        )
+    elif mutation == "add_record_extra_property":
+        payload["records"][0]["decoded"] = True
+    else:
+        raise ValueError(f"unknown Phoenix mutation `{mutation}`")
     write_json(payload_path, payload)
 
 
