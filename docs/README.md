@@ -8,6 +8,7 @@
 - [Grant application draft](grant-application-draft.md)
 - [Solana Foundation application fields](solana-foundation-application-fields.md)
 - [Solana Foundation Developer Tooling proposal](solana-foundation-developer-tooling-proposal.md)
+- [Solana real-money rails BD brief](solana-real-money-rails-bd-brief.md)
 - [Local Word proposal](../deliverables/Open%20Perps%20Reliability%20Stack%20-%20Solana%20Foundation%20Proposal.docx)
 - [Architecture](architecture.md)
 - [Adapter standard](adapter-standard.md)

@@ -113,9 +113,9 @@ def build_summary(
             continue
         sample_markets.append(
             {
-                "symbol": string_or_none(market.get("symbol")),
+                "symbol": string_or_unknown(market.get("symbol")),
                 "asset_id_present": "assetId" in market,
-                "market_status": string_or_none(market.get("marketStatus")),
+                "market_status": string_or_unknown(market.get("marketStatus")),
                 "funding_config_present": isinstance(market.get("fundingConfig"), dict),
                 "risk_factors_present": isinstance(market.get("riskFactors"), dict),
                 "mark_price_parameters_present": isinstance(market.get("markPriceParameters"), dict),
@@ -133,7 +133,7 @@ def build_summary(
             "base_url": "https://perp-api.phoenix.trade",
             "method": "GET",
             "path": SNAPSHOT_PATH,
-            "timeout_seconds": timeout,
+            "timeout_ms": int(timeout * 1000),
             "max_markets": max_markets,
         },
         "response_summary": {
@@ -144,8 +144,10 @@ def build_summary(
             "slot_index_present": "slotIndex" in payload,
             "version_present": "version" in payload,
             "sequence_number_present": "sequenceNumber" in payload,
-            "exchange_active": bool(exchange.get("active")) if "active" in exchange else None,
-            "exchange_gated": bool(exchange.get("gated")) if "gated" in exchange else None,
+            "exchange_active_present": "active" in exchange,
+            "exchange_active": bool(exchange.get("active")),
+            "exchange_gated_present": "gated" in exchange,
+            "exchange_gated": bool(exchange.get("gated")),
             "program_id_present": "programId" in exchange,
             "market_count": len(markets),
             "sample_market_count": len(sample_markets),
@@ -174,8 +176,8 @@ def build_summary(
     }
 
 
-def string_or_none(value: object) -> str | None:
-    return value if isinstance(value, str) else None
+def string_or_unknown(value: object) -> str:
+    return value if isinstance(value, str) and value else "unknown"
 
 
 if __name__ == "__main__":

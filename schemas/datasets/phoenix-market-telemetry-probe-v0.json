@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/phoenix-market-telemetry-probe-v0.json",
+  "title": "Open Perps Reliability Stack Phoenix Market Telemetry Probe v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_name",
+    "protocol",
+    "chain_id",
+    "generated_at_unix",
+    "source_refs",
+    "query",
+    "response_summary",
+    "readiness",
+    "scrub",
+    "known_limitations"
+  ],
+  "properties": {
+    "schema_version": { "const": "oprs.phoenix_market_telemetry_probe.v0" },
+    "dataset_name": { "const": "phoenix_market_telemetry_probe_local" },
+    "protocol": { "const": "phoenix_rise" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "generated_at_unix": { "type": "integer", "minimum": 1 },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "query": {
+      "type": "object",
+      "required": ["base_url", "method", "path", "timeout_ms", "max_markets"],
+      "properties": {
+        "base_url": { "const": "https://perp-api.phoenix.trade" },
+        "method": { "const": "GET" },
+        "path": { "const": "/v1/exchange/snapshot" },
+        "timeout_ms": { "type": "integer", "minimum": 1 },
+        "max_markets": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "response_summary": {
+      "type": "object",
+      "required": [
+        "http_status",
+        "elapsed_ms",
+        "top_level_keys",
+        "slot_present",
+        "slot_index_present",
+        "version_present",
+        "sequence_number_present",
+        "exchange_active_present",
+        "exchange_active",
+        "exchange_gated_present",
+        "exchange_gated",
+        "program_id_present",
+        "market_count",
+        "sample_market_count",
+        "sample_markets"
+      ],
+      "properties": {
+        "http_status": { "type": "integer", "minimum": 100 },
+        "elapsed_ms": { "type": "integer", "minimum": 0 },
+        "top_level_keys": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "slot_present": { "type": "boolean" },
+        "slot_index_present": { "type": "boolean" },
+        "version_present": { "type": "boolean" },
+        "sequence_number_present": { "type": "boolean" },
+        "exchange_active_present": { "type": "boolean" },
+        "exchange_active": { "type": "boolean" },
+        "exchange_gated_present": { "type": "boolean" },
+        "exchange_gated": { "type": "boolean" },
+        "program_id_present": { "type": "boolean" },
+        "market_count": { "type": "integer", "minimum": 0 },
+        "sample_market_count": { "type": "integer", "minimum": 0 },
+        "sample_markets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "symbol",
+              "asset_id_present",
+              "market_status",
+              "funding_config_present",
+              "risk_factors_present",
+              "mark_price_parameters_present"
+            ],
+            "properties": {
+              "symbol": { "type": "string", "minLength": 1 },
+              "asset_id_present": { "type": "boolean" },
+              "market_status": { "type": "string", "minLength": 1 },
+              "funding_config_present": { "type": "boolean" },
+              "risk_factors_present": { "type": "boolean" },
+              "mark_price_parameters_present": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "readiness": {
+      "type": "object",
+      "required": [
+        "live_public_http_probe_claimed",
+        "auth_used",
+        "trader_state_used",
+        "instruction_builder_used",
+        "order_operation_used",
+        "raw_response_committed",
+        "execution_claimed",
+        "replay_ready"
+      ],
+      "properties": {
+        "live_public_http_probe_claimed": { "const": true },
+        "auth_used": { "const": false },
+        "trader_state_used": { "const": false },
+        "instruction_builder_used": { "const": false },
+        "order_operation_used": { "const": false },
+        "raw_response_committed": { "const": false },
+        "execution_claimed": { "const": false },
+        "replay_ready": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "scrub": {
+      "type": "object",
+      "required": [
+        "raw_response_committed",
+        "account_addresses_committed",
+        "credential_material_committed"
+      ],
+      "properties": {
+        "raw_response_committed": { "const": false },
+        "account_addresses_committed": { "const": false },
+        "credential_material_committed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false
+}

@@ -76,6 +76,8 @@ Here is the current Open Perps Reliability Stack proof pack running as a public,
 
 The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation commands: [MVP proof checklist](mvp-proof-checklist.md).
 
+Adjacent BD note: Solana Foundation's June 10, 2026 WSOP announcement is useful context for why reliability tooling matters beyond perps, into real-money payment and settlement rails. Do not present this as an MVP deliverable or partnership claim.
+
 ## Founder Decisions Needed
 
 - Drift binary decode proof, Jupiter Perps canonical IDL/source provenance, and Jupiter request/fulfillment proof.

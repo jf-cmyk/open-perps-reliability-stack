@@ -37,6 +37,8 @@ The current repo already demonstrates execution discipline: OSS hygiene, archite
 
 Blocksize also has a clear commercial boundary: grant-funded deliverables remain public, reproducible, and no-signing. Future premium APIs, managed integrations, private analytics, or controlled execution services would be outside the grant scope and cannot privatize the public artifacts funded here.
 
+Adjacent ecosystem note for BD conversations: Solana Foundation's June 10, 2026 WSOP announcement shows Solana being positioned for high-visibility real-money payment and settlement flows. That supports the broader importance of neutral reliability tooling, but it is not an MVP claim; this grant remains scoped to read-only open perps developer tooling.
+
 ## Budget And Milestone Summary
 
 Total request: $125,000.

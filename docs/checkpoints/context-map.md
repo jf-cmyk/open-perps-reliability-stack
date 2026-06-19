@@ -149,8 +149,8 @@ When agent guidance affects implementation order, summarize it in the next check
 
 1. Deploy and hosted-smoke-check the Phoenix market telemetry package if not already deployed.
 2. Keep Jupiter pairing unverified until PositionRequest/Position semantics are linked from canonical source or a reviewed source-authoritative heuristic.
-3. Consider a non-served Phoenix probe output schema only after the scrubbed target output stabilizes and still excludes raw response bodies.
-4. Decode additional Drift fields only after offset/source validation and explicit scrub review.
+3. Decode additional Drift fields only after offset/source validation and explicit scrub review.
+4. Add source-backed BD/grant positioning notes from the Solana Expert thread without creating MVP claims.
 5. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
 6. Refresh the local Word proposal only after confirming no concurrent Word edits need preservation.
 7. Keep Railway and GitHub Pages mirrors equivalent.

@@ -46,9 +46,10 @@ Current local Phoenix public HTTP probe command:
 
 ```bash
 scripts/discover_phoenix_market_telemetry.py --out target/oprs-phoenix-market-telemetry/latest.json
+scripts/validate_phoenix_market_telemetry_probe.py target/oprs-phoenix-market-telemetry/latest.json
 ```
 
-This command calls only the public `GET /v1/exchange/snapshot` endpoint, records capped shape summaries, and does not commit raw response bodies, account addresses, auth material, trader state, instruction-builder output, order routes, signing, transaction submission, or replay evidence.
+The discovery command calls only the public `GET /v1/exchange/snapshot` endpoint, records capped shape summaries, and does not commit raw response bodies, account addresses, auth material, trader state, instruction-builder output, order routes, signing, transaction submission, or replay evidence. The validator enforces the local probe contract without making CI depend on live external API access.
 
 ## Source-Backed Notes: 2026-06-04
 

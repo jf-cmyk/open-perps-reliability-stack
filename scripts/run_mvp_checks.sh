@@ -34,6 +34,7 @@ python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
 python3 -m json.tool examples/public/contract-index.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/spot_guardrails.json >/dev/null
@@ -57,6 +58,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupite
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_market_telemetry_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/public_package_contract.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_contract_index.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_guardrail_package.py
@@ -85,6 +87,7 @@ test -f schemas/datasets/spot-guardrail-snapshot-v0.json
 test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f schemas/datasets/jupiter-authority-gap-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-v0.json
+test -f schemas/datasets/phoenix-market-telemetry-probe-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
@@ -114,6 +117,7 @@ test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/audit_jupiter_source_authority.py
 test -x scripts/discover_phoenix_market_telemetry.py
+test -x scripts/validate_phoenix_market_telemetry_probe.py
 test -x scripts/validate_public_contract_index.py
 test -x scripts/validate_public_guardrail_package.py
 test -x scripts/validate_public_jupiter_authority_gap.py
