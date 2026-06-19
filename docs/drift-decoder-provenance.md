@@ -36,6 +36,7 @@ Optional shape snapshot command:
 ```bash
 scripts/discover_drift_readonly_state.py --include-shape-snapshot --out target/oprs-drift-readonly-state/latest-shape.json
 scripts/discover_drift_readonly_state.py --include-public-fields --out target/oprs-drift-readonly-state/latest-public-fields.json
+scripts/validate_drift_readonly_state.py target/oprs-drift-readonly-state/latest-public-fields.json
 ```
 
 Confirmed:
@@ -102,3 +103,7 @@ The next decode command should stay deliberately narrow:
 5. Keep `decoded_snapshot` separate from `replay_ready`; do not claim replay readiness from a market/account snapshot alone.
 
 Forbidden actions remain unchanged: no signing, no transaction submission, no priority-fee bidding, no keypair loading, no custody, and no capital management.
+
+## Local Validator
+
+`scripts/validate_drift_readonly_state.py` validates local `target/` outputs from public-field mode. It checks pinned source provenance, shape snapshots, public-field match results, scrub boundaries, and the no-user-state/no-market-economics/no-replay-ready flags. It does not make CI depend on live RPC output.

@@ -54,6 +54,7 @@ python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.js
 python3 -m json.tool examples/datasets/jupiter_perps_transaction_history_example.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_drift_readonly_state.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
@@ -113,6 +114,7 @@ test -f examples/datasets/jupiter_perps_transaction_history_example.json
 test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh
 test -x scripts/discover_drift_readonly_state.py
+test -x scripts/validate_drift_readonly_state.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/audit_jupiter_source_authority.py
