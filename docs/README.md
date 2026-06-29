@@ -18,6 +18,7 @@
 - [Drift decoder provenance](drift-decoder-provenance.md)
 - [Drift public field source review checklist](drift-public-field-source-review-checklist.md)
 - [Jupiter Perps provenance](jupiter-perps-provenance.md)
+- [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md)
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)
 - [Public artifact boundary](public-artifact-boundary.md)

@@ -14,6 +14,7 @@ This document records the current Jupiter Perps target and decoder provenance st
 | Position account field guide | `https://developers.jup.ag/docs/perps/position-account` |
 | PositionRequest account field guide | `https://developers.jup.ag/docs/perps/position-request-account` |
 | Source-authority audit | `jupiter-source-authority-audit.md` |
+| Position authority confirmation ask | `jupiter-position-authority-confirmation.md` |
 
 ## Current Target Proof
 
@@ -68,11 +69,14 @@ The docs-linked IDL sample is useful for research and field planning, but it sho
 
 Until then, OPRS may claim Jupiter program/custody/oracle metadata discovery, public transaction-history sampling, and unverified stronger candidate labeling, but not Jupiter binary account decoding, verified request/fulfillment pairing, or historical replay.
 
+The exact confirmation package needed to unblock `Position` / `PositionRequest` decode and pairing is tracked in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md). The narrow ask is whether Jupiter can confirm canonical source authority for mainnet program `PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu`, including the two account layouts and lifecycle semantics.
+
 ## Safe Next Steps
 
 1. Use the docs-linked IDL only to plan candidate public fields.
 2. Keep any decode experiment under `target/` until source authority is resolved.
 3. Start with account discriminator/type, data length, owner, and documented public fields only.
 4. Use the transaction-history sample as the foundation for later request/fulfillment pairing, but do not claim pairing until shared PositionRequest/Position evidence is linked.
+5. Send the confirmation ask in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md) before promoting any Jupiter account decode claim.
 
 Forbidden actions remain unchanged: no signing, no transaction submission, no priority-fee bidding, no keypair loading, no custody, no capital management, and no calls to `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or RFQ/order-routing paths.

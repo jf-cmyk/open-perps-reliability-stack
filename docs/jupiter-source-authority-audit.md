@@ -10,6 +10,7 @@ This note records the current Jupiter Perps source-authority boundary for OPRS. 
 | Jupiter Position account guide | Official docs | Public Position field planning and derivation context. |
 | Jupiter PositionRequest account guide | Official docs | Public PositionRequest field planning, request lifecycle, and closure/execution context. |
 | `julianfssen/jupiter-perps-anchor-idl-parsing` | Docs-linked example repo | Candidate Anchor IDL and TypeScript examples only. |
+| Jupiter position authority confirmation ask | OPRS confirmation checklist | Exact evidence needed before `Position` / `PositionRequest` decode or verified pairing. |
 
 ## Current Docs-Linked IDL Candidate
 
@@ -56,3 +57,5 @@ One of these must happen before OPRS can claim Jupiter binary decoding:
 1. Jupiter publishes or confirms a canonical Perps IDL/source revision.
 2. The docs-linked IDL is explicitly confirmed as canonical for the current onchain program.
 3. An independent onchain/program-IDL extraction path is reviewed, hashed, and matched to current program semantics.
+
+For `Position` / `PositionRequest` specifically, OPRS also needs discriminator, account size, field order, offsets, field types, enum layouts, PDA seeds, bump/counter encoding, and instruction account-role maps for mainnet program `PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu`. Verified pairing additionally needs source-backed lifecycle semantics and preferably public mainnet signature pairs for regression fixtures. The exact ask is tracked in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md).

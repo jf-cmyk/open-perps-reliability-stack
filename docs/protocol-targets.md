@@ -64,6 +64,7 @@ Jupiter Perps:
 - Jupiter docs describe perps as a trader-to-LP model where traders borrow from the Jupiter Liquidity Pool: `https://docs.jup.ag/user-docs/trade/perps-and-jlp`
 - Jupiter is relevant for OPRS because it is a major Solana perps surface, but it should be treated as a distinct pool/custody/oracle model rather than a Drift-style margin-account clone.
 - Initial Jupiter target should be read-only market/pool/oracle/account state and public analytics, not execution, order placement, or keeper automation.
+- Jupiter `Position` and `PositionRequest` docs support field planning, but canonical source authority remains blocked until the confirmation package in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md) lands.
 
 Phoenix / Rise:
 
@@ -153,5 +154,6 @@ Current status:
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
 - Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, and candidate lifecycle pairs can be produced from shared public account keys plus metadata-only account probes. Wider samples can label stronger candidates when shared Jupiter-owned non-executable accounts are seen. The authority-gap package records the exact blockers, and verified request/fulfillment pairing is not yet claimed.
 - Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), but still needs canonical IDL/source confirmation before binary decode proof.
+- The exact Jupiter `Position` / `PositionRequest` confirmation ask is captured in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md).
 - Phoenix/Rise now has a source-backed public market-telemetry readiness package and a bounded local public HTTP probe. No live Phoenix responses are committed.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

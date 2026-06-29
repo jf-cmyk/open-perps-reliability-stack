@@ -119,6 +119,7 @@ Read when changing Drift adapter shape, protocol priority, or venue metadata:
 - [Jupiter transaction history checkpoint](2026-06-05-jupiter-transaction-history-checkpoint.md)
 - [Drift shape snapshot checkpoint](2026-06-05-drift-shape-snapshot-checkpoint.md)
 - [Protocol targets](../protocol-targets.md)
+- [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md)
 - [Adapter standard](../adapter-standard.md)
 - `adapters/drift-readonly/src/lib.rs`
 - `crates/oprs-adapter/src/lib.rs`
@@ -148,7 +149,7 @@ When agent guidance affects implementation order, summarize it in the next check
 ## Current No-Access Queue
 
 1. Deploy and hosted-smoke-check the Phoenix market telemetry package if not already deployed.
-2. Keep Jupiter pairing unverified until PositionRequest/Position semantics are linked from canonical source or a reviewed source-authoritative heuristic.
+2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) evidence lands from canonical source or direct Jupiter confirmation.
 3. Decode additional Drift fields only after `scripts/validate_drift_readonly_state.py` passes on current local public-field target output and new offsets pass [Drift public field source review checklist](../drift-public-field-source-review-checklist.md).
 4. Add source-backed BD/grant positioning notes from the Solana Expert thread without creating MVP claims.
 5. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
