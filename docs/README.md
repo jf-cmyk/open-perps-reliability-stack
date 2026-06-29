@@ -16,6 +16,7 @@
 - [Liquidation dry-run and replay](liquidation-dry-run.md)
 - [Helius read-only proof plan](helius-readonly-proof.md)
 - [Drift decoder provenance](drift-decoder-provenance.md)
+- [Drift public field source review checklist](drift-public-field-source-review-checklist.md)
 - [Jupiter Perps provenance](jupiter-perps-provenance.md)
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)

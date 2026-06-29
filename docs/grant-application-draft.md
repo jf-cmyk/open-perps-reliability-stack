@@ -34,6 +34,8 @@ Blocksize brings Solana infrastructure context, validator operations experience,
 
 This grant turns that research into public, reusable infrastructure rather than a private trading system.
 
+Source-backed Solana ecosystem context strengthens the need for this work without changing the MVP scope: Solana's June 2026 WSOP and MoneyGram/SDP announcements point to real-money payment and institutional infrastructure use cases, while Solana's bare-metal validator-readiness guidance highlights how execution reliability depends on validator, RPC, compute, and block-propagation conditions. OPRS stays focused on read-only open perps developer tooling in the grant phase.
+
 ## Milestones
 
 ### Milestone 1: Adapter and Architecture Foundation
@@ -147,7 +149,7 @@ Grant-funded outputs remain public, reproducible, read-only, and dry-run only.
 
 ## Founder Decisions Needed
 
-- Whether validator telemetry belongs in v0.
+- Whether validator telemetry belongs in a future commercial lane. It is not part of the grant MVP unless the founder explicitly changes scope.
 - Public dataset depth.
 - Whether the application should disclose the future commercial track explicitly or keep the proposal framed as pure public-good infrastructure.
 

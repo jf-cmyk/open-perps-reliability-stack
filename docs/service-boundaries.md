@@ -105,12 +105,20 @@ Forbidden capabilities:
 - liquidation execution
 - wallet or keypair loading
 - custody or inventory management
+- validator routing
+- block-propagation optimization
+- skip-rate optimization
+- XDP or kernel tuning
+- private validator telemetry
+- priority-fee or block-engine strategy
 
 ## Future Commercial Services
 
 Commercial services may later provide managed integrations, private analytics, premium APIs, or controlled execution tooling. They must stay outside the grant-funded OSS MVP unless a separate founder approval package and scope decision explicitly says otherwise.
 
 Commercial services cannot privatize grant-funded deliverables such as public schemas, public docs, fixture formats, or read-only replay methodology.
+
+Commercial-adjacent ideas from Solana ecosystem research, such as payment/settlement observability or validator readiness assessments for 100M CU, XDP, skip-rate, and block-propagation reporting, are future product lanes only. They are not current OPRS grant deliverables and cannot be described as running services until separate scope, data-access, and claim-boundary decisions are approved.
 
 ## Promotion Rule
 

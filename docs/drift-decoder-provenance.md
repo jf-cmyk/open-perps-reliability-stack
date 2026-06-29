@@ -98,7 +98,7 @@ The next decode command should stay deliberately narrow:
 
 1. Fetch account data through read-only RPC.
 2. Decode only the account discriminator and IDL account type first.
-3. Decode additional public market fields only after field offsets are validated against the pinned IDL or SDK decoder.
+3. Decode additional public market fields only after field offsets pass the [Drift public field source review checklist](drift-public-field-source-review-checklist.md).
 4. Emit decoded fields into `target/` only until scrub review passes.
 5. Keep `decoded_snapshot` separate from `replay_ready`; do not claim replay readiness from a market/account snapshot alone.
 

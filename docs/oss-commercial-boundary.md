@@ -14,6 +14,7 @@ The grant-funded/public repo must stay public, read-only, reproducible, and dry-
 - Public dashboard subset.
 - Sample datasets.
 - Docs, ADRs, and grant milestone artifacts.
+- Source-backed ecosystem context about public Solana reliability trends, including validator readiness, when clearly marked as context and not as a running OPRS service.
 
 ## Commercial or Private Scope
 
@@ -22,6 +23,7 @@ The grant-funded/public repo must stay public, read-only, reproducible, and dry-
 - Managed protocol integrations.
 - Proprietary routing.
 - Validator-specific performance intelligence.
+- Private validator telemetry, validator routing, skip-rate optimization, block-propagation optimization, XDP/kernel tuning, priority-fee strategy, and block-engine strategy.
 - Live liquidation services.
 - Signer infrastructure.
 - Capital/inventory controls.

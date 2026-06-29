@@ -99,7 +99,7 @@ Drift is first because it has public documentation for program accounts, markets
 3. Read-only account snapshots.
    - Fetch public account data with commitment and context slot.
    - Current status: `public_fields_decoded` for selected Drift identity, metadata, and public guardrail fields only.
-   - Store only scrubbed metadata, account-shape evidence, or decoded public fields after offset validation.
+   - Store only scrubbed metadata, account-shape evidence, or decoded public fields after offset validation through the [Drift public field source review checklist](drift-public-field-source-review-checklist.md).
 
 4. Decoder and schema provenance.
    - Record adapter version, IDL/source version where available, supported account schema version, and parser caveats.
@@ -177,5 +177,5 @@ Do not include:
 1. Pin canonical Jupiter Perps IDL/source provenance before any Jupiter `decoded_snapshot` claim.
 2. Upgrade Jupiter lifecycle evidence from `candidate_pair_unverified` only after source-backed request/position account roles are confirmed.
 3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
-4. Add any further Drift public fields only after source/offset validation and scrub review.
+4. Add any further Drift public fields only after the [Drift public field source review checklist](drift-public-field-source-review-checklist.md), source/offset validation, and scrub review are complete.
 5. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.

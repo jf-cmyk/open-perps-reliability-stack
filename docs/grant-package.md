@@ -76,7 +76,7 @@ Here is the current Open Perps Reliability Stack proof pack running as a public,
 
 The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation commands: [MVP proof checklist](mvp-proof-checklist.md).
 
-Adjacent BD note: Solana Foundation's June 10, 2026 WSOP announcement is useful context for why reliability tooling matters beyond perps, into real-money payment and settlement rails. Do not present this as an MVP deliverable or partnership claim.
+Adjacent BD note: Solana Foundation's June 2026 WSOP, MoneyGram/SDP, and bare-metal validator-readiness announcements are useful source-backed context for why reliability tooling matters beyond perps, into real-money payment, settlement, and infrastructure readiness. Do not present these as MVP deliverables, validator telemetry scope, or partnership claims.
 
 ## Founder Decisions Needed
 
@@ -84,6 +84,6 @@ Adjacent BD note: Solana Foundation's June 10, 2026 WSOP announcement is useful 
 - Grant ask size.
 - Preferred OSS license.
 - Public dataset depth.
-- Whether validator telemetry belongs in v0.
+- Whether validator telemetry belongs in a future commercial lane. It is not part of the grant MVP unless the founder explicitly changes scope.
 - Commercial carveout language.
 - Whether to position this as pure public-good grant or public-good grant with future commercial track disclosed.

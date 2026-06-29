@@ -41,6 +41,8 @@ The problem is Solana-specific because perps reliability depends on Solana execu
 - High-throughput historical state, replay, and public dataset needs.
 - Onchain liquidation and margin semantics that differ by Solana venue.
 
+Solana's June 2026 validator-infrastructure guidance adds useful ecosystem context: as compute limits rise and validator/network requirements become more explicit, read-only reliability tooling needs to explain how oracle freshness, account locks, decode quality, RPC behavior, and market-data integrity interact with the underlying execution environment. This paragraph is context only; validator telemetry, XDP tuning, block-propagation optimization, and private infrastructure operations are not grant MVP deliverables.
+
 ## Grant Scope
 
 ### In Scope

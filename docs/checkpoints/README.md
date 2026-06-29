@@ -4,6 +4,7 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
+- [2026-06-29 Drift source review and Solana BD boundary checkpoint](2026-06-29-drift-source-review-solana-bd-checkpoint.md)
 - [2026-06-16 Phoenix market telemetry checkpoint](2026-06-16-phoenix-market-telemetry-checkpoint.md)
 - Previous: [2026-06-10 public package contract v0 checkpoint](2026-06-10-public-package-contract-v0-checkpoint.md)
 - Previous: [2026-06-04 hosted monitoring checkpoint](2026-06-04-hosted-monitoring-checkpoint.md)
