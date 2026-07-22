@@ -70,10 +70,20 @@ def set_table_width(table, widths):
             tc_w.set(qn("w:w"), str(width))
 
 
+def set_repeat_table_header(row):
+    tr_pr = row._tr.get_or_add_trPr()
+    tbl_header = tr_pr.find(qn("w:tblHeader"))
+    if tbl_header is None:
+        tbl_header = OxmlElement("w:tblHeader")
+        tr_pr.append(tbl_header)
+    tbl_header.set(qn("w:val"), "true")
+
+
 def add_table(document, headers, rows, widths):
     table = document.add_table(rows=1, cols=len(headers))
     table.style = "Table Grid"
     set_table_width(table, widths)
+    set_repeat_table_header(table.rows[0])
     for idx, text in enumerate(headers):
         cell = table.rows[0].cells[idx]
         cell.text = text
@@ -151,7 +161,7 @@ def add_bullet(document, text):
     p.paragraph_format.left_indent = Inches(0.375)
     p.paragraph_format.first_line_indent = Inches(-0.194)
     p.paragraph_format.space_after = Pt(4)
-    p.add_run(text)
+    p.add_run(f" {text}")
 
 
 def add_number(document, text):
@@ -205,7 +215,10 @@ def main():
 
     document.add_heading("Summary", level=1)
     document.add_paragraph(
-        "Open Perps Reliability Stack is open-source developer tooling for Solana onchain perps reliability. It provides read-only protocol adapters, Pyth-aware risk primitives, normalized market-quality data, deterministic dry-run liquidation replay, and public dashboard/API schemas."
+        "Open Perps Reliability Stack is open-source developer tooling for Solana onchain perps reliability. It provides read-only protocol adapters, source-governed decode records, Pyth-aware risk primitives, normalized market-quality data, deterministic dry-run liquidation reasoning, and public dashboard/API schemas."
+    )
+    document.add_paragraph(
+        "The current MVP is intentionally complementary infrastructure, not a venue. It gives builders and reviewers a reproducible way to inspect reliability evidence across Drift, Jupiter Perps, Phoenix/Rise, oracle inputs, and public proof packages while preserving a strict no-signing and no-production-execution boundary."
     )
 
     document.add_heading("Problem", level=1)
@@ -225,6 +238,7 @@ def main():
     for item in [
         "Adapter standard for read-only Solana perps venue integrations.",
         "First fixture-backed Drift read-only adapter.",
+        "Source-review records that gate binary decode and replay claims on canonical source authority.",
         "Pyth-aware risk SDK for staleness, confidence, divergence, and liquidation-risk inputs.",
         "Canonical event envelope, lineage model, dataset manifests, and data quality publish gates.",
         "Deterministic replay fixtures and dry-run output bundles with explicit reason codes.",
@@ -242,6 +256,21 @@ def main():
         "Venue-specific program accounts and event layouts.",
         "High-throughput historical state, replay, and public dataset needs.",
         "Onchain liquidation and margin semantics that differ by Solana venue.",
+        "Fast-moving network regimes such as VAT, Alpenglow, Agave, Firedancer, and DoubleZero transport changes.",
+    ]:
+        add_bullet(document, item)
+
+    document.add_heading("2026 Ecosystem Refresh And Grant Positioning", level=1)
+    document.add_paragraph(
+        "The latest source-backed research strengthens the grant case while narrowing what should be claimed. Solana Foundation's 2026 Open Perps call explicitly welcomes complementary infrastructure around fully onchain perps; OPRS should therefore position the public-good core as reliability infrastructure rather than as execution, trading, or liquidation operations."
+    )
+    for item in [
+        "Drift remains the first fixture-backed adapter path. Historical liquidation reconstruction should advance only from public finalized transaction evidence and pinned legacy source, with migrated Velocity-hosted records used as discovery or corroboration rather than sole authority.",
+        "Jupiter Perps is relevant and should stay in scope, but its canonical position is source-authority blocked: first-party docs support lifecycle semantics, while binary account decoding and deterministic request-to-position pairing require a current Jupiter-confirmed IDL/source or hashable artifact.",
+        "Phoenix/Rise is now a direct second venue target because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Canonical program/source and exact oracle/input identities remain gates before account-level decode claims.",
+        "Frontier Traders creates a review-only design-partner channel for professional trader reliability feedback, but it does not establish Blocksize access, demand, or endorsement.",
+        "Pay.sh, Solana Subscriptions, and Commerce Kit are useful for future commercial packaging and revenue-routing clarity. They should stay outside the grant-funded public-good core unless explicitly framed as optional or convertible-grant scope.",
+        "Network changes around VAT, Alpenglow, Agave, Firedancer, and DoubleZero make validator/client/transport context relevant to perps reliability, but releases and schedules do not prove activation, Blocksize adoption, or measured performance gains.",
     ]:
         add_bullet(document, item)
 
@@ -253,14 +282,14 @@ def main():
             [
                 "1. Adapter and architecture foundation",
                 "$25,000",
-                "Architecture v0, ADRs, adapter standard, capability matrix, Rust workspace, fixture-backed Drift read-only adapter.",
-                "Public repo, compile-passing workspace, adapter metadata, execute-disabled safety tests.",
+                "Architecture v0, ADRs, adapter standard, capability matrix, Rust workspace, fixture-backed Drift read-only adapter, source-authority records.",
+                "Public repo, compile-passing workspace, adapter metadata, execute-disabled safety tests, source-review validators.",
             ],
             [
                 "2. Canonical data and sample datasets",
                 "$35,000",
-                "Canonical event envelope, dataset manifest, DQ gates, scrub policy, golden fixtures.",
-                "Rust schema types, JSON examples, checksum-bearing fixture manifest.",
+                "Canonical event envelope, dataset manifest, DQ gates, scrub policy, golden fixtures, Drift liquidation-history probe contract.",
+                "Rust schema types, JSON examples, checksum-bearing fixture manifest, scrubbed discovery-output schema.",
             ],
             [
                 "3. Pyth-aware risk SDK and dry-run replay",
@@ -271,8 +300,8 @@ def main():
             [
                 "4. Public dashboard/API contract and final report",
                 "$25,000",
-                "Public API schema, dashboard view contract, demo narrative, methodology, limitations.",
-                "Schema files, sample responses, final report, reproducible demo path.",
+                "Public API schema, dashboard view contract, demo narrative, source-governed methodology, limitations, and venue-readiness matrix.",
+                "Schema files, sample responses, final report, reproducible demo path, Railway and GitHub Pages proof links.",
             ],
         ],
         [1900, 1100, 3350, 3010],
@@ -287,6 +316,7 @@ def main():
         "Number of supported markets and venues in read-only mode.",
         "Public dataset downloads or downstream notebooks.",
         "Dashboard/API schema consumers.",
+        "Source-authority confirmations, issue comments, or protocol maintainer reviews that unblock adapter promotion.",
     ]:
         add_bullet(document, item)
     document.add_heading("Technical quality metrics", level=2)
@@ -296,6 +326,7 @@ def main():
         "Dry-run reason-code distribution.",
         "Fixture replay pass/fail status.",
         "Dataset publish gate pass/warn/block status.",
+        "Source-review approval status by account type, program ID, commit/hash, and public regression fixture availability.",
     ]:
         add_bullet(document, item)
 
@@ -323,6 +354,10 @@ def main():
         "Data reconstruction envelope schema with provider, commitment, slot range, evidence references, known gaps, and scrub-policy validation.",
         "Expanded Solana runtime failure reason codes for deterministic dry-run explanation.",
         "Read-only target discovery command for Helius-backed Drift/Jupiter proof setup; first local run now succeeds and writes scrubbed output under target/.",
+        "Jupiter source-authority confirmation packet and send-ready outbound note.",
+        "Source-review record schema and examples for Jupiter authority confirmation and Drift public-field promotion.",
+        "Scrubbed Drift liquidation-history probe schema, validator, and bounded discovery output contract.",
+        "Continuous Solana ecosystem research loop with hot state, evidence ledger, opportunity pipeline, and checkpoint archive.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
         "Hourly hosted smoke monitoring and public artifact boundary checks.",
         "Grant package and application draft.",
@@ -347,6 +382,9 @@ def main():
     risks = [
         ("Perps-specific historical liquidation data is thin.", "Start with fixture-backed Drift adapter shape tests, synthetic golden fixtures, and explicit data-quality caveats before claiming replay coverage."),
         ("Venue schemas drift.", "Adapter metadata includes program IDs, schema versions, supported account schema versions, IDL hash, source update timestamps, and caveats."),
+        ("Jupiter source authority is not yet canonical.", "Use first-party Jupiter docs only for semantic labels. Keep binary decode, deterministic request/fulfillment pairing, and historical replay blocked until Jupiter provides or confirms a current hashable IDL/source and fixtures."),
+        ("Phoenix public telemetry is not yet program-level proof.", "Use public GOLD and external-asset surfaces for adapter-contract design while keeping canonical program, exact oracle inputs, account layouts, and transaction fixtures as explicit gates."),
+        ("Research findings could drift into overclaiming.", "Maintain the Solana ecosystem loop as source-backed project memory, separate fact from inference, and require proof artifacts before promoting any partner, demand, revenue, or protocol-safety claim."),
         ("Public datasets leak private information.", "Publish gates and scrub policy remove RPC URLs, API keys, internal paths, route labels, private strategy thresholds, capital controls, and signer/custody metadata."),
         ("Historical Helius decode proof is not complete yet.", "The local read-only target discovery command succeeds, but deeper Drift market/oracle and Jupiter pool/custody decode coverage still needs public target resolution and scrubbed proof output before it can be claimed."),
         ("Project scope creeps into execution.", "Dry-run transaction plans require requires_signer=false and submission_disabled=true; production execution remains out of scope."),

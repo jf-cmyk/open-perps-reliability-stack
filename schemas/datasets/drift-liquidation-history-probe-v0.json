@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/drift-liquidation-history-probe-v0.json",
+  "title": "Open Perps Reliability Stack Drift Liquidation History Probe v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_name",
+    "protocol",
+    "chain_id",
+    "program_id",
+    "generated_at_unix",
+    "generated_at_utc",
+    "query",
+    "scan_summary",
+    "liquidation_candidates",
+    "readiness",
+    "known_limitations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "oprs.drift_liquidation_history_probe.v0" },
+    "dataset_name": { "const": "drift_liquidation_history_probe_local" },
+    "protocol": { "const": "drift" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "program_id": { "const": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH" },
+    "generated_at_unix": { "type": "integer", "minimum": 1 },
+    "generated_at_utc": { "type": "string", "minLength": 20, "maxLength": 40 },
+    "query": {
+      "type": "object",
+      "required": [
+        "commitment",
+        "pages",
+        "page_size",
+        "batch_size",
+        "started_before",
+        "log_prefix"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commitment": { "const": "finalized" },
+        "pages": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "page_size": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "batch_size": { "type": "integer", "minimum": 1, "maximum": 50 },
+        "started_before": {
+          "anyOf": [
+            { "type": "string", "minLength": 32, "maxLength": 128 },
+            { "type": "null" }
+          ]
+        },
+        "log_prefix": { "const": "Program log: Instruction: Liquidate" }
+      }
+    },
+    "scan_summary": {
+      "type": "object",
+      "required": [
+        "transactions_scanned",
+        "newest_scanned_slot",
+        "newest_scanned_block_time",
+        "oldest_scanned_slot",
+        "oldest_scanned_block_time",
+        "next_before",
+        "liquidation_candidate_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "transactions_scanned": { "type": "integer", "minimum": 0 },
+        "newest_scanned_slot": {
+          "anyOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "newest_scanned_block_time": {
+          "anyOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "oldest_scanned_slot": {
+          "anyOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "oldest_scanned_block_time": {
+          "anyOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "next_before": {
+          "anyOf": [
+            { "type": "string", "minLength": 32, "maxLength": 128 },
+            { "type": "null" }
+          ]
+        },
+        "liquidation_candidate_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "liquidation_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "signature",
+          "slot",
+          "block_time",
+          "transaction_error",
+          "matching_log_count",
+          "matching_log_labels"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "signature": { "type": "string", "minLength": 32, "maxLength": 128 },
+          "slot": { "type": "integer", "minimum": 1 },
+          "block_time": {
+            "anyOf": [
+              { "type": "integer", "minimum": 1 },
+              { "type": "null" }
+            ]
+          },
+          "transaction_error": {},
+          "matching_log_count": { "type": "integer", "minimum": 1 },
+          "matching_log_labels": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "const": "Liquidate" }
+          }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": [
+        "live_rpc_read_claimed",
+        "auth_used",
+        "trader_state_used",
+        "instruction_builder_used",
+        "order_operation_used",
+        "raw_transaction_committed",
+        "raw_logs_committed",
+        "execution_claimed",
+        "replay_ready"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "live_rpc_read_claimed": { "const": true },
+        "auth_used": { "const": false },
+        "trader_state_used": { "const": false },
+        "instruction_builder_used": { "const": false },
+        "order_operation_used": { "const": false },
+        "raw_transaction_committed": { "const": false },
+        "raw_logs_committed": { "const": false },
+        "execution_claimed": { "const": false },
+        "replay_ready": { "const": false }
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

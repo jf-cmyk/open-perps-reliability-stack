@@ -28,6 +28,7 @@ python3 -m json.tool examples/datasets/data_reconstruction_envelope.json >/dev/n
 python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_state_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_shape_snapshot_example.json >/dev/null
+python3 -m json.tool schemas/datasets/drift-liquidation-history-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-decode-worker-run-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/public-contract-index-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
@@ -37,6 +38,7 @@ python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/nul
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/source-review-record-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
+python3 -m json.tool examples/datasets/drift_liquidation_history_probe_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_position_authority_source_review_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_public_field_source_review_template.json >/dev/null
 python3 -m json.tool examples/public/contract-index.json >/dev/null
@@ -57,7 +59,9 @@ python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.js
 python3 -m json.tool examples/datasets/jupiter_perps_transaction_history_example.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_liquidation_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_drift_readonly_state.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_drift_liquidation_history_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
@@ -76,6 +80,7 @@ scripts/validate_public_jupiter_authority_gap.py
 scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_invalid_public_package_fixtures.py
 scripts/validate_source_review_records.py
+scripts/validate_drift_liquidation_history_probe.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
 rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
@@ -87,6 +92,7 @@ test -f docs/jupiter-perps-provenance.md
 test -f docs/jupiter-source-authority-audit.md
 test -f docs/read-only-decode-worker.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
+test -f schemas/datasets/drift-liquidation-history-probe-v0.json
 test -f schemas/datasets/readonly-decode-worker-run-v0.json
 test -f schemas/datasets/public-contract-index-v0.json
 test -f schemas/datasets/spot-guardrail-snapshot-v0.json
@@ -100,6 +106,7 @@ test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
 test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/drift_readonly_decode_worker_run_example.json
+test -f examples/datasets/drift_liquidation_history_probe_example.json
 test -f examples/datasets/jupiter_position_authority_source_review_example.json
 test -f examples/datasets/drift_public_field_source_review_template.json
 test -f examples/public/contract-index.json
@@ -122,7 +129,9 @@ test -f examples/datasets/jupiter_perps_transaction_history_example.json
 test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh
 test -x scripts/discover_drift_readonly_state.py
+test -x scripts/discover_drift_liquidation_history.py
 test -x scripts/validate_drift_readonly_state.py
+test -x scripts/validate_drift_liquidation_history_probe.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/audit_jupiter_source_authority.py

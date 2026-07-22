@@ -75,6 +75,18 @@ Acceptance criteria:
 - Deliverables map to public OSS artifacts.
 - Commercial services are framed as future optional extensions.
 
+### M6: Continuous Ecosystem And Business-Development Loop
+
+Goal: keep OPRS aligned with current Solana priorities while converting source-backed ecosystem changes into qualified Blocksize partnership and product opportunities.
+
+Acceptance criteria:
+
+- A compact hot-state file, append-only evidence ledger, ranked opportunity pipeline, and dated checkpoint archive are maintained under `research/solana-ecosystem/`.
+- Five-minute checks are delta-gated, source-bounded, and quiet when nothing material changes.
+- Open Perps grant implications remain separate from adjacent Blocksize commercial opportunities.
+- Each material run resolves one queued question and re-ranks the next action.
+- Claims about protocols, validators, partnerships, or Foundation status are labeled as fact, inference, or verification-needed.
+
 ## Active Dependencies
 
 - Protocol diligence feeds architecture, data model, SDK design, and grant narrative.
@@ -82,3 +94,4 @@ Acceptance criteria:
 - Data model defines adapter outputs and dry-run/replay fixtures.
 - Liquidator/SDK design depends on protocol mechanics and normalized data.
 - Grant positioning depends on all of the above.
+- The continuous ecosystem loop feeds protocol priorities, network-regime assumptions, partner qualification, and grant-safe evidence into every milestone without expanding the read-only/dry-run scope.
