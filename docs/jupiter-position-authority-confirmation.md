@@ -131,6 +131,8 @@ Allowed interim language:
 
 ## Contact Template
 
+For a shorter founder-ready note, use [Jupiter position authority outbound note](jupiter-position-authority-outbound.md).
+
 ```text
 Hi Jupiter team,
 

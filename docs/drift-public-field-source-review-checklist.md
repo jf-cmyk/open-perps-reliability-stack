@@ -68,4 +68,4 @@ Do not promote a field into docs, public examples, or grant language if the loca
 
 ## Future Machine-Readable Gate
 
-The current validator checks source provenance, output shape, scrub boundaries, and claim flags. A future validator revision may require a `source_review_id` or equivalent machine-readable reference for each decoded field once this checklist becomes structured data.
+The current validator checks source provenance, output shape, scrub boundaries, and claim flags. Source-review metadata is now scaffolded in [Source review records](source-review-records.md). A future `scripts/validate_drift_readonly_state.py` revision may require a `source_review_id` for each decoded field once concrete review records replace the pending template.

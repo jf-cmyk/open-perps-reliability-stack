@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Open Perps Reliability Stack Source Review Record v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_review_id",
+    "review_kind",
+    "protocol",
+    "approval_status",
+    "summary",
+    "targets",
+    "source_authority",
+    "approval_gates",
+    "forbidden_claims",
+    "next_action"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "oprs.source_review_record.v0" },
+    "source_review_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 96,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "review_kind": {
+      "type": "string",
+      "enum": [
+        "drift_public_field_offset",
+        "jupiter_position_authority_confirmation"
+      ]
+    },
+    "protocol": {
+      "type": "string",
+      "enum": ["drift", "jupiter_perps"]
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": ["blocked", "pending", "approved", "rejected"]
+    },
+    "summary": { "type": "string", "minLength": 16, "maxLength": 600 },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/target" }
+    },
+    "source_authority": {
+      "type": "object",
+      "required": [
+        "status",
+        "program_id",
+        "source_refs",
+        "confirmation_required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "canonical_confirmed",
+            "pinned_source_reviewed",
+            "docs_linked_example_not_canonical",
+            "pinned_source_required"
+          ]
+        },
+        "program_id": { "type": "string", "minLength": 8, "maxLength": 64 },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 8, "maxLength": 260 }
+        },
+        "pinned_commit": { "type": "string", "minLength": 8, "maxLength": 80 },
+        "idl_hash": { "type": "string", "minLength": 8, "maxLength": 96 },
+        "confirmation_required": { "type": "boolean" }
+      }
+    },
+    "approval_gates": {
+      "type": "object",
+      "required": [
+        "canonical_source_confirmed",
+        "discriminator_confirmed",
+        "account_size_confirmed",
+        "offsets_confirmed",
+        "enum_encoding_confirmed",
+        "pda_seeds_confirmed",
+        "instruction_roles_confirmed",
+        "public_regression_fixtures_available",
+        "local_validator_required",
+        "local_only_until_scrubbed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "canonical_source_confirmed": { "type": "boolean" },
+        "discriminator_confirmed": { "type": "boolean" },
+        "account_size_confirmed": { "type": "boolean" },
+        "offsets_confirmed": { "type": "boolean" },
+        "enum_encoding_confirmed": { "type": "boolean" },
+        "pda_seeds_confirmed": { "type": "boolean" },
+        "instruction_roles_confirmed": { "type": "boolean" },
+        "public_regression_fixtures_available": { "type": "boolean" },
+        "local_validator_required": { "type": "boolean" },
+        "local_only_until_scrubbed": { "type": "boolean" }
+      }
+    },
+    "forbidden_claims": {
+      "type": "object",
+      "required": [
+        "binary_decode_claimed",
+        "verified_pairing_claimed",
+        "replay_ready_claimed",
+        "execution_claimed",
+        "signing_claimed",
+        "custody_or_capital_claimed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "binary_decode_claimed": { "type": "boolean" },
+        "verified_pairing_claimed": { "type": "boolean" },
+        "replay_ready_claimed": { "type": "boolean" },
+        "execution_claimed": { "type": "boolean" },
+        "signing_claimed": { "type": "boolean" },
+        "custody_or_capital_claimed": { "type": "boolean" }
+      }
+    },
+    "next_action": { "type": "string", "minLength": 8, "maxLength": 600 }
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "required": [
+        "account_type",
+        "field_path",
+        "output_name",
+        "public_safety_class"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "account_type": { "type": "string", "minLength": 3, "maxLength": 80 },
+        "field_path": { "type": "string", "minLength": 3, "maxLength": 140 },
+        "output_name": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 100,
+          "pattern": "^[a-z0-9][a-z0-9_]*$"
+        },
+        "public_safety_class": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "metadata",
+            "oracle_identity",
+            "guardrail",
+            "authority"
+          ]
+        }
+      }
+    }
+  }
+}
+

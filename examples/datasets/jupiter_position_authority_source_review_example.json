@@ -1,0 +1,57 @@
+{
+  "schema_version": "oprs.source_review_record.v0",
+  "source_review_id": "jupiter-position-authority-mainnet-v0",
+  "review_kind": "jupiter_position_authority_confirmation",
+  "protocol": "jupiter_perps",
+  "approval_status": "blocked",
+  "summary": "Jupiter Position and PositionRequest source authority is not canonical yet; docs support field planning only.",
+  "targets": [
+    {
+      "account_type": "Position",
+      "field_path": "Position.account_layout",
+      "output_name": "position_layout",
+      "public_safety_class": "authority"
+    },
+    {
+      "account_type": "PositionRequest",
+      "field_path": "PositionRequest.account_layout",
+      "output_name": "position_request_layout",
+      "public_safety_class": "authority"
+    }
+  ],
+  "source_authority": {
+    "status": "docs_linked_example_not_canonical",
+    "program_id": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
+    "source_refs": [
+      "docs/jupiter-position-authority-confirmation.md",
+      "docs/jupiter-source-authority-audit.md",
+      "https://developers.jup.ag/docs/perps/position-account",
+      "https://developers.jup.ag/docs/perps/position-request-account"
+    ],
+    "pinned_commit": "not_confirmed",
+    "idl_hash": "not_confirmed",
+    "confirmation_required": true
+  },
+  "approval_gates": {
+    "canonical_source_confirmed": false,
+    "discriminator_confirmed": false,
+    "account_size_confirmed": false,
+    "offsets_confirmed": false,
+    "enum_encoding_confirmed": false,
+    "pda_seeds_confirmed": false,
+    "instruction_roles_confirmed": false,
+    "public_regression_fixtures_available": false,
+    "local_validator_required": true,
+    "local_only_until_scrubbed": true
+  },
+  "forbidden_claims": {
+    "binary_decode_claimed": false,
+    "verified_pairing_claimed": false,
+    "replay_ready_claimed": false,
+    "execution_claimed": false,
+    "signing_claimed": false,
+    "custody_or_capital_claimed": false
+  },
+  "next_action": "Send the founder-approved Jupiter confirmation ask and keep decode and verified pairing blocked until a canonical source or written confirmation lands."
+}
+

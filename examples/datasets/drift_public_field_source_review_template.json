@@ -1,0 +1,49 @@
+{
+  "schema_version": "oprs.source_review_record.v0",
+  "source_review_id": "drift-public-field-review-template-v0",
+  "review_kind": "drift_public_field_offset",
+  "protocol": "drift",
+  "approval_status": "pending",
+  "summary": "Template for future Drift public-field offset reviews before adding new PUBLIC_FIELD_LAYOUTS entries.",
+  "targets": [
+    {
+      "account_type": "PerpMarket",
+      "field_path": "PerpMarket.reviewed_field",
+      "output_name": "reviewed_field",
+      "public_safety_class": "guardrail"
+    }
+  ],
+  "source_authority": {
+    "status": "pinned_source_required",
+    "program_id": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
+    "source_refs": [
+      "docs/drift-public-field-source-review-checklist.md",
+      "docs/drift-decoder-provenance.md"
+    ],
+    "pinned_commit": "0ae3e3b1db782a6765c3525b3dec38ad4d9d3a62",
+    "idl_hash": "9646dd6a893568d85d8dc47507e047010bf7e945",
+    "confirmation_required": true
+  },
+  "approval_gates": {
+    "canonical_source_confirmed": false,
+    "discriminator_confirmed": false,
+    "account_size_confirmed": false,
+    "offsets_confirmed": false,
+    "enum_encoding_confirmed": false,
+    "pda_seeds_confirmed": false,
+    "instruction_roles_confirmed": false,
+    "public_regression_fixtures_available": false,
+    "local_validator_required": true,
+    "local_only_until_scrubbed": true
+  },
+  "forbidden_claims": {
+    "binary_decode_claimed": false,
+    "verified_pairing_claimed": false,
+    "replay_ready_claimed": false,
+    "execution_claimed": false,
+    "signing_claimed": false,
+    "custody_or_capital_claimed": false
+  },
+  "next_action": "Fill a concrete field row, document offset derivation from pinned source, then run the Drift public-field target validator before any docs or examples are promoted."
+}
+
