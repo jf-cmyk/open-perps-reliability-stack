@@ -15,6 +15,7 @@ SCHEMA_PATH = Path("schemas/datasets/source-review-record-v0.json")
 DEFAULT_RECORDS = [
     Path("examples/datasets/jupiter_position_authority_source_review_example.json"),
     Path("examples/datasets/drift_public_field_source_review_template.json"),
+    Path("examples/datasets/phoenix_hawkeye_source_review_example.json"),
 ]
 
 
@@ -54,6 +55,14 @@ def validate_record(path: Path) -> list[str]:
             failures.append(f"{path}: Drift source review must require local validator")
         if gates.get("local_only_until_scrubbed") is not True:
             failures.append(f"{path}: Drift source review must stay local-only until scrubbed")
+
+    if record.get("review_kind") == "phoenix_hawkeye_source_authority":
+        if record.get("approval_status") == "approved":
+            failures.append(f"{path}: Phoenix Hawkeye review must remain pending until a local validator exists")
+        if gates.get("local_validator_required") is not True:
+            failures.append(f"{path}: Phoenix Hawkeye source review must require local validator")
+        if gates.get("local_only_until_scrubbed") is not True:
+            failures.append(f"{path}: Phoenix Hawkeye source review must stay local-only until scrubbed")
 
     source_refs = record.get("source_authority", {}).get("source_refs", [])
     for ref in source_refs:

@@ -17,7 +17,7 @@ This is the coordinator-level target sheet. The Protocol Agent owns diligence de
 | --- | --- | --- | --- | --- |
 | Drift v2 | Perps venue | Permissionless read-only and dry-run; live liquidation is out of scope | Best OSS/public-good fit, open program/SDK, rich margin/oracle/liquidation mechanics | 1 |
 | Jupiter Perps | Perps venue | Public read-only surface; deeper onchain decode diligence needed | Major user-facing perps surface; trader-to-LP/JLP model gives a useful contrast to Drift margin/order mechanics | 2 |
-| Phoenix / Rise | Orderbook/perps telemetry | Public HTTP/WS SDK surfaces; some onboarding may be gated | Best orderbook, market-data, fills, depth, and funding telemetry lane | 3 |
+| Phoenix / Rise | Orderbook/perps telemetry | Public HTTP/WS SDK surfaces; some onboarding may be gated | Strong orderbook, market-data, fills, depth, funding, and Hawkeye-view telemetry lane | 3 |
 | FlashTrade | Pool perps venue | Public docs/GitHub/SDK; deeper account decode validation needed | Good oracle/pool-perps telemetry target with Pyth plus backup-oracle framing | 4 |
 | Adrena | Pool perps venue | Public docs and open-source keeper references; deeper account decode validation needed | Useful peer-to-pool contrast with explicit oracle and keeper docs | 5 |
 | Pacifica | API-centric perps venue | Public REST/WS API; trading operations require signing/auth | Valuable API data adapter, weaker OSS-first fit because core operation model is API/account based | 6 |
@@ -40,7 +40,7 @@ Add Jupiter next because it is economically and product-wise relevant to Solana 
 
 Add Phoenix/Rise telemetry in parallel when practical for spread, depth, fills, orderbook, funding, and latency baselines. Add FlashTrade and Adrena after the first two perps adapters to compare pool-perps oracle and keeper designs.
 
-Current Phoenix/Rise public package status: `examples/public/phoenix-market-telemetry-v0/` maps source-backed public HTTP and WebSocket market-data surfaces for exchange snapshots, market configuration, L2 orderbook snapshots, market-statistics history, funding-rate history, and live L2 streams. It is a static market-telemetry readiness package only. It does not claim live API capture, trader-state decode, instruction-builder use, order operations, signing, transaction submission, or historical replay.
+Current Phoenix/Rise public package status: `examples/public/phoenix-market-telemetry-v0/` maps source-backed public HTTP and WebSocket market-data surfaces for exchange snapshots, market configuration, L2 orderbook snapshots, market-statistics history, funding-rate history, and live L2 streams. The current source-authority note in [Phoenix / Rise source authority](phoenix-source-authority.md) pins the production Phoenix program ID, log authority, global configuration, and Hawkeye view program ID from the Ellipsis Labs Rise public source. This is still a static market-telemetry and source-planning package only. It does not claim live API capture, trader-state decode, instruction-builder use, order operations, signing, transaction submission, liquidation replay, deployed-bytecode equivalence, oracle-input identity, or historical reconstruction.
 
 Current local Phoenix public HTTP probe command:
 
@@ -68,8 +68,8 @@ Jupiter Perps:
 
 Phoenix / Rise:
 
-- Phoenix/Rise docs expose developer-facing SDKs with HTTP/WS data, exchange/market/trader state, orderbook/fill/candle/funding-style data, and instruction builders: `https://docs.phoenix.trade/sdk/rise`
-- OPRS should use Phoenix first as a read-only market-quality and orderbook telemetry lane. Any instruction-builder or order-submission surface remains out of scope.
+- Phoenix/Rise docs expose developer-facing SDKs with HTTP/WS data, exchange/market/trader state, orderbook/fill/candle/funding-style data, instruction builders, and Hawkeye view/simulation helpers: `https://docs.phoenix.trade/sdk/rise`
+- OPRS should use Phoenix first as a read-only market-quality, orderbook, BBO, funding, and Hawkeye-view telemetry lane. Any invite activation, referral activation, trader onboarding, instruction-builder, order-submission, signing, custody, or capital surface remains out of scope.
 
 FlashTrade and Adrena:
 
@@ -155,5 +155,5 @@ Current status:
 - Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, and candidate lifecycle pairs can be produced from shared public account keys plus metadata-only account probes. Wider samples can label stronger candidates when shared Jupiter-owned non-executable accounts are seen. The authority-gap package records the exact blockers, and verified request/fulfillment pairing is not yet claimed.
 - Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), but still needs canonical IDL/source confirmation before binary decode proof.
 - The exact Jupiter `Position` / `PositionRequest` confirmation ask is captured in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md).
-- Phoenix/Rise now has a source-backed public market-telemetry readiness package and a bounded local public HTTP probe. No live Phoenix responses are committed.
+- Phoenix/Rise now has a source-backed public market-telemetry readiness package, a bounded local public HTTP probe, and a pinned source-authority note for production program and Hawkeye view constants. No live Phoenix responses are committed, and Phoenix account decode, trader monitoring, oracle-input identity, liquidation replay, and historical reconstruction are not claimed.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

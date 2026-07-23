@@ -156,7 +156,7 @@ def main() -> int:
         "chain_id": "solana-mainnet-beta",
         "program_id": DRIFT_PROGRAM_ID,
         "generated_at_unix": int(time.time()),
-        "generated_at_utc": dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat(),
+        "generated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
         "query": {
             "commitment": "finalized",
             "pages": args.pages,

@@ -215,7 +215,7 @@ def main():
 
     document.add_heading("Summary", level=1)
     document.add_paragraph(
-        "Open Perps Reliability Stack is open-source developer tooling for Solana onchain perps reliability. It provides read-only protocol adapters, source-governed decode records, Pyth-aware risk primitives, normalized market-quality data, deterministic dry-run liquidation reasoning, and public dashboard/API schemas."
+        "Open Perps Reliability Stack is open-source developer tooling for Solana onchain perps reliability. It provides read-only protocol adapters, source-governed decode records, Pyth-aware risk primitives, normalized market-quality data, fixture-backed deterministic dry-run reasoning, and public dashboard/API schemas."
     )
     document.add_paragraph(
         "The current MVP is intentionally complementary infrastructure, not a venue. It gives builders and reviewers a reproducible way to inspect reliability evidence across Drift, Jupiter Perps, Phoenix/Rise, oracle inputs, and public proof packages while preserving a strict no-signing and no-production-execution boundary."
@@ -223,7 +223,7 @@ def main():
 
     document.add_heading("Problem", level=1)
     document.add_paragraph(
-        "Solana perps venues are becoming more important, but reliability tooling is fragmented. Builders and risk teams need to understand market quality, oracle health, liquidation conditions, adapter/decode quality, and execution reliability under stress. Today these views are often venue-specific, private, or embedded inside searcher infrastructure."
+        "Solana perps venues are becoming more important, but reliability tooling is fragmented. Builders and risk teams need to understand market quality, oracle health, liquidation conditions, adapter/decode quality, and dry-run execution-failure methodology under stress. Today these views are often venue-specific, private, or embedded inside searcher infrastructure."
     )
     for item in [
         "Which oracle feeds are stale, wide, missing, or diverging from venue marks?",
@@ -267,7 +267,7 @@ def main():
     for item in [
         "Drift remains the first fixture-backed adapter path. Historical liquidation reconstruction should advance only from public finalized transaction evidence and pinned legacy source, with migrated Velocity-hosted records used as discovery or corroboration rather than sole authority.",
         "Jupiter Perps is relevant and should stay in scope, but its canonical position is source-authority blocked: first-party docs support lifecycle semantics, while binary account decoding and deterministic request-to-position pairing require a current Jupiter-confirmed IDL/source or hashable artifact.",
-        "Phoenix/Rise is now a direct second venue target because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Canonical program/source and exact oracle/input identities remain gates before account-level decode claims.",
+        "Phoenix/Rise is now a direct second venue target because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Production program and Hawkeye view constants are source-pinned from Ellipsis Labs Rise, while exact oracle/input identities, account-level decode, trader monitoring, and replay remain gates.",
         "Frontier Traders creates a review-only design-partner channel for professional trader reliability feedback, but it does not establish Blocksize access, demand, or endorsement.",
         "Pay.sh, Solana Subscriptions, and Commerce Kit are useful for future commercial packaging and revenue-routing clarity. They should stay outside the grant-funded public-good core unless explicitly framed as optional or convertible-grant scope.",
         "Network changes around VAT, Alpenglow, Agave, Firedancer, and DoubleZero make validator/client/transport context relevant to perps reliability, but releases and schedules do not prove activation, Blocksize adoption, or measured performance gains.",

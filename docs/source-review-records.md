@@ -10,6 +10,7 @@ Current examples:
 
 - `examples/datasets/jupiter_position_authority_source_review_example.json`
 - `examples/datasets/drift_public_field_source_review_template.json`
+- `examples/datasets/phoenix_hawkeye_source_review_example.json`
 
 Current validator:
 
@@ -36,4 +37,3 @@ Every record must keep forbidden claims false:
 - `custody_or_capital_claimed`
 
 An `approved` source review record is still not a production permission. It only allows a future local read-only implementation step if the target validator and scrub review also pass.
-

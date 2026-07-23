@@ -1,0 +1,62 @@
+{
+  "schema_version": "oprs.source_review_record.v0",
+  "source_review_id": "phoenix-hawkeye-source-authority-v0",
+  "review_kind": "phoenix_hawkeye_source_authority",
+  "protocol": "phoenix_rise",
+  "approval_status": "pending",
+  "summary": "Phoenix/Rise production program and Hawkeye view constants are pinned from Ellipsis Labs Rise source, but account-level decode and replay remain pending local validation.",
+  "targets": [
+    {
+      "account_type": "PhoenixProgram",
+      "field_path": "rust.ix.constants.PROD_PHOENIX_PROGRAM_ID",
+      "output_name": "phoenix_program_id",
+      "public_safety_class": "authority"
+    },
+    {
+      "account_type": "PhoenixHawkeye",
+      "field_path": "rust.ix.hawkeye.HAWKEYE_PROGRAM_ID",
+      "output_name": "hawkeye_program_id",
+      "public_safety_class": "authority"
+    },
+    {
+      "account_type": "PhoenixHawkeye",
+      "field_path": "rust.ix.hawkeye.HAWKEYE_RETURN_VERSION",
+      "output_name": "hawkeye_return_version",
+      "public_safety_class": "metadata"
+    }
+  ],
+  "source_authority": {
+    "status": "pinned_source_reviewed",
+    "program_id": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "source_refs": [
+      "docs/phoenix-source-authority.md",
+      "https://github.com/Ellipsis-Labs/rise-public/tree/09f59aaf06037ecff395a6c47eea7440f9eef7c2",
+      "https://docs.phoenix.trade/sdk/rise",
+      "https://docs.phoenix.trade/sdk/on-chain-programs"
+    ],
+    "pinned_commit": "09f59aaf06037ecff395a6c47eea7440f9eef7c2",
+    "idl_hash": "not_applicable_hawkeye_source_review",
+    "confirmation_required": false
+  },
+  "approval_gates": {
+    "canonical_source_confirmed": true,
+    "discriminator_confirmed": true,
+    "account_size_confirmed": false,
+    "offsets_confirmed": false,
+    "enum_encoding_confirmed": false,
+    "pda_seeds_confirmed": false,
+    "instruction_roles_confirmed": false,
+    "public_regression_fixtures_available": false,
+    "local_validator_required": true,
+    "local_only_until_scrubbed": true
+  },
+  "forbidden_claims": {
+    "binary_decode_claimed": false,
+    "verified_pairing_claimed": false,
+    "replay_ready_claimed": false,
+    "execution_claimed": false,
+    "signing_claimed": false,
+    "custody_or_capital_claimed": false
+  },
+  "next_action": "Build a Phoenix/Hawkeye local validator that checks pinned source constants and return-data layouts before promoting any account-level decode or replay example."
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T17:58:39Z",
-  "last_material_delta": "blocksize-validator-snapshot-field-provenance-corrected",
+  "updated_at": "2026-07-23T18:58:24Z",
+  "last_material_delta": "phoenix-rise-source-authority-pinned",
   "mission": "Discover and qualify source-backed Blocksize business-development and partnership opportunities, prioritizing the Solana Foundation Open Perps call and read-only reliability infrastructure.",
   "scope": {
     "mode": "read_only",
@@ -22,24 +22,32 @@
   },
   "market_baselines": {
     "solana_capital_flow": {
-      "as_of": "2026-07-22",
+      "as_of": "2026-07-23",
       "source": "DefiLlama APIs",
       "tvl_usd": 4905466115.71,
-      "stablecoin_circulating_usd": 15858655151.2,
-      "stablecoin_live_endpoint_usd": 15211974935.586433,
-      "stablecoin_daily_chart_latest_usd": 15859631826.81,
-      "stablecoin_current_component_sum_usd": 15825657453.69395,
-      "stablecoin_chart_minus_live_usd": 647656891.223566,
-      "stablecoin_chart_minus_live_pct_of_chart": 4.0837,
-      "stablecoin_components_minus_live_usd": 613682518.1075172,
-      "stablecoin_components_minus_live_pct_of_live": 4.0342,
-      "stablecoin_components_minus_chart_usd": -33974373.11604881,
-      "stablecoin_components_minus_chart_pct_of_chart": -0.2142,
-      "same_day_live_refresh_delta_usd": -195869735.12651443,
-      "same_day_live_refresh_delta_pct": -1.2712,
-      "same_day_chart_refresh_delta_usd": 976675.609998703,
-      "same_day_component_refresh_delta_usd": -195850449.6630478,
-      "stablecoin_data_quality_status": "methodology_partially_reconciled_surfaces_not_directly_comparable",
+      "stablecoin_circulating_usd": 15858829884.1,
+      "stablecoin_live_endpoint_usd": 16006323595.700718,
+      "stablecoin_daily_chart_latest_usd": 15858829884.1,
+      "stablecoin_current_component_sum_usd": 16620003189.50054,
+      "stablecoin_chart_minus_live_usd": -147493711.60071754,
+      "stablecoin_chart_minus_live_pct_of_chart": -0.93,
+      "stablecoin_components_minus_live_usd": 613679593.7998219,
+      "stablecoin_components_minus_live_pct_of_live": 3.834,
+      "stablecoin_components_minus_chart_usd": 761173305.4005394,
+      "stablecoin_components_minus_chart_pct_of_chart": 4.7997,
+      "prior_same_day_live_refresh_delta_usd": -195869735.12651443,
+      "prior_same_day_component_refresh_delta_usd": -195850449.6630478,
+      "same_day_live_refresh_delta_usd": 794348660.1142845,
+      "same_day_live_refresh_delta_pct": 5.2219,
+      "same_day_chart_refresh_delta_usd": -801942.7099990845,
+      "same_day_component_refresh_delta_usd": 794345735.8065891,
+      "stablecoin_data_quality_status": "methodology_partially_reconciled_circle_usdc_issuer_anchor_added",
+      "circle_public_supply_endpoint": "https://api.circle.com/v1/stablecoins",
+      "circle_sol_usdc_circulating": 6959369019.556649,
+      "circle_sol_usdc_updated_at": "2026-07-22T21:18:53.787912Z",
+      "circle_sol_usdc_definition": "issuer-reported circulating supply; Solana pre-mint balances are excluded until Circle authorizes them into circulation",
+      "circle_vs_defillama_usdc_status": "timestamp-aligned reconciliation not yet computed",
+      "issuer_attribution_status": "Circle USDC primary anchor available; Tether issuer-native Solana supply remains unverified",
       "stablecoin_methodology_source_commit": "8040e0c4540296ab1c6b75abf824a3fa7896d395",
       "stablecoinchains_inclusion_rule": "excludes pegged assets marked doublecounted and deduplicates normalized chain aliases per asset",
       "stablecoincharts_chain_rule": "public aggregate is built without excludeDoublecounted; a separate no-doublecounted series is used internally for chainChartMap",
@@ -56,7 +64,7 @@
       "dex_volume_24h_usd": 1493568823,
       "dex_volume_change_1d_pct": -19.96,
       "dex_volume_change_7d_pct": -21.83,
-      "interpretation_status": "a same-day refresh moved the live chain total and naive component sum down by nearly the same amount while the daily chart barely changed, widening the chart-live gap; treat this as asynchronous or methodological analytics evidence, not capital movement, until internal flags, timestamps, prices, transactions, and holders are reconciled"
+      "interpretation_status": "a later same-day refresh reversed the earlier live and component decline: both rose by about $794.35M while the daily chart moved by less than $1M and the component-minus-live gap remained near $613.68M. Circle now provides a timestamped issuer-native Solana USDC circulation anchor, but it still requires same-time reconciliation with DefiLlama and transaction and holder evidence before any capital-flow, whale, recipient, or demand claim"
     }
   },
   "network_baselines": {
@@ -87,7 +95,7 @@
       "route_update_change": "Replicate route tables to net tiles via message passing instead of shared-memory concurrency",
       "xdp_gre_commit": "78dd25f30c96",
       "xdp_gre_change": "Support up to four GRE tunnels",
-      "blocksize_client_version_status": "unverified",
+      "blocksize_client_version_status": "public getClusterNodes snapshot reported clientId AgaveBam version 4.1.1 at finalized slot 434585668",
       "blocksize_exposure_or_incident_status": "unverified",
       "benchmark_implication": "Pin validator client, exact release, route-table state, and GRE configuration when comparing DoubleZero with public-internet paths",
       "claim_boundary": "Release evidence does not establish Blocksize exposure, a DoubleZero network fault, deployment of the fix, or measured performance improvement"
@@ -276,6 +284,50 @@
       "blocksize_fit": "institutional validator, transaction, settlement, and reconciliation reliability evidence",
       "commercial_relationship_status": "none_established"
     },
+    "sdp_ramp_assessment": {
+      "as_of": "2026-07-22",
+      "integration_stage": "bespoke_devnet_only",
+      "mainnet_promotion_criteria_status": "not_yet_defined",
+      "hard_gate_model": "all three gate groups must pass before weighted scoring",
+      "minimum_composite_score": 3.0,
+      "operational_maturity_weight_pct": 25,
+      "settlement_reliability_weight_pct": 10,
+      "api_integration_readiness_weight_pct": 8,
+      "support_responsiveness_weight_pct": 7,
+      "top_settlement_score": "near-instant or under one hour with published SLA and high reliability",
+      "incident_notice_requirement": "within 24 hours for a security breach or incident causing client-fund loss or unauthorized transactions",
+      "ongoing_compatibility_requirement": "maintain devnet integration compatibility where applicable",
+      "listing_boundary": "available integration, not Foundation endorsement or warranty",
+      "blocksize_fit": "Read-only settlement-latency, status-callback, SLA, support-escalation, incident-notice, and devnet-compatibility evidence for institutional ramp integrations",
+      "claim_boundary": "Assessment criteria define qualification evidence only; they do not establish provider passage, mainnet readiness, regulatory sufficiency, performance, adoption, or a Blocksize relationship"
+    },
+    "sdp_custodial_wallet_assessment": {
+      "as_of": "2026-07-22",
+      "integration_stage": "unified_api_on_devnet_only",
+      "mainnet_promotion_criteria_status": "not_yet_defined",
+      "hard_gate_count": 4,
+      "minimum_composite_score": 3.0,
+      "technical_depth_weight_pct": 50,
+      "api_quality_developer_experience_weight_pct": 15,
+      "operational_maturity_weight_pct": 20,
+      "uptime_reliability_weight_pct": 8,
+      "support_responsiveness_weight_pct": 5,
+      "top_uptime_score": "99.9 percent or higher SLA with public incident history",
+      "api_evidence_dimensions": [
+        "REST documentation",
+        "SDK availability",
+        "webhook support",
+        "idempotent operations",
+        "error handling",
+        "sandbox or testnet environment"
+      ],
+      "incident_notice_requirement": "within 5 business days for material security incidents, regulatory actions, or licensing changes",
+      "ongoing_compatibility_requirement": "maintain devnet integration compatibility and tolerate periodic integration tests",
+      "listing_boundary": "available integration, not Foundation endorsement, recommendation, or warranty",
+      "oprs_read_only_fit": "API idempotency, error taxonomy, webhook freshness, uptime, incident-history, support-escalation, and devnet-compatibility evidence only",
+      "excluded_from_research": "signing tests, private-key or custody access, key-management evaluation, provider selection, and custody decisions",
+      "claim_boundary": "Assessment criteria define qualification evidence only; they do not establish provider passage, mainnet readiness, custody safety, regulatory sufficiency, performance, adoption, or a Blocksize relationship"
+    },
     "sdp_compliance_reliability": {
       "as_of": "2026-07-22",
       "screening_response_fields": [
@@ -390,6 +442,32 @@
     }
   },
   "business_case_baselines": {
+    "dvp_settlement_receipt_reliability": {
+      "as_of": "2026-07-22",
+      "official_guide": "https://solana.com/developers/guides/advanced/dvp",
+      "guide_classification": "educational reference implementation not for direct production use",
+      "asset_leg": "SPL Token-2022 security token transfer",
+      "payment_leg": "standard SPL USDC transfer",
+      "atomicity_model": "both transfer instructions in one Solana transaction",
+      "documented_controls": [
+        "default-frozen Token-2022 accounts",
+        "participant whitelisting by thawing",
+        "delegated settlement authority",
+        "mint, freeze, and metadata authorities",
+        "checked transfers for both legs"
+      ],
+      "reference_confirmation_commitment": "confirmed",
+      "reference_result_behavior": "returns both-leg success booleans after sendAndConfirmTransaction at confirmed commitment",
+      "oprs_read_only_fit": "Verify finalized signature status, both transfer instructions and outcomes, exact mints and amounts, account ownership and frozen state, delegated authority, block time, and RPC agreement without signing or submitting",
+      "production_gates_named_by_guide": [
+        "comprehensive security audits",
+        "proper key management",
+        "regulatory compliance review",
+        "legal consultation",
+        "extensive testing and modifications"
+      ],
+      "claim_boundary": "Official educational design only; no production deployment, audit completion, legal or regulatory sufficiency, transaction history, adoption, counterparty-risk elimination outside transaction atomicity, Blocksize relationship, or permission to sign or submit"
+    },
     "commerce_kit_payment_reliability": {
       "as_of": "2026-07-22",
       "maintainer": "Solana Foundation",
@@ -484,12 +562,17 @@
     },
     "oprs_foundation_funding": {
       "as_of": "2026-07-22",
+      "foundation_reported_projects_funded": "500+",
+      "foundation_reported_funding_usd": "$100M+",
+      "foundation_reported_geographic_reach": "6 continents",
+      "foundation_home_grants_focus": "funding efforts to further censorship resistance on the Solana Network",
       "applications_reviewed": "rolling_basis",
       "published_review_timing": "approximately 1 week for application review and approximately 3 weeks for decision and contact",
       "standard_grant_fit": "public-good open-source reliability layer with meaningful free community access",
       "convertible_grant_trigger": "public good with a material commercial component",
       "open_perps_revenue_preference": "application revenue should be structurally routed back to Solana, preferably at protocol level from launch",
       "oprs_revenue_boundary": "the public-good core has no required revenue surface; any commercial API or subscription extension should document Solana-native settlement and remain separate from grant-funded free outputs",
+      "oprs_censorship_resistance_boundary": "OPRS can make transaction inclusion, landing, availability, and finality behavior inspectable; it does not itself prevent censorship or prove a venue or validator is censorship resistant",
       "required_application_elements": [
         "brief project overview",
         "Solana public-good rationale",
@@ -497,7 +580,7 @@
         "thoughtful measurable milestones",
         "Solana-specific necessity"
       ],
-      "claim_boundary": "eligibility, stated preferences, and approximate process timing only; no award, guaranteed timeline, funding commitment, or interpretation that complementary infrastructure must charge users"
+      "claim_boundary": "Foundation-reported program scale, stated focus, eligibility guidance, preferences, and approximate process timing only; no OPRS award, causal impact, guaranteed timeline, funding commitment, or interpretation that complementary infrastructure must charge users or can claim censorship prevention"
     },
     "solana_subscriptions_allowances": {
       "as_of": "2026-07-22",
@@ -554,6 +637,32 @@
       "relationship_status": "none_established",
       "claim_boundary": "No Blocksize membership, qualification, priority RPC access, endorsement, data-sharing relationship, participant demand, or independently verified coverage-share claim"
     },
+    "sdp_self_hosted_reliability": {
+      "as_of": "2026-07-22",
+      "official_docs": "https://platform.solana.com/docs/self-hosting",
+      "environment_reference": "https://platform.solana.com/docs/self-hosting/env-reference",
+      "deployment_model": "Docker Compose on operator-controlled infrastructure using prebuilt images",
+      "documented_services": [
+        "sdp-api",
+        "sdp-web",
+        "sdp-docs",
+        "sdp-migrate",
+        "postgres",
+        "redis"
+      ],
+      "operator_supplied_dependencies": [
+        "authentication",
+        "Solana RPC",
+        "signing provider"
+      ],
+      "required_rpc_variable": "SOLANA_RPC_URL",
+      "image_registry": "ghcr.io/solana-foundation/sdp",
+      "version_default": "latest",
+      "production_version_guidance": "pin SDP_VERSION to a release tag",
+      "blocksize_fit": "Read-only RPC dependency, service health, version drift, upgrade, backup, restore, latency, availability, and failure-domain evidence for self-hosted SDP operators",
+      "excluded_from_research": "deployment, signing-provider testing, private keys, custody material, secrets, production operation, and infrastructure changes",
+      "claim_boundary": "Official documentation establishes a supported self-hosting architecture and configuration surface only; it does not establish Blocksize participation, customer demand, a managed-service relationship, production deployment, security, uptime, performance, recovery success, or Foundation endorsement"
+    },
     "foundation_staking_ui_rfps": {
       "as_of": "2026-07-22",
       "public_urls_live": true,
@@ -588,10 +697,38 @@
         "external perpetual prices"
       ],
       "access_status": "private_beta_or_region_restricted_per_official_docs_and_terms",
-      "canonical_program_source_status": "not_verified_in_this_run",
+      "canonical_program_source_status": "source_pinned_for_program_and_hawkeye_view_planning",
+      "rise_public_repo": "https://github.com/Ellipsis-Labs/rise-public",
+      "rise_public_commit": "09f59aaf06037ecff395a6c47eea7440f9eef7c2",
+      "rise_public_commit_message": "sync: Rise Rust v0.3.4 from phoenix 6051225fb045 (#71)",
+      "source_phoenix_commit_named_by_release": "6051225fb045fbb5b6a454bd445e7fc2e31e5722",
+      "production_program_id": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "beta_program_id": "phDEVv4w6BcfkLrLNeXr8HhhgQxnxziVGXpGPcaadMf",
+      "production_log_authority": "GdxfTLSsdSY37G6fZoYtdGDSfgFnbT2EmRpuePZxWShS",
+      "production_global_configuration": "2zskx2iyCvb6Stg7RBZkt1f6MrF4dpYtMG3yMvKwqtUZ",
+      "hawkeye_program_id": "RiSeVw3ZjNfsaXPRb4mgaqYaEEt41pNNJoDvVh7pgQj",
+      "hawkeye_return_version": 1,
+      "flight_program_id": "F1ightu9cujFYo34k9CabifLrJT8qzfDVM2Q7BqhJn2W",
+      "live_public_snapshot_corroboration": {
+        "program_id": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+        "global_config": "2zskx2iyCvb6Stg7RBZkt1f6MrF4dpYtMG3yMvKwqtUZ",
+        "canonical_mint": "PhUsd11YkbjSaWjFncfAAmatntsjx3MgDR9B6g1ks3A",
+        "usdc_mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "perp_asset_map": "2nHGAaEw3D5dd4hVueaUNoygkQFmoeKqRQWnSPqSMFUC",
+        "global_trader_index": "HCrPXLByGqRh2szQi3gj7oRdRVBNi1gccAyn4CQCT3HK",
+        "active_trader_buffer": "2U32rSzzrQS3eVmGHsnbw5kcqKF3wQXpHGd3hMq5YJok",
+        "gold_asset_id": 65556,
+        "gold_market_pubkey": "7B7hDscDNBGFpNGypFygoiANCpdM3JR2PY3JbvPvQtmk",
+        "gold_spline_pubkey": "4Xf7mkyTyWfiWnRo4oHjfwopSF46aLk8XciWotfG8voB",
+        "gold_isolated_only": true
+      },
+      "source_authority_doc": "docs/phoenix-source-authority.md",
+      "source_review_record": "examples/datasets/phoenix_hawkeye_source_review_example.json",
+      "exact_oracle_input_identity_status": "unverified",
+      "account_decode_status": "blocked_pending_local_validator_and_scrubbed_fixtures",
       "blocksize_fit": "Underlying-market-hours state, reference and mark divergence, oracle-input freshness, funding continuity, liquidity depth, and liquidation evidence",
       "oprs_fit": "Direct external-asset perpetuals reliability target",
-      "claim_boundary": "No program decode, oracle-provider identity, trade execution, market-quality conclusion, customer demand, partnership, or production-readiness claim"
+      "claim_boundary": "Program, Hawkeye, Flight, and live snapshot constants are source-pinned or publicly corroborated for planning only. No account-level decode, trader monitoring, exact oracle-provider identity, trade execution, liquidation replay, market-quality conclusion, customer demand, partnership, deployed-bytecode equivalence, or production-readiness claim"
     },
     "kamino_scope": {
       "as_of": "2026-07-22",
@@ -621,7 +758,7 @@
       "claim_boundary": "No Blocksize relationship, deployment, usage, audit assurance, incident, or demand claim"
     },
     "drift_legacy_reconstruction": {
-      "as_of": "2026-07-22",
+      "as_of": "2026-07-23",
       "legacy_program_id": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
       "legacy_docs_redirect": "https://docs.velocity.exchange/developers/data-api",
       "redirected_docs_identity": "Velocity Protocol",
@@ -630,15 +767,15 @@
       "legacy_api_http_status": 200,
       "legacy_api_openapi_title": "Velocity Data API",
       "liquidation_endpoint_scope": "per-user records; latest endpoint documents a 31-day window",
-      "latest_program_signatures_scanned": 6000,
+      "latest_program_signatures_scanned": 17000,
       "scan_newest_slot": 434444514,
       "scan_newest_block_time": "2026-07-22T04:55:17Z",
-      "scan_oldest_slot": 426802213,
-      "scan_oldest_block_time": "2026-06-16T06:58:14Z",
-      "next_before_signature": "5GRuYzsVZPxWJPWAVDmDiZ5tYx7P7i876UG3FfPpUenub5oGGbuc82CxdxZvKLdVjsVUriBTgCRwGWfdhqMrTaWj",
+      "scan_oldest_slot": 419952221,
+      "scan_oldest_block_time": "2026-05-15T17:55:36Z",
+      "next_before_signature": "cXrszuyU3QeiMhpikyfr18oh8UHjFcFMubLL3BvPTEULMFWFk1nAmngEzLraBr7bpwF5QUKcA3UMdeLVhbAvvx1",
       "pagination_tool": "scripts/discover_drift_liquidation_history.py",
       "liquidation_instruction_candidates_found": 0,
-      "historical_reconstruction_status": "open_no_candidate_after_six_pages",
+      "historical_reconstruction_status": "open_no_candidate_after_seventeen_pages",
       "source_governance": "Use migrated hosted API only for discovery; require public onchain transaction evidence and pinned legacy program source for reconstruction",
       "claim_boundary": "No conclusion about liquidation frequency or absence outside the bounded latest-signature scan"
     },
@@ -692,6 +829,14 @@
       "latest_filtered_vote_account_root_slot": 434555651,
       "latest_filtered_vote_account_last_vote": 434555682,
       "latest_filtered_vote_account_activated_stake_sol": 193492.740373795,
+      "latest_cluster_nodes_slot": 434585668,
+      "cluster_nodes_identity_match_count": 1,
+      "gossip_client_id": "AgaveBam",
+      "gossip_client_version": "4.1.1",
+      "gossip_feature_set": 3345198602,
+      "gossip_shred_version": 50093,
+      "public_rpc_address_advertised": false,
+      "gossip_client_evidence_status": "public snapshot only; installed binary, build provenance, configuration, transport path, and performance unverified",
       "commission_pct": 5,
       "vat_mainnet_status": "pending",
       "first_party_sol_under_management_claim": ">230000 SOL",
@@ -706,8 +851,17 @@
       "supported_validator": true,
       "partner_listed": true,
       "pye_platform_mainnet_live": true,
+      "blocksize_validator_page_latest_http_status": 404,
+      "blocksize_validator_page_checked_at": "2026-07-22T18:30:44Z",
+      "blocksize_validator_page_url_variants_checked": [
+        "https://blocksize.info/node-ops/validators/solana",
+        "https://blocksize.info/node-ops/validators/solana/",
+        "https://blocksize.info/node-ops/validators/solana/index.html"
+      ],
+      "speedstake_link_target_status": "unverified because direct first-party route returned 404 after an earlier indexed snapshot exposed the callout",
       "blocksize_specific_market_status": "unconfirmed",
-      "required_confirmation": "Public Blocksize lockup or Speedstake market URL, or owner-supplied dashboard evidence that node verification is complete and deposits are open"
+      "required_confirmation": "Restored first-party route or a direct public Blocksize lockup or Speedstake market URL, or owner-supplied dashboard evidence that node verification is complete and deposits are open",
+      "claim_boundary": "The 404 is a source-availability observation only and does not establish validator shutdown, delisting, partnership termination, market closure, or deposit status"
     }
   },
   "active_queue": [
@@ -716,7 +870,7 @@
       "priority": 1,
       "lane": "open_perps",
       "question": "Can OPRS produce one source-backed historical Drift liquidation reconstruction using pinned canonical source and public read-only data?",
-      "next_action": "Resume public legacy Drift pagination before signature 5GRuYzsVZPxWJPWAVDmDiZ5tYx7P7i876UG3FfPpUenub5oGGbuc82CxdxZvKLdVjsVUriBTgCRwGWfdhqMrTaWj after a cumulative 6,000-transaction scan through slot 426802213 found no Liquidate* log; verify any eventual candidate against public transaction evidence and pinned legacy source.",
+      "next_action": "Resume public legacy Drift pagination before signature cXrszuyU3QeiMhpikyfr18oh8UHjFcFMubLL3BvPTEULMFWFk1nAmngEzLraBr7bpwF5QUKcA3UMdeLVhbAvvx1 after a cumulative 17,000-transaction scan through slot 419952221 found no Liquidate* log; verify any eventual candidate against public transaction evidence and pinned legacy source.",
       "status": "open"
     }
   ],
@@ -779,12 +933,15 @@
     "Solana Foundation describes Pay.sh as an API proxy built on Google Cloud with endpoint authorization, rate limits, quotas, and access controls, using x402 and MPP for agent-to-API commerce; Blocksize's exact request route and the behavior of each control remain unverified.",
     "Pyth officially announced Blocksize as a data provider in 2023 and an accessible legacy publisher directory identifies Blocksize as CfVkYofcLC1iVBcYFzgdYPeiX25SVRmWvBQVHorP1A3y; the former publisher Insights route now redirects to generic Pyth Terminal Explore, so current activity, feed coverage, quality scores, rank, economics, and expansion remain unverified.",
     "Solana Foundation and MoneyGram both state that MoneyGram joined SDP and became an active Solana validator in June 2026; its reported global fiat/stablecoin footprint validates institutional demand for operationally rigorous blockchain rails, not a Blocksize relationship or purchase intent.",
+    "SDP's official ramp assessment makes all current ramp integrations bespoke and devnet-only, scores settlement reliability, API readiness, and support within a 25 percent operational-maturity category, requires 24-hour notice for incidents involving client-fund loss or unauthorized transactions, and explicitly treats listing as availability rather than endorsement; mainnet-promotion criteria remain undefined.",
+    "SDP's official custodial-wallet assessment is devnet-only and scores API quality, uptime evidence, and support while requiring ongoing compatibility and material-incident notice; OPRS may inspect these operational surfaces read-only but must not perform signing tests, evaluate key management, recommend custodians, or imply mainnet readiness or Foundation endorsement.",
+    "Solana's official DvP guide provides an educational Token-2022 security-token plus USDC atomic-settlement design, but its reference result is returned at confirmed commitment and the guide warns against direct production use; OPRS can define a finalized, two-leg receipt proof without signing or submitting transactions.",
     "SDP's official treasury-fund tutorial says a provider-level compliance status:error is a defense-in-depth gap rather than a clean pass and records broken Chainalysis credentials in its production sandbox as of May 22, 2026; this dated sandbox note is not evidence of a current production outage.",
     "Solana Foundation states that Subscriptions & Allowances is open source, audited, and live on mainnet, with recurring API billing and bounded agent spending among its explicit use cases.",
     "Solana Foundation launched Frontier Traders on June 17, 2026 as a network-level program aggregating trader activity across Solana spot and perpetual venues; it offers qualifying high-volume members priority RPC through Triton and Helius plus structured roadmap input, but no Blocksize participation, access, endorsement, or demand is established.",
     "Epicentral publicly documents OPX concepts and workflows, but its mainnet status is contradictory and no OPX/SOS program ID, official program source, named oracle dependency, or audit report was verified in the July 22 public-source snapshot.",
     "Jupiter's first-party Perps docs establish partial PositionRequest/Position lifecycle semantics, but explicitly call the API work-in-progress and rely on a third-party IDL; OPRS binary decode and verified request-to-position pairing remain blocked.",
-    "Solana Foundation reports that Phoenix launched 24/7 gold and crude-oil perpetuals, and Phoenix's official GOLD surface exposes mark, index, volume, open interest, funding, and isolated-margin state; Phoenix documents a mark price combining adjusted oracle, order-book, and external-perpetual inputs, while canonical program and exact oracle identities remain unverified.",
+    "Solana Foundation reports that Phoenix launched 24/7 gold and crude-oil perpetuals, and Phoenix's official GOLD surface exposes mark, index, volume, open interest, funding, and isolated-margin state; Phoenix documents a mark price combining adjusted oracle, order-book, and external-perpetual inputs. The Ellipsis Labs Rise public source pins the production program, log authority, global configuration, Hawkeye view program, and Flight routing program constants, and a live public snapshot corroborates the production program and global config. Exact oracle identities, account-level decode, trader monitoring, routing use, and replay remain unverified or out of scope.",
     "Sanctum documents a validator-focused staking-as-a-service product with more than 1,361 LSTs, optional operator revenue sharing, shared liquidity, and delegation thresholds; DefiLlama's July 22 snapshot placed its validator-LST row first by Solana chain TVL among non-CEX rows, subject to third-party methodology and overlap risk.",
     "BlazeStake's public Custom Liquid Staking API returned 1,292 eligible validators on July 22 and included Blocksize's vote account; this establishes technical eligibility for user-directed bSOL-backed stake, not current delegated balance, revenue, or a partnership.",
     "Two Solana Foundation staking-UI grant PDFs remain public but carry a March 1, 2022 delivery deadline; they are historical requirements signals, not verified current funding calls.",
