@@ -41,6 +41,7 @@ python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.
 python3 -m json.tool examples/datasets/drift_liquidation_history_probe_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_position_authority_source_review_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_public_field_source_review_template.json >/dev/null
+python3 -m json.tool examples/datasets/phoenix_hawkeye_source_review_example.json >/dev/null
 python3 -m json.tool examples/public/contract-index.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/spot_guardrails.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/perp_guardrails.json >/dev/null
@@ -74,12 +75,14 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_invalid_public_package_fixtures.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_source_review_records.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_hawkeye_source_authority.py
 scripts/validate_public_contract_index.py
 scripts/validate_public_guardrail_package.py
 scripts/validate_public_jupiter_authority_gap.py
 scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_invalid_public_package_fixtures.py
 scripts/validate_source_review_records.py
+scripts/validate_phoenix_hawkeye_source_authority.py
 scripts/validate_drift_liquidation_history_probe.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
@@ -143,6 +146,7 @@ test -x scripts/validate_public_jupiter_authority_gap.py
 test -x scripts/validate_public_phoenix_market_telemetry.py
 test -x scripts/validate_invalid_public_package_fixtures.py
 test -x scripts/validate_source_review_records.py
+test -x scripts/validate_phoenix_hawkeye_source_authority.py
 test -f tests/fixtures/public-packages/invalid/cases.json
 
 echo "== Public artifact boundary =="
