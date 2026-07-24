@@ -79,11 +79,20 @@ def set_repeat_table_header(row):
     tbl_header.set(qn("w:val"), "true")
 
 
+def set_row_cant_split(row):
+    tr_pr = row._tr.get_or_add_trPr()
+    cant_split = tr_pr.find(qn("w:cantSplit"))
+    if cant_split is None:
+        cant_split = OxmlElement("w:cantSplit")
+        tr_pr.append(cant_split)
+
+
 def add_table(document, headers, rows, widths):
     table = document.add_table(rows=1, cols=len(headers))
     table.style = "Table Grid"
     set_table_width(table, widths)
     set_repeat_table_header(table.rows[0])
+    set_row_cant_split(table.rows[0])
     for idx, text in enumerate(headers):
         cell = table.rows[0].cells[idx]
         cell.text = text
@@ -95,7 +104,9 @@ def add_table(document, headers, rows, widths):
                 run.bold = True
                 run.font.size = Pt(9)
     for row in rows:
-        cells = table.add_row().cells
+        table_row = table.add_row()
+        set_row_cant_split(table_row)
+        cells = table_row.cells
         for idx, text in enumerate(row):
             cells[idx].text = text
             set_cell_margins(cells[idx])
@@ -267,13 +278,14 @@ def main():
     for item in [
         "Drift remains the first fixture-backed adapter path. Historical liquidation reconstruction should advance only from public finalized transaction evidence and pinned legacy source, with migrated Velocity-hosted records used as discovery or corroboration rather than sole authority.",
         "Jupiter Perps is relevant and should stay in scope, but its canonical position is source-authority blocked: first-party docs support lifecycle semantics, while binary account decoding and deterministic request-to-position pairing require a current Jupiter-confirmed IDL/source or hashable artifact.",
-        "Phoenix/Rise is now a direct second venue target because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Production program and Hawkeye view constants are source-pinned from Ellipsis Labs Rise, while exact oracle/input identities, account-level decode, trader monitoring, and replay remain gates.",
+        "Phoenix/Rise is now a source-pinned follow-on venue lane because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Production program and Hawkeye view constants are source-pinned from Ellipsis Labs Rise, while exact oracle/input identities, account-level decode, trader monitoring, and replay remain gates.",
         "Frontier Traders creates a review-only design-partner channel for professional trader reliability feedback, but it does not establish Blocksize access, demand, or endorsement.",
         "Pay.sh, Solana Subscriptions, and Commerce Kit are useful for future commercial packaging and revenue-routing clarity. They should stay outside the grant-funded public-good core unless explicitly framed as optional or convertible-grant scope.",
         "Network changes around VAT, Alpenglow, Agave, Firedancer, and DoubleZero make validator/client/transport context relevant to perps reliability, but releases and schedules do not prove activation, Blocksize adoption, or measured performance gains.",
     ]:
         add_bullet(document, item)
 
+    document.add_page_break()
     document.add_heading("Milestones And Budget", level=1)
     add_table(
         document,
@@ -357,6 +369,7 @@ def main():
         "Jupiter source-authority confirmation packet and send-ready outbound note.",
         "Source-review record schema and examples for Jupiter authority confirmation and Drift public-field promotion.",
         "Scrubbed Drift liquidation-history probe schema, validator, and bounded discovery output contract.",
+        "Drift legacy liquidation-history diligence has scanned 35,000 finalized program transactions from July 22 back through slot 419548703 on May 13 without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
         "Continuous Solana ecosystem research loop with hot state, evidence ledger, opportunity pipeline, and checkpoint archive.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
         "Hourly hosted smoke monitoring and public artifact boundary checks.",
@@ -383,7 +396,7 @@ def main():
         ("Perps-specific historical liquidation data is thin.", "Start with fixture-backed Drift adapter shape tests, synthetic golden fixtures, and explicit data-quality caveats before claiming replay coverage."),
         ("Venue schemas drift.", "Adapter metadata includes program IDs, schema versions, supported account schema versions, IDL hash, source update timestamps, and caveats."),
         ("Jupiter source authority is not yet canonical.", "Use first-party Jupiter docs only for semantic labels. Keep binary decode, deterministic request/fulfillment pairing, and historical replay blocked until Jupiter provides or confirms a current hashable IDL/source and fixtures."),
-        ("Phoenix public telemetry is not yet program-level proof.", "Use public GOLD and external-asset surfaces for adapter-contract design while keeping canonical program, exact oracle inputs, account layouts, and transaction fixtures as explicit gates."),
+        ("Phoenix public telemetry is not yet account-level replay proof.", "Use public GOLD and external-asset surfaces plus source-pinned program/Hawkeye constants for adapter-contract design while keeping exact oracle inputs, account layouts, and transaction fixtures as explicit gates."),
         ("Research findings could drift into overclaiming.", "Maintain the Solana ecosystem loop as source-backed project memory, separate fact from inference, and require proof artifacts before promoting any partner, demand, revenue, or protocol-safety claim."),
         ("Public datasets leak private information.", "Publish gates and scrub policy remove RPC URLs, API keys, internal paths, route labels, private strategy thresholds, capital controls, and signer/custody metadata."),
         ("Historical Helius decode proof is not complete yet.", "The local read-only target discovery command succeeds, but deeper Drift market/oracle and Jupiter pool/custody decode coverage still needs public target resolution and scrubbed proof output before it can be claimed."),

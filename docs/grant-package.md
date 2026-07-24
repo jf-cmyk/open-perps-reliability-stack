@@ -80,7 +80,7 @@ Adjacent BD note: Solana Foundation's June 2026 WSOP, MoneyGram/SDP, and bare-me
 
 ## Founder Decisions Needed
 
-- Drift historical reconstruction proof, Jupiter Perps canonical IDL/source provenance, Jupiter request/fulfillment proof, and Phoenix/Hawkeye local source-review validation.
+- Drift historical reconstruction proof, Jupiter Perps canonical IDL/source provenance, Jupiter request/fulfillment proof, and Phoenix/Hawkeye account-level validator plus scrubbed fixture promotion.
 - Grant ask size.
 - Preferred OSS license.
 - Public dataset depth.
