@@ -4,6 +4,7 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
+- [2026-07-28 Drift 115k grant refresh checkpoint](2026-07-28-drift-115k-grant-refresh-checkpoint.md)
 - [2026-07-22 source review records checkpoint](2026-07-22-source-review-records-checkpoint.md)
 - [2026-06-29 Jupiter position authority checkpoint](2026-06-29-jupiter-position-authority-checkpoint.md)
 - [2026-06-29 Drift source review and Solana BD boundary checkpoint](2026-06-29-drift-source-review-solana-bd-checkpoint.md)
