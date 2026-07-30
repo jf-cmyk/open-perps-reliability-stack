@@ -16,6 +16,7 @@
 - [Liquidation dry-run and replay](liquidation-dry-run.md)
 - [Helius read-only proof plan](helius-readonly-proof.md)
 - [Drift decoder provenance](drift-decoder-provenance.md)
+- [Drift liquidation scan boundary](drift-liquidation-scan-boundary.md)
 - [Drift public field source review checklist](drift-public-field-source-review-checklist.md)
 - [Jupiter Perps provenance](jupiter-perps-provenance.md)
 - [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md)

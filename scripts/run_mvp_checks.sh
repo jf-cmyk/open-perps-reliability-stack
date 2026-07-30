@@ -91,6 +91,7 @@ rg -q '^docs/checkpoints$' .dockerignore
 test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
 test -f docs/drift-decoder-provenance.md
+test -f docs/drift-liquidation-scan-boundary.md
 test -f docs/jupiter-perps-provenance.md
 test -f docs/jupiter-source-authority-audit.md
 test -f docs/read-only-decode-worker.md
