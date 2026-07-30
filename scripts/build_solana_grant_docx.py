@@ -369,7 +369,7 @@ def main():
         "Jupiter source-authority confirmation packet and send-ready outbound note.",
         "Source-review record schema and examples for Jupiter authority confirmation and Drift public-field promotion.",
         "Scrubbed Drift liquidation-history probe schema, validator, and bounded discovery output contract.",
-        "Drift legacy liquidation-history diligence has scanned 147,000 finalized program transactions from July 22 back through slot 418112580 on May 7 without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
+        "Drift legacy liquidation-history diligence has scanned 148,000 finalized program transactions from July 22 back through slot 418069879 at 2026-05-07T00:06:06Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
         "Continuous Solana ecosystem research loop with hot state, evidence ledger, opportunity pipeline, and checkpoint archive.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
         "Hourly hosted smoke monitoring and public artifact boundary checks.",
