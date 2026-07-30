@@ -24,7 +24,7 @@ Blocksize will build the Open Perps Reliability Stack as open-source, read-only,
 - Normalized perps data schemas and public sample datasets.
 - Fixture-backed dry-run replay and reason-code classification.
 - Public dashboard/API schemas for market quality, oracle risk, liquidation health, and adapter health.
-- Public proof-package contracts for Drift guardrails, Jupiter source-authority gaps, and Phoenix/Rise market telemetry readiness.
+- Public proof-package contracts for Drift guardrails, Jupiter source-authority gaps, Phoenix/Rise market telemetry readiness, and Phoenix/Hawkeye validator-plan gates.
 
 The first grant phase will not include production trading, custody, private-key handling, live liquidation submission, or capital deployment.
 
@@ -141,7 +141,7 @@ Grant-funded outputs remain public, reproducible, read-only, and dry-run only.
 - Historical perps-specific decoded liquidation data is thin: current replay claims are synthetic dry-run scenarios, not live historical reconstruction.
 - Helius target discovery now succeeds for Drift program/state/selected market/selected oracle metadata and Jupiter Perps program/custody/oracle metadata. Drift selected public guardrail fields are source-backed and package-validated, and Drift legacy liquidation-history diligence has scanned 147,000 finalized transactions from July 22 back through slot 418112580 on May 7 without a matching `Liquidate*` log. That scan is bounded queue progress only, not evidence that liquidations were absent. Drift market-economics decode and historical replay still need source-backed proof before they can be claimed.
 - Jupiter Perps has an authority-gap package with negative evidence and blockers, but canonical source/IDL authority and verified request/fulfillment reconstruction remain blocked.
-- Phoenix/Rise has a source-backed static market-telemetry readiness package and a source-authority note pinning production program and Hawkeye view constants; account-level decode, trader monitoring, oracle-input identity, liquidation replay, live API capture, and continuous monitoring are not claimed.
+- Phoenix/Rise has a source-backed static market-telemetry readiness package, a source-authority note pinning production program and Hawkeye view constants, and a local Phoenix/Hawkeye validator-plan contract; account-level decode, trader monitoring, oracle-input identity, liquidation replay, live API capture, and continuous monitoring are not claimed.
 - Live execution is high risk: explicitly out of scope.
 - Public datasets may leak secrets or private strategy: enforce scrubbing policy and publish gates.
 - Venue schemas may drift: adapter metadata includes schema and IDL versioning.

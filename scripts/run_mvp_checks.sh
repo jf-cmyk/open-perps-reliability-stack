@@ -17,11 +17,13 @@ rg -q "Open Perps Reliability Stack Proof Pack" index.html
 rg -q "Read-only" index.html
 rg -q "Dry-run" index.html
 rg -q "docs/drift-liquidation-scan-boundary.md" index.html
+rg -q "docs/phoenix-hawkeye-validator-plan.md" index.html
 rg -q "Open Perps" apps/dashboard/index.html
 rg -q "No live execution" apps/dashboard/index.html
 rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
+rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
 rg -q "147,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
@@ -39,12 +41,14 @@ python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/phoenix-hawkeye-validator-plan-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/source-review-record-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_liquidation_history_probe_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_position_authority_source_review_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_public_field_source_review_template.json >/dev/null
 python3 -m json.tool examples/datasets/phoenix_hawkeye_source_review_example.json >/dev/null
+python3 -m json.tool examples/datasets/phoenix_hawkeye_validator_plan_example.json >/dev/null
 python3 -m json.tool examples/public/contract-index.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/spot_guardrails.json >/dev/null
 python3 -m json.tool examples/public/drift-guardrails-v0/perp_guardrails.json >/dev/null
@@ -79,6 +83,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_invalid_public_package_fixtures.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_source_review_records.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_hawkeye_source_authority.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_hawkeye_validator_plan.py
 scripts/validate_public_contract_index.py
 scripts/validate_public_guardrail_package.py
 scripts/validate_public_jupiter_authority_gap.py
@@ -86,6 +91,7 @@ scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_invalid_public_package_fixtures.py
 scripts/validate_source_review_records.py
 scripts/validate_phoenix_hawkeye_source_authority.py
+scripts/validate_phoenix_hawkeye_validator_plan.py
 scripts/validate_drift_liquidation_history_probe.py
 test -f Dockerfile
 test -f deploy/railway/nginx.conf.template
@@ -97,6 +103,7 @@ test -f docs/drift-decoder-provenance.md
 test -f docs/drift-liquidation-scan-boundary.md
 test -f docs/jupiter-perps-provenance.md
 test -f docs/jupiter-source-authority-audit.md
+test -f docs/phoenix-hawkeye-validator-plan.md
 test -f docs/read-only-decode-worker.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f schemas/datasets/drift-liquidation-history-probe-v0.json
@@ -107,6 +114,7 @@ test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f schemas/datasets/jupiter-authority-gap-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-probe-v0.json
+test -f schemas/datasets/phoenix-hawkeye-validator-plan-v0.json
 test -f schemas/datasets/source-review-record-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
 test -f examples/datasets/readonly_target_discovery_example.json
@@ -116,6 +124,7 @@ test -f examples/datasets/drift_readonly_decode_worker_run_example.json
 test -f examples/datasets/drift_liquidation_history_probe_example.json
 test -f examples/datasets/jupiter_position_authority_source_review_example.json
 test -f examples/datasets/drift_public_field_source_review_template.json
+test -f examples/datasets/phoenix_hawkeye_validator_plan_example.json
 test -f examples/public/contract-index.json
 test -f examples/public/drift-guardrails-v0/spot_guardrails.json
 test -f examples/public/drift-guardrails-v0/perp_guardrails.json
@@ -151,6 +160,7 @@ test -x scripts/validate_public_phoenix_market_telemetry.py
 test -x scripts/validate_invalid_public_package_fixtures.py
 test -x scripts/validate_source_review_records.py
 test -x scripts/validate_phoenix_hawkeye_source_authority.py
+test -x scripts/validate_phoenix_hawkeye_validator_plan.py
 test -f tests/fixtures/public-packages/invalid/cases.json
 
 echo "== Public artifact boundary =="

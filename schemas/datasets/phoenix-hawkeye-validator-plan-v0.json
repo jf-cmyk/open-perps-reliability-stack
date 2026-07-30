@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/phoenix-hawkeye-validator-plan-v0.json",
+  "title": "Open Perps Reliability Stack Phoenix Hawkeye Validator Plan v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_name",
+    "protocol",
+    "chain_id",
+    "source_authority",
+    "validator_scope",
+    "fixture_contract",
+    "scrub_policy",
+    "promotion_gates",
+    "readiness",
+    "known_limitations"
+  ],
+  "properties": {
+    "schema_version": { "const": "oprs.phoenix_hawkeye_validator_plan.v0" },
+    "dataset_name": { "const": "phoenix_hawkeye_validator_plan_example" },
+    "protocol": { "const": "phoenix_rise" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "source_authority": {
+      "type": "object",
+      "required": [
+        "rise_public_commit",
+        "source_phoenix_commit",
+        "production_program_id",
+        "production_log_authority",
+        "production_global_configuration",
+        "hawkeye_program_id",
+        "hawkeye_return_version",
+        "source_refs"
+      ],
+      "properties": {
+        "rise_public_commit": { "type": "string", "minLength": 40, "maxLength": 40 },
+        "source_phoenix_commit": { "type": "string", "minLength": 40, "maxLength": 40 },
+        "production_program_id": { "type": "string", "minLength": 32 },
+        "production_log_authority": { "type": "string", "minLength": 32 },
+        "production_global_configuration": { "type": "string", "minLength": 32 },
+        "hawkeye_program_id": { "type": "string", "minLength": 32 },
+        "hawkeye_return_version": { "type": "integer", "minimum": 1 },
+        "source_refs": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "validator_scope": {
+      "type": "object",
+      "required": [
+        "mode",
+        "covered_views",
+        "account_level_decode_claimed",
+        "exact_oracle_input_identity_claimed",
+        "liquidation_replay_claimed",
+        "instruction_builder_claimed",
+        "transaction_submission_claimed"
+      ],
+      "properties": {
+        "mode": { "const": "local_read_only_fixture_contract" },
+        "covered_views": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "margin",
+              "asset",
+              "liquidation_price",
+              "bbo",
+              "funding"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "account_level_decode_claimed": { "const": false },
+        "exact_oracle_input_identity_claimed": { "const": false },
+        "liquidation_replay_claimed": { "const": false },
+        "instruction_builder_claimed": { "const": false },
+        "transaction_submission_claimed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "fixture_contract": {
+      "type": "object",
+      "required": [
+        "fixture_inputs",
+        "fixture_outputs",
+        "negative_cases"
+      ],
+      "properties": {
+        "fixture_inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["name", "purpose", "source_class", "raw_material_committed"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "purpose": { "type": "string", "minLength": 1 },
+              "source_class": {
+                "enum": [
+                  "pinned_source_constant",
+                  "scrubbed_return_shape",
+                  "synthetic_account_shape",
+                  "public_market_metadata_shape"
+                ]
+              },
+              "raw_material_committed": { "const": false }
+            },
+            "additionalProperties": false
+          }
+        },
+        "fixture_outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["name", "claim_boundary"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "claim_boundary": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "negative_cases": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["name", "expected_rejection"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "expected_rejection": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scrub_policy": {
+      "type": "object",
+      "required": [
+        "raw_account_data_committed",
+        "raw_return_data_committed",
+        "trader_addresses_committed",
+        "credential_material_committed",
+        "scrubbed_fixture_shapes_allowed"
+      ],
+      "properties": {
+        "raw_account_data_committed": { "const": false },
+        "raw_return_data_committed": { "const": false },
+        "trader_addresses_committed": { "const": false },
+        "credential_material_committed": { "const": false },
+        "scrubbed_fixture_shapes_allowed": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "promotion_gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["gate", "status"],
+        "properties": {
+          "gate": { "type": "string", "minLength": 1 },
+          "status": {
+            "enum": [
+              "satisfied",
+              "blocked",
+              "planned"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": [
+        "source_constants_pinned",
+        "local_validator_implemented",
+        "public_regression_fixtures_available",
+        "account_decode_ready",
+        "replay_ready",
+        "execution_ready"
+      ],
+      "properties": {
+        "source_constants_pinned": { "const": true },
+        "local_validator_implemented": { "const": false },
+        "public_regression_fixtures_available": { "const": false },
+        "account_decode_ready": { "const": false },
+        "replay_ready": { "const": false },
+        "execution_ready": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false
+}

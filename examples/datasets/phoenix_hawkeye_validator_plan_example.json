@@ -1,0 +1,127 @@
+{
+  "schema_version": "oprs.phoenix_hawkeye_validator_plan.v0",
+  "dataset_name": "phoenix_hawkeye_validator_plan_example",
+  "protocol": "phoenix_rise",
+  "chain_id": "solana-mainnet-beta",
+  "source_authority": {
+    "rise_public_commit": "09f59aaf06037ecff395a6c47eea7440f9eef7c2",
+    "source_phoenix_commit": "6051225fb045fbb5b6a454bd445e7fc2e31e5722",
+    "production_program_id": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "production_log_authority": "GdxfTLSsdSY37G6fZoYtdGDSfgFnbT2EmRpuePZxWShS",
+    "production_global_configuration": "2zskx2iyCvb6Stg7RBZkt1f6MrF4dpYtMG3yMvKwqtUZ",
+    "hawkeye_program_id": "RiSeVw3ZjNfsaXPRb4mgaqYaEEt41pNNJoDvVh7pgQj",
+    "hawkeye_return_version": 1,
+    "source_refs": [
+      "docs/phoenix-source-authority.md",
+      "https://github.com/Ellipsis-Labs/rise-public/tree/09f59aaf06037ecff395a6c47eea7440f9eef7c2",
+      "https://docs.phoenix.trade/sdk/rise"
+    ]
+  },
+  "validator_scope": {
+    "mode": "local_read_only_fixture_contract",
+    "covered_views": [
+      "margin",
+      "asset",
+      "liquidation_price",
+      "bbo",
+      "funding"
+    ],
+    "account_level_decode_claimed": false,
+    "exact_oracle_input_identity_claimed": false,
+    "liquidation_replay_claimed": false,
+    "instruction_builder_claimed": false,
+    "transaction_submission_claimed": false
+  },
+  "fixture_contract": {
+    "fixture_inputs": [
+      {
+        "name": "pinned_hawkeye_constants",
+        "purpose": "Verify production program, log authority, global configuration, Hawkeye program, and return version against pinned source.",
+        "source_class": "pinned_source_constant",
+        "raw_material_committed": false
+      },
+      {
+        "name": "scrubbed_hawkeye_return_shape",
+        "purpose": "Exercise return-data shape handling without committing raw return bytes or trader-specific values.",
+        "source_class": "scrubbed_return_shape",
+        "raw_material_committed": false
+      },
+      {
+        "name": "synthetic_market_context",
+        "purpose": "Provide local validator context for market, funding, BBO, and liquidation-price view categories without claiming live market correctness.",
+        "source_class": "synthetic_account_shape",
+        "raw_material_committed": false
+      }
+    ],
+    "fixture_outputs": [
+      {
+        "name": "hawkeye_return_version_gate",
+        "claim_boundary": "Confirms only that a fixture declares the expected Hawkeye return version; it does not prove account decode or replay readiness."
+      },
+      {
+        "name": "view_category_coverage",
+        "claim_boundary": "Confirms only that validator cases cover the planned view categories; it does not prove exact oracle input identity."
+      },
+      {
+        "name": "execution_surface_rejection",
+        "claim_boundary": "Confirms that instruction building, signing, submission, asset control, and funded execution remain disabled."
+      }
+    ],
+    "negative_cases": [
+      {
+        "name": "beta_program_rejected",
+        "expected_rejection": "Reject a fixture that uses the beta Phoenix program as production."
+      },
+      {
+        "name": "raw_return_data_rejected",
+        "expected_rejection": "Reject a fixture that commits raw Hawkeye return bytes."
+      },
+      {
+        "name": "premature_replay_claim_rejected",
+        "expected_rejection": "Reject a fixture that claims liquidation replay or execution readiness."
+      }
+    ]
+  },
+  "scrub_policy": {
+    "raw_account_data_committed": false,
+    "raw_return_data_committed": false,
+    "trader_addresses_committed": false,
+    "credential_material_committed": false,
+    "scrubbed_fixture_shapes_allowed": true
+  },
+  "promotion_gates": [
+    {
+      "gate": "source constants pinned",
+      "status": "satisfied"
+    },
+    {
+      "gate": "local validator implemented",
+      "status": "planned"
+    },
+    {
+      "gate": "scrubbed regression fixtures available",
+      "status": "planned"
+    },
+    {
+      "gate": "exact oracle input identity verified",
+      "status": "blocked"
+    },
+    {
+      "gate": "account-level decode promoted",
+      "status": "blocked"
+    }
+  ],
+  "readiness": {
+    "source_constants_pinned": true,
+    "local_validator_implemented": false,
+    "public_regression_fixtures_available": false,
+    "account_decode_ready": false,
+    "replay_ready": false,
+    "execution_ready": false
+  },
+  "known_limitations": [
+    "This contract is a validator design artifact, not a decoded Phoenix account dataset.",
+    "No raw account data, raw return data, trader addresses, credentials, signing material, or private execution data are committed.",
+    "Hawkeye view coverage does not prove deployed bytecode equivalence, exact oracle input identity, account-level decode, liquidation replay, or live market correctness."
+  ]
+}
