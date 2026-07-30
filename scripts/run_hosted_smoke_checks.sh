@@ -45,6 +45,7 @@ fetch "/" "$workdir/index.html"
 assert_contains "Open Perps Reliability Stack Proof Pack" "$workdir/index.html"
 assert_contains "Read-only" "$workdir/index.html"
 assert_contains "Dry-run" "$workdir/index.html"
+assert_contains "docs/drift-liquidation-scan-boundary.md" "$workdir/index.html"
 
 echo "== Fetch dashboard =="
 fetch "/apps/dashboard/" "$workdir/dashboard.html"
@@ -52,6 +53,7 @@ assert_contains "Open Perps" "$workdir/dashboard.html"
 assert_contains "No live execution" "$workdir/dashboard.html"
 assert_contains "ExecutionDisabledDryRun" "$workdir/dashboard.html"
 assert_contains "AdapterVersionMismatch" "$workdir/dashboard.html"
+assert_contains "../../docs/drift-liquidation-scan-boundary.md" "$workdir/dashboard.html"
 
 echo "== Fetch reconstruction envelope =="
 fetch "/examples/datasets/data_reconstruction_envelope.json" "$workdir/data_reconstruction_envelope.json"
@@ -76,6 +78,14 @@ assert_contains "Drift Decoder Provenance" "$workdir/drift-decoder-provenance.md
 assert_contains "2.163.0-beta.0" "$workdir/drift-decoder-provenance.md"
 assert_contains "9646dd6a893568d85d8dc47507e047010bf7e945" "$workdir/drift-decoder-provenance.md"
 assert_contains "Shape Snapshot Scope" "$workdir/drift-decoder-provenance.md"
+
+echo "== Fetch Drift liquidation scan boundary =="
+fetch "/docs/drift-liquidation-scan-boundary.md" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "Drift Liquidation Scan Boundary" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "147,000 finalized transactions" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "418112580" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "does not prove" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "Until then, the scan is source-governance progress only" "$workdir/drift-liquidation-scan-boundary.md"
 
 echo "== Fetch Drift shape snapshot example =="
 fetch "/examples/datasets/drift_shape_snapshot_example.json" "$workdir/drift_shape_snapshot_example.json"
@@ -245,7 +255,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/drift-liquidation-scan-boundary.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

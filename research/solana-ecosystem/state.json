@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-30T02:07:43Z",
-  "last_material_delta": "drift-liquidation-scan-advanced-to-146000-transactions",
+  "updated_at": "2026-07-30T03:08:32Z",
+  "last_material_delta": "drift-liquidation-scan-advanced-to-147000-transactions",
   "mission": "Discover and qualify source-backed Blocksize business-development and partnership opportunities, prioritizing the Solana Foundation Open Perps call and read-only reliability infrastructure.",
   "scope": {
     "mode": "read_only",
@@ -767,15 +767,15 @@
       "legacy_api_http_status": 200,
       "legacy_api_openapi_title": "Velocity Data API",
       "liquidation_endpoint_scope": "per-user records; latest endpoint documents a 31-day window",
-      "latest_program_signatures_scanned": 146000,
+      "latest_program_signatures_scanned": 147000,
       "scan_newest_slot": 434444514,
       "scan_newest_block_time": "2026-07-22T04:55:17Z",
-      "scan_oldest_slot": 418153431,
-      "scan_oldest_block_time": "2026-05-07T09:22:24Z",
-      "next_before_signature": "3SeupC39byPe48KSdxDPpJ8YGfjCAsVCYsU5EK48ZYgaJJgtgyFowkpL7G2ihD5Dz7btpyNcATa7aLw29EoRUVFm",
+      "scan_oldest_slot": 418112580,
+      "scan_oldest_block_time": "2026-05-07T04:50:23Z",
+      "next_before_signature": "4G34hATTFfnDRTRt3GHkGYExfU5we2RVtArD128jD8fSEh46dWKGhsMnpcf347gNdEsQ8CxxjLXhE8reVNGLD3Y8",
       "pagination_tool": "scripts/discover_drift_liquidation_history.py",
       "liquidation_instruction_candidates_found": 0,
-      "historical_reconstruction_status": "open_no_candidate_after_one_hundred_forty_six_pages",
+      "historical_reconstruction_status": "open_no_candidate_after_one_hundred_forty_seven_pages",
       "source_governance": "Use migrated hosted API only for discovery; require public onchain transaction evidence and pinned legacy program source for reconstruction",
       "claim_boundary": "No conclusion about liquidation frequency or absence outside the bounded latest-signature scan"
     },
@@ -870,7 +870,7 @@
       "priority": 1,
       "lane": "open_perps",
       "question": "Can OPRS produce one source-backed historical Drift liquidation reconstruction using pinned canonical source and public read-only data?",
-      "next_action": "Resume public legacy Drift pagination before signature 3SeupC39byPe48KSdxDPpJ8YGfjCAsVCYsU5EK48ZYgaJJgtgyFowkpL7G2ihD5Dz7btpyNcATa7aLw29EoRUVFm after a cumulative 146,000-transaction scan through slot 418153431 found no Liquidate* log; verify any eventual candidate against public transaction evidence and pinned legacy source.",
+      "next_action": "Resume public legacy Drift pagination before signature 4G34hATTFfnDRTRt3GHkGYExfU5we2RVtArD128jD8fSEh46dWKGhsMnpcf347gNdEsQ8CxxjLXhE8reVNGLD3Y8 after a cumulative 147,000-transaction scan through slot 418112580 found no Liquidate* log; verify any eventual candidate against public transaction evidence and pinned legacy source.",
       "status": "open"
     }
   ],
