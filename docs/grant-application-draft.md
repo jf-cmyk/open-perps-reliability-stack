@@ -34,7 +34,7 @@ Blocksize brings Solana infrastructure context, validator operations experience,
 
 This grant turns that research into public, reusable infrastructure rather than a private trading system.
 
-Source-backed Solana ecosystem context strengthens the need for this work without changing the MVP scope: Solana's June 2026 WSOP and MoneyGram/SDP announcements point to real-money payment and institutional infrastructure use cases, while Solana's bare-metal validator-readiness guidance highlights how execution reliability depends on validator, RPC, compute, and block-propagation conditions. OPRS stays focused on read-only open perps developer tooling in the grant phase.
+Source-backed Solana ecosystem context strengthens the need for this work without changing the MVP scope: Solana's June 2026 WSOP and MoneyGram/SDP announcements point to real-money payment and institutional infrastructure use cases, while Solana's bare-metal validator-readiness guidance and July 2026 100M-CU block-capacity activation highlight how execution reliability depends on validator, RPC, compute, replay, catchup, and block-propagation conditions. OPRS stays focused on read-only open perps developer tooling in the grant phase; the 100M-CU regime is benchmark context, not a claimed performance improvement.
 
 ## Milestones
 
@@ -139,7 +139,7 @@ Grant-funded outputs remain public, reproducible, read-only, and dry-run only.
 ## Risks and Mitigations
 
 - Historical perps-specific decoded liquidation data is thin: current replay claims are synthetic dry-run scenarios, not live historical reconstruction.
-- Helius target discovery now succeeds for Drift program/state/selected market/selected oracle metadata and Jupiter Perps program/custody/oracle metadata. Drift selected public guardrail fields are source-backed and package-validated, and Drift legacy liquidation-history diligence has scanned 148,000 finalized transactions from July 22 back through slot 418069879 at 2026-05-07T00:06:06Z without a matching `Liquidate*` log. That scan is bounded queue progress only, not evidence that liquidations were absent. Drift market-economics decode and historical replay still need source-backed proof before they can be claimed.
+- Helius target discovery now succeeds for Drift program/state/selected market/selected oracle metadata and Jupiter Perps program/custody/oracle metadata. Drift selected public guardrail fields are source-backed and package-validated, and Drift legacy liquidation-history diligence has scanned 266,000 finalized transactions from July 22 back through slot 415904436 at 2026-04-27T01:47:05Z without a matching `Liquidate*` log. That scan is bounded queue progress only, not evidence that liquidations were absent. Drift market-economics decode and historical replay still need source-backed proof before they can be claimed.
 - Jupiter Perps has an authority-gap package with negative evidence and blockers, but canonical source/IDL authority and verified request/fulfillment reconstruction remain blocked.
 - Phoenix/Rise has a source-backed static market-telemetry readiness package, a source-authority note pinning production program and Hawkeye view constants, and a local Phoenix/Hawkeye validator-plan contract; account-level decode, trader monitoring, oracle-input identity, liquidation replay, live API capture, and continuous monitoring are not claimed.
 - Live execution is high risk: explicitly out of scope.
