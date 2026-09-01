@@ -111,6 +111,7 @@ Read when changing Drift adapter shape, protocol priority, or venue metadata:
 - [Source authority and guardrails checkpoint](2026-06-09-source-authority-and-guardrails-checkpoint.md)
 - [Drift guardrail labels checkpoint](2026-06-09-drift-guardrail-labels-checkpoint.md)
 - [Contract index and Jupiter gap checkpoint](2026-06-09-contract-index-and-jupiter-gap-checkpoint.md)
+- [Jupiter onchain decode checkpoint](2026-09-01-jupiter-onchain-decode-checkpoint.md)
 - [Split guardrails and oracle identity checkpoint](2026-06-09-split-guardrails-and-oracle-identity-checkpoint.md)
 - [Worker and guardrail package checkpoint](2026-06-09-worker-and-guardrail-package-checkpoint.md)
 - [Stronger Jupiter candidates and spot pool checkpoint](2026-06-09-stronger-jupiter-candidates-and-spot-pool-checkpoint.md)
@@ -149,10 +150,10 @@ When agent guidance affects implementation order, summarize it in the next check
 ## Current No-Access Queue
 
 1. Continue Drift legacy pagination from cursor `297aqf8WJXieG1rMtb7LcpDak8i6f5WWcGogvSYsrQcnHA5RFjV2c4JyadMjPfi8BQWaDaPVZTdgeW2PBWQSE14h`.
-2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) evidence lands from canonical source or direct Jupiter confirmation.
+2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) lifecycle evidence lands from canonical source or direct Jupiter confirmation.
 3. Decode additional Drift fields only after `scripts/validate_drift_readonly_state.py` passes on current local public-field target output and new offsets pass [Drift public field source review checklist](../drift-public-field-source-review-checklist.md).
 4. Keep `docs/proof-pack-changelog.md` current for reviewer-facing shipped evidence.
 5. Add source-backed BD/grant positioning notes from the Solana Expert thread without creating MVP claims.
-6. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
+6. Jupiter account-layout decode is source-authorized through the live onchain Anchor IDL; keep lifecycle pairing and replay blocked until source-reviewed role maps or fixture signatures land.
 7. Refresh the local Word proposal after public proof-pack text changes materially.
 8. Keep Railway and GitHub Pages mirrors equivalent.

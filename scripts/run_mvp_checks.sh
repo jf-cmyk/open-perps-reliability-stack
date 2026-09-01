@@ -47,6 +47,7 @@ python3 -m json.tool schemas/datasets/public-contract-index-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/jupiter-onchain-decode-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/slot-regime-benchmark-v0.json >/dev/null
@@ -66,6 +67,9 @@ python3 -m json.tool examples/public/drift-guardrails-v0/dq.json >/dev/null
 python3 -m json.tool examples/public/jupiter-authority-gap-v0/gap_report.json >/dev/null
 python3 -m json.tool examples/public/jupiter-authority-gap-v0/manifest.json >/dev/null
 python3 -m json.tool examples/public/jupiter-authority-gap-v0/dq.json >/dev/null
+python3 -m json.tool examples/public/jupiter-onchain-decode-v0/decode_report.json >/dev/null
+python3 -m json.tool examples/public/jupiter-onchain-decode-v0/manifest.json >/dev/null
+python3 -m json.tool examples/public/jupiter-onchain-decode-v0/dq.json >/dev/null
 python3 -m json.tool examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json >/dev/null
 python3 -m json.tool examples/public/phoenix-market-telemetry-v0/manifest.json >/dev/null
 python3 -m json.tool examples/public/phoenix-market-telemetry-v0/dq.json >/dev/null
@@ -92,6 +96,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/public_package_
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_contract_index.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_guardrail_package.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_jupiter_authority_gap.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_jupiter_onchain_decode.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_invalid_public_package_fixtures.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_source_review_records.py
@@ -100,6 +105,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoeni
 scripts/validate_public_contract_index.py
 scripts/validate_public_guardrail_package.py
 scripts/validate_public_jupiter_authority_gap.py
+scripts/validate_public_jupiter_onchain_decode.py
 scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_public_slot_regime_benchmark.py
 scripts/validate_invalid_public_package_fixtures.py
@@ -128,6 +134,7 @@ test -f schemas/datasets/public-contract-index-v0.json
 test -f schemas/datasets/spot-guardrail-snapshot-v0.json
 test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f schemas/datasets/jupiter-authority-gap-v0.json
+test -f schemas/datasets/jupiter-onchain-decode-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-probe-v0.json
 test -f schemas/datasets/slot-regime-benchmark-v0.json
@@ -150,6 +157,9 @@ test -f examples/public/drift-guardrails-v0/dq.json
 test -f examples/public/jupiter-authority-gap-v0/gap_report.json
 test -f examples/public/jupiter-authority-gap-v0/manifest.json
 test -f examples/public/jupiter-authority-gap-v0/dq.json
+test -f examples/public/jupiter-onchain-decode-v0/decode_report.json
+test -f examples/public/jupiter-onchain-decode-v0/manifest.json
+test -f examples/public/jupiter-onchain-decode-v0/dq.json
 test -f examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json
 test -f examples/public/phoenix-market-telemetry-v0/manifest.json
 test -f examples/public/phoenix-market-telemetry-v0/dq.json
@@ -177,6 +187,7 @@ test -x scripts/validate_public_slot_regime_benchmark.py
 test -x scripts/validate_public_contract_index.py
 test -x scripts/validate_public_guardrail_package.py
 test -x scripts/validate_public_jupiter_authority_gap.py
+test -x scripts/validate_public_jupiter_onchain_decode.py
 test -x scripts/validate_public_phoenix_market_telemetry.py
 test -x scripts/validate_invalid_public_package_fixtures.py
 test -x scripts/validate_source_review_records.py

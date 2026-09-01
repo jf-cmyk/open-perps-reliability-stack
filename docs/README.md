@@ -57,6 +57,7 @@ Schema and fixture artifacts:
 - [Public package contract index](../examples/public/contract-index.json)
 - [Drift guardrails public package](../examples/public/drift-guardrails-v0/)
 - [Jupiter authority-gap public package](../examples/public/jupiter-authority-gap-v0/)
+- [Jupiter onchain decode public package](../examples/public/jupiter-onchain-decode-v0/)
 - [Phoenix market telemetry public package](../examples/public/phoenix-market-telemetry-v0/)
 - [Slot-regime benchmark public package](../examples/public/slot-regime-benchmark-v0/)
 - [Invalid public package corpus](../tests/fixtures/public-packages/invalid/cases.json)

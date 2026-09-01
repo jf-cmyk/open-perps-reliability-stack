@@ -1,0 +1,40 @@
+{
+  "manifest_version": "oprs.public_dataset_manifest.v0",
+  "dataset_name": "jupiter_onchain_decode_v0_example",
+  "schema_version": "oprs.jupiter_onchain_decode_package.v0",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "capability": "read_only_dry_run",
+  "source_type": "scrubbed_readonly_probe",
+  "generated_from": "target/oprs-jupiter-position-decode/latest.json",
+  "outputs": [
+    {
+      "path": "decode_report.json",
+      "format": "json",
+      "row_count": 2,
+      "sha256": "42d585c48c7f722beb27ca37983527a4856fc588bcc660e517a528529f1b6109"
+    },
+    {
+      "path": "dq.json",
+      "format": "json",
+      "row_count": 9,
+      "sha256": "4302f22bbe958cb15bc8fe908f42c851f4b8a24816495defb32055b12bc57f7c"
+    }
+  ],
+  "dq": {
+    "status": "passed",
+    "report_path": "dq.json",
+    "blocking_failures": 0,
+    "warnings": 3
+  },
+  "scrub": {
+    "policy_version": "oprs.public_artifact_scrub.v0",
+    "status": "passed",
+    "blocked_pattern_count": 0
+  },
+  "known_limitations": [
+    "Source-authorized account-layout decode only; not a lifecycle pairing or replay package.",
+    "Fresh active account identifiers are hash-only in the public package."
+  ],
+  "generated_at_unix": 1788239138
+}

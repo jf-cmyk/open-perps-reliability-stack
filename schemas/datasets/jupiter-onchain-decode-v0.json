@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/jupiter-onchain-decode-v0.json",
+  "title": "Open Perps Reliability Stack Jupiter Onchain Decode v0",
+  "type": "object",
+  "required": ["schema_version", "dataset_name", "protocol", "chain_id", "source_authority", "idl_shape", "decode_records", "readiness", "known_limitations"],
+  "properties": {
+    "schema_version": { "const": "oprs.jupiter_onchain_decode.v0" },
+    "dataset_name": { "type": "string", "minLength": 1 },
+    "protocol": { "const": "jupiter_perps" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "source_authority": {
+      "type": "object",
+      "required": ["authority_status", "program_id", "anchor_idl_address", "idl_authority", "program_owned_idl_account", "normalized_idl_sha256", "compressed_idl_sha256", "inflated_idl_sha256", "docs_linked_candidate_matched"],
+      "properties": {
+        "authority_status": { "const": "onchain_anchor_idl_hashable" },
+        "program_id": { "const": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu" },
+        "anchor_idl_address": { "type": "string", "minLength": 32 },
+        "idl_authority": { "type": "string", "minLength": 32 },
+        "program_owned_idl_account": { "const": true },
+        "normalized_idl_sha256": { "$ref": "#/$defs/sha256" },
+        "compressed_idl_sha256": { "$ref": "#/$defs/sha256" },
+        "inflated_idl_sha256": { "$ref": "#/$defs/sha256" },
+        "docs_linked_candidate_matched": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "idl_shape": {
+      "type": "object",
+      "required": ["name", "version", "account_count", "instruction_count", "type_count", "selected_accounts", "selected_instructions", "selected_types"],
+      "properties": {
+        "name": { "const": "perpetuals" },
+        "version": { "type": "string", "minLength": 1 },
+        "account_count": { "type": "integer", "minimum": 1 },
+        "instruction_count": { "type": "integer", "minimum": 1 },
+        "type_count": { "type": "integer", "minimum": 1 },
+        "selected_accounts": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 1 } },
+        "selected_instructions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "selected_types": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": false
+    },
+    "decode_records": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["account_name", "source", "account_identifier", "owner_identifier", "data_len", "decoded_len", "trailing_zero_padding_len", "data_sha256", "discriminator_hex", "redacted_public_key_field_count", "field_offsets", "selected_decoded_fields"],
+        "properties": {
+          "account_name": { "enum": ["Position", "PositionRequest"] },
+          "source": { "type": "string", "minLength": 1 },
+          "account_identifier": { "type": "object", "additionalProperties": true },
+          "owner_identifier": { "type": "object", "additionalProperties": true },
+          "data_len": { "type": "integer", "minimum": 1 },
+          "decoded_len": { "type": "integer", "minimum": 1 },
+          "trailing_zero_padding_len": { "type": "integer", "minimum": 0 },
+          "data_sha256": { "$ref": "#/$defs/sha256" },
+          "discriminator_hex": { "type": "string", "minLength": 16 },
+          "redacted_public_key_field_count": { "type": "integer", "minimum": 0 },
+          "field_offsets": { "type": "object", "additionalProperties": true },
+          "selected_decoded_fields": { "type": "object", "additionalProperties": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["canonical_source_confirmed", "binary_decode_claimed", "verified_pairing_claimed", "replay_ready", "execution_claimed", "account_bytes_published"],
+      "properties": {
+        "canonical_source_confirmed": { "const": true },
+        "binary_decode_claimed": { "const": true },
+        "verified_pairing_claimed": { "const": false },
+        "replay_ready": { "const": false },
+        "execution_claimed": { "const": false },
+        "account_bytes_published": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "known_limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

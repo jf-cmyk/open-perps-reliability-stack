@@ -19,7 +19,7 @@
         "properties": {
           "gap_id": { "type": "string", "minLength": 1 },
           "claim": { "type": "string", "minLength": 1 },
-          "status": { "enum": ["blocked", "unverified"] },
+          "status": { "enum": ["blocked", "unverified", "resolved_for_layout_decode"] },
           "required_source": { "type": "string", "minLength": 1 },
           "current_evidence": { "type": "string", "minLength": 1 },
           "blocked_until": { "type": "string", "minLength": 1 },
@@ -37,8 +37,8 @@
       "type": "object",
       "required": ["canonical_source_confirmed", "binary_decode_claimed", "verified_pairing_claimed", "replay_ready"],
       "properties": {
-        "canonical_source_confirmed": { "const": false },
-        "binary_decode_claimed": { "const": false },
+        "canonical_source_confirmed": { "type": "boolean" },
+        "binary_decode_claimed": { "type": "boolean" },
         "verified_pairing_claimed": { "const": false },
         "replay_ready": { "const": false }
       },

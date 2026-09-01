@@ -1,0 +1,63 @@
+{
+  "schema_version": "oprs.public_dq_report.v0",
+  "dataset_name": "jupiter_onchain_decode_v0_example",
+  "status": "passed",
+  "blocking_failures": 0,
+  "warnings": 3,
+  "checks": [
+    {
+      "gate_id": "canonical_onchain_idl_hash",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Onchain Anchor IDL address and normalized hash are present."
+    },
+    {
+      "gate_id": "docs_candidate_mismatch_recorded",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Docs-linked third-party candidate mismatch is recorded and not promoted."
+    },
+    {
+      "gate_id": "position_decode_present",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Position decode record includes discriminator, size, offsets, and selected decoded fields."
+    },
+    {
+      "gate_id": "position_request_decode_present",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "PositionRequest decode record includes discriminator, size, offsets, and selected decoded fields."
+    },
+    {
+      "gate_id": "fresh_active_identifier_scrubbed",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Fresh active PositionRequest account identifier is hash-only in the public package."
+    },
+    {
+      "gate_id": "no_pairing_or_replay_claim",
+      "severity": "block_publish",
+      "status": "pass",
+      "message": "Package keeps verified pairing and replay readiness false."
+    },
+    {
+      "gate_id": "layout_decode_only",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "This is a source-authorized account-layout decode, not a lifecycle reconstruction."
+    },
+    {
+      "gate_id": "closed_docs_request_example",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "The docs PositionRequest example account was unavailable, matching the documented closure behavior for non-TP/SL requests."
+    },
+    {
+      "gate_id": "local_target_contains_full_review_output",
+      "severity": "warn_public",
+      "status": "warn",
+      "message": "Full account-level review output remains local under target/ and is not part of this public package."
+    }
+  ]
+}

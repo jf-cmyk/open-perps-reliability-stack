@@ -1,0 +1,137 @@
+{
+  "schema_version": "oprs.jupiter_onchain_decode.v0",
+  "dataset_name": "jupiter_onchain_decode_v0_example",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "source_authority": {
+    "authority_status": "onchain_anchor_idl_hashable",
+    "program_id": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
+    "anchor_idl_address": "38GK1i4cQPAxqrbfKX4RRMNfXpKRn5PgLFHVJeXm1C8Y",
+    "idl_authority": "2j5nCxKzqiRBtpCq1wPtPjBy5JaCQWg28DtWnsv1o7M2",
+    "program_owned_idl_account": true,
+    "normalized_idl_sha256": "611de36592f4508438df16ebee2ff73b9789eda105ec712575d515b432d1ebaa",
+    "compressed_idl_sha256": "c3ef66d96b043927cad339ca11c54bca3723e66270dd40ae087bfd1c4c02a4e9",
+    "inflated_idl_sha256": "1d90a653a1cc88bddb7c5876acee52d3f26c6b1e3306e0833234020dc6f7d653",
+    "docs_linked_candidate_matched": false
+  },
+  "idl_shape": {
+    "name": "perpetuals",
+    "version": "0.1.0",
+    "account_count": 8,
+    "instruction_count": 59,
+    "type_count": 73,
+    "selected_accounts": ["PositionRequest", "Position"],
+    "selected_instructions": [
+      "createIncreasePositionMarketRequest",
+      "createDecreasePositionMarketRequest",
+      "closePositionRequest2",
+      "closePositionRequest3",
+      "liquidateFullPosition4"
+    ],
+    "selected_types": ["RequestType", "RequestChange", "Side"]
+  },
+  "decode_records": [
+    {
+      "account_name": "Position",
+      "source": "official Jupiter docs example account",
+      "account_identifier": {
+        "pubkey": "FBLzd5VM67MEKkoWerXu7Nu1ksbLXQvJDx63y5aeLEvt",
+        "pubkey_sha256": "d7ec8b60c6109e8d52edade33b3ab2c926d99d440536d864a90a9eeea61a9bc8",
+        "public_docs_url": "https://developers.jup.ag/docs/perps/position-account"
+      },
+      "owner_identifier": {
+        "pubkey_redacted": true,
+        "pubkey_sha256": "70f05181eca480166628488f0e165076b961efa57632939965bcbab6a4e4d073"
+      },
+      "data_len": 216,
+      "decoded_len": 210,
+      "trailing_zero_padding_len": 6,
+      "data_sha256": "d4f1aa403e5e5170c252f484b2368e0fa56d2ca88cb195717e4fa3b6fc62d47d",
+      "discriminator_hex": "aabc8fe47a40f7d0",
+      "redacted_public_key_field_count": 4,
+      "field_offsets": {
+        "openTime": 136,
+        "updateTime": 144,
+        "side": 152,
+        "price": 153,
+        "sizeUsd": 161,
+        "collateralUsd": 169,
+        "realisedPnlUsd": 177,
+        "cumulativeInterestSnapshot": 185,
+        "lockedAmount": 201,
+        "bump": 209
+      },
+      "selected_decoded_fields": {
+        "side": { "raw": 1, "label": "Long" },
+        "price": 151433252,
+        "sizeUsd": 0,
+        "collateralUsd": 0,
+        "openTime": 1745832539,
+        "updateTime": 1745832588,
+        "bump": 255
+      }
+    },
+    {
+      "account_name": "PositionRequest",
+      "source": "active public account found by Anchor discriminator memcmp",
+      "account_identifier": {
+        "pubkey_redacted": true,
+        "pubkey_sha256": "91d0c3203c3937b8698862ad01abb7928ab836e4d18587de1c8bf212a177eec0",
+        "lookup_method": "getProgramAccounts memcmp offset 0 against PositionRequest discriminator"
+      },
+      "owner_identifier": {
+        "pubkey_redacted": true,
+        "pubkey_sha256": "51b7a10c339b3d0c978fcf3f5b7638637b571b88fc1b79665ff2f7ad5d606890"
+      },
+      "data_len": 312,
+      "decoded_len": 229,
+      "trailing_zero_padding_len": 83,
+      "data_sha256": "5e21e1b5062ba6060c70f5f5cd5409ea5e25a967429c0deb37af12fb07dcac09",
+      "discriminator_hex": "0c26fac72e9a20d8",
+      "redacted_public_key_field_count": 5,
+      "field_offsets": {
+        "openTime": 168,
+        "updateTime": 176,
+        "sizeUsdDelta": 184,
+        "collateralDelta": 192,
+        "requestChange": 200,
+        "requestType": 201,
+        "side": 202,
+        "priceSlippage": 203,
+        "jupiterMinimumOut": 204,
+        "preSwapAmount": 205,
+        "triggerPrice": 206,
+        "triggerAboveThreshold": 215,
+        "entirePosition": 217,
+        "executed": 218,
+        "counter": 219,
+        "bump": 227,
+        "referral": 228
+      },
+      "selected_decoded_fields": {
+        "requestChange": { "raw": 1, "label": "Increase" },
+        "requestType": { "raw": 1, "label": "Trigger" },
+        "side": { "raw": 1, "label": "Long" },
+        "executed": false,
+        "counter": 373596680,
+        "openTime": 1786874581,
+        "updateTime": 1786874581,
+        "bump": 254
+      }
+    }
+  ],
+  "readiness": {
+    "canonical_source_confirmed": true,
+    "binary_decode_claimed": true,
+    "verified_pairing_claimed": false,
+    "replay_ready": false,
+    "execution_claimed": false,
+    "account_bytes_published": false
+  },
+  "known_limitations": [
+    "The docs-linked third-party IDL candidate does not match the live onchain IDL hash.",
+    "The official docs PositionRequest example account was already closed or unavailable at read time, so an active public account was found by discriminator instead.",
+    "This package proves source-authorized account layout decode only; it does not prove request/fulfillment pairing, keeper behavior, liquidation replay, protocol safety, or production readiness.",
+    "Fresh active-account identifiers are redacted in the public package; full local source-review output remains under target/."
+  ]
+}

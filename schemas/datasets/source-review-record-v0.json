@@ -61,6 +61,7 @@
           "enum": [
             "canonical_confirmed",
             "pinned_source_reviewed",
+            "onchain_anchor_idl_hashable",
             "docs_linked_example_not_canonical",
             "pinned_source_required"
           ]

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Audit public Jupiter Perps source authority without using secrets.
 
-This command checks official Jupiter docs markers and the docs-linked IDL
-example repository. It intentionally does not authorize binary decode claims.
+This command checks official Jupiter docs markers, the docs-linked IDL
+example repository, and the checked-in onchain-IDL decode proof summary.
+It intentionally does not authorize verified lifecycle pairing or replay claims.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ import json
 import time
 import urllib.error
 import urllib.request
+import urllib.parse
 from pathlib import Path
 from typing import Any
 
@@ -54,9 +56,10 @@ IDL_REPO = "julianfssen/jupiter-perps-anchor-idl-parsing"
 IDL_PATH = "src/idl/jupiter-perpetuals-idl.ts"
 GITHUB_API = "https://api.github.com"
 GITHUB_RAW = "https://raw.githubusercontent.com"
+ONCHAIN_DECODE_REPORT = Path("examples/public/jupiter-onchain-decode-v0/decode_report.json")
 
 
-def fetch_text(url: str) -> str:
+def fetch_text(url: str, redirects: int = 3) -> str:
     request = urllib.request.Request(
         url,
         headers={
@@ -67,11 +70,17 @@ def fetch_text(url: str) -> str:
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.read().decode("utf-8", errors="replace")
+    except urllib.error.HTTPError as error:
+        if error.code in {301, 302, 303, 307, 308} and redirects > 0:
+            location = error.headers.get("Location")
+            if location:
+                return fetch_text(urllib.parse.urljoin(url, location), redirects - 1)
+        raise SystemExit(f"Fetch failed for {url}: HTTP {error.code}") from error
     except urllib.error.URLError as error:
         raise SystemExit(f"Fetch failed for {url}: {error.reason}") from error
 
 
-def fetch_json(url: str) -> Any:
+def fetch_json(url: str, redirects: int = 3) -> Any:
     request = urllib.request.Request(
         url,
         headers={
@@ -82,6 +91,12 @@ def fetch_json(url: str) -> Any:
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        if error.code in {301, 302, 303, 307, 308} and redirects > 0:
+            location = error.headers.get("Location")
+            if location:
+                return fetch_json(urllib.parse.urljoin(url, location), redirects - 1)
+        raise SystemExit(f"Fetch failed for {url}: HTTP {error.code}") from error
     except urllib.error.URLError as error:
         raise SystemExit(f"Fetch failed for {url}: {error.reason}") from error
 
@@ -122,9 +137,34 @@ def audit_idl_candidate() -> dict[str, Any]:
     }
 
 
+def audit_onchain_decode_package() -> dict[str, Any]:
+    if not ONCHAIN_DECODE_REPORT.exists():
+        return {
+            "package_path": ONCHAIN_DECODE_REPORT.as_posix(),
+            "available": False,
+        }
+    report = json.loads(ONCHAIN_DECODE_REPORT.read_text(encoding="utf-8"))
+    source = report.get("source_authority", {})
+    readiness = report.get("readiness", {})
+    return {
+        "package_path": ONCHAIN_DECODE_REPORT.as_posix(),
+        "available": True,
+        "authority_status": source.get("authority_status"),
+        "anchor_idl_address": source.get("anchor_idl_address"),
+        "program_owned_idl_account": source.get("program_owned_idl_account"),
+        "normalized_idl_sha256": source.get("normalized_idl_sha256"),
+        "docs_linked_candidate_matched": source.get("docs_linked_candidate_matched"),
+        "decode_accounts": [record.get("account_name") for record in report.get("decode_records", [])],
+        "verified_pairing_claimed": readiness.get("verified_pairing_claimed"),
+        "replay_ready": readiness.get("replay_ready"),
+        "execution_claimed": readiness.get("execution_claimed"),
+    }
+
+
 def build_report() -> dict[str, Any]:
     docs = audit_docs()
     idl = audit_idl_candidate()
+    onchain_decode = audit_onchain_decode_package()
     return {
         "schema_version": "0.1.0",
         "report_id": "jupiter_perps_source_authority_audit",
@@ -133,28 +173,31 @@ def build_report() -> dict[str, Any]:
         "program_id": JUPITER_PERPS_PROGRAM_ID,
         "docs": docs,
         "idl_candidate": idl,
-        "authority_status": "docs_linked_example_not_canonical",
+        "onchain_decode": onchain_decode,
+        "authority_status": "onchain_anchor_idl_hashable"
+        if onchain_decode.get("authority_status") == "onchain_anchor_idl_hashable"
+        else "docs_linked_example_not_canonical",
         "field_planning_authorized": True,
-        "binary_decode_authorized": False,
+        "binary_decode_authorized": onchain_decode.get("authority_status") == "onchain_anchor_idl_hashable",
         "verified_lifecycle_pairing_authorized": False,
         "claim_boundary": {
             "allowed": [
                 "target_discovery",
                 "transaction_history_sampling",
                 "shared_account_candidate_labeling",
-                "field_planning_from_docs_linked_idl_candidate",
+                "onchain_idl_account_layout_decode",
             ],
             "blocked": [
-                "jupiter_binary_account_decode_claim",
                 "verified_request_fulfillment_pair_claim",
-                "position_request_decode_claim",
                 "liquidation_replay_claim",
+                "keeper_behavior_claim",
+                "production_execution_claim",
             ],
         },
         "next_authority_steps": [
-            "Jupiter-owned canonical Perps IDL/source revision is published or confirmed.",
-            "Docs-linked IDL is explicitly confirmed as canonical for the current onchain program.",
-            "Independent onchain/program-IDL extraction is reviewed, hashed, and matched to current program semantics.",
+            "Confirm instruction account-role maps for request and fulfillment flows.",
+            "Collect public mainnet fixture signatures with expected decoded before/after state.",
+            "Keep any Jupiter API-key-gated discovery local and treat it as authority only if it returns a hashable Jupiter-confirmed lifecycle or fixture artifact.",
         ],
         "forbidden_actions": [
             "sign",

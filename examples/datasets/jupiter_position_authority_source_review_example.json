@@ -3,8 +3,8 @@
   "source_review_id": "jupiter-position-authority-mainnet-v0",
   "review_kind": "jupiter_position_authority_confirmation",
   "protocol": "jupiter_perps",
-  "approval_status": "blocked",
-  "summary": "Jupiter Position and PositionRequest source authority is not canonical yet; docs support field planning only.",
+  "approval_status": "pending",
+  "summary": "Jupiter Position and PositionRequest account-layout decode is source-authorized by the live onchain Anchor IDL; lifecycle pairing and replay still need role-map or fixture evidence.",
   "targets": [
     {
       "account_type": "Position",
@@ -20,38 +20,38 @@
     }
   ],
   "source_authority": {
-    "status": "docs_linked_example_not_canonical",
+    "status": "onchain_anchor_idl_hashable",
     "program_id": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
     "source_refs": [
       "docs/jupiter-position-authority-confirmation.md",
       "docs/jupiter-source-authority-audit.md",
+      "examples/public/jupiter-onchain-decode-v0/decode_report.json",
       "https://developers.jup.ag/docs/perps/position-account",
       "https://developers.jup.ag/docs/perps/position-request-account"
     ],
-    "pinned_commit": "not_confirmed",
-    "idl_hash": "not_confirmed",
-    "confirmation_required": true
+    "pinned_commit": "onchain_anchor_idl_account_38GK1i4cQPAxqrbfKX4RRMNfXpKRn5PgLFHVJeXm1C8Y",
+    "idl_hash": "611de36592f4508438df16ebee2ff73b9789eda105ec712575d515b432d1ebaa",
+    "confirmation_required": false
   },
   "approval_gates": {
-    "canonical_source_confirmed": false,
-    "discriminator_confirmed": false,
-    "account_size_confirmed": false,
-    "offsets_confirmed": false,
-    "enum_encoding_confirmed": false,
-    "pda_seeds_confirmed": false,
+    "canonical_source_confirmed": true,
+    "discriminator_confirmed": true,
+    "account_size_confirmed": true,
+    "offsets_confirmed": true,
+    "enum_encoding_confirmed": true,
+    "pda_seeds_confirmed": true,
     "instruction_roles_confirmed": false,
     "public_regression_fixtures_available": false,
     "local_validator_required": true,
     "local_only_until_scrubbed": true
   },
   "forbidden_claims": {
-    "binary_decode_claimed": false,
+    "binary_decode_claimed": true,
     "verified_pairing_claimed": false,
     "replay_ready_claimed": false,
     "execution_claimed": false,
     "signing_claimed": false,
     "custody_or_capital_claimed": false
   },
-  "next_action": "Send the founder-approved Jupiter confirmation ask and keep decode and verified pairing blocked until a canonical source or written confirmation lands."
+  "next_action": "Use the onchain IDL for local-only account-layout decode and ask Jupiter only for lifecycle role maps, verified request/fulfillment semantics, or public fixture signatures before claiming pairing or replay."
 }
-

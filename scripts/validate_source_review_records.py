@@ -28,6 +28,10 @@ def validate_record(path: Path) -> list[str]:
 
     forbidden_claims = record.get("forbidden_claims", {})
     for claim, value in forbidden_claims.items():
+        if claim == "binary_decode_claimed" and record.get("source_authority", {}).get("status") == "onchain_anchor_idl_hashable":
+            if value is not True:
+                failures.append(f"{path}: onchain Anchor IDL review should set binary_decode_claimed true")
+            continue
         if value is not False:
             failures.append(f"{path}: forbidden claim `{claim}` must be false")
 
@@ -40,7 +44,7 @@ def validate_record(path: Path) -> list[str]:
 
     if record.get("review_kind") == "jupiter_position_authority_confirmation":
         source_status = record.get("source_authority", {}).get("status")
-        if source_status != "canonical_confirmed":
+        if source_status not in {"canonical_confirmed", "onchain_anchor_idl_hashable"}:
             if approval_status not in {"blocked", "rejected"}:
                 failures.append(
                     f"{path}: Jupiter authority without canonical source must be blocked or rejected"
@@ -49,6 +53,36 @@ def validate_record(path: Path) -> list[str]:
                 failures.append(
                     f"{path}: Jupiter canonical_source_confirmed must be false until source authority lands"
                 )
+        if source_status == "onchain_anchor_idl_hashable":
+            if approval_status != "pending":
+                failures.append(f"{path}: onchain Anchor IDL review must remain pending until lifecycle gates land")
+            for key in [
+                "canonical_source_confirmed",
+                "discriminator_confirmed",
+                "account_size_confirmed",
+                "offsets_confirmed",
+                "enum_encoding_confirmed",
+                "pda_seeds_confirmed",
+                "local_validator_required",
+                "local_only_until_scrubbed",
+            ]:
+                if gates.get(key) is not True:
+                    failures.append(f"{path}: Jupiter onchain-IDL gate `{key}` must be true")
+            for key in ["instruction_roles_confirmed", "public_regression_fixtures_available"]:
+                if gates.get(key) is not False:
+                    failures.append(f"{path}: Jupiter lifecycle gate `{key}` must remain false")
+            forbidden = record.get("forbidden_claims", {})
+            if forbidden.get("binary_decode_claimed") is not True:
+                failures.append(f"{path}: Jupiter layout decode claim should be true for onchain-IDL review")
+            for key in [
+                "verified_pairing_claimed",
+                "replay_ready_claimed",
+                "execution_claimed",
+                "signing_claimed",
+                "custody_or_capital_claimed",
+            ]:
+                if forbidden.get(key) is not False:
+                    failures.append(f"{path}: Jupiter forbidden claim `{key}` must remain false")
 
     if record.get("review_kind") == "drift_public_field_offset":
         if gates.get("local_validator_required") is not True:

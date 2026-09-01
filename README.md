@@ -52,6 +52,7 @@ Hosted proof-pack MVP:
 - [Jupiter Perps read-only target example](examples/datasets/jupiter_perps_readonly_targets_example.json)
 - [Jupiter Perps transaction history example](examples/datasets/jupiter_perps_transaction_history_example.json)
 - [Jupiter authority-gap package](examples/public/jupiter-authority-gap-v0/gap_report.json)
+- [Jupiter onchain decode package](examples/public/jupiter-onchain-decode-v0/decode_report.json)
 - [Slot-regime benchmark package](examples/public/slot-regime-benchmark-v0/benchmark_windows.json)
 - [Weak Jupiter lifecycle fixture](datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json)
 - [Malformed Jupiter source-authority fixture](datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json)
@@ -109,4 +110,12 @@ Run the Jupiter Perps program, custody, and oracle metadata proof:
 ```bash
 scripts/discover_jupiter_perps_readonly_targets.py --out target/oprs-jupiter-perps-readonly-targets/latest.json
 scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-limit 6 --min-shared-keys 2 --out target/oprs-jupiter-perps-transaction-history/latest-pairs.json
+```
+
+Run the Jupiter Perps onchain Anchor IDL and scrubbed account-layout decode proof:
+
+```bash
+scripts/fetch_jupiter_onchain_idl.py --out target/oprs-jupiter-onchain-idl/latest.json
+scripts/decode_jupiter_position_examples.py --out target/oprs-jupiter-position-decode/latest.json
+scripts/validate_public_jupiter_onchain_decode.py
 ```

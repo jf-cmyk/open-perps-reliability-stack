@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
     "updated_at": "2026-09-01T04:42:34Z",
-    "last_material_delta": "drift-legacy-scan-advances-to-308k-with-no-candidate-and-jupiter-source-authority-resolution-added",
+    "last_material_delta": "jupiter-onchain-anchor-idl-resolves-account-layout-decode-while-pairing-replay-remain-blocked",
   "mission": "Discover and qualify source-backed Blocksize business-development and partnership opportunities, prioritizing the Solana Foundation Open Perps call and read-only reliability infrastructure.",
   "scope": {
     "mode": "read_only",
@@ -1347,15 +1347,18 @@
       "qualification": "defer_until_deployment_and_security_evidence"
     },
     "jupiter_perps": {
-      "as_of": "2026-07-22",
+      "as_of": "2026-09-01",
       "program_id": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
       "first_party_account_docs": true,
       "first_party_lifecycle_semantics": "partial",
-      "canonical_current_idl_or_program_source": false,
+      "canonical_current_idl_or_program_source": true,
+      "onchain_anchor_idl_account": "38GK1i4cQPAxqrbfKX4RRMNfXpKRn5PgLFHVJeXm1C8Y",
+      "normalized_idl_sha256": "611de36592f4508438df16ebee2ff73b9789eda105ec712575d515b432d1ebaa",
+      "account_layout_decode_status": "source_authorized_for_position_and_position_request",
       "deterministic_request_position_pairing": false,
-      "docs_repo_commit": "d1c158738438f4c066882da23f74d25083da9798",
-      "position_request_docs_commit": "572dcd7df5f81519f7ed589734d67a587d8bde7a",
-      "claim_boundary": "semantic labels only; no binary decode, verified pair, or historical replay"
+      "docs_repo_commit": "c2beabc6b91cf432d5923c4f39d988cd3d7918d4",
+      "position_request_docs_commit": "c2beabc6b91cf432d5923c4f39d988cd3d7918d4",
+      "claim_boundary": "target discovery plus source-authorized account-layout decode only; no verified pair, keeper behavior, historical replay, or production execution"
     }
   },
   "validator_baselines": {
@@ -1470,7 +1473,7 @@
     {
       "id": "Q-006",
       "resolved_at": "2026-07-22T01:55:38Z",
-      "result": "Jupiter's first-party docs now provide partial PositionRequest/Position lifecycle authority, including PDA relationships, token-account roles, normal-request closure, and TP/SL persistence. The same overview labels the Perps API work-in-progress and directs developers to a third-party IDL; exact seeds, current layouts, discriminators, offsets, enum encodings, and verified signature pairs remain absent. OPRS may use semantic labels but must keep binary decode and deterministic pairing blocked.",
+      "result": "Jupiter's first-party docs provide partial PositionRequest/Position lifecycle authority, and the live onchain Anchor IDL now resolves source-authorized account-layout decode for Position and PositionRequest. Deterministic request/fulfillment pairing, keeper behavior, and historical replay remain blocked pending source-reviewed role maps or public fixture signatures.",
       "checkpoint": "research/solana-ecosystem/checkpoints/2026-07-22-jupiter-authority-recheck.md"
     }
   ],
@@ -1503,7 +1506,7 @@
     "Solana Foundation states that Subscriptions & Allowances is open source, audited, and live on mainnet, with recurring API billing and bounded agent spending among its explicit use cases.",
     "Solana Foundation launched Frontier Traders on June 17, 2026 as a network-level program aggregating trader activity across Solana spot and perpetual venues; it offers qualifying high-volume members priority RPC through Triton and Helius plus structured roadmap input, but no Blocksize participation, access, endorsement, or demand is established.",
     "Epicentral publicly documents OPX concepts and workflows, but its mainnet status is contradictory and no OPX/SOS program ID, official program source, named oracle dependency, or audit report was verified in the July 22 public-source snapshot.",
-    "Jupiter's first-party Perps docs establish partial PositionRequest/Position lifecycle semantics, but explicitly call the API work-in-progress and rely on a third-party IDL; OPRS binary decode and verified request-to-position pairing remain blocked.",
+    "Jupiter's first-party Perps docs establish partial PositionRequest/Position lifecycle semantics, and the live onchain Anchor IDL now authorizes bounded account-layout decode for Position and PositionRequest; verified request-to-position pairing and replay remain blocked.",
     "Solana Foundation reports that Phoenix launched 24/7 gold and crude-oil perpetuals, and Phoenix's official GOLD surface exposes mark, index, volume, open interest, funding, and isolated-margin state; Phoenix documents a mark price combining adjusted oracle, order-book, and external-perpetual inputs. The Ellipsis Labs Rise public source pins the production program, log authority, global configuration, Hawkeye view program, and Flight routing program constants, and a live public snapshot corroborates the production program and global config. Exact oracle identities, account-level decode, trader monitoring, routing use, and replay remain unverified or out of scope.",
     "Sanctum documents a validator-focused staking-as-a-service product with more than 1,361 LSTs, optional operator revenue sharing, shared liquidity, and delegation thresholds; DefiLlama's July 22 snapshot placed its validator-LST row first by Solana chain TVL among non-CEX rows, subject to third-party methodology and overlap risk.",
     "BlazeStake's public Custom Liquid Staking API returned 1,292 eligible validators on July 22 and included Blocksize's vote account; this establishes technical eligibility for user-directed bSOL-backed stake, not current delegated balance, revenue, or a partnership.",

@@ -1,12 +1,12 @@
 # Jupiter Source Authority Resolution
 
-This is the founder/operator checklist for resolving the Jupiter Perps source-authority blocker. It explains exactly what Johann or Blocksize needs to obtain before OPRS can move Jupiter beyond target discovery and unverified lifecycle candidates.
+This is the founder/operator checklist for the remaining Jupiter Perps source-authority work. OPRS has resolved the canonical onchain Anchor IDL path for `Position` and `PositionRequest` account-layout decode. Johann or Blocksize only needs external Jupiter confirmation if we want to promote verified request/fulfillment lifecycle pairing or replay claims.
 
 This checklist does not authorize production execution. All OPRS Jupiter work remains read-only and dry-run only unless a separate production-scope review is explicitly approved later.
 
 ## What Needs To Be Resolved
 
-OPRS needs Jupiter-controlled evidence that ties the current live Jupiter Perps program to the account layouts and lifecycle semantics we would decode.
+OPRS already has a reviewed onchain Anchor IDL extraction tied to the current live Jupiter Perps program for account-layout decode. The remaining source-authority need is Jupiter-controlled or source-reviewed evidence that ties request creation, fulfillment, closure, and final position state into a verifiable lifecycle.
 
 Current live-program target:
 
@@ -14,16 +14,22 @@ Current live-program target:
 PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu
 ```
 
-The key question:
+Resolved decode authority:
 
 ```text
-What is the canonical source of truth for the live Jupiter Perps Position and PositionRequest account layouts, instruction account roles, and request/fulfillment lifecycle semantics?
+Anchor IDL account: 38GK1i4cQPAxqrbfKX4RRMNfXpKRn5PgLFHVJeXm1C8Y
+Normalized IDL SHA-256: 611de36592f4508438df16ebee2ff73b9789eda105ec712575d515b432d1ebaa
+Public package: examples/public/jupiter-onchain-decode-v0/
 ```
 
-Without that evidence, OPRS must keep these claims blocked:
+The remaining key question:
 
-- Jupiter binary `Position` decode
-- Jupiter binary `PositionRequest` decode
+```text
+What is the canonical source of truth for Jupiter Perps instruction account roles, request/fulfillment lifecycle semantics, and public fixture signatures?
+```
+
+Until that evidence lands, OPRS must keep these claims blocked:
+
 - verified request/fulfillment pairing
 - Jupiter liquidation replay
 - keeper execution verification
@@ -31,17 +37,20 @@ Without that evidence, OPRS must keep these claims blocked:
 
 ## Acceptable Evidence
 
-Any one of these paths can resolve the blocker if it clearly ties back to the live program ID:
+Any one of these paths can resolve the remaining lifecycle blocker if it clearly ties back to the live program ID:
 
-1. A public Jupiter-confirmed IDL, source repository, package, release, or docs page with a stable hash, commit, version, or checksum.
-2. A Jupiter-confirmed onchain/program-IDL extraction path, including the onchain IDL address and a hashable extracted artifact.
-3. Written confirmation from an official Jupiter route that a specific docs-linked IDL/source candidate is canonical for the current live program.
-4. A Jupiter API endpoint that returns canonical schema, IDL, source-revision, program-metadata, or fixture metadata with stable versioning or a checksum.
-5. Public mainnet fixture signatures supplied or confirmed by Jupiter, together with expected decoded account keys and before/after lifecycle state.
+1. Public Jupiter-confirmed instruction account-role maps for request creation, execution, rejection, cancellation, trigger, close, and fulfill flows.
+2. Public mainnet fixture signatures supplied or confirmed by Jupiter, together with expected decoded account keys and before/after lifecycle state.
+3. A Jupiter API endpoint that returns canonical account-role, lifecycle, or fixture metadata with stable versioning or a checksum.
+4. Written confirmation from an official Jupiter route that a specific source/docs/API artifact is canonical for lifecycle semantics.
 
 The evidence should answer the confirmation checklist in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md).
 
 ## What Johann Needs To Do
+
+Nothing from Johann is required for account-layout decode anymore. I can continue read-only development using the local Helius-backed scripts and the hash-pinned onchain IDL.
+
+For verified lifecycle pairing, Johann can help with the following:
 
 1. Choose the outbound route.
 
@@ -55,12 +64,12 @@ The evidence should answer the confirmation checklist in [Jupiter position autho
 
    The most useful reply is not just "yes"; it is a link, commit, release, package, onchain IDL address, checksum, or stable API response that we can cite and pin in the proof pack.
 
-4. Ask whether the Jupiter API key helps with source authority.
+4. Ask whether the Jupiter API key helps with lifecycle or fixture authority.
 
    The exact question is:
 
    ```text
-   Does any Jupiter API-key-gated read-only endpoint return canonical schema, IDL, source-revision, program-metadata, or public fixture metadata for the live Perps program, and if so how should the response be versioned or hash-pinned?
+   Does any Jupiter API-key-gated read-only endpoint return canonical instruction account-role maps, lifecycle metadata, or public fixture metadata for the live Perps program, and if so how should the response be versioned or hash-pinned?
    ```
 
 5. Save only public-safe evidence.
@@ -73,7 +82,7 @@ The evidence should answer the confirmation checklist in [Jupiter position autho
 
 ## If You Want To Add The Jupiter API Key Locally
 
-The API key is optional for resolving source authority. Add it only for local read-only discovery, and never paste it into chat.
+The API key is optional for lifecycle discovery. Add it only for local read-only discovery, and never paste it into chat.
 
 From the repo root:
 
@@ -100,11 +109,11 @@ This writes the key to local `.env` without printing it. Keep `.env` uncommitted
 
 ## What Unlocks Next
 
-After acceptable evidence lands, OPRS can start a local-only Jupiter decode experiment:
+After acceptable lifecycle evidence lands, OPRS can start a local-only verified-pairing experiment:
 
-1. Hash-pin the source/IDL/schema evidence.
-2. Decode only discriminator and account length first.
-3. Decode source-reviewed identity and lifecycle fields for `Position` and `PositionRequest`.
+1. Hash-pin the role-map or fixture evidence.
+2. Link request and fulfillment transactions through decoded public account roles.
+3. Decode source-reviewed lifecycle fields for `Position` and `PositionRequest`.
 4. Add local validators and synthetic negative fixtures.
 5. Keep outputs under `target/` until scrub review passes.
 6. Publish only a scrubbed proof-pack update after source-review approval.

@@ -16,7 +16,7 @@ This is the coordinator-level target sheet. The Protocol Agent owns diligence de
 | Protocol / Venue | Role | Expected Integration Type | Why It Matters | Initial Priority |
 | --- | --- | --- | --- | --- |
 | Drift v2 | Perps venue | Permissionless read-only and dry-run; live liquidation is out of scope | Best OSS/public-good fit, open program/SDK, rich margin/oracle/liquidation mechanics | 1 |
-| Jupiter Perps | Perps venue | Public read-only surface; deeper onchain decode diligence needed | Major user-facing perps surface; trader-to-LP/JLP model gives a useful contrast to Drift margin/order mechanics | 2 |
+| Jupiter Perps | Perps venue | Public read-only surface plus onchain-IDL account-layout decode; lifecycle pairing/replay still gated | Major user-facing perps surface; trader-to-LP/JLP model gives a useful contrast to Drift margin/order mechanics | 2 |
 | Phoenix / Rise | Orderbook/perps telemetry | Public HTTP/WS SDK surfaces; some onboarding may be gated | Strong orderbook, market-data, fills, depth, funding, and Hawkeye-view telemetry lane | 3 |
 | FlashTrade | Pool perps venue | Public docs/GitHub/SDK; deeper account decode validation needed | Good oracle/pool-perps telemetry target with Pyth plus backup-oracle framing | 4 |
 | Adrena | Pool perps venue | Public docs and open-source keeper references; deeper account decode validation needed | Useful peer-to-pool contrast with explicit oracle and keeper docs | 5 |
@@ -64,7 +64,7 @@ Jupiter Perps:
 - Jupiter docs describe perps as a trader-to-LP model where traders borrow from the Jupiter Liquidity Pool: `https://docs.jup.ag/user-docs/trade/perps-and-jlp`
 - Jupiter is relevant for OPRS because it is a major Solana perps surface, but it should be treated as a distinct pool/custody/oracle model rather than a Drift-style margin-account clone.
 - Initial Jupiter target should be read-only market/pool/oracle/account state and public analytics, not execution, order placement, or keeper automation.
-- Jupiter `Position` and `PositionRequest` docs support field planning, but canonical source authority remains blocked until the confirmation package in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md) lands.
+- Jupiter `Position` and `PositionRequest` docs support field planning, and the live onchain Anchor IDL now authorizes bounded account-layout decode. Verified request/fulfillment pairing and replay remain blocked until the lifecycle confirmation package in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md) lands.
 
 Phoenix / Rise:
 
@@ -144,7 +144,7 @@ scripts/discover_jupiter_perps_transaction_history.py --limit 10 --transaction-l
 scripts/audit_jupiter_source_authority.py --out target/oprs-jupiter-source-authority/latest.json
 ```
 
-The target command resolves the Jupiter Perpetuals program, documented custody accounts, and documented oracle accounts from current official Jupiter docs and probes public metadata through Helius `getAccountInfo` data slices. The transaction-history command samples public program signatures, structural transaction summaries, shared-account-key lifecycle candidates, and metadata-only shared-account probes through read-only Solana RPC. It labels stronger unverified candidates when shared Jupiter-owned non-executable accounts are seen, but does not claim verified request/fulfillment pairing. The public proof pack now includes `examples/public/jupiter-authority-gap-v0/` and `datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/` to make that blocker explicit. Both live commands emit scrubbed local output under `target/`, do not print the RPC URL, and do not call `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or signing paths.
+The target command resolves the Jupiter Perpetuals program, documented custody accounts, and documented oracle accounts from current official Jupiter docs and probes public metadata through Helius `getAccountInfo` data slices. The transaction-history command samples public program signatures, structural transaction summaries, shared-account-key lifecycle candidates, and metadata-only shared-account probes through read-only Solana RPC. It labels stronger unverified candidates when shared Jupiter-owned non-executable accounts are seen, but does not claim verified request/fulfillment pairing. The onchain-IDL commands derive and fetch the live Anchor IDL account, hash-pin the normalized IDL, and decode scrubbed `Position` / `PositionRequest` examples. The public proof pack now includes `examples/public/jupiter-onchain-decode-v0/`, `examples/public/jupiter-authority-gap-v0/`, and `datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/` to separate resolved layout decode from unresolved lifecycle/replay proof. Live commands emit scrubbed local output under `target/`, do not print the RPC URL, and do not call `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or signing paths.
 
 Current status:
 
@@ -153,7 +153,7 @@ Current status:
 - Drift decoder/IDL provenance is pinned in [Drift decoder provenance](drift-decoder-provenance.md), and optional Drift public-field decode now confirms selected perp/spot identity, oracle identity, metadata, and guardrail fields without market-economics decode.
 - Jupiter Perps program, documented custody accounts, and documented oracle accounts are readable without signer or wallet access.
 - Jupiter Perps public program signatures and transaction summaries are sampleable without signer or wallet access, and candidate lifecycle pairs can be produced from shared public account keys plus metadata-only account probes. Wider samples can label stronger candidates when shared Jupiter-owned non-executable accounts are seen. The authority-gap package records the exact blockers, and verified request/fulfillment pairing is not yet claimed.
-- Jupiter Perps has a docs-linked IDL candidate recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), but still needs canonical IDL/source confirmation before binary decode proof.
-- The exact Jupiter `Position` / `PositionRequest` confirmation ask is captured in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md).
+- Jupiter Perps now has a reviewed onchain Anchor IDL path recorded in [Jupiter Perps provenance](jupiter-perps-provenance.md) and [Jupiter source authority audit](jupiter-source-authority-audit.md), plus a scrubbed public account-layout decode package.
+- The exact remaining Jupiter lifecycle / fixture confirmation ask is captured in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md).
 - Phoenix/Rise now has a source-backed public market-telemetry readiness package, a bounded local public HTTP probe, and a pinned source-authority note for production program and Hawkeye view constants. No live Phoenix responses are committed, and Phoenix account decode, trader monitoring, oracle-input identity, liquidation replay, and historical reconstruction are not claimed.
 - Next proof design is tracked in [Helius read-only proof plan](helius-readonly-proof.md).

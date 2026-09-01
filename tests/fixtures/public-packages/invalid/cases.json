@@ -41,7 +41,7 @@
       "case_id": "jupiter_verified_record_status",
       "validator": "jupiter_authority_gap",
       "mutation": "set_record_status_verified",
-      "expected_failure": "must stay blocked or unverified"
+      "expected_failure": "has invalid status"
     },
     {
       "case_id": "jupiter_rpc_url_leak",

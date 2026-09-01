@@ -12,10 +12,10 @@
       "message": "Package keeps verified_pairing_claimed=false."
     },
     {
-      "gate_id": "no_binary_decode_claim",
+      "gate_id": "binary_decode_claim_scoped_to_onchain_idl",
       "severity": "block_publish",
       "status": "pass",
-      "message": "Package keeps binary_decode_claimed=false."
+      "message": "Package permits account-layout decode only after onchain Anchor IDL source authority is hash-pinned."
     },
     {
       "gate_id": "public_refs_only",
@@ -24,10 +24,10 @@
       "message": "Evidence references are repo-relative public paths."
     },
     {
-      "gate_id": "canonical_source_gap",
+      "gate_id": "lifecycle_source_gap",
       "severity": "warn_public",
       "status": "warn",
-      "message": "Canonical Jupiter source authority remains unconfirmed."
+      "message": "Request/fulfillment lifecycle pairing remains unverified."
     },
     {
       "gate_id": "candidate_pair_gap",

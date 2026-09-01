@@ -12,13 +12,13 @@
       "path": "gap_report.json",
       "format": "json",
       "row_count": 3,
-            "sha256": "7f96c779cc02a49f6b177ecb62d23e7652d8b969aa42b0cac1eeb7501d45ca7a"
+            "sha256": "08d2a4b4c0d09606b10d101cf6500dc73b06ed066679b5e55d776f98fd60130f"
     },
     {
       "path": "dq.json",
       "format": "json",
       "row_count": 6,
-      "sha256": "462490674c5cad11138fb5d4813915a6d9b39d8e141e6ec9b733454dd2ade986"
+      "sha256": "e29afbbe5575ac8a083e92cc70efe73b76ba5c17b1ca189ee3430f13e1755e3d"
     }
   ],
   "dq": {
@@ -33,8 +33,8 @@
     "blocked_pattern_count": 0
   },
   "known_limitations": [
-    "Authority-gap package only; not a Jupiter decode claim.",
-    "Request/fulfillment lifecycle pairing remains unverified."
+    "Account-layout source authority is resolved by onchain Anchor IDL hash; lifecycle pairing remains unverified.",
+    "Request/fulfillment lifecycle pairing and replay readiness remain blocked."
   ],
   "generated_at_unix": 1781046700
 }

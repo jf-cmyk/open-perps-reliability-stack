@@ -8,14 +8,15 @@
     {
       "gap_id": "canonical_idl_or_source",
       "claim": "Jupiter Perps binary account decode",
-      "status": "blocked",
+      "status": "resolved_for_layout_decode",
       "required_source": "Canonical Jupiter Perps IDL, source, onchain IDL address, or Jupiter-confirmed API schema artifact tied to live program PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu, including Position and PositionRequest discriminators, sizes, offsets, enum encodings, and PDA seeds.",
-      "current_evidence": "Docs-linked example source and authenticated API access are useful for planning but are not enough for a decode claim unless Jupiter confirms a hashable schema, IDL, source, or fixture artifact; malformed source-authority evidence is rejected explicitly.",
-      "blocked_until": "A canonical IDL/source reference is confirmed and hash-pinned.",
-      "safe_interim_label": "source_authority_gap",
+      "current_evidence": "The live program's onchain Anchor IDL account is derived, fetched, inflated, and hash-pinned in the Jupiter onchain decode package. The prior docs-linked third-party IDL candidate does not match the live onchain IDL hash and remains non-authoritative.",
+      "blocked_until": "Resolved for Position and PositionRequest account-layout decode only; lifecycle pairing and replay still require separate source-backed transaction/account-role validation.",
+      "safe_interim_label": "source_authority_resolved_for_layout_decode",
       "public_evidence_refs": [
         "docs/jupiter-perps-provenance.md",
         "docs/jupiter-source-authority-audit.md",
+        "examples/public/jupiter-onchain-decode-v0/decode_report.json",
         "datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json"
       ]
     },
@@ -48,15 +49,15 @@
     }
   ],
   "readiness": {
-    "canonical_source_confirmed": false,
-    "binary_decode_claimed": false,
+    "canonical_source_confirmed": true,
+    "binary_decode_claimed": true,
     "verified_pairing_claimed": false,
     "replay_ready": false
   },
   "known_gaps": [
-    "The package is a public blocker report, not a decode artifact.",
+    "Canonical onchain Anchor IDL source authority is now resolved for Position and PositionRequest account-layout decode.",
     "No binary account data, raw transaction body, raw logs, user-state, market economics, or replay-ready claim is included.",
-    "Jupiter lifecycle candidates remain unverified until canonical source authority is confirmed.",
+    "Jupiter lifecycle candidates remain unverified until request/fulfillment account roles are source-backed and fixture-tested.",
     "A Jupiter API key can support local read-only discovery but does not unlock public decode claims unless the endpoint returns or references a Jupiter-confirmed hashable artifact."
   ]
 }

@@ -39,18 +39,16 @@ def validate_package(package_dir: Path) -> list[str]:
         failures.extend(scan_blocked_text(path, path.read_text(encoding="utf-8")))
 
     readiness = gap_report.get("readiness", {})
-    for key in [
-        "canonical_source_confirmed",
-        "binary_decode_claimed",
-        "verified_pairing_claimed",
-        "replay_ready",
-    ]:
+    for key in ["verified_pairing_claimed", "replay_ready"]:
         if readiness.get(key) is not False:
             failures.append(f"gap_report readiness.{key} must be false")
+    for key in ["canonical_source_confirmed", "binary_decode_claimed"]:
+        if not isinstance(readiness.get(key), bool):
+            failures.append(f"gap_report readiness.{key} must be boolean")
 
     for record in gap_report.get("records", []):
-        if record.get("status") not in {"blocked", "unverified"}:
-            failures.append(f"gap record {record.get('gap_id')} must stay blocked or unverified")
+        if record.get("status") not in {"blocked", "unverified", "resolved_for_layout_decode"}:
+            failures.append(f"gap record {record.get('gap_id')} has invalid status")
         if "verified" in record.get("safe_interim_label", "") and "unverified" not in record.get(
             "safe_interim_label", ""
         ):

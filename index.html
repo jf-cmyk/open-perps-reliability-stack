@@ -406,7 +406,11 @@
             </div>
             <div class="link-row">
               <a class="link-title" href="examples/public/jupiter-authority-gap-v0/gap_report.json">Jupiter Authority Gap</a>
-              <p class="link-copy">Public blocker report for source authority, verified pairing, and replay-readiness gaps.</p>
+              <p class="link-copy">Public blocker report for verified pairing and replay-readiness gaps after layout decode.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="examples/public/jupiter-onchain-decode-v0/decode_report.json">Jupiter Onchain Decode</a>
+              <p class="link-copy">Hash-pinned onchain Anchor IDL and scrubbed Position / PositionRequest account-layout proof.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json">Phoenix Telemetry</a>
@@ -483,9 +487,9 @@ cargo test</pre>
               <span>5/11</span>
             </div>
             <div class="bar-row">
-              <span>Jupiter Authority Gap</span>
-              <div class="bar"><span class="fill amber" style="width: 27%"></span></div>
-              <span>3/11</span>
+              <span>Jupiter Decode</span>
+              <div class="bar"><span class="fill teal" style="width: 55%"></span></div>
+              <span>IDL + 2 accounts</span>
             </div>
             <div class="bar-row">
               <span>Phoenix Telemetry</span>
@@ -509,7 +513,7 @@ cargo test</pre>
             </div>
             <div class="gate-row">
               <span class="gate-status">Jupiter</span>
-              <p class="link-copy">Target discovery and authority-gap package are public; binary decode and verified pairing remain blocked.</p>
+              <p class="link-copy">Target discovery and onchain-IDL account-layout decode are public; verified pairing and replay remain blocked.</p>
             </div>
             <div class="gate-row">
               <span class="gate-status">Phoenix</span>
