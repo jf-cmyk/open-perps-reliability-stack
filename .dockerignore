@@ -3,10 +3,13 @@
 !.env.example
 .git
 .github
+.railway
 docs/checkpoints
 target
 **/target
 .DS_Store
 deliverables/~$*
 node_modules
+package.json
+package-lock.json
 npm-debug.log

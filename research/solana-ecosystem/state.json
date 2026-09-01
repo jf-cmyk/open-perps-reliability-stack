@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-31T14:09:01Z",
-  "last_material_delta": "solana-capital-surfaces-rise-while-reconciliation-gaps-narrow",
+  "updated_at": "2026-09-01T03:30:23Z",
+  "last_material_delta": "drift-legacy-scan-advances-to-288k-with-no-candidate",
   "mission": "Discover and qualify source-backed Blocksize business-development and partnership opportunities, prioritizing the Solana Foundation Open Perps call and read-only reliability infrastructure.",
   "scope": {
     "mode": "read_only",
@@ -1240,20 +1240,20 @@
       "claim_boundary": "Program, Hawkeye, Flight, and live snapshot constants are source-pinned or publicly corroborated for planning only. No account-level decode, trader monitoring, exact oracle-provider identity, trade execution, liquidation replay, market-quality conclusion, customer demand, partnership, deployed-bytecode equivalence, or production-readiness claim"
     },
     "kamino_scope": {
-    "as_of": "2026-08-30",
-    "latest_release": "release/v0.40.0",
-    "release_published_at": "2026-08-17T17:43:03Z",
+      "as_of": "2026-08-30",
+      "latest_release": "release/v0.40.0",
+      "release_published_at": "2026-08-17T17:43:03Z",
       "release_prerelease": false,
-    "release_commit": "fea21baae9238454d10f1966cbeeaf2d7a68ce4f",
-    "prior_release": "release/v0.39.0",
-    "prior_release_commit": "ead10e80aa96956ed2654b59830c6eaf3d6e880d",
-    "new_oracle_type": "KlendCTokenExchangeRate",
-    "v040_release_changes": [
-      "refreshes the KLend reserve with price updates skipped, then reads calculate_ctoken_exchange_rate return data through CPI",
-      "normalizes the U68F60 exchange rate and underlying mint decimals into underlying tokens per cToken",
-      "requires KLend program identity, reserve owner and version, lending-market match, current-slot reserve freshness, expected return-data program, and valid return-data decoding",
-      "assigns a 200000-CU estimate and requires each cToken refresh to run in its own single-entry transaction because CPI failure aborts the whole transaction"
-    ],
+      "release_commit": "fea21baae9238454d10f1966cbeeaf2d7a68ce4f",
+      "prior_release": "release/v0.39.0",
+      "prior_release_commit": "ead10e80aa96956ed2654b59830c6eaf3d6e880d",
+      "new_oracle_type": "KlendCTokenExchangeRate",
+      "v040_release_changes": [
+        "refreshes the KLend reserve with price updates skipped, then reads calculate_ctoken_exchange_rate return data through CPI",
+        "normalizes the U68F60 exchange rate and underlying mint decimals into underlying tokens per cToken",
+        "requires KLend program identity, reserve owner and version, lending-market match, current-slot reserve freshness, expected return-data program, and valid return-data decoding",
+        "assigns a 200000-CU estimate and requires each cToken refresh to run in its own single-entry transaction because CPI failure aborts the whole transaction"
+      ],
       "v039_release_changes": [
         "resume_authority added to feed configuration with authority-role logging",
         "native Pyth Lazer confidence check separated from optional bid-ask spread check",
@@ -1268,10 +1268,10 @@
         "PythLazer",
         "MostRecentOf"
       ],
-    "current_master_commit": "fea21baae9238454d10f1966cbeeaf2d7a68ce4f",
-    "current_master_commit_date": "2026-08-17T16:56:01Z",
-    "current_master_commit_label": "Release 0.40.0 (#51)",
-    "current_master_tag_status": "official non-prerelease release/v0.40.0 tag points to current_master_commit",
+      "current_master_commit": "fea21baae9238454d10f1966cbeeaf2d7a68ce4f",
+      "current_master_commit_date": "2026-08-17T16:56:01Z",
+      "current_master_commit_label": "Release 0.40.0 (#51)",
+      "current_master_tag_status": "official non-prerelease release/v0.40.0 tag points to current_master_commit",
       "current_mainnet_config_pyth_lazer_ema_entries": 9,
       "current_mainnet_config_pyth_lazer_ema_feeds": [
         "SOL/USD",
@@ -1284,17 +1284,17 @@
         "BTC/USD",
         "USD1/USD"
       ],
-    "deployed_mainnet_pyth_lazer_ema_status": "configured_in_current_official_mainnet_json_on_master; current onchain account state unverified",
-    "current_mainnet_config_klend_ctoken_exchange_rate_occurrences": 0,
-    "deployed_mainnet_klend_ctoken_exchange_rate_status": "source_capability_in_v040_but_absent_from_the_two_official_mainnet_config_files_at_release_commit; deployed program and runtime use unverified",
+      "deployed_mainnet_pyth_lazer_ema_status": "configured_in_current_official_mainnet_json_on_master; current onchain account state unverified",
+      "current_mainnet_config_klend_ctoken_exchange_rate_occurrences": 0,
+      "deployed_mainnet_klend_ctoken_exchange_rate_status": "source_capability_in_v040_but_absent_from_the_two_official_mainnet_config_files_at_release_commit; deployed program and runtime use unverified",
       "public_error_log_status": "unverified",
-    "audit_claim": "v0.40.0 release notes say the cToken oracle was audited by OtterSec; no cToken-named report was found in the official Kamino audits repository search and report scope was not independently reviewed",
+      "audit_claim": "v0.40.0 release notes say the cToken oracle was audited by OtterSec; no cToken-named report was found in the official Kamino audits repository search and report scope was not independently reviewed",
       "defillama_solana_tvl_usd": 1053720013.89566,
       "defillama_solana_borrowed_usd": 927602021.04344,
       "defillama_metric_status": "third_party_current_snapshot; protocol accounting and overlap caveats apply",
-    "blocksize_fit": "Read-only Pyth Lazer spot-versus-EMA divergence plus KLend cToken exchange-rate freshness, CPI dependency, return-data, single-entry refresh, and failure evidence",
-    "oprs_fit": "Adjacent oracle and collateral-exchange-rate reliability primitives reusable by perps and other leveraged markets",
-    "claim_boundary": "The official v0.40.0 tag and source establish a KLend cToken exchange-rate oracle implementation and documented validation and failure boundaries. The two official mainnet config files contain no KlendCTokenExchangeRate entry at the release commit, and repository source or a release asset is not proof of deployed bytecode, current onchain configuration, successful refreshes, price correctness, operational safety, audit assurance, or adoption. No Blocksize relationship, deployment, usage, incident, demand, or endorsement is established"
+      "blocksize_fit": "Read-only Pyth Lazer spot-versus-EMA divergence plus KLend cToken exchange-rate freshness, CPI dependency, return-data, single-entry refresh, and failure evidence",
+      "oprs_fit": "Adjacent oracle and collateral-exchange-rate reliability primitives reusable by perps and other leveraged markets",
+      "claim_boundary": "The official v0.40.0 tag and source establish a KLend cToken exchange-rate oracle implementation and documented validation and failure boundaries. The two official mainnet config files contain no KlendCTokenExchangeRate entry at the release commit, and repository source or a release asset is not proof of deployed bytecode, current onchain configuration, successful refreshes, price correctness, operational safety, audit assurance, or adoption. No Blocksize relationship, deployment, usage, incident, demand, or endorsement is established"
     },
     "drift_legacy_reconstruction": {
       "as_of": "2026-07-31",
@@ -1306,18 +1306,18 @@
       "legacy_api_http_status": 200,
       "legacy_api_openapi_title": "Velocity Data API",
       "liquidation_endpoint_scope": "per-user records; latest endpoint documents a 31-day window",
-      "latest_program_signatures_scanned": 278000,
+      "latest_program_signatures_scanned": 288000,
       "scan_newest_slot": 434444514,
       "scan_newest_block_time": "2026-07-22T04:55:17Z",
-      "scan_oldest_slot": 415733773,
-      "scan_oldest_block_time": "2026-04-26T07:00:53Z",
-      "latest_scan_newest_slot": 415878863,
-      "latest_scan_newest_block_time": "2026-04-26T22:57:55Z",
-      "latest_scan_observed_at": "2026-08-29T17:35:36Z",
-      "next_before_signature": "3jh46Jgw6UhfPnMDedAewucwmuAPfzLY5rPXWV9oeWjwVQ4UzCTBGaKFpnpRibWJEgXvrBPLRWF2GhWiKMZLWaMe",
+      "scan_oldest_slot": 415592674,
+      "scan_oldest_block_time": "2026-04-25T15:31:16Z",
+      "latest_scan_newest_slot": 415733769,
+      "latest_scan_newest_block_time": "2026-04-26T07:00:52Z",
+      "latest_scan_observed_at": "2026-09-01T03:30:23Z",
+      "next_before_signature": "39u3VDJhyTrGpe4oa8bdE922p7uzB7V2RcDQWizh4mEaTVTXMRfcpNMP4dUpJdMdrkZMWvHhqkc1LygkMp7jsHyk",
       "pagination_tool": "scripts/discover_drift_liquidation_history.py",
       "liquidation_instruction_candidates_found": 0,
-      "historical_reconstruction_status": "open_no_candidate_after_two_hundred_seventy_eight_thousand_transactions",
+      "historical_reconstruction_status": "open_no_candidate_after_two_hundred_eighty_eight_thousand_transactions",
       "source_governance": "Use migrated hosted API only for discovery; require public onchain transaction evidence and pinned legacy program source for reconstruction",
       "claim_boundary": "No conclusion about liquidation frequency or absence outside the bounded latest-signature scan"
     },
@@ -1432,7 +1432,7 @@
       "priority": 1,
       "lane": "open_perps",
       "question": "Can OPRS produce one source-backed historical Drift liquidation reconstruction using pinned canonical source and public read-only data?",
-      "next_action": "Resume public legacy Drift pagination before signature 3jh46Jgw6UhfPnMDedAewucwmuAPfzLY5rPXWV9oeWjwVQ4UzCTBGaKFpnpRibWJEgXvrBPLRWF2GhWiKMZLWaMe after a cumulative 278,000-transaction scan through slot 415733773 found no Liquidate* log; verify any eventual candidate against public transaction evidence and pinned legacy source.",
+      "next_action": "Resume public legacy Drift pagination before signature 39u3VDJhyTrGpe4oa8bdE922p7uzB7V2RcDQWizh4mEaTVTXMRfcpNMP4dUpJdMdrkZMWvHhqkc1LygkMp7jsHyk after a cumulative 288,000-transaction scan through slot 415592674 found no Liquidate* log; verify any eventual candidate against public transaction evidence and pinned legacy source.",
       "status": "open"
     }
   ],

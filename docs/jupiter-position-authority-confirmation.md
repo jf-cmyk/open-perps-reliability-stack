@@ -22,6 +22,7 @@ What these docs support:
 - `PositionRequest` accounts are described as unique PDAs derived from the underlying `Position` account, constant seeds, and a random integer seed.
 - Jupiter Perps uses a two-transaction request/fulfillment model: a request transaction creates/submits the trade request, and a keeper fulfillment transaction executes the trade.
 - Official docs list field names and high-level types for `Position` and `PositionRequest`.
+- Current public Jupiter CLI documentation describes read-only position/history/market commands and `--dry-run` previews for trading commands, which is useful for workflow research but does not provide binary account-layout authority.
 
 What these docs do not yet support:
 
@@ -35,6 +36,7 @@ What these docs do not yet support:
 - instruction account-role maps
 - verified request/fulfillment pairing
 - liquidation replay
+- whether any Jupiter API-key-gated endpoint is canonical for schema, IDL, source-revision, or fixture metadata
 
 ## Why The Current Evidence Is Not Enough
 
@@ -60,6 +62,13 @@ Ask Jupiter for all of the following:
 12. TP/SL persistence, trigger, and closure semantics if they differ from ordinary requests.
 13. One or more public mainnet signature pairs with expected account keys and decoded before/after state that can be used as regression-test fixtures.
 14. Whether any keeper-only, internal, temporary, or deprecated accounts must be excluded from public interpretation.
+15. Whether any authenticated Jupiter API endpoint provides canonical schema, IDL, source-revision, program-metadata, or fixture metadata, and if so, what response hash/checksum/version should be pinned.
+
+## Jupiter API Key Boundary
+
+`JUPITER_API_KEY` may be useful for authenticated read-only discovery if Jupiter exposes a relevant endpoint, but it is not source authority by itself. OPRS can use it only for local probes that do not create, build, submit, sign, route, or execute transactions.
+
+The API key can unlock decode work only if the response returns or references a Jupiter-confirmed hashable artifact tied to the live program, such as a canonical IDL, source revision, onchain IDL address, account-layout schema, instruction account-role map, or public fixture set. Until then, API-key access remains a discovery aid and all Jupiter binary decode, verified pairing, keeper execution, and replay claims stay blocked.
 
 ## Decode Unlock
 
@@ -97,6 +106,7 @@ Jupiter binary decode or verified lifecycle pairing can only move forward when o
 - Jupiter explicitly confirms the docs-linked IDL candidate is canonical for the current live program.
 - A reviewed onchain/program-IDL extraction path produces a hashable IDL that matches current program semantics.
 - Jupiter provides written confirmation for the exact `Position` and `PositionRequest` layouts plus instruction account-role maps.
+- A Jupiter-confirmed API endpoint returns canonical schema/IDL/source metadata with a stable version, checksum, or other hashable artifact tied to the live program.
 
 After source authority lands, OPRS still needs a local-only implementation phase:
 
@@ -157,6 +167,7 @@ Specifically, we need:
 11. TP/SL persistence, trigger, and closure semantics if different from ordinary requests.
 12. One or more public mainnet signature pairs with expected account keys and decoded before/after state for regression fixtures.
 13. Any keeper-only/internal/deprecated accounts that should not be interpreted publicly.
+14. Whether any API-key-gated read-only endpoint is canonical for schema/IDL/source metadata, and how its response should be hash-pinned or versioned.
 
 We will keep all live reads read-only, keep raw payloads out of public artifacts, and mark any unconfirmed evidence as source-authority blocked.
 ```

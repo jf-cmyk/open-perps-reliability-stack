@@ -84,8 +84,8 @@ assert_contains "Shape Snapshot Scope" "$workdir/drift-decoder-provenance.md"
 echo "== Fetch Drift liquidation scan boundary =="
 fetch "/docs/drift-liquidation-scan-boundary.md" "$workdir/drift-liquidation-scan-boundary.md"
 assert_contains "Drift Liquidation Scan Boundary" "$workdir/drift-liquidation-scan-boundary.md"
-assert_contains "278,000 finalized transactions" "$workdir/drift-liquidation-scan-boundary.md"
-assert_contains "415733773" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "288,000 finalized transactions" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "415592674" "$workdir/drift-liquidation-scan-boundary.md"
 assert_contains "does not prove" "$workdir/drift-liquidation-scan-boundary.md"
 assert_contains "Until then, the scan is source-governance progress only" "$workdir/drift-liquidation-scan-boundary.md"
 
@@ -130,6 +130,7 @@ assert_contains "drift_guardrails_v0_example" "$workdir/drift_guardrail_manifest
 assert_contains "no_user_state_claims" "$workdir/drift_guardrail_dq.json"
 assert_contains "jupiter-authority-gap-v0" "$workdir/public_contract_index.json"
 assert_contains "phoenix-market-telemetry-v0" "$workdir/public_contract_index.json"
+assert_contains "slot-regime-benchmark-v0" "$workdir/public_contract_index.json"
 
 echo "== Fetch Jupiter Perps target discovery example =="
 fetch "/examples/datasets/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_readonly_targets_example.json"
@@ -206,6 +207,21 @@ assert_contains "phoenix_market_telemetry_v0_example" "$workdir/phoenix_market_t
 assert_contains "no_execution_surface_claim" "$workdir/phoenix_market_telemetry_dq.json"
 assert_contains "read_only_surfaces_only" "$workdir/phoenix_market_telemetry_dq.json"
 
+echo "== Fetch Slot regime benchmark package =="
+fetch "/docs/slot-regime-benchmark.md" "$workdir/slot-regime-benchmark.md"
+fetch "/examples/public/slot-regime-benchmark-v0/benchmark_windows.json" "$workdir/slot_regime_benchmark.json"
+fetch "/examples/public/slot-regime-benchmark-v0/manifest.json" "$workdir/slot_regime_benchmark_manifest.json"
+fetch "/examples/public/slot-regime-benchmark-v0/dq.json" "$workdir/slot_regime_benchmark_dq.json"
+assert_contains "Slot Regime Benchmark Boundary" "$workdir/slot-regime-benchmark.md"
+assert_contains "oprs.slot_regime_benchmark.v0" "$workdir/slot_regime_benchmark.json"
+assert_contains "440208000" "$workdir/slot_regime_benchmark.json"
+assert_contains "2026-08-19T05:50:49Z" "$workdir/slot_regime_benchmark.json"
+assert_contains '"performance_improvement_claimed": false' "$workdir/slot_regime_benchmark.json"
+assert_contains '"validator_performance_claimed": false' "$workdir/slot_regime_benchmark.json"
+assert_contains '"execution_claimed": false' "$workdir/slot_regime_benchmark.json"
+assert_contains "slot_regime_benchmark_v0_example" "$workdir/slot_regime_benchmark_manifest.json"
+assert_contains "no_performance_claim" "$workdir/slot_regime_benchmark_dq.json"
+
 echo "== Fetch Phoenix Hawkeye validator plan =="
 fetch "/docs/phoenix-hawkeye-validator-plan.md" "$workdir/phoenix-hawkeye-validator-plan.md"
 fetch "/examples/datasets/phoenix_hawkeye_validator_plan_example.json" "$workdir/phoenix_hawkeye_validator_plan_example.json"
@@ -221,7 +237,9 @@ checkpoint_status="$(status_code "/docs/checkpoints/")"
 checkpoint_file_status="$(status_code "/docs/checkpoints/2026-06-04-hosted-monitoring-checkpoint.md")"
 env_example_status="$(status_code "/.env.example")"
 dockerfile_status="$(status_code "/Dockerfile")"
-railway_json_status="$(status_code "/railway.json")"
+railway_iac_status="$(status_code "/.railway/railway.ts")"
+package_json_status="$(status_code "/package.json")"
+package_lock_status="$(status_code "/package-lock.json")"
 railway_nginx_status="$(status_code "/deploy/railway/nginx.conf.template")"
 if [ "$missing_status" != "404" ]; then
   echo "Expected 404 for missing path, got $missing_status" >&2
@@ -247,8 +265,16 @@ if [ "$dockerfile_status" != "404" ]; then
   echo "Expected 404 for /Dockerfile, got $dockerfile_status" >&2
   exit 1
 fi
-if [ "$railway_json_status" != "404" ]; then
-  echo "Expected 404 for /railway.json, got $railway_json_status" >&2
+if [ "$railway_iac_status" != "404" ]; then
+  echo "Expected 404 for /.railway/railway.ts, got $railway_iac_status" >&2
+  exit 1
+fi
+if [ "$package_json_status" != "404" ]; then
+  echo "Expected 404 for /package.json, got $package_json_status" >&2
+  exit 1
+fi
+if [ "$package_lock_status" != "404" ]; then
+  echo "Expected 404 for /package-lock.json, got $package_lock_status" >&2
   exit 1
 fi
 if [ "$railway_nginx_status" != "404" ]; then
@@ -265,7 +291,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/drift-liquidation-scan-boundary.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json" "$workdir/phoenix-hawkeye-validator-plan.md" "$workdir/phoenix_hawkeye_validator_plan_example.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/drift-liquidation-scan-boundary.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json" "$workdir/slot-regime-benchmark.md" "$workdir/slot_regime_benchmark.json" "$workdir/slot_regime_benchmark_manifest.json" "$workdir/slot_regime_benchmark_dq.json" "$workdir/phoenix-hawkeye-validator-plan.md" "$workdir/phoenix_hawkeye_validator_plan_example.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

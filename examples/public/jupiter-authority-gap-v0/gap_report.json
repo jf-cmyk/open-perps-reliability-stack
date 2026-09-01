@@ -9,8 +9,8 @@
       "gap_id": "canonical_idl_or_source",
       "claim": "Jupiter Perps binary account decode",
       "status": "blocked",
-      "required_source": "Canonical Jupiter Perps IDL or source tied to live program PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu, including Position and PositionRequest discriminators, sizes, offsets, enum encodings, and PDA seeds.",
-      "current_evidence": "Docs-linked example source is useful for planning but is not enough for a decode claim; malformed source-authority evidence is rejected explicitly.",
+      "required_source": "Canonical Jupiter Perps IDL, source, onchain IDL address, or Jupiter-confirmed API schema artifact tied to live program PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu, including Position and PositionRequest discriminators, sizes, offsets, enum encodings, and PDA seeds.",
+      "current_evidence": "Docs-linked example source and authenticated API access are useful for planning but are not enough for a decode claim unless Jupiter confirms a hashable schema, IDL, source, or fixture artifact; malformed source-authority evidence is rejected explicitly.",
       "blocked_until": "A canonical IDL/source reference is confirmed and hash-pinned.",
       "safe_interim_label": "source_authority_gap",
       "public_evidence_refs": [
@@ -56,6 +56,7 @@
   "known_gaps": [
     "The package is a public blocker report, not a decode artifact.",
     "No binary account data, raw transaction body, raw logs, user-state, market economics, or replay-ready claim is included.",
-    "Jupiter lifecycle candidates remain unverified until canonical source authority is confirmed."
+    "Jupiter lifecycle candidates remain unverified until canonical source authority is confirmed.",
+    "A Jupiter API key can support local read-only discovery but does not unlock public decode claims unless the endpoint returns or references a Jupiter-confirmed hashable artifact."
   ]
 }

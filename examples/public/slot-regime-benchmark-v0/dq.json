@@ -1,0 +1,46 @@
+{
+  "dq_version": "oprs.public_dataset_dq.v0",
+  "dataset_name": "slot_regime_benchmark_v0_example",
+  "checks": [
+    {
+      "gate_id": "schema_valid",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Benchmark windows payload validates against schemas/datasets/slot-regime-benchmark-v0.json."
+    },
+    {
+      "gate_id": "activation_boundary_verified",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Feature account, activation slot, and public block time are represented as the source-governed boundary."
+    },
+    {
+      "gate_id": "no_performance_claim",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Package does not claim achieved slot duration, faster confirmations, improved landing, lower replay pressure, market-quality improvement, or validator readiness."
+    },
+    {
+      "gate_id": "read_only_boundary",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "Package contains benchmark metadata only and excludes signer, transaction-submission, asset-allocation, and order-operation surfaces."
+    },
+    {
+      "gate_id": "future_feature_gates_separate",
+      "severity": "warn_public",
+      "status": "warn",
+      "notes": "Later slot-time gates, Votor, VAT, rent changes, transaction-v1, and Alpenglow remain separate unverified strata."
+    },
+    {
+      "gate_id": "scrubbed_public_artifact",
+      "severity": "block_publish",
+      "status": "pass",
+      "notes": "No local paths, read endpoints, provider credentials, signer material, account payloads, or execution-resource settings are present."
+    }
+  ],
+  "summary": {
+    "blocking_failures": 0,
+    "warnings": 1
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "manifest_version": "oprs.public_dataset_manifest.v0",
+  "dataset_name": "slot_regime_benchmark_v0_example",
+  "schema_version": "oprs.slot_regime_benchmark_package.v0",
+  "protocol": "solana_runtime",
+  "chain_id": "solana-mainnet-beta",
+  "capability": "read_only_dry_run",
+  "source_type": "source_backed_static_example",
+  "generated_from": "Solana Foundation changelog dated 2026-08-20 and public Feature Program account read observed 2026-08-28",
+  "outputs": [
+    {
+      "path": "benchmark_windows.json",
+      "format": "json",
+      "row_count": 2,
+      "sha256": "3667aea848127af972e444ac72b4dfdba60d4550aeb84253eee89cce5996da03"
+    },
+    {
+      "path": "dq.json",
+      "format": "json",
+      "row_count": 6,
+      "sha256": "de10029b440f20bb4bb20eb15abef510003acd2bfeb6bbcd85e132da2fa03524"
+    }
+  ],
+  "dq": {
+    "status": "passed",
+    "report_path": "dq.json",
+    "blocking_failures": 0,
+    "warnings": 1
+  },
+  "scrub": {
+    "policy_version": "oprs.public_artifact_scrub.v0",
+    "status": "passed",
+    "blocked_pattern_count": 0
+  },
+  "known_limitations": [
+    "Static source-backed package only; no measured cluster performance is committed.",
+    "Activation is a benchmark boundary, not evidence of achieved slot duration or improved reliability.",
+    "Venue-specific effects require separate Drift, Jupiter, or Phoenix evidence."
+  ],
+  "generated_at_unix": 1788243023
+}

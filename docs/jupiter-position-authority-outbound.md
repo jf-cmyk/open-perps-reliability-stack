@@ -11,6 +11,8 @@ For Jupiter Perps, we currently use public docs only for target discovery and un
 
 Could Jupiter confirm the canonical source of truth for mainnet Jupiter Perps program `PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu`, specifically the `PositionRequest` and `Position` account layouts and lifecycle semantics?
 
+If the current Jupiter API exposes an authenticated read-only endpoint for schema, IDL, source revision, program metadata, or fixture metadata, could you also confirm the endpoint and whether its response is canonical and hashable? An API key alone will not be treated as source authority unless it returns or references a Jupiter-confirmed artifact tied to the live program.
+
 The exact ask is here:
 https://github.com/jf-cmyk/open-perps-reliability-stack/blob/main/docs/jupiter-position-authority-confirmation.md
 ```
@@ -30,6 +32,8 @@ Could Jupiter confirm the canonical source/IDL authority for the current mainnet
 
 Specifically, we need to know whether there is a canonical source, IDL, package, release, onchain IDL address, or other hashable artifact that defines the live `Position` and `PositionRequest` account layouts and lifecycle semantics.
 
+We may be able to use a Jupiter API key for authenticated read-only discovery, but we will not treat authenticated access by itself as decode authority. If a Jupiter API endpoint returns a canonical schema, IDL, source revision, program metadata, or public fixture metadata, please confirm the endpoint, response shape, and hash/checksum or versioning rule that ties it to the live program.
+
 The confirmation checklist is:
 
 1. Confirm `PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu` is the current live Jupiter Perps program ID for this proof.
@@ -45,6 +49,7 @@ The confirmation checklist is:
 11. Confirm TP/SL persistence, trigger, and closure semantics if different from ordinary requests.
 12. Share one or more public mainnet signature pairs with expected account keys and decoded before/after state for regression fixtures, if available.
 13. Flag any keeper-only, internal, temporary, deprecated, or otherwise unsafe accounts that should not be interpreted publicly.
+14. Confirm whether any Jupiter API-key-gated endpoint is canonical for schema/IDL/source metadata, and if so, how OPRS should hash-pin or version that response.
 
 We will keep all live reads read-only, keep raw payloads out of public artifacts, and mark any unconfirmed evidence as source-authority blocked.
 
@@ -62,6 +67,7 @@ Before sending:
 - Confirm the contact route.
 - Confirm whether to send as Johann/Blocksize.
 - Confirm whether to mention Solana Foundation grant review.
+- Do not send or paste the Jupiter API key; ask only whether an authenticated read-only schema/IDL/source endpoint exists.
 - Do not paste private RPC URLs, `.env` values, signatures from private runs, or non-public research outputs.
 
 After sending:
@@ -69,4 +75,3 @@ After sending:
 - Record date, route, and public-safe summary in a source-review record.
 - Keep Jupiter decode and verified pairing blocked until a hashable source or explicit written confirmation is received.
 - Update `docs/jupiter-source-authority-audit.md`, `docs/jupiter-perps-provenance.md`, and `examples/public/jupiter-authority-gap-v0/gap_report.json` only after confirmation.
-

@@ -18,10 +18,15 @@ The Railway proof-pack site is a reviewer-facing static artifact. It should cont
 These files remain part of the OSS repo but are not served from the Railway proof-pack image:
 
 - `docs/checkpoints/`
+- `.railway/railway.ts`
+- `package.json`
+- `package-lock.json`
 
 Checkpoint docs are project memory for development continuity. They may include local paths, resume prompts, agent state, and operational notes that are useful to maintainers but unnecessary for grant reviewers.
 
-GitHub Pages uses the same public-artifact boundary through `scripts/build_public_artifact.sh`, so it should not serve `docs/checkpoints/`, deployment config files, `.env.example`, or Word lock files.
+Railway IaC and package metadata are deployment-maintenance files. They remain useful in GitHub, but they are not reviewer proof-pack content.
+
+GitHub Pages uses the same public-artifact boundary through `scripts/build_public_artifact.sh`, so it should not serve `docs/checkpoints/`, deployment config files, `.env.example`, package metadata, or Word lock files.
 
 ## Never Serve Or Commit
 

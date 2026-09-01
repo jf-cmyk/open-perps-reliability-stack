@@ -105,6 +105,39 @@
           "signing or transaction submission supported"
         ]
       }
+    },
+    {
+      "package_id": "slot-regime-benchmark-v0",
+      "package_type": "runtime_benchmark_boundary",
+      "protocol": "solana_runtime",
+      "capability": "read_only_dry_run",
+      "manifest_path": "examples/public/slot-regime-benchmark-v0/manifest.json",
+      "dq_path": "examples/public/slot-regime-benchmark-v0/dq.json",
+      "payloads": [
+        {
+          "role": "benchmark_windows",
+          "path": "examples/public/slot-regime-benchmark-v0/benchmark_windows.json",
+          "schema_path": "schemas/datasets/slot-regime-benchmark-v0.json",
+          "schema_version": "oprs.slot_regime_benchmark.v0"
+        }
+      ],
+      "validator": "scripts/validate_public_slot_regime_benchmark.py",
+      "publishable": true,
+      "claim_boundary": {
+        "allowed_claims": [
+          "Solana 400ms-to-350ms slot-time activation boundary is source-governed",
+          "pre/post slot windows are benchmark fixtures only",
+          "public package checksums and DQ gates passed",
+          "read-only and dry-run only"
+        ],
+        "blocked_claims": [
+          "achieved slot duration measured",
+          "faster confirmations or lower latency proven",
+          "better landing or market quality proven",
+          "Blocksize validator readiness or performance proven",
+          "signing or transaction submission supported"
+        ]
+      }
     }
   ]
 }

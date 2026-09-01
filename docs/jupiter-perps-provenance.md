@@ -13,6 +13,7 @@ This document records the current Jupiter Perps target and decoder provenance st
 | Pool account field guide | `https://developers.jup.ag/docs/perps/pool-account` |
 | Position account field guide | `https://developers.jup.ag/docs/perps/position-account` |
 | PositionRequest account field guide | `https://developers.jup.ag/docs/perps/position-request-account` |
+| Jupiter CLI perps guide | `https://github.com/jup-ag/cli/blob/main/docs/perps.md` |
 | Source-authority audit | `jupiter-source-authority-audit.md` |
 | Position authority confirmation ask | `jupiter-position-authority-confirmation.md` |
 
@@ -66,6 +67,9 @@ The docs-linked IDL sample is useful for research and field planning, but it sho
 - Jupiter publishes or confirms a canonical Perps IDL/source revision.
 - The docs-linked IDL is explicitly confirmed as canonical for the current onchain program.
 - An independent onchain/program-IDL extraction path is reviewed and hashed.
+- A Jupiter-confirmed API endpoint returns canonical schema/IDL/source metadata with a stable version, checksum, or hashable artifact tied to the live program.
+
+`JUPITER_API_KEY` can be used only for local authenticated read-only discovery if a relevant endpoint is available. It must not be committed, deployed to the static Railway proof pack, printed in logs, or treated as source authority unless the endpoint returns or references a canonical hashable artifact.
 
 Until then, OPRS may claim Jupiter program/custody/oracle metadata discovery, public transaction-history sampling, and unverified stronger candidate labeling, but not Jupiter binary account decoding, verified request/fulfillment pairing, or historical replay.
 
@@ -78,5 +82,6 @@ The exact confirmation package needed to unblock `Position` / `PositionRequest` 
 3. Start with account discriminator/type, data length, owner, and documented public fields only.
 4. Use the transaction-history sample as the foundation for later request/fulfillment pairing, but do not claim pairing until shared PositionRequest/Position evidence is linked.
 5. Send the confirmation ask in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md) before promoting any Jupiter account decode claim.
+6. If a Jupiter API key is used, keep it in `.env` as `JUPITER_API_KEY` and restrict probes to read-only metadata/schema discovery.
 
 Forbidden actions remain unchanged: no signing, no transaction submission, no priority-fee bidding, no keypair loading, no custody, no capital management, and no calls to `/order`, `/execute`, `/build`, `/submit`, auth, keeper, or RFQ/order-routing paths.

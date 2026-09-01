@@ -23,6 +23,7 @@
 - [Jupiter position authority outbound note](jupiter-position-authority-outbound.md)
 - [Phoenix / Rise source authority](phoenix-source-authority.md)
 - [Phoenix / Hawkeye validator plan](phoenix-hawkeye-validator-plan.md)
+- [Slot regime benchmark boundary](slot-regime-benchmark.md)
 - [Source review records](source-review-records.md)
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)
@@ -55,6 +56,7 @@ Schema and fixture artifacts:
 - [Drift guardrails public package](../examples/public/drift-guardrails-v0/)
 - [Jupiter authority-gap public package](../examples/public/jupiter-authority-gap-v0/)
 - [Phoenix market telemetry public package](../examples/public/phoenix-market-telemetry-v0/)
+- [Slot-regime benchmark public package](../examples/public/slot-regime-benchmark-v0/)
 - [Invalid public package corpus](../tests/fixtures/public-packages/invalid/cases.json)
 - [Static dashboard demo](../apps/dashboard/index.html)
 

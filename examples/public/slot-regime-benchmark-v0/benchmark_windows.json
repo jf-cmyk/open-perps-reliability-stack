@@ -1,0 +1,80 @@
+{
+  "schema_version": "oprs.slot_regime_benchmark.v0",
+  "dataset_name": "slot_regime_benchmark_v0_example",
+  "protocol": "solana_runtime",
+  "chain_id": "solana-mainnet-beta",
+  "generated_from": "Solana Foundation changelog dated 2026-08-20 and public Feature Program account read observed 2026-08-28",
+  "activation": {
+    "feature_account": "iBRL5RuWhw4yqaAZu96RUULHckHTZAoe2b77qaV38JZ",
+    "activation_slot": 440208000,
+    "activation_block_time": "2026-08-19T05:50:49Z",
+    "previous_slot_duration_target_ms": 400,
+    "new_slot_duration_target_ms": 350,
+    "verification_method": "Public getAccountInfo decoded the Feature Program account activation slot and public getBlockTime mapped that slot to a block time."
+  },
+  "records": [
+    {
+      "window_id": "shorter_slot_pre_activation_reference",
+      "relation_to_activation": "pre_activation",
+      "slot_range": {
+        "start_slot": 440198000,
+        "end_slot": 440207999,
+        "slot_duration_target_ms": 400
+      },
+      "measurement_role": "Reference window for read-only landing, confirmation, replay, catchup, and oracle-age metrics before the activation boundary.",
+      "read_only_supported": true,
+      "benchmark_uses": [
+        "Normalize slot-indexed observations by the pre-activation target duration.",
+        "Compare only source-compatible metrics with matching provider, commitment, and query settings.",
+        "Treat venue-level effects as open questions until separate Drift, Jupiter, or Phoenix evidence exists."
+      ],
+      "public_source_refs": [
+        "https://solana.com/news/solana-changelog-august-20-2026",
+        "Feature account iBRL5RuWhw4yqaAZu96RUULHckHTZAoe2b77qaV38JZ at activation slot 440208000"
+      ],
+      "blocked_claims": [
+        "No achieved slot-duration claim.",
+        "No latency, landing, skip-rate, spread, or market-quality improvement claim.",
+        "No Blocksize validator readiness claim."
+      ]
+    },
+    {
+      "window_id": "shorter_slot_post_activation_reference",
+      "relation_to_activation": "post_activation",
+      "slot_range": {
+        "start_slot": 440208000,
+        "end_slot": 440218000,
+        "slot_duration_target_ms": 350
+      },
+      "measurement_role": "Reference window for read-only landing, confirmation, replay, catchup, and oracle-age metrics after the activation boundary.",
+      "read_only_supported": true,
+      "benchmark_uses": [
+        "Normalize post-activation slot-indexed observations by the new target duration.",
+        "Report deltas only as methodology outputs until source-backed performance analysis exists.",
+        "Keep later feature gates, Votor, VAT, rent changes, and Alpenglow in separate unverified strata."
+      ],
+      "public_source_refs": [
+        "https://solana.com/news/solana-changelog-august-20-2026",
+        "Public getBlockTime result for slot 440208000: 2026-08-19T05:50:49Z"
+      ],
+      "blocked_claims": [
+        "No faster confirmation claim.",
+        "No lower oracle-age or replay-pressure claim.",
+        "No protocol safety or trading-performance claim."
+      ]
+    }
+  ],
+  "readiness": {
+    "activation_boundary_verified": true,
+    "slot_duration_observed": false,
+    "performance_improvement_claimed": false,
+    "validator_performance_claimed": false,
+    "execution_claimed": false,
+    "replay_ready": false
+  },
+  "known_gaps": [
+    "This package records a source-governed benchmark boundary, not measured cluster performance.",
+    "Observed slot duration, confirmation timing, landing quality, replay, catchup, skip-rate, and market-quality effects require separate source-compatible measurements.",
+    "Later slot-time gates, Votor, VAT, rent changes, transaction-v1, and Alpenglow are not represented as active without independent feature-account evidence."
+  ]
+}

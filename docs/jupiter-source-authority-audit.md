@@ -11,6 +11,7 @@ This note records the current Jupiter Perps source-authority boundary for OPRS. 
 | Jupiter PositionRequest account guide | Official docs | Public PositionRequest field planning, request lifecycle, and closure/execution context. |
 | `julianfssen/jupiter-perps-anchor-idl-parsing` | Docs-linked example repo | Candidate Anchor IDL and TypeScript examples only. |
 | Jupiter position authority confirmation ask | OPRS confirmation checklist | Exact evidence needed before `Position` / `PositionRequest` decode or verified pairing. |
+| Jupiter API key | Optional authenticated discovery input | Not source authority unless it returns or references a Jupiter-confirmed hashable schema, IDL, source, or fixture artifact tied to the live program. |
 
 ## Current Docs-Linked IDL Candidate
 
@@ -34,6 +35,7 @@ Allowed:
 - Use official docs for target discovery and lifecycle model language.
 - Use the docs-linked IDL candidate for field planning.
 - Keep shared-account lifecycle candidates as `candidate_pair_unverified`.
+- Use `JUPITER_API_KEY` only for local read-only discovery if a Jupiter API endpoint is confirmed to be relevant.
 
 Blocked:
 
@@ -41,6 +43,7 @@ Blocked:
 - Verified request/fulfillment pair claims.
 - PositionRequest or Position decode claims.
 - Liquidation replay claims.
+- Treating API-key access alone as source authority.
 
 ## Reproducible Audit Command
 
@@ -49,6 +52,10 @@ scripts/audit_jupiter_source_authority.py --out target/oprs-jupiter-source-autho
 ```
 
 The command uses public HTTPS only. It does not load `HELIUS_RPC_URL`, wallet state, signers, keypairs, custody, or private API routes.
+
+## API-Key Boundary
+
+If a Jupiter API key is available, store it only in `.env` as `JUPITER_API_KEY` and keep it out of public artifacts, Railway static hosting variables, screenshots, logs, and chat. It may support authenticated read-only discovery, but OPRS should promote it to source authority only if the response itself is a hashable Jupiter-confirmed artifact or points to one with stable versioning.
 
 ## Unlock Criteria
 

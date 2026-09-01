@@ -35,7 +35,7 @@ Allowed public content includes public program IDs, public account addresses, pu
 
 ## Current Package Profiles
 
-The first package profile is `drift-guardrails-v0`. The second package profile is `jupiter-authority-gap-v0`. The third package profile is `phoenix-market-telemetry-v0`.
+The first package profile is `drift-guardrails-v0`. The second package profile is `jupiter-authority-gap-v0`. The third package profile is `phoenix-market-telemetry-v0`. The fourth package profile is `slot-regime-benchmark-v0`.
 
 Validators intentionally remain specialized until another package type applies pressure to the shared contract. Generalization should happen only when multiple package types share most of the same validation logic without weakening their domain-specific claim boundaries.
 
@@ -46,3 +46,5 @@ The shared validator helper in `scripts/public_package_contract.py` owns mechani
 Invalid package fixtures live under `tests/fixtures/public-packages/invalid/`. They are not served publicly; they mutate otherwise valid packages to prove validators reject replay-readiness overclaims, raw-payload leaks, checksum drift, local path leaks, malformed schema shape, Jupiter verified-pairing overclaims, unsafe evidence refs, secret markers, and contract-index drift.
 
 `phoenix-market-telemetry-v0` is a source-backed static package for Phoenix/Rise public market-data readiness. It maps public HTTP and WebSocket telemetry surfaces for exchange snapshots, market configuration, L2 orderbook snapshots, market-statistics history, funding-rate history, and live L2 streams. It does not commit live API response bodies, trader state, authenticated flows, instruction builders, order operations, signing, transaction submission, or historical replay readiness.
+
+`slot-regime-benchmark-v0` is a source-backed static package for Solana runtime benchmark windows around the 400ms-to-350ms slot-time activation at slot `440208000`. It records pre/post reference windows for future normalization only. It does not claim achieved slot duration, faster confirmations, better landing, lower replay pressure, venue-level market-quality improvement, Blocksize validator readiness, signing, transaction submission, or replay readiness.

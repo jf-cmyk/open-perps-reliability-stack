@@ -17,6 +17,7 @@ rg -q "Open Perps Reliability Stack Proof Pack" index.html
 rg -q "Read-only" index.html
 rg -q "Dry-run" index.html
 rg -q "docs/drift-liquidation-scan-boundary.md" index.html
+rg -q "examples/public/slot-regime-benchmark-v0/benchmark_windows.json" index.html
 rg -q "docs/phoenix-hawkeye-validator-plan.md" index.html
 rg -q "Open Perps" apps/dashboard/index.html
 rg -q "No live execution" apps/dashboard/index.html
@@ -24,10 +25,14 @@ rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
 rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
-rg -q "278,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
+rg -q "288,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
-python3 -m json.tool railway.json >/dev/null
+test -f .railway/railway.ts
+test -f package.json
+test -f package-lock.json
+rg -q 'service\("refreshing-art"' .railway/railway.ts
+rg -q 'project\("refreshing-art"' .railway/railway.ts
 python3 -m json.tool schemas/datasets/data-reconstruction-envelope-v0.json >/dev/null
 python3 -m json.tool examples/datasets/data_reconstruction_envelope.json >/dev/null
 python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/dev/null
@@ -41,6 +46,7 @@ python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/slot-regime-benchmark-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-hawkeye-validator-plan-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/source-review-record-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
@@ -60,6 +66,9 @@ python3 -m json.tool examples/public/jupiter-authority-gap-v0/dq.json >/dev/null
 python3 -m json.tool examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json >/dev/null
 python3 -m json.tool examples/public/phoenix-market-telemetry-v0/manifest.json >/dev/null
 python3 -m json.tool examples/public/phoenix-market-telemetry-v0/dq.json >/dev/null
+python3 -m json.tool examples/public/slot-regime-benchmark-v0/benchmark_windows.json >/dev/null
+python3 -m json.tool examples/public/slot-regime-benchmark-v0/manifest.json >/dev/null
+python3 -m json.tool examples/public/slot-regime-benchmark-v0/dq.json >/dev/null
 python3 -m json.tool datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json >/dev/null
 python3 -m json.tool datasets/sample/jupiter_synthetic_malformed_source_authority_001/manifest.json >/dev/null
 python3 -m json.tool tests/fixtures/public-packages/invalid/cases.json >/dev/null
@@ -75,6 +84,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupite
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_market_telemetry_probe.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_slot_regime_benchmark.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/public_package_contract.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_contract_index.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_guardrail_package.py
@@ -88,6 +98,7 @@ scripts/validate_public_contract_index.py
 scripts/validate_public_guardrail_package.py
 scripts/validate_public_jupiter_authority_gap.py
 scripts/validate_public_phoenix_market_telemetry.py
+scripts/validate_public_slot_regime_benchmark.py
 scripts/validate_invalid_public_package_fixtures.py
 scripts/validate_source_review_records.py
 scripts/validate_phoenix_hawkeye_source_authority.py
@@ -104,6 +115,7 @@ test -f docs/drift-liquidation-scan-boundary.md
 test -f docs/jupiter-perps-provenance.md
 test -f docs/jupiter-source-authority-audit.md
 test -f docs/phoenix-hawkeye-validator-plan.md
+test -f docs/slot-regime-benchmark.md
 test -f docs/read-only-decode-worker.md
 test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f schemas/datasets/drift-liquidation-history-probe-v0.json
@@ -114,6 +126,7 @@ test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f schemas/datasets/jupiter-authority-gap-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-probe-v0.json
+test -f schemas/datasets/slot-regime-benchmark-v0.json
 test -f schemas/datasets/phoenix-hawkeye-validator-plan-v0.json
 test -f schemas/datasets/source-review-record-v0.json
 test -f examples/datasets/data_reconstruction_envelope.json
@@ -136,6 +149,9 @@ test -f examples/public/jupiter-authority-gap-v0/dq.json
 test -f examples/public/phoenix-market-telemetry-v0/telemetry_surfaces.json
 test -f examples/public/phoenix-market-telemetry-v0/manifest.json
 test -f examples/public/phoenix-market-telemetry-v0/dq.json
+test -f examples/public/slot-regime-benchmark-v0/benchmark_windows.json
+test -f examples/public/slot-regime-benchmark-v0/manifest.json
+test -f examples/public/slot-regime-benchmark-v0/dq.json
 test -f datasets/sample/jupiter_synthetic_lifecycle_candidate_unverified_001/dry_run_output.json
 test -f datasets/sample/jupiter_synthetic_lifecycle_weak_no_shared_jupiter_account_001/dry_run_output.json
 test -f datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run_output.json
@@ -153,6 +169,7 @@ test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/audit_jupiter_source_authority.py
 test -x scripts/discover_phoenix_market_telemetry.py
 test -x scripts/validate_phoenix_market_telemetry_probe.py
+test -x scripts/validate_public_slot_regime_benchmark.py
 test -x scripts/validate_public_contract_index.py
 test -x scripts/validate_public_guardrail_package.py
 test -x scripts/validate_public_jupiter_authority_gap.py
@@ -173,7 +190,9 @@ test -f "$artifact_dir/docs/deployment-railway.md"
 test ! -e "$artifact_dir/docs/checkpoints"
 test ! -e "$artifact_dir/.env.example"
 test ! -e "$artifact_dir/Dockerfile"
-test ! -e "$artifact_dir/railway.json"
+test ! -e "$artifact_dir/.railway/railway.ts"
+test ! -e "$artifact_dir/package.json"
+test ! -e "$artifact_dir/package-lock.json"
 test ! -e "$artifact_dir/deploy/railway/nginx.conf.template"
 if find "$artifact_dir" -name '~$*' | rg -q .; then
   echo "Public artifact contains a Word lock file" >&2

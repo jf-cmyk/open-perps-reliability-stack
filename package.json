@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "railway:plan": "railway config plan",
+    "railway:apply": "railway config apply"
+  },
+  "dependencies": {
+    "railway": "^3.11.0"
+  }
+}
