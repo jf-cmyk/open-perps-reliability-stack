@@ -92,6 +92,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupite
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_lifecycle_role_map.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_lifecycle_role_map_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_market_telemetry_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_slot_regime_benchmark.py
@@ -109,6 +110,7 @@ scripts/validate_public_contract_index.py
 scripts/validate_public_guardrail_package.py
 scripts/validate_public_jupiter_authority_gap.py
 scripts/validate_public_jupiter_onchain_decode.py
+scripts/validate_jupiter_lifecycle_role_map_probe.py
 scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_public_slot_regime_benchmark.py
 scripts/validate_invalid_public_package_fixtures.py
@@ -187,6 +189,7 @@ test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/discover_jupiter_lifecycle_role_map.py
 test -x scripts/audit_jupiter_source_authority.py
+test -x scripts/validate_jupiter_lifecycle_role_map_probe.py
 test -x scripts/discover_phoenix_market_telemetry.py
 test -x scripts/validate_phoenix_market_telemetry_probe.py
 test -x scripts/validate_public_slot_regime_benchmark.py

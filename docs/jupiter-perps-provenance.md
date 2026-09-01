@@ -43,6 +43,7 @@ Local-only lifecycle role-map probe command:
 
 ```bash
 scripts/discover_jupiter_lifecycle_role_map.py --limit 40 --transaction-limit 20 --out target/oprs-jupiter-lifecycle-role-map/latest.json
+scripts/validate_jupiter_lifecycle_role_map_probe.py target/oprs-jupiter-lifecycle-role-map/latest.json
 ```
 
 Confirmed:

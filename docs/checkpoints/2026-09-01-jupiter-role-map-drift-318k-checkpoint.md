@@ -13,6 +13,7 @@ Legacy Drift liquidation-history pagination advanced from 308,000 to 318,000 fin
 ## Files Added
 
 - `scripts/discover_jupiter_lifecycle_role_map.py`
+- `scripts/validate_jupiter_lifecycle_role_map_probe.py`
 - `schemas/datasets/jupiter-lifecycle-role-map-probe-v0.json`
 - `examples/datasets/jupiter_lifecycle_role_map_probe_example.json`
 
@@ -31,6 +32,7 @@ Legacy Drift liquidation-history pagination advanced from 308,000 to 318,000 fin
 - `scripts/run_mvp_checks.sh`
 - `scripts/run_hosted_smoke_checks.sh`
 - `scripts/build_solana_grant_docx.py`
+- `scripts/validate_jupiter_lifecycle_role_map_probe.py`
 
 ## Claim Boundary
 
