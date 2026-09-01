@@ -4,6 +4,7 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
+- [2026-09-01 live readiness path checkpoint](2026-09-01-live-readiness-path-checkpoint.md)
 - [2026-09-01 Jupiter role map and Drift 318k checkpoint](2026-09-01-jupiter-role-map-drift-318k-checkpoint.md)
 - [2026-09-01 Drift 308k and Jupiter resolution checkpoint](2026-09-01-drift-308k-jupiter-resolution-checkpoint.md)
 - [2026-09-01 Drift 298k and proof changelog checkpoint](2026-09-01-drift-298k-proof-changelog-checkpoint.md)

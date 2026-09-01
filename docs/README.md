@@ -32,6 +32,7 @@
 - [Proof-pack changelog](proof-pack-changelog.md)
 - [Public dataset contract](public-dataset-contract.md)
 - [MVP proof checklist](mvp-proof-checklist.md)
+- [Live readiness path](live-readiness-path.md)
 - [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
 

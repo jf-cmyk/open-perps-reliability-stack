@@ -36,6 +36,7 @@ Hosted proof-pack MVP:
 - [Proof-pack changelog](docs/proof-pack-changelog.md)
 - [Public dataset contract](docs/public-dataset-contract.md)
 - [MVP proof checklist](docs/mvp-proof-checklist.md)
+- [Live readiness path](docs/live-readiness-path.md)
 - [Reviewer proof-pack index](index.html)
 - [Railway deployment notes](docs/deployment-railway.md)
 - [Public API schema](schemas/api/public-api-v0.json)

@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-09-01-drift-298k-proof-changelog-checkpoint.md)
+1. [Current checkpoint](2026-09-01-live-readiness-path-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -25,6 +25,7 @@ Read when changing module boundaries, service boundaries, contracts, or future s
 - [Adapter standard](../adapter-standard.md)
 - [Data model](../data-model.md)
 - [Liquidation dry-run and replay](../liquidation-dry-run.md)
+- [Live readiness path](../live-readiness-path.md)
 - [ADR-0002: Adapter-first boundaries](../adr/0002-adapter-first-boundaries.md)
 - [ADR-0004: Deterministic replay before shadow mode](../adr/0004-deterministic-replay-before-shadow-mode.md)
 
@@ -74,6 +75,7 @@ Read when changing frontend/static reviewer artifacts:
 - [Dashboard design checkpoint](2026-06-03-dashboard-design-checkpoint.md)
 - [Reviewer-facing grant proposal](../solana-foundation-developer-tooling-proposal.md)
 - [Railway deployment](../deployment-railway.md)
+- [Live readiness path](../live-readiness-path.md)
 
 Required checks:
 
@@ -157,3 +159,4 @@ When agent guidance affects implementation order, summarize it in the next check
 6. Jupiter account-layout decode is source-authorized through the live onchain Anchor IDL, and a local role-map probe now binds sampled public transaction accounts to onchain-IDL roles; keep verified lifecycle pairing and replay blocked until before/after state evidence and source-review gates land.
 7. Refresh the local Word proposal after public proof-pack text changes materially.
 8. Keep Railway and GitHub Pages mirrors equivalent.
+9. Design the separate Railway read-only worker service plan and 7-day soak checklist before adding hosted read-only secrets or recurring jobs.

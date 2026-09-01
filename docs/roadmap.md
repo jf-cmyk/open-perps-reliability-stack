@@ -87,6 +87,19 @@ Acceptance criteria:
 - Each material run resolves one queued question and re-ranks the next action.
 - Claims about protocols, validators, partnerships, or Foundation status are labeled as fact, inference, or verification-needed.
 
+### M7: Live Read-Only Service Readiness
+
+Goal: move beyond the static MVP into repeatable hosted diagnostics without introducing execution, custody, signing, or capital deployment.
+
+Acceptance criteria:
+
+- [Live readiness path](live-readiness-path.md) distinguishes static proof-pack hosting, live read-only services, commercial diagnostics, and any future execution pilot.
+- A separate read-only worker service plan exists before any server-side secret is added to Railway.
+- Generated datasets include source, slot, provider, freshness, checksum, and scrub metadata.
+- Continuous read-only runs soak for at least 7 days without secret leakage or unexplained data drift.
+- Paid diagnostics and partner-support offers are framed around read-only reliability outputs, not production trading or profit claims.
+- Any execution pilot remains blocked until security, legal, signer, capital, monitoring, runbook, and founder approval gates are complete.
+
 ## Active Dependencies
 
 - Protocol diligence feeds architecture, data model, SDK design, and grant narrative.
@@ -95,3 +108,4 @@ Acceptance criteria:
 - Liquidator/SDK design depends on protocol mechanics and normalized data.
 - Grant positioning depends on all of the above.
 - The continuous ecosystem loop feeds protocol priorities, network-regime assumptions, partner qualification, and grant-safe evidence into every milestone without expanding the read-only/dry-run scope.
+- Live read-only service readiness depends on the public proof pack, source-governed protocol evidence, scrubbed datasets, Railway service separation, and explicit commercial boundary decisions.

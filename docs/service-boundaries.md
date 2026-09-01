@@ -120,6 +120,30 @@ Commercial services cannot privatize grant-funded deliverables such as public sc
 
 Commercial-adjacent ideas from Solana ecosystem research, such as payment/settlement observability or validator readiness assessments for 100M CU, XDP, skip-rate, and block-propagation reporting, are future product lanes only. They are not current OPRS grant deliverables and cannot be described as running services until separate scope, data-access, and claim-boundary decisions are approved.
 
+See [Live readiness path](live-readiness-path.md) for the staged path from static MVP to live read-only diagnostics, commercial diagnostics, and any later execution-readiness candidate.
+
+## Future Live Read-Only Diagnostics
+
+Live read-only diagnostics are the preferred post-MVP service lane because they can support grants, protocol partnerships, and early revenue without adding signer, custody, transaction-submission, or capital risk.
+
+Allowed capabilities:
+
+- scheduled read-only worker runs
+- authenticated diagnostics APIs
+- private protocol dashboards
+- source-backed data-quality reports
+- adapter integration support
+- incident and reliability retrospectives built from public data
+
+Required gates:
+
+- separate Railway service or equivalent backend boundary
+- Railway variables limited to read-only infrastructure
+- no secrets in static proof-pack hosting
+- source, slot, provider, freshness, checksum, and scrub metadata on generated outputs
+- monitoring and runbooks for provider failure, schema drift, stale inputs, and bad outputs
+- at least 7 days of continuous read-only operation before treating the service as operationally live
+
 ## Promotion Rule
 
 A component can move from local experiment to public OSS only after it passes all of these gates:
