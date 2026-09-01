@@ -4,6 +4,7 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
+- [2026-08-31 Drift 278k and shorter slot research checkpoint](2026-08-31-drift-278k-shorter-slot-research-checkpoint.md)
 - [2026-08-11 Drift 266k research refresh checkpoint](2026-08-11-drift-266k-research-refresh-checkpoint.md)
 - [2026-07-30 Drift 148k source-governance checkpoint](2026-07-30-drift-148k-source-governance-checkpoint.md)
 - [2026-07-30 Phoenix Hawkeye validator plan checkpoint](2026-07-30-phoenix-hawkeye-validator-plan-checkpoint.md)

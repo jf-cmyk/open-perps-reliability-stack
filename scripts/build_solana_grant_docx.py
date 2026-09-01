@@ -281,7 +281,7 @@ def main():
         "Phoenix/Rise is now a source-pinned follow-on venue lane because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Production program and Hawkeye view constants are source-pinned from Ellipsis Labs Rise, and a Phoenix/Hawkeye validator-plan contract records scrubbed fixture gates, while exact oracle/input identities, account-level decode, trader monitoring, and replay remain blocked.",
         "Frontier Traders creates a review-only design-partner channel for professional trader reliability feedback, but it does not establish Blocksize access, demand, or endorsement.",
         "Pay.sh, Solana Subscriptions, and Commerce Kit are useful for future commercial packaging and revenue-routing clarity. They should stay outside the grant-funded public-good core unless explicitly framed as optional or convertible-grant scope.",
-        "The 100M-CU block-capacity activation adds a new benchmark regime for aggregate block headroom, unchanged hot-account contention, replay, catchup, and downstream infrastructure behavior. It is context for reliability methodology, not evidence of measured performance improvement.",
+        "The 100M-CU block-capacity activation and the source-governed 400ms-to-350ms slot-time activation at slot 440208000 add new benchmark regimes for aggregate block headroom, slot-normalized landing, unchanged hot-account contention, replay, catchup, and downstream infrastructure behavior. They are context for reliability methodology, not evidence of measured performance improvement.",
         "Network changes around VAT, Alpenglow, Agave, Firedancer, and DoubleZero make validator/client/transport context relevant to perps reliability, but releases, schedules, and gossip records do not prove Blocksize adoption or measured performance gains.",
     ]:
         add_bullet(document, item)
@@ -370,7 +370,7 @@ def main():
         "Jupiter source-authority confirmation packet and send-ready outbound note.",
         "Source-review record schema and examples for Jupiter authority confirmation and Drift public-field promotion.",
         "Scrubbed Drift liquidation-history probe schema, validator, and bounded discovery output contract.",
-        "Drift legacy liquidation-history diligence has scanned 266,000 finalized program transactions from July 22 back through slot 415904436 at 2026-04-27T01:47:05Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
+        "Drift legacy liquidation-history diligence has scanned 278,000 finalized program transactions from July 22 back through slot 415733773 at 2026-04-26T07:00:53Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
         "Continuous Solana ecosystem research loop with hot state, evidence ledger, opportunity pipeline, and checkpoint archive.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
         "Hourly hosted smoke monitoring and public artifact boundary checks.",
