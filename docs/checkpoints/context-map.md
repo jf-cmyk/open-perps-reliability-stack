@@ -148,7 +148,7 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Continue Drift legacy pagination from cursor `2vXjFAqSK23ykcvg36GBo2skhHjnxzZ8C2ZW2Csovf3A8Sgqdt4pB5NeczNmGFn1PbHYr62ZayoANvARH8fzrtd1`.
+1. Continue Drift legacy pagination from cursor `297aqf8WJXieG1rMtb7LcpDak8i6f5WWcGogvSYsrQcnHA5RFjV2c4JyadMjPfi8BQWaDaPVZTdgeW2PBWQSE14h`.
 2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) evidence lands from canonical source or direct Jupiter confirmation.
 3. Decode additional Drift fields only after `scripts/validate_drift_readonly_state.py` passes on current local public-field target output and new offsets pass [Drift public field source review checklist](../drift-public-field-source-review-checklist.md).
 4. Keep `docs/proof-pack-changelog.md` current for reviewer-facing shipped evidence.

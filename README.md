@@ -29,6 +29,7 @@ Hosted proof-pack MVP:
 - [Helius read-only proof plan](docs/helius-readonly-proof.md)
 - [Drift decoder provenance](docs/drift-decoder-provenance.md)
 - [Jupiter Perps provenance](docs/jupiter-perps-provenance.md)
+- [Jupiter source authority resolution](docs/jupiter-source-authority-resolution.md)
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
 - [Service boundaries](docs/service-boundaries.md)
 - [Public artifact boundary](docs/public-artifact-boundary.md)

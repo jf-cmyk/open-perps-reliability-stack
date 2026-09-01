@@ -21,6 +21,7 @@
 - [Jupiter Perps provenance](jupiter-perps-provenance.md)
 - [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md)
 - [Jupiter position authority outbound note](jupiter-position-authority-outbound.md)
+- [Jupiter source authority resolution](jupiter-source-authority-resolution.md)
 - [Phoenix / Rise source authority](phoenix-source-authority.md)
 - [Phoenix / Hawkeye validator plan](phoenix-hawkeye-validator-plan.md)
 - [Slot regime benchmark boundary](slot-regime-benchmark.md)

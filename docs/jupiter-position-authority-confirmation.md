@@ -141,7 +141,7 @@ Allowed interim language:
 
 ## Contact Template
 
-For a shorter founder-ready note, use [Jupiter position authority outbound note](jupiter-position-authority-outbound.md).
+For a shorter founder-ready note, use [Jupiter position authority outbound note](jupiter-position-authority-outbound.md). For the exact operator steps Johann needs to take, use [Jupiter source authority resolution](jupiter-source-authority-resolution.md).
 
 ```text
 Hi Jupiter team,

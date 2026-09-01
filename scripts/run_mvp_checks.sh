@@ -28,7 +28,7 @@ rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
 rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
-rg -q "298,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
+rg -q "308,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
 test -f .railway/railway.ts

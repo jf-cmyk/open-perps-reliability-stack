@@ -5,7 +5,7 @@ This public changelog records reviewer-facing proof-pack progress. It excludes i
 ## 2026-09-01
 
 - Migrated Railway service configuration from deprecated `railway.json` to `.railway/railway.ts` and applied it to the existing canonical `refreshing-art` service.
-- Advanced the bounded read-only Drift legacy liquidation-history scan to 298,000 finalized transactions through slot `415423666` at `2026-04-24T20:58:39Z`, with no `Program log: Instruction: Liquidate*` match in the searched segment.
+- Advanced the bounded read-only Drift legacy liquidation-history scan to 308,000 finalized transactions through slot `415272972` at `2026-04-24T04:25:58Z`, with no `Program log: Instruction: Liquidate*` match in the searched segment.
 - Added the `slot-regime-benchmark-v0` public package for the Solana mainnet 400ms-to-350ms slot target activation boundary at slot `440208000`.
 - Tightened Jupiter source-authority docs to clarify that `JUPITER_API_KEY` may support authenticated read-only discovery but does not unlock binary decode, verified pairing, keeper execution, or replay claims without a Jupiter-confirmed hashable artifact.
 - Regenerated the local Solana Foundation proposal DOCX and refreshed validation/smoke checks for the public proof pack.
