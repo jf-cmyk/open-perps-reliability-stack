@@ -44,12 +44,12 @@
 - DOCX text check confirmed `298,000` and `415423666`
 - `git diff --check`
 - `scripts/run_mvp_checks.sh`
-
-## Validation Still Required After Commit
-
-- Commit and push.
-- GitHub CI and Pages verification.
-- Railway deploy and hosted smoke check.
+- Commit `df91c37 Advance Drift scan to 298k and add proof changelog`
+- GitHub CI passed
+- GitHub Pages deploy passed
+- GitHub Pages hosted smoke passed
+- Railway deployment `5d9e271e-01a6-421b-a72a-4afb92d509ec` passed
+- Railway hosted smoke passed
 
 ## Next Work Queue
 
