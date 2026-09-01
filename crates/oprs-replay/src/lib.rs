@@ -1042,6 +1042,79 @@ mod tests {
     }
 
     #[test]
+    fn rejects_tx_plan_requires_signer() {
+        let requires_signer = mutate_margin_dry_run(|value| {
+            value["opportunities"][0]["tx_plan"]["requires_signer"] = serde_json::json!(true);
+        });
+
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: MARGIN_MANIFEST,
+            dry_run_output_json: &requires_signer,
+            content_files: margin_content_files(),
+            expected_status: DryRunStatus::Unsupported,
+            expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
+        });
+
+        assert!(!report.passed);
+        assert!(report
+            .failures
+            .iter()
+            .any(|failure| failure.contains("requires_signer=true")));
+    }
+
+    #[test]
+    fn rejects_tx_plan_submission_enabled() {
+        let submission_enabled = mutate_margin_dry_run(|value| {
+            value["opportunities"][0]["tx_plan"]["submission_disabled"] = serde_json::json!(false);
+        });
+
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: MARGIN_MANIFEST,
+            dry_run_output_json: &submission_enabled,
+            content_files: margin_content_files(),
+            expected_status: DryRunStatus::Unsupported,
+            expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
+        });
+
+        assert!(!report.passed);
+        assert!(report
+            .failures
+            .iter()
+            .any(|failure| failure.contains("submission_disabled=false")));
+    }
+
+    #[test]
+    fn rejects_execution_surface_fields() {
+        let execution_surface = mutate_margin_dry_run(|value| {
+            value["opportunities"][0]["priority_fee_bid"] = serde_json::json!(1000);
+        });
+
+        let report = validate_fixture_case(FixtureValidationCase {
+            fixture_set_id: "drift_synthetic_margin_001",
+            manifest_json: MARGIN_MANIFEST,
+            dry_run_output_json: &execution_surface,
+            content_files: margin_content_files(),
+            expected_status: DryRunStatus::Unsupported,
+            expected_reason_codes: &[RiskReasonCode::ExecutionDisabledDryRun],
+        });
+
+        assert!(!report.passed);
+        assert!(report
+            .failures
+            .iter()
+            .any(|failure| failure.contains("capital_or_execution_policy")));
+    }
+
+    fn mutate_margin_dry_run(mutator: impl FnOnce(&mut serde_json::Value)) -> String {
+        let mut value: serde_json::Value =
+            serde_json::from_str(MARGIN_DRY_RUN).expect("margin dry-run fixture must parse");
+        mutator(&mut value);
+        serde_json::to_string_pretty(&value).expect("mutated margin dry-run fixture must serialize")
+    }
+
+    #[test]
     fn rejects_fixture_content_checksum_mismatch() {
         let report = validate_fixture_case(FixtureValidationCase {
             fixture_set_id: "drift_synthetic_stale_oracle_001",

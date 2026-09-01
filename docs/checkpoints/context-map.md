@@ -149,11 +149,11 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Continue Drift legacy pagination from cursor `297aqf8WJXieG1rMtb7LcpDak8i6f5WWcGogvSYsrQcnHA5RFjV2c4JyadMjPfi8BQWaDaPVZTdgeW2PBWQSE14h`.
+1. Continue Drift legacy pagination from cursor `2fhTXQqs9qnyX4mBrcKAuTLipxnWyfLG7kj7YRn3EpRNBQoRLignDCCVxCRx1ckfntdhYsSuC6deefgTLS9ghYKm`.
 2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) lifecycle evidence lands from canonical source or direct Jupiter confirmation.
 3. Decode additional Drift fields only after `scripts/validate_drift_readonly_state.py` passes on current local public-field target output and new offsets pass [Drift public field source review checklist](../drift-public-field-source-review-checklist.md).
 4. Keep `docs/proof-pack-changelog.md` current for reviewer-facing shipped evidence.
 5. Add source-backed BD/grant positioning notes from the Solana Expert thread without creating MVP claims.
-6. Jupiter account-layout decode is source-authorized through the live onchain Anchor IDL; keep lifecycle pairing and replay blocked until source-reviewed role maps or fixture signatures land.
+6. Jupiter account-layout decode is source-authorized through the live onchain Anchor IDL, and a local role-map probe now binds sampled public transaction accounts to onchain-IDL roles; keep verified lifecycle pairing and replay blocked until before/after state evidence and source-review gates land.
 7. Refresh the local Word proposal after public proof-pack text changes materially.
 8. Keep Railway and GitHub Pages mirrors equivalent.

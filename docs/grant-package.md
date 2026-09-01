@@ -63,7 +63,7 @@ Grant-funded work stays read-only, public, reproducible, and no-signing. Commerc
 
 - Historical perps-specific decoded datasets are still thin.
 - Drift is the first adapter lane with source-backed selected public guardrail fields; market-economics decode and historical liquidation reconstruction still need to be built before they can be claimed.
-- Jupiter Perps remains useful as negative evidence and source-authority diligence, but canonical source/IDL authority and verified request/fulfillment pairing remain blocked.
+- Jupiter Perps now has source-authorized account-layout decode and local structural role-map probing, but verified request/fulfillment pairing, keeper semantics, and replay remain blocked.
 - Phoenix/Rise is now a source-pinned market-telemetry and Hawkeye-view planning lane, not a trader-state decode, order-operation, or liquidation replay lane.
 - Validator/RPC telemetry access may vary.
 - Public data must be scrubbed for secrets.

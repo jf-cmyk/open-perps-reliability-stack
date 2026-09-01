@@ -277,7 +277,7 @@ def main():
     )
     for item in [
         "Drift remains the first fixture-backed adapter path. Historical liquidation reconstruction should advance only from public finalized transaction evidence and pinned legacy source, with migrated Velocity-hosted records used as discovery or corroboration rather than sole authority.",
-        "Jupiter Perps is relevant and should stay in scope, but its canonical position is source-authority blocked: first-party docs support lifecycle semantics, while binary account decoding and deterministic request-to-position pairing require a current Jupiter-confirmed IDL/source or hashable artifact.",
+        "Jupiter Perps is relevant and should stay in scope. Account-layout decode is now source-authorized through the live onchain Anchor IDL, and local role-map probing can bind sampled public transactions to IDL instruction roles; deterministic request-to-position pairing, keeper semantics, and replay still require before/after lifecycle evidence and source-review gates.",
         "Phoenix/Rise is now a source-pinned follow-on venue lane because public gold and crude-oil perps surfaces expose mark, index, volume, open interest, funding, and market state. Production program and Hawkeye view constants are source-pinned from Ellipsis Labs Rise, and a Phoenix/Hawkeye validator-plan contract records scrubbed fixture gates, while exact oracle/input identities, account-level decode, trader monitoring, and replay remain blocked.",
         "Frontier Traders creates a review-only design-partner channel for professional trader reliability feedback, but it does not establish Blocksize access, demand, or endorsement.",
         "Pay.sh, Solana Subscriptions, and Commerce Kit are useful for future commercial packaging and revenue-routing clarity. They should stay outside the grant-funded public-good core unless explicitly framed as optional or convertible-grant scope.",
@@ -370,7 +370,8 @@ def main():
         "Jupiter source-authority confirmation packet and send-ready outbound note.",
         "Source-review record schema and examples for Jupiter authority confirmation and Drift public-field promotion.",
         "Scrubbed Drift liquidation-history probe schema, validator, and bounded discovery output contract.",
-        "Drift legacy liquidation-history diligence has scanned 308,000 finalized program transactions from July 22 back through slot 415272972 at 2026-04-24T04:25:58Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
+        "Drift legacy liquidation-history diligence has scanned 318,000 finalized program transactions from July 22 back through slot 415091952 at 2026-04-23T08:31:20Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
+        "Jupiter lifecycle role-map probe contract that binds sampled public transactions to hash-pinned onchain-IDL instruction roles while keeping signatures, account keys, raw instructions, raw transactions, verified pairing, keeper semantics, replay, and execution claims out of public artifacts.",
         "Slot-regime benchmark package for the source-governed 400ms-to-350ms activation boundary at slot 440208000, with pre/post windows for future read-only normalization and explicit no-performance-claim gates.",
         "Continuous Solana ecosystem research loop with hot state, evidence ledger, opportunity pipeline, and checkpoint archive.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
@@ -397,11 +398,11 @@ def main():
     risks = [
         ("Perps-specific historical liquidation data is thin.", "Start with fixture-backed Drift adapter shape tests, synthetic golden fixtures, and explicit data-quality caveats before claiming replay coverage."),
         ("Venue schemas drift.", "Adapter metadata includes program IDs, schema versions, supported account schema versions, IDL hash, source update timestamps, and caveats."),
-        ("Jupiter source authority is not yet canonical.", "Use first-party Jupiter docs only for semantic labels. Keep binary decode, deterministic request/fulfillment pairing, and historical replay blocked until Jupiter provides or confirms a current hashable IDL/source and fixtures."),
+        ("Jupiter lifecycle proof is not yet canonical.", "Use the live onchain Anchor IDL for account-layout decode and structural role-map probing only. Keep deterministic request/fulfillment pairing, keeper semantics, and historical replay blocked until before/after lifecycle evidence and source-review gates land."),
         ("Phoenix public telemetry is not yet account-level replay proof.", "Use public GOLD and external-asset surfaces plus source-pinned program/Hawkeye constants for adapter-contract design while keeping exact oracle inputs, account layouts, and transaction fixtures as explicit gates."),
         ("Research findings could drift into overclaiming.", "Maintain the Solana ecosystem loop as source-backed project memory, separate fact from inference, and require proof artifacts before promoting any partner, demand, revenue, or protocol-safety claim."),
         ("Public datasets leak private information.", "Publish gates and scrub policy remove RPC URLs, API keys, internal paths, route labels, private strategy thresholds, capital controls, and signer/custody metadata."),
-        ("Historical Helius decode proof is not complete yet.", "The local read-only target discovery command succeeds, but deeper Drift market/oracle and Jupiter pool/custody decode coverage still needs public target resolution and scrubbed proof output before it can be claimed."),
+        ("Historical Helius decode proof is not complete yet.", "The local read-only target discovery and Jupiter layout/role-map commands succeed, but deeper Drift market economics, before/after Jupiter lifecycle state, and Phoenix account-level decode still need scrubbed proof output before they can be claimed."),
         ("Project scope creeps into execution.", "Dry-run transaction plans require requires_signer=false and submission_disabled=true; production execution remains out of scope."),
         ("Commercial track could confuse grant reviewers.", "Grant-funded outputs are explicitly public-good OSS. Commercial services are disclosed as future/out-of-scope and cannot privatize grant-funded modules."),
     ]

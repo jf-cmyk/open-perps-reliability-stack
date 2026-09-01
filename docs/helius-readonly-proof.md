@@ -175,7 +175,7 @@ Do not include:
 ## Next Implementation Tasks
 
 1. Pin canonical Jupiter Perps IDL/source provenance before any Jupiter `decoded_snapshot` claim.
-2. Upgrade Jupiter lifecycle evidence from `candidate_pair_unverified` only after source-backed request/position account roles are confirmed.
+2. Upgrade Jupiter lifecycle evidence from `candidate_pair_unverified` only after source-backed request/position account roles are paired with before/after state evidence and fixture signatures.
 3. Extend the data reconstruction envelope example to represent `decoded_snapshot` and `replay_ready` proof states.
 4. Add any further Drift public fields only after the [Drift public field source review checklist](drift-public-field-source-review-checklist.md), source/offset validation, and scrub review are complete.
 5. Keep all live outputs under `target/` until scrubbed examples are reviewed for public release.

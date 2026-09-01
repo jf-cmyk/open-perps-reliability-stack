@@ -28,7 +28,7 @@ rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
 rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
-rg -q "308,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
+rg -q "318,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
 test -f .railway/railway.ts
@@ -48,6 +48,7 @@ python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-onchain-decode-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/jupiter-lifecycle-role-map-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/slot-regime-benchmark-v0.json >/dev/null
@@ -81,6 +82,7 @@ python3 -m json.tool datasets/sample/jupiter_synthetic_malformed_source_authorit
 python3 -m json.tool tests/fixtures/public-packages/invalid/cases.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_transaction_history_example.json >/dev/null
+python3 -m json.tool examples/datasets/jupiter_lifecycle_role_map_probe_example.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_liquidation_history.py
@@ -88,6 +90,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_drift_
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_drift_liquidation_history_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_perps_transaction_history.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_lifecycle_role_map.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_market_telemetry_probe.py
@@ -135,6 +138,7 @@ test -f schemas/datasets/spot-guardrail-snapshot-v0.json
 test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f schemas/datasets/jupiter-authority-gap-v0.json
 test -f schemas/datasets/jupiter-onchain-decode-v0.json
+test -f schemas/datasets/jupiter-lifecycle-role-map-probe-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-probe-v0.json
 test -f schemas/datasets/slot-regime-benchmark-v0.json
@@ -172,6 +176,7 @@ test -f datasets/sample/jupiter_synthetic_malformed_source_authority_001/dry_run
 test -f datasets/sample/jupiter_synthetic_malformed_source_authority_001/manifest.json
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json
 test -f examples/datasets/jupiter_perps_transaction_history_example.json
+test -f examples/datasets/jupiter_lifecycle_role_map_probe_example.json
 test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh
 test -x scripts/discover_drift_readonly_state.py
@@ -180,6 +185,7 @@ test -x scripts/validate_drift_readonly_state.py
 test -x scripts/validate_drift_liquidation_history_probe.py
 test -x scripts/discover_jupiter_perps_readonly_targets.py
 test -x scripts/discover_jupiter_perps_transaction_history.py
+test -x scripts/discover_jupiter_lifecycle_role_map.py
 test -x scripts/audit_jupiter_source_authority.py
 test -x scripts/discover_phoenix_market_telemetry.py
 test -x scripts/validate_phoenix_market_telemetry_probe.py

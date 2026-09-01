@@ -39,6 +39,12 @@ scripts/decode_jupiter_position_examples.py --out target/oprs-jupiter-position-d
 scripts/validate_public_jupiter_onchain_decode.py
 ```
 
+Local-only lifecycle role-map probe command:
+
+```bash
+scripts/discover_jupiter_lifecycle_role_map.py --limit 40 --transaction-limit 20 --out target/oprs-jupiter-lifecycle-role-map/latest.json
+```
+
 Confirmed:
 
 - Jupiter Perpetuals program metadata.
@@ -48,6 +54,7 @@ Confirmed:
 - The live Jupiter Perps program exposes a hashable onchain Anchor IDL at `38GK1i4cQPAxqrbfKX4RRMNfXpKRn5PgLFHVJeXm1C8Y`.
 - The extracted normalized IDL hash is `611de36592f4508438df16ebee2ff73b9789eda105ec712575d515b432d1ebaa`.
 - Source-authorized scrubbed account-layout decode now exists for `Position` and `PositionRequest`.
+- Local role-map probing can now bind sampled public Jupiter Perps instruction accounts to onchain-IDL role names while publishing only hashed account/signature summaries under `target/`.
 - Scrubbed local output under `target/`.
 - No RPC URL, key, signer, wallet, custody, capital, or transaction-submission data is printed or committed.
 
@@ -92,13 +99,15 @@ The docs-linked third-party IDL sample is not treated as canonical because its n
 
 OPRS may claim Jupiter program/custody/oracle metadata discovery, public transaction-history sampling, unverified stronger candidate labeling, and source-authorized `Position` / `PositionRequest` account-layout decode. It still must not claim verified request/fulfillment pairing, keeper behavior, historical liquidation replay, protocol safety, or production readiness.
 
+The lifecycle role-map probe is a local next step, not a public replay claim. It upgrades the previous shared-key heuristic into an onchain-IDL role-binding inspection, but it still does not decode before/after state transitions or prove a request was fulfilled into a position.
+
 The exact confirmation package needed to unblock verified lifecycle pairing is tracked in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md). The narrow remaining ask is whether Jupiter can confirm instruction account-role maps, request/fulfillment lifecycle semantics, and public mainnet fixture signatures for mainnet program `PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu`.
 
 ## Safe Next Steps
 
 1. Use the onchain IDL hash as the account-layout decode authority.
 2. Keep live decode output under `target/` and publish only scrubbed public packages.
-3. Use the transaction-history sample as the foundation for later request/fulfillment pairing, but do not claim pairing until shared `PositionRequest` / `Position` evidence is source-linked.
+3. Use the local lifecycle role-map probe as the foundation for later request/fulfillment pairing, but do not claim pairing until shared `PositionRequest` / `Position` evidence is source-linked and before/after state transitions are verified.
 4. Send the narrowed lifecycle confirmation ask in [Jupiter position authority confirmation](jupiter-position-authority-confirmation.md) before promoting verified lifecycle or replay claims.
 5. If a Jupiter API key is used, keep it in `.env` as `JUPITER_API_KEY` and restrict probes to read-only metadata/schema/fixture discovery.
 

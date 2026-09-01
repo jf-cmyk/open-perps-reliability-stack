@@ -1,0 +1,99 @@
+{
+  "schema_version": "oprs.jupiter_lifecycle_role_map_probe.v0",
+  "dataset_name": "jupiter_lifecycle_role_map_probe_local_example",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "generated_at_unix": 1788293190,
+  "generated_at_utc": "2026-09-01T00:00:00+00:00",
+  "generated_by": "scripts/discover_jupiter_lifecycle_role_map.py",
+  "source_authority": {
+    "program_id": "PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu",
+    "role_map_source": "onchain_anchor_idl_instruction_accounts",
+    "account_layout_source": "onchain_anchor_idl_accounts",
+    "official_docs_context": [
+      "https://developers.jup.ag/docs/perps/position-request-account",
+      "https://developers.jup.ag/docs/perps/position-account",
+      "https://docs.jup.ag/user-docs/trade/perps-and-jlp/technical-reference"
+    ]
+  },
+  "query": {
+    "commitment": "confirmed",
+    "signature_limit": 1,
+    "transaction_limit": 1,
+    "methods": [
+      "getSignaturesForAddress",
+      "getTransaction",
+      "getMultipleAccounts"
+    ],
+    "account_metadata_data_slice_len": 0
+  },
+  "instruction_summary": {
+    "idl_instruction_count": 59,
+    "sampled_signature_count": 1,
+    "sampled_transaction_count": 1,
+    "jupiter_instruction_observation_count": 1,
+    "matched_instruction_counts": {
+      "increasePosition": 1
+    },
+    "unmatched_instruction_count": 0
+  },
+  "role_map_observations": [
+    {
+      "observation_id": "1111111111111111111111111111111111111111111111111111111111111111",
+      "signature_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "slot": 0,
+      "block_time": 0,
+      "instruction_group": "top_level",
+      "instruction_index": 0,
+      "instruction_name": "increasePosition",
+      "instruction_discriminator_hex": "0011223344556677",
+      "matched_onchain_idl_instruction": true,
+      "account_index_count": 18,
+      "idl_role_count": 18,
+      "role_count_matches_observed_accounts": true,
+      "bound_role_count": 18,
+      "role_bindings": [
+        {
+          "role_index": 0,
+          "role": "owner",
+          "role_path": "owner",
+          "idl_is_mut": true,
+          "idl_is_signer": true,
+          "observed_pubkey_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+          "observed_owner_kind": "other_public_owner_hash",
+          "observed_owner_hash": "4444444444444444444444444444444444444444444444444444444444444444",
+          "observed_executable": false
+        }
+      ],
+      "role_bindings_truncated": false,
+      "raw_instruction_data_committed": false,
+      "raw_transaction_committed": false
+    }
+  ],
+  "readiness": {
+    "live_rpc_read_claimed": true,
+    "instruction_account_role_maps_from_idl": true,
+    "transaction_role_bindings_observed": true,
+    "verified_request_fulfillment_pair_claimed": false,
+    "position_request_state_transition_claimed": false,
+    "keeper_semantics_claimed": false,
+    "liquidation_replay_claimed": false,
+    "execution_claimed": false,
+    "raw_transaction_committed": false,
+    "raw_instruction_data_committed": false,
+    "raw_account_bytes_committed": false,
+    "account_pubkeys_committed": false
+  },
+  "known_limitations": [
+    "Example file only; live output is written under target/ and is not committed.",
+    "Role-count matches are structural evidence only and do not prove lifecycle pairing or replay readiness."
+  ],
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "load_keypair",
+    "bid_priority_fee",
+    "manage_capital",
+    "keeper_operation"
+  ]
+}

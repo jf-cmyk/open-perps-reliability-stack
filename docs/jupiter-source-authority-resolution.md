@@ -118,4 +118,6 @@ After acceptable lifecycle evidence lands, OPRS can start a local-only verified-
 5. Keep outputs under `target/` until scrub review passes.
 6. Publish only a scrubbed proof-pack update after source-review approval.
 
+Current local development has started the safer prerequisite in `scripts/discover_jupiter_lifecycle_role_map.py`: it binds sampled public transaction account indexes to role names from the hash-pinned onchain IDL, emits only hashed account/signature summaries under `target/`, and keeps verified pairing/replay blocked.
+
 Even after source authority lands, transaction submission, signing, keeper behavior, custody, capital deployment, and production execution remain out of scope.

@@ -153,8 +153,8 @@
     ],
     "known_gaps": [
       "Example file only; live output is written under target/ and is not committed.",
-      "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims.",
-      "Account binary layouts are not decoded in this metadata example."
+      "Account-layout decode is handled by the separate onchain IDL proof.",
+      "Verified Jupiter lifecycle pairing and replay remain blocked until before/after state evidence and source-review gates land."
     ],
     "source_limitations": [
       "Program, custody, and oracle addresses are resolved from current Jupiter public docs.",

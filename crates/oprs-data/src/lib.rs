@@ -446,6 +446,13 @@ pub fn validate_public_dataset_scrub_text(path: &str, text: &str) -> Vec<ScrubVi
             "capital_limits",
             "execution_policy",
             "execution_limits",
+            "priority_fee_bid",
+            "jito_submit",
+            "block_engine",
+            "submit_transaction",
+            "execute_transaction",
+            "build_transaction",
+            "order_endpoint",
         ],
     ) {
         violations.push(ScrubViolation::new(

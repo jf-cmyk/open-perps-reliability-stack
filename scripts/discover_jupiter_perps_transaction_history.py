@@ -493,8 +493,8 @@ def build_report(
                 "This command samples public program signatures and transaction summaries only.",
                 "Lifecycle candidates are shared-account-key heuristics only and are not verified request/fulfillment pairs.",
                 "A shared Jupiter-owned non-executable account strengthens a candidate but is not sufficient to claim request/fulfillment pairing.",
-                "It does not decode PositionRequest or Position account binary layouts.",
-                "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims.",
+                "It does not use decoded PositionRequest or Position state to prove lifecycle transitions.",
+                "Account-layout decode is handled by the separate onchain IDL proof; verified lifecycle pairing and replay remain blocked.",
             ],
             "source_limitations": [
                 "RPC retention and provider backfill limits are not assessed.",

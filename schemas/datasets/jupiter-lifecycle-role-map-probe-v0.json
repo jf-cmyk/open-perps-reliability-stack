@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/jupiter-lifecycle-role-map-probe-v0.json",
+  "title": "Open Perps Reliability Stack Jupiter Lifecycle Role Map Probe v0",
+  "type": "object",
+  "required": ["schema_version", "dataset_name", "protocol", "chain_id", "source_authority", "query", "instruction_summary", "role_map_observations", "readiness", "known_limitations"],
+  "properties": {
+    "schema_version": { "const": "oprs.jupiter_lifecycle_role_map_probe.v0" },
+    "dataset_name": { "type": "string", "minLength": 1 },
+    "protocol": { "const": "jupiter_perps" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "source_authority": { "type": "object", "additionalProperties": true },
+    "query": { "type": "object", "additionalProperties": true },
+    "instruction_summary": {
+      "type": "object",
+      "required": ["idl_instruction_count", "sampled_signature_count", "sampled_transaction_count", "jupiter_instruction_observation_count", "matched_instruction_counts", "unmatched_instruction_count"],
+      "properties": {
+        "idl_instruction_count": { "type": "integer", "minimum": 1 },
+        "sampled_signature_count": { "type": "integer", "minimum": 0 },
+        "sampled_transaction_count": { "type": "integer", "minimum": 0 },
+        "jupiter_instruction_observation_count": { "type": "integer", "minimum": 0 },
+        "matched_instruction_counts": { "type": "object", "additionalProperties": true },
+        "unmatched_instruction_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "role_map_observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["observation_id", "signature_hash", "instruction_name", "matched_onchain_idl_instruction", "account_index_count", "idl_role_count", "role_count_matches_observed_accounts", "role_bindings", "raw_instruction_data_committed", "raw_transaction_committed"],
+        "properties": {
+          "observation_id": { "$ref": "#/$defs/sha256" },
+          "signature_hash": { "$ref": "#/$defs/sha256" },
+          "instruction_name": { "type": "string", "minLength": 1 },
+          "matched_onchain_idl_instruction": { "type": "boolean" },
+          "account_index_count": { "type": "integer", "minimum": 0 },
+          "idl_role_count": { "type": "integer", "minimum": 0 },
+          "role_count_matches_observed_accounts": { "type": "boolean" },
+          "role_bindings": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+          "raw_instruction_data_committed": { "const": false },
+          "raw_transaction_committed": { "const": false }
+        },
+        "additionalProperties": true
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["instruction_account_role_maps_from_idl", "verified_request_fulfillment_pair_claimed", "position_request_state_transition_claimed", "keeper_semantics_claimed", "liquidation_replay_claimed", "execution_claimed", "raw_transaction_committed", "raw_instruction_data_committed", "raw_account_bytes_committed", "account_pubkeys_committed"],
+      "properties": {
+        "instruction_account_role_maps_from_idl": { "const": true },
+        "verified_request_fulfillment_pair_claimed": { "const": false },
+        "position_request_state_transition_claimed": { "const": false },
+        "keeper_semantics_claimed": { "const": false },
+        "liquidation_replay_claimed": { "const": false },
+        "execution_claimed": { "const": false },
+        "raw_transaction_committed": { "const": false },
+        "raw_instruction_data_committed": { "const": false },
+        "raw_account_bytes_committed": { "const": false },
+        "account_pubkeys_committed": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "known_limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

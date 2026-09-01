@@ -310,8 +310,8 @@ def build_report(rpc_url: str) -> dict[str, Any]:
                 "target/oprs-jupiter-perps-readonly-targets/latest.json"
             ],
             "known_gaps": [
-                "This command probes account metadata and target resolution only; it does not decode account binary layouts yet.",
-                "Canonical Jupiter Perps IDL/source revision remains unresolved and must be pinned before decoded_snapshot claims.",
+                "This command probes account metadata and target resolution only; account-layout decode is handled by the separate onchain IDL proof.",
+                "Verified Jupiter lifecycle pairing and replay remain blocked until before/after state evidence and source-review gates land.",
                 "No request, fulfillment, position, pre-state, transaction history, or liquidation event reconstruction is performed.",
             ],
             "source_limitations": [
