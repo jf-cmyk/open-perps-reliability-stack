@@ -17,15 +17,18 @@ rg -q "Open Perps Reliability Stack Proof Pack" index.html
 rg -q "Read-only" index.html
 rg -q "Dry-run" index.html
 rg -q "docs/drift-liquidation-scan-boundary.md" index.html
+rg -q "docs/proof-pack-changelog.md" index.html
 rg -q "examples/public/slot-regime-benchmark-v0/benchmark_windows.json" index.html
 rg -q "docs/phoenix-hawkeye-validator-plan.md" index.html
 rg -q "Open Perps" apps/dashboard/index.html
 rg -q "No live execution" apps/dashboard/index.html
+rg -q "Protocol Gates" apps/dashboard/index.html
+rg -q "../../docs/proof-pack-changelog.md" apps/dashboard/index.html
 rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
 rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
-rg -q "288,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
+rg -q "298,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
 test -f .railway/railway.ts
@@ -110,6 +113,7 @@ rg -q 'try_files \$uri \$uri/ =404;' deploy/railway/nginx.conf.template
 rg -q '^docs/checkpoints$' .dockerignore
 test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
+test -f docs/proof-pack-changelog.md
 test -f docs/drift-decoder-provenance.md
 test -f docs/drift-liquidation-scan-boundary.md
 test -f docs/jupiter-perps-provenance.md

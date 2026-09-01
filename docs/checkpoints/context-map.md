@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-09-01-drift-288k-railway-iac-checkpoint.md)
+1. [Current checkpoint](2026-09-01-drift-298k-proof-changelog-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -148,10 +148,11 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Deploy and hosted-smoke-check the Phoenix market telemetry package if not already deployed.
+1. Continue Drift legacy pagination from cursor `2vXjFAqSK23ykcvg36GBo2skhHjnxzZ8C2ZW2Csovf3A8Sgqdt4pB5NeczNmGFn1PbHYr62ZayoANvARH8fzrtd1`.
 2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) evidence lands from canonical source or direct Jupiter confirmation.
 3. Decode additional Drift fields only after `scripts/validate_drift_readonly_state.py` passes on current local public-field target output and new offsets pass [Drift public field source review checklist](../drift-public-field-source-review-checklist.md).
-4. Add source-backed BD/grant positioning notes from the Solana Expert thread without creating MVP claims.
-5. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
-6. Refresh the local Word proposal only after confirming no concurrent Word edits need preservation.
-7. Keep Railway and GitHub Pages mirrors equivalent.
+4. Keep `docs/proof-pack-changelog.md` current for reviewer-facing shipped evidence.
+5. Add source-backed BD/grant positioning notes from the Solana Expert thread without creating MVP claims.
+6. Keep Jupiter binary decode blocked until canonical IDL/source confirmation.
+7. Refresh the local Word proposal after public proof-pack text changes materially.
+8. Keep Railway and GitHub Pages mirrors equivalent.

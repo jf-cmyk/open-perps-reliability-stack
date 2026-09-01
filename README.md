@@ -32,6 +32,7 @@ Hosted proof-pack MVP:
 - [OSS and commercial boundary](docs/oss-commercial-boundary.md)
 - [Service boundaries](docs/service-boundaries.md)
 - [Public artifact boundary](docs/public-artifact-boundary.md)
+- [Proof-pack changelog](docs/proof-pack-changelog.md)
 - [Public dataset contract](docs/public-dataset-contract.md)
 - [MVP proof checklist](docs/mvp-proof-checklist.md)
 - [Reviewer proof-pack index](index.html)

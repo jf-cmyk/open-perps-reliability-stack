@@ -258,6 +258,32 @@
         overflow-wrap: anywhere;
       }
 
+      .gate-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .gate-row {
+        display: grid;
+        grid-template-columns: 118px minmax(0, 1fr);
+        gap: 10px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 8px;
+      }
+
+      .gate-row:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .gate-status {
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
       .foot {
         color: var(--muted);
         font-size: 12px;
@@ -361,6 +387,10 @@
             <div class="link-row">
               <a class="link-title" href="docs/public-artifact-boundary.md">Public Artifacts</a>
               <p class="link-copy">What is served to reviewers, what stays in GitHub project memory, and what is never public.</p>
+            </div>
+            <div class="link-row">
+              <a class="link-title" href="docs/proof-pack-changelog.md">Proof Changelog</a>
+              <p class="link-copy">Reviewer-facing progress log for shipped proof-pack evidence and current claim boundaries.</p>
             </div>
             <div class="link-row">
               <a class="link-title" href="datasets/sample/fixture_catalog.json">Fixture Catalog</a>
@@ -470,6 +500,30 @@ cargo test</pre>
           </div>
         </div>
 
+        <div class="panel">
+          <h2>Protocol Gates</h2>
+          <div class="gate-list">
+            <div class="gate-row">
+              <span class="gate-status">Drift</span>
+              <p class="link-copy">Read-only adapter and guardrail evidence are public; historical liquidation reconstruction remains candidate-gated.</p>
+            </div>
+            <div class="gate-row">
+              <span class="gate-status">Jupiter</span>
+              <p class="link-copy">Target discovery and authority-gap package are public; binary decode and verified pairing remain blocked.</p>
+            </div>
+            <div class="gate-row">
+              <span class="gate-status">Phoenix</span>
+              <p class="link-copy">Source-pinned telemetry and Hawkeye planning are public; account decode and replay are not claimed.</p>
+            </div>
+            <div class="gate-row">
+              <span class="gate-status">Runtime</span>
+              <p class="link-copy">Slot-regime activation boundary is public; performance improvement is not claimed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="two">
         <div class="panel">
           <h2>Reason Codes</h2>
           <div class="codes">

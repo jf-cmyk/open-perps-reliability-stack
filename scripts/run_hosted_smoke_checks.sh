@@ -46,16 +46,26 @@ assert_contains "Open Perps Reliability Stack Proof Pack" "$workdir/index.html"
 assert_contains "Read-only" "$workdir/index.html"
 assert_contains "Dry-run" "$workdir/index.html"
 assert_contains "docs/drift-liquidation-scan-boundary.md" "$workdir/index.html"
+assert_contains "docs/proof-pack-changelog.md" "$workdir/index.html"
 assert_contains "docs/phoenix-hawkeye-validator-plan.md" "$workdir/index.html"
 
 echo "== Fetch dashboard =="
 fetch "/apps/dashboard/" "$workdir/dashboard.html"
 assert_contains "Open Perps" "$workdir/dashboard.html"
 assert_contains "No live execution" "$workdir/dashboard.html"
+assert_contains "Protocol Gates" "$workdir/dashboard.html"
 assert_contains "ExecutionDisabledDryRun" "$workdir/dashboard.html"
 assert_contains "AdapterVersionMismatch" "$workdir/dashboard.html"
 assert_contains "../../docs/drift-liquidation-scan-boundary.md" "$workdir/dashboard.html"
+assert_contains "../../docs/proof-pack-changelog.md" "$workdir/dashboard.html"
 assert_contains "../../docs/phoenix-hawkeye-validator-plan.md" "$workdir/dashboard.html"
+
+echo "== Fetch proof-pack changelog =="
+fetch "/docs/proof-pack-changelog.md" "$workdir/proof-pack-changelog.md"
+assert_contains "Proof-Pack Changelog" "$workdir/proof-pack-changelog.md"
+assert_contains "298,000 finalized transactions" "$workdir/proof-pack-changelog.md"
+assert_contains "JUPITER_API_KEY" "$workdir/proof-pack-changelog.md"
+assert_contains "production execution readiness" "$workdir/proof-pack-changelog.md"
 
 echo "== Fetch reconstruction envelope =="
 fetch "/examples/datasets/data_reconstruction_envelope.json" "$workdir/data_reconstruction_envelope.json"
@@ -84,8 +94,8 @@ assert_contains "Shape Snapshot Scope" "$workdir/drift-decoder-provenance.md"
 echo "== Fetch Drift liquidation scan boundary =="
 fetch "/docs/drift-liquidation-scan-boundary.md" "$workdir/drift-liquidation-scan-boundary.md"
 assert_contains "Drift Liquidation Scan Boundary" "$workdir/drift-liquidation-scan-boundary.md"
-assert_contains "288,000 finalized transactions" "$workdir/drift-liquidation-scan-boundary.md"
-assert_contains "415592674" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "298,000 finalized transactions" "$workdir/drift-liquidation-scan-boundary.md"
+assert_contains "415423666" "$workdir/drift-liquidation-scan-boundary.md"
 assert_contains "does not prove" "$workdir/drift-liquidation-scan-boundary.md"
 assert_contains "Until then, the scan is source-governance progress only" "$workdir/drift-liquidation-scan-boundary.md"
 
@@ -291,7 +301,7 @@ if [ "$base_url" = "https://refreshing-art-production-86de.up.railway.app" ]; th
 fi
 
 echo "== Public secret marker check =="
-if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/drift-liquidation-scan-boundary.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json" "$workdir/slot-regime-benchmark.md" "$workdir/slot_regime_benchmark.json" "$workdir/slot_regime_benchmark_manifest.json" "$workdir/slot_regime_benchmark_dq.json" "$workdir/phoenix-hawkeye-validator-plan.md" "$workdir/phoenix_hawkeye_validator_plan_example.json"; then
+if assert_contains "HELIUS_RPC_URL|private_key|seed phrase|bearer token|wallet key" "$workdir/index.html" "$workdir/dashboard.html" "$workdir/proof-pack-changelog.md" "$workdir/data_reconstruction_envelope.json" "$workdir/readonly_target_discovery_example.json" "$workdir/drift_readonly_state_example.json" "$workdir/drift_shape_snapshot_example.json" "$workdir/drift_readonly_decode_worker_run_example.json" "$workdir/public_contract_index.json" "$workdir/drift_spot_guardrails.json" "$workdir/drift_perp_guardrails.json" "$workdir/drift_guardrail_manifest.json" "$workdir/drift_guardrail_dq.json" "$workdir/drift-decoder-provenance.md" "$workdir/drift-liquidation-scan-boundary.md" "$workdir/jupiter_perps_readonly_targets_example.json" "$workdir/jupiter_perps_transaction_history_example.json" "$workdir/jupiter-perps-provenance.md" "$workdir/jupiter_authority_gap.json" "$workdir/jupiter_authority_gap_manifest.json" "$workdir/jupiter_authority_gap_dq.json" "$workdir/jupiter_lifecycle_fixture.json" "$workdir/jupiter_weak_lifecycle_fixture.json" "$workdir/jupiter_malformed_source_fixture.json" "$workdir/phoenix_market_telemetry.json" "$workdir/phoenix_market_telemetry_manifest.json" "$workdir/phoenix_market_telemetry_dq.json" "$workdir/slot-regime-benchmark.md" "$workdir/slot_regime_benchmark.json" "$workdir/slot_regime_benchmark_manifest.json" "$workdir/slot_regime_benchmark_dq.json" "$workdir/phoenix-hawkeye-validator-plan.md" "$workdir/phoenix_hawkeye_validator_plan_example.json"; then
   echo "Public proof pack/dashboard contains a forbidden secret marker" >&2
   exit 1
 fi

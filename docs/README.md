@@ -28,6 +28,7 @@
 - [OSS and commercial boundary](oss-commercial-boundary.md)
 - [Service boundaries](service-boundaries.md)
 - [Public artifact boundary](public-artifact-boundary.md)
+- [Proof-pack changelog](proof-pack-changelog.md)
 - [Public dataset contract](public-dataset-contract.md)
 - [MVP proof checklist](mvp-proof-checklist.md)
 - [Railway deployment](deployment-railway.md)
