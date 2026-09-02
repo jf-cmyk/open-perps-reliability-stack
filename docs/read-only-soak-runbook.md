@@ -108,6 +108,12 @@ At the end of the soak, create a summary with:
 - remaining blockers
 - recommendation: continue local, extend soak, launch read-only service, or stop
 
+Machine-readable contract:
+
+- Schema: `schemas/datasets/readonly-soak-summary-v0.json`
+- Example: `examples/datasets/readonly_soak_summary_example.json`
+- Validator: `scripts/validate_readonly_soak_summary.py`
+
 ## Pass Criteria
 
 The soak passes only if:

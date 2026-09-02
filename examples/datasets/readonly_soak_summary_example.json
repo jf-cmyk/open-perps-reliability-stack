@@ -1,0 +1,152 @@
+{
+  "schema_version": "oprs.readonly_soak_summary.v0",
+  "soak_id": "oprs-readonly-soak-template-001",
+  "status": "planned",
+  "service_boundary": {
+    "static_service_name": "refreshing-art",
+    "worker_service_name": "oprs-readonly-worker",
+    "worker_service_created": false,
+    "static_service_has_worker_secrets": false,
+    "public_outputs_enabled": false
+  },
+  "scope": {
+    "chain_id": "solana-mainnet-beta",
+    "protocols": ["drift_v2", "jupiter_perps"],
+    "source_data_mode": "public_read_only",
+    "output_mode": "private_target"
+  },
+  "run_limits": {
+    "bounded_jobs_only": true,
+    "max_signatures_per_run": 10,
+    "max_transactions_per_run": 5
+  },
+  "daily_checks": [
+    {
+      "day": 1,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Run the smallest bounded job and inspect logs before enabling any recurring schedule."
+    },
+    {
+      "day": 2,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Repeat the same job and compare output shape."
+    },
+    {
+      "day": 3,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Increase only one bound if the first two days are clean."
+    },
+    {
+      "day": 4,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Add one additional protocol probe only if the first probe remains stable."
+    },
+    {
+      "day": 5,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Review data-quality downgrades and provider errors."
+    },
+    {
+      "day": 6,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Re-run hosted smoke checks and confirm the static proof-pack boundary is unchanged."
+    },
+    {
+      "day": 7,
+      "date": "TBD",
+      "status": "planned",
+      "worker_completed_or_failed_closed": false,
+      "secret_marker_scan_passed": false,
+      "execution_marker_scan_passed": false,
+      "schema_validation_passed": false,
+      "probe_validator_passed": false,
+      "freshness_recorded": false,
+      "claim_boundary_reviewed": false,
+      "public_output_published": false,
+      "notes": "Produce pass/fail summary and launch recommendation."
+    }
+  ],
+  "summary": {
+    "expected_day_count": 7,
+    "passed_day_count": 0,
+    "failed_day_count": 0,
+    "stale_input_count": 0,
+    "schema_drift_count": 0,
+    "secret_marker_finding_count": 0,
+    "execution_marker_finding_count": 0
+  },
+  "safety_invariants": {
+    "signing_enabled": false,
+    "transaction_submission_enabled": false,
+    "priority_fee_bidding_enabled": false,
+    "block_engine_submission_enabled": false,
+    "keypair_loading_enabled": false,
+    "custody_enabled": false,
+    "capital_management_enabled": false
+  },
+  "exit_decision": {
+    "recommendation": "not_started",
+    "worker_can_be_operationally_live": false,
+    "execution_pilot_authorized": false,
+    "reason": "Template only; the worker service has not been created and no daily soak evidence has been recorded."
+  },
+  "known_limitations": [
+    "This example is a machine-checkable template, not a completed soak.",
+    "No hosted worker service is claimed.",
+    "No execution pilot is authorized."
+  ]
+}

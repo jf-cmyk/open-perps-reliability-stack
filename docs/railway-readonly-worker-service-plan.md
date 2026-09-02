@@ -111,6 +111,8 @@ Acceptance criteria:
 - Output includes source, slot/signature metadata, provider label, checksum or hash fields, and claim-boundary flags.
 - Output stays private until a validator produces a scrubbed public candidate.
 
+The 7-day soak summary must follow `schemas/datasets/readonly-soak-summary-v0.json` and pass `scripts/validate_readonly_soak_summary.py`.
+
 ## Output Promotion Gates
 
 A worker output can move from private run output to public proof-pack candidate only after:

@@ -179,6 +179,14 @@ Needed now:
 - Provide any production domain decision when a public custom domain is desired.
 - Provide monitoring destination later, such as email, Slack, PagerDuty, or another alert route.
 
+Why these require consent:
+
+- Separate Railway worker service: creates a new hosted process that may hold read-only RPC credentials, run on a schedule, generate private outputs, and incur cloud usage. Even without execution, that changes the operational and secret-handling boundary.
+- First post-MVP commercial lane: determines what Blocksize sells first, what claims can be made publicly, how grant-funded OSS stays separated from paid work, and which customer evidence should be collected.
+- Production custom domain: changes the public canonical URL, brand surface, reviewer links, DNS ownership, and maintenance burden.
+- Monitoring destination: routes operational alerts into a real inbox, Slack, PagerDuty, or equivalent system. Alerts can contain protocol names, failure metadata, and private operational context, so the destination should be intentional.
+- Execution pilot: introduces signing, wallet, custody, transaction-submission, capital, legal, and security risk. It needs a separate written approval package and is not implied by any read-only worker or diagnostics launch.
+
 Not needed now:
 
 - Private keys.

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/readonly-soak-summary-v0.json",
+  "title": "Open Perps Reliability Stack Read-Only Soak Summary v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "soak_id",
+    "status",
+    "service_boundary",
+    "scope",
+    "run_limits",
+    "daily_checks",
+    "summary",
+    "safety_invariants",
+    "exit_decision",
+    "known_limitations"
+  ],
+  "properties": {
+    "schema_version": { "const": "oprs.readonly_soak_summary.v0" },
+    "soak_id": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["planned", "in_progress", "passed", "failed", "extended"] },
+    "service_boundary": {
+      "type": "object",
+      "required": [
+        "static_service_name",
+        "worker_service_name",
+        "worker_service_created",
+        "static_service_has_worker_secrets",
+        "public_outputs_enabled"
+      ],
+      "properties": {
+        "static_service_name": { "type": "string", "minLength": 1 },
+        "worker_service_name": { "type": "string", "minLength": 1 },
+        "worker_service_created": { "type": "boolean" },
+        "static_service_has_worker_secrets": { "const": false },
+        "public_outputs_enabled": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": ["chain_id", "protocols", "source_data_mode", "output_mode"],
+      "properties": {
+        "chain_id": { "const": "solana-mainnet-beta" },
+        "protocols": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["drift_v2", "jupiter_perps", "phoenix_rise"] }
+        },
+        "source_data_mode": { "const": "public_read_only" },
+        "output_mode": { "enum": ["private_target", "scrubbed_public_candidate"] }
+      },
+      "additionalProperties": false
+    },
+    "run_limits": {
+      "type": "object",
+      "required": ["bounded_jobs_only", "max_signatures_per_run", "max_transactions_per_run"],
+      "properties": {
+        "bounded_jobs_only": { "const": true },
+        "max_signatures_per_run": { "type": "integer", "minimum": 0 },
+        "max_transactions_per_run": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "daily_checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "day",
+          "date",
+          "status",
+          "worker_completed_or_failed_closed",
+          "secret_marker_scan_passed",
+          "execution_marker_scan_passed",
+          "schema_validation_passed",
+          "probe_validator_passed",
+          "freshness_recorded",
+          "claim_boundary_reviewed",
+          "public_output_published"
+        ],
+        "properties": {
+          "day": { "type": "integer", "minimum": 1 },
+          "date": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["planned", "passed", "failed", "skipped"] },
+          "worker_completed_or_failed_closed": { "type": "boolean" },
+          "secret_marker_scan_passed": { "type": "boolean" },
+          "execution_marker_scan_passed": { "type": "boolean" },
+          "schema_validation_passed": { "type": "boolean" },
+          "probe_validator_passed": { "type": "boolean" },
+          "freshness_recorded": { "type": "boolean" },
+          "claim_boundary_reviewed": { "type": "boolean" },
+          "public_output_published": { "const": false },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "expected_day_count",
+        "passed_day_count",
+        "failed_day_count",
+        "stale_input_count",
+        "schema_drift_count",
+        "secret_marker_finding_count",
+        "execution_marker_finding_count"
+      ],
+      "properties": {
+        "expected_day_count": { "const": 7 },
+        "passed_day_count": { "type": "integer", "minimum": 0 },
+        "failed_day_count": { "type": "integer", "minimum": 0 },
+        "stale_input_count": { "type": "integer", "minimum": 0 },
+        "schema_drift_count": { "type": "integer", "minimum": 0 },
+        "secret_marker_finding_count": { "type": "integer", "minimum": 0 },
+        "execution_marker_finding_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "safety_invariants": {
+      "type": "object",
+      "required": [
+        "signing_enabled",
+        "transaction_submission_enabled",
+        "priority_fee_bidding_enabled",
+        "block_engine_submission_enabled",
+        "keypair_loading_enabled",
+        "custody_enabled",
+        "capital_management_enabled"
+      ],
+      "properties": {
+        "signing_enabled": { "const": false },
+        "transaction_submission_enabled": { "const": false },
+        "priority_fee_bidding_enabled": { "const": false },
+        "block_engine_submission_enabled": { "const": false },
+        "keypair_loading_enabled": { "const": false },
+        "custody_enabled": { "const": false },
+        "capital_management_enabled": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "exit_decision": {
+      "type": "object",
+      "required": ["recommendation", "worker_can_be_operationally_live", "execution_pilot_authorized"],
+      "properties": {
+        "recommendation": {
+          "enum": ["not_started", "continue_local", "extend_soak", "launch_read_only_service", "stop"]
+        },
+        "worker_can_be_operationally_live": { "type": "boolean" },
+        "execution_pilot_authorized": { "const": false },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false
+}

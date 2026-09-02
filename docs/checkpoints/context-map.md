@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-09-01-worker-soak-commercial-plan-checkpoint.md)
+1. [Current checkpoint](2026-09-02-soak-summary-jupiter-validator-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -28,6 +28,7 @@ Read when changing module boundaries, service boundaries, contracts, or future s
 - [Live readiness path](../live-readiness-path.md)
 - [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
 - [Read-only soak runbook](../read-only-soak-runbook.md)
+- [Jupiter verified pairing validator](../jupiter-verified-pairing-validator.md)
 - [ADR-0002: Adapter-first boundaries](../adr/0002-adapter-first-boundaries.md)
 - [ADR-0004: Deterministic replay before shadow mode](../adr/0004-deterministic-replay-before-shadow-mode.md)
 
@@ -80,6 +81,7 @@ Read when changing frontend/static reviewer artifacts:
 - [Live readiness path](../live-readiness-path.md)
 - [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
 - [Read-only soak runbook](../read-only-soak-runbook.md)
+- [Jupiter verified pairing validator](../jupiter-verified-pairing-validator.md)
 
 Required checks:
 
@@ -164,3 +166,4 @@ When agent guidance affects implementation order, summarize it in the next check
 7. Refresh the local Word proposal after public proof-pack text changes materially.
 8. Keep Railway and GitHub Pages mirrors equivalent.
 9. Design the separate Railway read-only worker service plan and 7-day soak checklist before adding hosted read-only secrets or recurring jobs.
+10. Add a local-only worker command wrapper and a synthetic Jupiter pairing-validator fixture before creating any hosted worker service.
