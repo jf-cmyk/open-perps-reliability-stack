@@ -94,10 +94,11 @@ Goal: move beyond the static MVP into repeatable hosted diagnostics without intr
 Acceptance criteria:
 
 - [Live readiness path](live-readiness-path.md) distinguishes static proof-pack hosting, live read-only services, commercial diagnostics, and any future execution pilot.
-- A separate read-only worker service plan exists before any server-side secret is added to Railway.
+- [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) exists before any server-side secret is added to Railway.
+- [Read-only soak runbook](read-only-soak-runbook.md) defines the 7-day operational acceptance gate.
 - Generated datasets include source, slot, provider, freshness, checksum, and scrub metadata.
 - Continuous read-only runs soak for at least 7 days without secret leakage or unexplained data drift.
-- Paid diagnostics and partner-support offers are framed around read-only reliability outputs, not production trading or profit claims.
+- Paid diagnostics and partner-support offers are framed around [read-only reliability outputs](commercial-diagnostics-brief.md), not production trading or profit claims.
 - Any execution pilot remains blocked until security, legal, signer, capital, monitoring, runbook, and founder approval gates are complete.
 
 ## Active Dependencies

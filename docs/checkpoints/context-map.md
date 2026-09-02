@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-09-01-live-readiness-path-checkpoint.md)
+1. [Current checkpoint](2026-09-01-worker-soak-commercial-plan-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -26,6 +26,8 @@ Read when changing module boundaries, service boundaries, contracts, or future s
 - [Data model](../data-model.md)
 - [Liquidation dry-run and replay](../liquidation-dry-run.md)
 - [Live readiness path](../live-readiness-path.md)
+- [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
+- [Read-only soak runbook](../read-only-soak-runbook.md)
 - [ADR-0002: Adapter-first boundaries](../adr/0002-adapter-first-boundaries.md)
 - [ADR-0004: Deterministic replay before shadow mode](../adr/0004-deterministic-replay-before-shadow-mode.md)
 
@@ -76,6 +78,8 @@ Read when changing frontend/static reviewer artifacts:
 - [Reviewer-facing grant proposal](../solana-foundation-developer-tooling-proposal.md)
 - [Railway deployment](../deployment-railway.md)
 - [Live readiness path](../live-readiness-path.md)
+- [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
+- [Read-only soak runbook](../read-only-soak-runbook.md)
 
 Required checks:
 

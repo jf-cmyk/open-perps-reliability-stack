@@ -33,6 +33,9 @@
 - [Public dataset contract](public-dataset-contract.md)
 - [MVP proof checklist](mvp-proof-checklist.md)
 - [Live readiness path](live-readiness-path.md)
+- [Railway read-only worker service plan](railway-readonly-worker-service-plan.md)
+- [Read-only soak runbook](read-only-soak-runbook.md)
+- [Commercial diagnostics brief](commercial-diagnostics-brief.md)
 - [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
 

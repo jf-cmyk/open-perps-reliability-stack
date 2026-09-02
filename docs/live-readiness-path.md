@@ -78,6 +78,7 @@ Goal: turn static proof into repeatable read-only evidence.
 Required gates:
 
 - Add a scheduled read-only worker design with no secrets in public outputs.
+- Use [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) before creating or configuring the hosted worker service.
 - Run at least one source-backed replay-adjacent dataset through the public package contract.
 - Continue Drift liquidation-history pagination until a source-backed candidate is found or the search boundary is revised.
 - Convert Jupiter lifecycle role-map output into a verified-pairing validator design, while keeping pairing claims blocked until before/after state evidence exists.
@@ -100,7 +101,7 @@ Required gates:
 - Add API authentication before exposing non-public diagnostics.
 - Add source, slot, provider, freshness, checksum, and scrub metadata to every generated dataset.
 - Add monitoring for worker success, provider failures, schema drift, stale oracle inputs, and data-quality downgrades.
-- Run continuous read-only jobs for at least 7 days without secret leakage or unchecked output drift.
+- Run [continuous read-only jobs for at least 7 days](read-only-soak-runbook.md) without secret leakage or unchecked output drift.
 
 Exit signal:
 
@@ -117,6 +118,7 @@ Required gates:
 - Define support packages for protocol adapters, proof-pack production, data-quality review, and incident retrospectives.
 - Add billing/auth only after founder approval of the commercial scope.
 - Keep grant-funded OSS artifacts public and non-privatized.
+- Start from [Commercial diagnostics brief](commercial-diagnostics-brief.md) and validate scope with a specific buyer before publishing pricing.
 
 Exit signal:
 
@@ -193,7 +195,7 @@ Do not paste secrets into chat. Use local `.env` for development and Railway var
 
 1. Keep Railway static proof pack canonical and GitHub Pages as fallback.
 2. Add a separate read-only worker service plan before adding any server-side secrets.
-3. Continue Drift liquidation-history pagination from the current cursor.
-4. Turn the Jupiter role-map probe into a verified-pairing validator design, but keep lifecycle proof blocked until before/after state evidence exists.
-5. Prepare a commercial diagnostics brief that sells read-only reliability outputs, not execution.
-6. Add a 7-day read-only soak checklist and runbook before deploying any recurring worker.
+3. Add a 7-day read-only soak checklist and runbook before deploying any recurring worker.
+4. Continue Drift liquidation-history pagination from the current cursor.
+5. Turn the Jupiter role-map probe into a verified-pairing validator design, but keep lifecycle proof blocked until before/after state evidence exists.
+6. Validate the commercial diagnostics brief with a specific buyer profile and package scope.

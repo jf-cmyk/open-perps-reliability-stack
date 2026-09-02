@@ -19,6 +19,9 @@ rg -q "Dry-run" index.html
 rg -q "docs/drift-liquidation-scan-boundary.md" index.html
 rg -q "docs/proof-pack-changelog.md" index.html
 rg -q "docs/live-readiness-path.md" index.html
+rg -q "docs/railway-readonly-worker-service-plan.md" index.html
+rg -q "docs/read-only-soak-runbook.md" index.html
+rg -q "docs/commercial-diagnostics-brief.md" index.html
 rg -q "examples/public/slot-regime-benchmark-v0/benchmark_windows.json" index.html
 rg -q "docs/phoenix-hawkeye-validator-plan.md" index.html
 rg -q "Open Perps" apps/dashboard/index.html
@@ -26,6 +29,9 @@ rg -q "No live execution" apps/dashboard/index.html
 rg -q "Protocol Gates" apps/dashboard/index.html
 rg -q "../../docs/proof-pack-changelog.md" apps/dashboard/index.html
 rg -q "../../docs/live-readiness-path.md" apps/dashboard/index.html
+rg -q "../../docs/railway-readonly-worker-service-plan.md" apps/dashboard/index.html
+rg -q "../../docs/read-only-soak-runbook.md" apps/dashboard/index.html
+rg -q "../../docs/commercial-diagnostics-brief.md" apps/dashboard/index.html
 rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
@@ -128,6 +134,9 @@ test -f docs/service-boundaries.md
 test -f docs/public-artifact-boundary.md
 test -f docs/proof-pack-changelog.md
 test -f docs/live-readiness-path.md
+test -f docs/railway-readonly-worker-service-plan.md
+test -f docs/read-only-soak-runbook.md
+test -f docs/commercial-diagnostics-brief.md
 test -f docs/drift-decoder-provenance.md
 test -f docs/drift-liquidation-scan-boundary.md
 test -f docs/jupiter-perps-provenance.md

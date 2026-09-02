@@ -1120,6 +1120,14 @@
                 <p><a href="../../docs/live-readiness-path.md">Review live readiness path</a></p>
               </div>
             </article>
+            <article class="step">
+              <div class="step-number">06</div>
+              <div>
+                <h4>Soak Before Service</h4>
+                <p>A separate Railway worker needs bounded read-only jobs, clean logs, validators, and 7 consecutive daily checks before launch.</p>
+                <p><a href="../../docs/read-only-soak-runbook.md">Review soak runbook</a></p>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -1220,6 +1228,11 @@
               <strong>Read-only can go live first</strong>
               <p>Commercial diagnostics can be hosted as a separate read-only service before any signer, wallet, or execution scope exists. <a href="../../docs/live-readiness-path.md">Read the live path</a>.</p>
             </article>
+            <article class="access-card">
+              <div class="label">Railway Worker</div>
+              <strong>Separate service required</strong>
+              <p>The worker plan keeps `refreshing-art` static and secret-free, while a future private service owns read-only RPC variables. <a href="../../docs/railway-readonly-worker-service-plan.md">Read the worker plan</a>.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -1241,7 +1254,8 @@
                 <ul>
                   <li>Apache-2.0 repository</li>
                   <li>Dry-run examples</li>
-                  <li>Public proof packs</li>
+              <li>Public proof packs</li>
+              <li>Protocol proof-pack support</li>
                 </ul>
               </div>
               <a class="tier-cta" href="#features">Review OSS</a>
@@ -1252,9 +1266,9 @@
                 <h4>Out-of-Scope Monitoring</h4>
                 <p>Future commercial monitoring and support can sit on top of public reliability primitives.</p>
                 <ul>
-                  <li>Priority integrations</li>
-                  <li>Operator dashboards</li>
-                  <li>Implementation support</li>
+              <li>Priority integrations</li>
+              <li>Operator dashboards</li>
+              <li>7-day read-only soak</li>
                 </ul>
               </div>
               <a class="tier-cta pro" href="#access">Map Boundary</a>
@@ -1265,9 +1279,9 @@
                 <h4>Audit Support</h4>
                 <p>Future partner work can package reviewer evidence, adapter scope, and reliability findings.</p>
                 <ul>
-                  <li>Custom proof-pack support</li>
-                  <li>Protocol coverage planning</li>
-                  <li>Security review handoff</li>
+              <li>Custom proof-pack support</li>
+              <li>Protocol coverage planning</li>
+              <li>Security review handoff</li>
                 </ul>
               </div>
               <a class="tier-cta" href="#workflow">Review Flow</a>
@@ -1310,6 +1324,9 @@
               <li><a href="#reasons">Reason Codes</a></li>
               <li><a href="../../docs/drift-liquidation-scan-boundary.md">Drift Scan Boundary</a></li>
               <li><a href="../../docs/live-readiness-path.md">Live Readiness Path</a></li>
+              <li><a href="../../docs/railway-readonly-worker-service-plan.md">Worker Service Plan</a></li>
+              <li><a href="../../docs/read-only-soak-runbook.md">7-Day Soak Runbook</a></li>
+              <li><a href="../../docs/commercial-diagnostics-brief.md">Diagnostics Brief</a></li>
               <li><a href="../../docs/proof-pack-changelog.md">Proof Changelog</a></li>
               <li><a href="../../docs/phoenix-hawkeye-validator-plan.md">Phoenix Validator Plan</a></li>
             </ul>

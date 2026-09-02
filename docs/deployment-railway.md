@@ -68,6 +68,8 @@ Optional future variable for a separate server-side read-only decode worker:
 
 - `HELIUS_RPC_URL`: read-only HTTPS RPC URL for local or server-side decode proof. Add it only to a non-public worker/service that needs it, never to the static site.
 
+See [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) before creating that separate worker service.
+
 ## Setup
 
 1. In Railway, create a new project from the GitHub repository.
@@ -113,6 +115,8 @@ The workflow checks both reviewer surfaces:
 - GitHub Pages fallback: `https://jf-cmyk.github.io/open-perps-reliability-stack`
 
 This monitor uses no secrets. It fetches only public pages and examples, verifies read-only/dry-run markers, checks static 404 behavior for sensitive or internal paths, checks Railway's `X-Content-Type-Options: nosniff` header, and fails if hosted HTML or public JSON examples include forbidden secret markers such as `HELIUS_RPC_URL`, private keys, bearer tokens, seed phrases, or wallet-key language.
+
+A separate worker service needs its own monitoring and [7-day read-only soak runbook](read-only-soak-runbook.md) before it can be treated as operationally live.
 
 ## QA Checklist
 

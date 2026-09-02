@@ -120,7 +120,7 @@ Commercial services cannot privatize grant-funded deliverables such as public sc
 
 Commercial-adjacent ideas from Solana ecosystem research, such as payment/settlement observability or validator readiness assessments for 100M CU, XDP, skip-rate, and block-propagation reporting, are future product lanes only. They are not current OPRS grant deliverables and cannot be described as running services until separate scope, data-access, and claim-boundary decisions are approved.
 
-See [Live readiness path](live-readiness-path.md) for the staged path from static MVP to live read-only diagnostics, commercial diagnostics, and any later execution-readiness candidate.
+See [Live readiness path](live-readiness-path.md), [Railway read-only worker service plan](railway-readonly-worker-service-plan.md), and [Read-only soak runbook](read-only-soak-runbook.md) for the staged path from static MVP to live read-only diagnostics, commercial diagnostics, and any later execution-readiness candidate.
 
 ## Future Live Read-Only Diagnostics
 
@@ -143,6 +143,7 @@ Required gates:
 - source, slot, provider, freshness, checksum, and scrub metadata on generated outputs
 - monitoring and runbooks for provider failure, schema drift, stale inputs, and bad outputs
 - at least 7 days of continuous read-only operation before treating the service as operationally live
+- commercial packaging must stay within [Commercial diagnostics brief](commercial-diagnostics-brief.md) boundaries until founder approval expands the offer
 
 ## Promotion Rule
 
