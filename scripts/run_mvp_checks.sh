@@ -71,6 +71,7 @@ python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-authority-gap-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-onchain-decode-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/jupiter-lifecycle-role-map-probe-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/jupiter-verified-pairing-fixture-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-market-telemetry-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/slot-regime-benchmark-v0.json >/dev/null
@@ -106,6 +107,8 @@ python3 -m json.tool tests/fixtures/public-packages/invalid/cases.json >/dev/nul
 python3 -m json.tool examples/datasets/jupiter_perps_readonly_targets_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_perps_transaction_history_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_lifecycle_role_map_probe_example.json >/dev/null
+python3 -m json.tool examples/datasets/jupiter_verified_pairing_rejected_fixture.json >/dev/null
+python3 -m json.tool examples/datasets/jupiter_verified_pairing_synthetic_positive_fixture.json >/dev/null
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_readonly_targets.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_readonly_state.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_drift_liquidation_history.py
@@ -116,6 +119,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupite
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupiter_lifecycle_role_map.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_lifecycle_role_map_probe.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_verified_pairing_fixture.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_soak_summary.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_slack_alert_payload.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/send_slack_alert_sample.py
@@ -138,6 +142,7 @@ scripts/validate_public_guardrail_package.py
 scripts/validate_public_jupiter_authority_gap.py
 scripts/validate_public_jupiter_onchain_decode.py
 scripts/validate_jupiter_lifecycle_role_map_probe.py
+scripts/validate_jupiter_verified_pairing_fixture.py
 scripts/validate_readonly_soak_summary.py
 scripts/validate_slack_alert_payload.py
 scripts/send_slack_alert_sample.py --dry-run
@@ -186,6 +191,7 @@ test -f schemas/datasets/perp-guardrail-snapshot-v0.json
 test -f schemas/datasets/jupiter-authority-gap-v0.json
 test -f schemas/datasets/jupiter-onchain-decode-v0.json
 test -f schemas/datasets/jupiter-lifecycle-role-map-probe-v0.json
+test -f schemas/datasets/jupiter-verified-pairing-fixture-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-v0.json
 test -f schemas/datasets/phoenix-market-telemetry-probe-v0.json
 test -f schemas/datasets/slot-regime-benchmark-v0.json
@@ -226,6 +232,8 @@ test -f datasets/sample/jupiter_synthetic_malformed_source_authority_001/manifes
 test -f examples/datasets/jupiter_perps_readonly_targets_example.json
 test -f examples/datasets/jupiter_perps_transaction_history_example.json
 test -f examples/datasets/jupiter_lifecycle_role_map_probe_example.json
+test -f examples/datasets/jupiter_verified_pairing_rejected_fixture.json
+test -f examples/datasets/jupiter_verified_pairing_synthetic_positive_fixture.json
 test -x scripts/build_public_artifact.sh
 test -x scripts/run_hosted_smoke_checks.sh
 test -x scripts/discover_drift_readonly_state.py
@@ -237,6 +245,7 @@ test -x scripts/discover_jupiter_perps_transaction_history.py
 test -x scripts/discover_jupiter_lifecycle_role_map.py
 test -x scripts/audit_jupiter_source_authority.py
 test -x scripts/validate_jupiter_lifecycle_role_map_probe.py
+test -x scripts/validate_jupiter_verified_pairing_fixture.py
 test -x scripts/validate_readonly_soak_summary.py
 test -x scripts/send_slack_alert_sample.py
 test -x scripts/run_readonly_worker_once.py

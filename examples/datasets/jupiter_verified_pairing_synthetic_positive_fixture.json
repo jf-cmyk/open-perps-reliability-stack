@@ -1,0 +1,56 @@
+{
+  "schema_version": "oprs.jupiter_verified_pairing_fixture.v0",
+  "fixture_id": "jupiter_verified_pairing_synthetic_positive_001",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "source_authority": {
+    "onchain_idl_hash_present": true,
+    "jupiter_confirmed_lifecycle_artifact_present": true,
+    "source_review_id": "synthetic_jupiter_lifecycle_source_review",
+    "canonical_lifecycle_source_claimed": false
+  },
+  "query": {
+    "input_kind": "synthetic_positive_fixture",
+    "raw_transaction_committed": false,
+    "raw_instruction_data_committed": false,
+    "raw_account_bytes_committed": false,
+    "account_pubkeys_committed": false,
+    "hash_only_identifiers": true
+  },
+  "pairing_candidate": {
+    "classification": "verified_pair",
+    "confidence": "high",
+    "instruction_name": "increasePosition",
+    "role_bindings_include_request": true,
+    "role_bindings_include_fulfillment_target": true,
+    "pre_state_slot_present": true,
+    "post_state_slot_present": true,
+    "source_reviewed_transition_fields_present": true,
+    "owner_checks_passed": true,
+    "discriminator_checks_passed": true,
+    "keeper_semantics_required": false,
+    "rejection_reasons": []
+  },
+  "readiness": {
+    "synthetic_fixture": true,
+    "mainnet_verified_pairing_claimed": false,
+    "position_request_state_transition_claimed": false,
+    "keeper_semantics_claimed": false,
+    "liquidation_replay_claimed": false,
+    "execution_claimed": false,
+    "public_claims_allowed": false
+  },
+  "known_limitations": [
+    "This is a synthetic positive fixture only; it proves validator gate behavior, not a mainnet Jupiter lifecycle pair.",
+    "Mainnet verified pairing remains blocked until source-reviewed before/after lifecycle evidence is available."
+  ],
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "retry_transaction",
+    "bid_priority_fee",
+    "load_keypair",
+    "manage_custody",
+    "manage_capital"
+  ]
+}

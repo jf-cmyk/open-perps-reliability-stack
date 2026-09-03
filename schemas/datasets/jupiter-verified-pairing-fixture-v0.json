@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/jupiter-verified-pairing-fixture-v0.json",
+  "title": "Open Perps Reliability Stack Jupiter Verified Pairing Fixture v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "protocol",
+    "chain_id",
+    "source_authority",
+    "query",
+    "pairing_candidate",
+    "readiness",
+    "known_limitations",
+    "forbidden_actions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "oprs.jupiter_verified_pairing_fixture.v0" },
+    "fixture_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+    "protocol": { "const": "jupiter_perps" },
+    "chain_id": { "const": "solana-mainnet-beta" },
+    "source_authority": {
+      "type": "object",
+      "required": [
+        "onchain_idl_hash_present",
+        "jupiter_confirmed_lifecycle_artifact_present",
+        "source_review_id",
+        "canonical_lifecycle_source_claimed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "onchain_idl_hash_present": { "type": "boolean" },
+        "jupiter_confirmed_lifecycle_artifact_present": { "type": "boolean" },
+        "source_review_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "canonical_lifecycle_source_claimed": { "const": false }
+      }
+    },
+    "query": {
+      "type": "object",
+      "required": [
+        "input_kind",
+        "raw_transaction_committed",
+        "raw_instruction_data_committed",
+        "raw_account_bytes_committed",
+        "account_pubkeys_committed",
+        "hash_only_identifiers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "input_kind": {
+          "enum": [
+            "role_map_probe_fixture",
+            "synthetic_positive_fixture",
+            "bounded_target_output"
+          ]
+        },
+        "raw_transaction_committed": { "const": false },
+        "raw_instruction_data_committed": { "const": false },
+        "raw_account_bytes_committed": { "const": false },
+        "account_pubkeys_committed": { "const": false },
+        "hash_only_identifiers": { "const": true }
+      }
+    },
+    "pairing_candidate": {
+      "type": "object",
+      "required": [
+        "classification",
+        "confidence",
+        "instruction_name",
+        "role_bindings_include_request",
+        "role_bindings_include_fulfillment_target",
+        "pre_state_slot_present",
+        "post_state_slot_present",
+        "source_reviewed_transition_fields_present",
+        "owner_checks_passed",
+        "discriminator_checks_passed",
+        "keeper_semantics_required",
+        "rejection_reasons"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "classification": { "enum": ["verified_pair", "candidate_pair", "rejected_pair"] },
+        "confidence": { "enum": ["high", "medium", "low", "none"] },
+        "instruction_name": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "role_bindings_include_request": { "type": "boolean" },
+        "role_bindings_include_fulfillment_target": { "type": "boolean" },
+        "pre_state_slot_present": { "type": "boolean" },
+        "post_state_slot_present": { "type": "boolean" },
+        "source_reviewed_transition_fields_present": { "type": "boolean" },
+        "owner_checks_passed": { "type": "boolean" },
+        "discriminator_checks_passed": { "type": "boolean" },
+        "keeper_semantics_required": { "const": false },
+        "rejection_reasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 160 }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": [
+        "synthetic_fixture",
+        "mainnet_verified_pairing_claimed",
+        "position_request_state_transition_claimed",
+        "keeper_semantics_claimed",
+        "liquidation_replay_claimed",
+        "execution_claimed",
+        "public_claims_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "synthetic_fixture": { "type": "boolean" },
+        "mainnet_verified_pairing_claimed": { "const": false },
+        "position_request_state_transition_claimed": { "const": false },
+        "keeper_semantics_claimed": { "const": false },
+        "liquidation_replay_claimed": { "const": false },
+        "execution_claimed": { "const": false },
+        "public_claims_allowed": { "const": false }
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1, "maxLength": 220 }
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "sign",
+          "submit_transaction",
+          "retry_transaction",
+          "bid_priority_fee",
+          "load_keypair",
+          "manage_custody",
+          "manage_capital"
+        ]
+      }
+    }
+  }
+}

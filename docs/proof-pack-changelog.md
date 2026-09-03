@@ -15,6 +15,7 @@ This public changelog records reviewer-facing proof-pack progress. It excludes i
 - Added a Slack sample sender that validates the checked-in payload before dry-run or delivery and supports Railway-injected worker variables without printing webhook secrets.
 - Added a local one-shot read-only worker wrapper that plans allowlisted Drift, Jupiter, Phoenix, and Slack-sample jobs before hosted worker deployment.
 - Validated bounded local Drift, Jupiter, and Phoenix worker smokes with outputs kept under ignored `target/` paths and no public-output promotion.
+- Added a Jupiter verified-pairing fixture contract with rejected role-map-only and synthetic positive cases so lifecycle gate behavior is testable while mainnet pairing remains unclaimed.
 - Tightened Jupiter source-authority docs to clarify that `JUPITER_API_KEY` may support authenticated read-only discovery but does not unlock verified pairing, keeper execution, or replay claims without a Jupiter-confirmed lifecycle artifact.
 - Regenerated the local Solana Foundation proposal DOCX and refreshed validation/smoke checks for the public proof pack.
 

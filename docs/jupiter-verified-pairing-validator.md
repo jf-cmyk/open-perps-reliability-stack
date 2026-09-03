@@ -107,6 +107,15 @@ The future machine-readable output should include:
 - `known_limitations`
 - `forbidden_actions`
 
+Current fixture contract:
+
+- Schema: `schemas/datasets/jupiter-verified-pairing-fixture-v0.json`
+- Rejected fixture: `examples/datasets/jupiter_verified_pairing_rejected_fixture.json`
+- Synthetic positive fixture: `examples/datasets/jupiter_verified_pairing_synthetic_positive_fixture.json`
+- Validator: `scripts/validate_jupiter_verified_pairing_fixture.py`
+
+The rejected fixture models the current role-map-only state. The synthetic positive fixture proves the gate behavior for a complete pair, but it still sets `mainnet_verified_pairing_claimed=false` and `public_claims_allowed=false`.
+
 Required false flags until a verified pair exists:
 
 - `verified_request_fulfillment_pair_claimed=false`

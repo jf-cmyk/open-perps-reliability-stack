@@ -36,6 +36,7 @@ Current implementation remains read-only and dry-run only:
 - Added a local Slack sample sender that dry-runs by default and can send only the checked-in scrubbed sample through `railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send` after the webhook exists.
 - Added a local one-shot read-only worker wrapper with allowlisted Drift, Jupiter, Phoenix, and Slack-sample jobs; default mode is `--plan`, and execution is explicit via `--execute`.
 - Executed and validated bounded local worker smokes for Drift state, Jupiter role-map, and Phoenix telemetry. Outputs stayed under `target/oprs-worker-runs/` and were not committed or published.
+- Added a Jupiter verified-pairing fixture contract, rejected role-map-only fixture, synthetic positive fixture, and validator. The synthetic positive proves validator gates only and does not claim mainnet pairing.
 - Documented safe Railway variable setup using stdin for secret-like values.
 - Documented alert destination constraints and payload boundary.
 - Documented custom domain setup path for Railway.
@@ -48,7 +49,7 @@ Current implementation remains read-only and dry-run only:
 2. Run the Slack sample sender through Railway-injected worker variables.
 3. Select the custom domain and run Railway domain setup.
 4. Pick the first hosted worker command and retention policy before deploying source to `oprs-readonly-worker`.
-5. Add a synthetic Jupiter pairing-validator fixture before any verified lifecycle claim.
+5. Convert validated local worker output into a private run-envelope candidate before any hosted worker source deployment.
 6. Keep adapting the grant proposal as live read-only evidence improves.
 
 ## Fresh-Window Kickoff Prompt

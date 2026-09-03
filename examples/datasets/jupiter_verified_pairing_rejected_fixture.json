@@ -1,0 +1,60 @@
+{
+  "schema_version": "oprs.jupiter_verified_pairing_fixture.v0",
+  "fixture_id": "jupiter_verified_pairing_rejected_role_map_only_001",
+  "protocol": "jupiter_perps",
+  "chain_id": "solana-mainnet-beta",
+  "source_authority": {
+    "onchain_idl_hash_present": true,
+    "jupiter_confirmed_lifecycle_artifact_present": false,
+    "source_review_id": "jupiter_role_map_probe_only",
+    "canonical_lifecycle_source_claimed": false
+  },
+  "query": {
+    "input_kind": "role_map_probe_fixture",
+    "raw_transaction_committed": false,
+    "raw_instruction_data_committed": false,
+    "raw_account_bytes_committed": false,
+    "account_pubkeys_committed": false,
+    "hash_only_identifiers": true
+  },
+  "pairing_candidate": {
+    "classification": "rejected_pair",
+    "confidence": "none",
+    "instruction_name": "increasePosition",
+    "role_bindings_include_request": true,
+    "role_bindings_include_fulfillment_target": false,
+    "pre_state_slot_present": false,
+    "post_state_slot_present": false,
+    "source_reviewed_transition_fields_present": false,
+    "owner_checks_passed": true,
+    "discriminator_checks_passed": true,
+    "keeper_semantics_required": false,
+    "rejection_reasons": [
+      "Role-map evidence alone does not prove request-to-fulfillment lifecycle pairing.",
+      "Before and after state snapshots are absent.",
+      "No Jupiter-confirmed lifecycle artifact is present."
+    ]
+  },
+  "readiness": {
+    "synthetic_fixture": false,
+    "mainnet_verified_pairing_claimed": false,
+    "position_request_state_transition_claimed": false,
+    "keeper_semantics_claimed": false,
+    "liquidation_replay_claimed": false,
+    "execution_claimed": false,
+    "public_claims_allowed": false
+  },
+  "known_limitations": [
+    "This fixture models the current blocked state after onchain-IDL role mapping.",
+    "It intentionally rejects pairing until before/after state and source-reviewed lifecycle semantics are available."
+  ],
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "retry_transaction",
+    "bid_priority_fee",
+    "load_keypair",
+    "manage_custody",
+    "manage_capital"
+  ]
+}

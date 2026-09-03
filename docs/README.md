@@ -64,6 +64,8 @@ Schema and fixture artifacts:
 - [Drift shape snapshot example](../examples/datasets/drift_shape_snapshot_example.json)
 - [Jupiter Perps read-only target example](../examples/datasets/jupiter_perps_readonly_targets_example.json)
 - [Jupiter Perps transaction history example](../examples/datasets/jupiter_perps_transaction_history_example.json)
+- [Jupiter verified-pairing rejected fixture](../examples/datasets/jupiter_verified_pairing_rejected_fixture.json)
+- [Jupiter verified-pairing synthetic positive fixture](../examples/datasets/jupiter_verified_pairing_synthetic_positive_fixture.json)
 - [Public package contract index](../examples/public/contract-index.json)
 - [Drift guardrails public package](../examples/public/drift-guardrails-v0/)
 - [Jupiter authority-gap public package](../examples/public/jupiter-authority-gap-v0/)
@@ -80,6 +82,7 @@ cargo run -p oprs-replay --example validate_fixtures
 cargo run -p oprs-api-types --example validate_api_examples
 scripts/send_slack_alert_sample.py --dry-run
 scripts/run_readonly_worker_once.py --job drift-state-smoke --plan
+scripts/validate_jupiter_verified_pairing_fixture.py
 scripts/run_mvp_checks.sh
 ```
 
