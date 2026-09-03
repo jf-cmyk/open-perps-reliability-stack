@@ -34,6 +34,7 @@ Current implementation remains read-only and dry-run only:
 - Selected Slack as alert destination and set `OPRS_ALERT_DESTINATION=slack`.
 - Added Slack alerting docs, payload schema, example payload, and validator.
 - Added a local Slack sample sender that dry-runs by default and can send only the checked-in scrubbed sample through `railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send` after the webhook exists.
+- Added a local one-shot read-only worker wrapper with allowlisted Drift, Jupiter, Phoenix, and Slack-sample jobs; default mode is `--plan`, and execution is explicit via `--execute`.
 - Documented safe Railway variable setup using stdin for secret-like values.
 - Documented alert destination constraints and payload boundary.
 - Documented custom domain setup path for Railway.
@@ -44,9 +45,10 @@ Current implementation remains read-only and dry-run only:
 
 1. Create a Slack incoming webhook for a private alerts channel and store it as `OPRS_ALERT_WEBHOOK_URL`.
 2. Run the Slack sample sender through Railway-injected worker variables.
-3. Select the custom domain and run Railway domain setup.
-4. Pick the first worker command and retention policy before deploying source to `oprs-readonly-worker`.
-5. Keep adapting the grant proposal as live read-only evidence improves.
+3. Execute one bounded local worker probe and keep outputs under `target/oprs-worker-runs/`.
+4. Select the custom domain and run Railway domain setup.
+5. Pick the first hosted worker command and retention policy before deploying source to `oprs-readonly-worker`.
+6. Keep adapting the grant proposal as live read-only evidence improves.
 
 ## Fresh-Window Kickoff Prompt
 

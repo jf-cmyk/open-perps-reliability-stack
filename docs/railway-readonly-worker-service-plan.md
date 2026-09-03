@@ -50,6 +50,16 @@ Initial job candidates:
 3. Jupiter lifecycle role-map probe using `scripts/discover_jupiter_lifecycle_role_map.py`.
 4. Phoenix market telemetry probe using `scripts/discover_phoenix_market_telemetry.py`.
 
+Local pre-deploy wrapper:
+
+```bash
+scripts/run_readonly_worker_once.py --job drift-state-smoke --plan
+scripts/run_readonly_worker_once.py --job jupiter-role-map-smoke --plan
+scripts/run_readonly_worker_once.py --job phoenix-telemetry-smoke --plan
+```
+
+Use `--execute` only for a deliberate bounded run. This wrapper is not a scheduler and does not deploy source to `oprs-readonly-worker`.
+
 Initial outputs:
 
 - Worker run envelope.

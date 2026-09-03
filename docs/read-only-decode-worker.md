@@ -5,7 +5,7 @@ The read-only decode worker is a future local worker shape, not a production ser
 ## Current Status
 
 - Lifecycle: `local_probe` and `scrubbed_example`
-- Protocol scope: Drift v2 only
+- Protocol scope: Drift v2 first, Jupiter role-map contrast, and Phoenix public telemetry companion
 - Hosting scope: not deployed
 - Railway scope: static proof pack only; no worker secrets
 - Output scope: public account identity, metadata, guardrail labels, source refs, hashes, readiness flags
@@ -61,5 +61,19 @@ Every worker run must keep these false until a separate founder-approved scope c
 
 - Schema: `schemas/datasets/readonly-decode-worker-run-v0.json`
 - Example: `examples/datasets/drift_readonly_decode_worker_run_example.json`
+- Local one-shot wrapper: `scripts/run_readonly_worker_once.py`
 
 The example is a scrubbed public artifact. It describes the worker contract and current Drift guardrail proof shape without committing live target output or raw account bytes.
+
+## Local Wrapper
+
+The local one-shot wrapper is the pre-Railway worker command surface:
+
+```bash
+scripts/run_readonly_worker_once.py --job drift-state-smoke --plan
+scripts/run_readonly_worker_once.py --job jupiter-role-map-smoke --plan
+scripts/run_readonly_worker_once.py --job phoenix-telemetry-smoke --plan
+scripts/run_readonly_worker_once.py --job slack-sample-dry-run --execute
+```
+
+`--plan` is the default. Use `--execute` only for an intentional bounded run. Outputs stay under `target/oprs-worker-runs/`, and live worker output must not be sent to Slack until a separate payload builder and validator exist.

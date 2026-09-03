@@ -79,6 +79,7 @@ Validation commands:
 cargo run -p oprs-replay --example validate_fixtures
 cargo run -p oprs-api-types --example validate_api_examples
 scripts/send_slack_alert_sample.py --dry-run
+scripts/run_readonly_worker_once.py --job drift-state-smoke --plan
 scripts/run_mvp_checks.sh
 ```
 
