@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/slack-alert-payload-v0.json",
+  "title": "Open Perps Reliability Stack Slack Alert Payload v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "delivery",
+    "source_event",
+    "text",
+    "blocks",
+    "safety_invariants"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "oprs.slack_alert_payload.v0" },
+    "delivery": {
+      "type": "object",
+      "required": ["destination", "webhook_variable", "webhook_url_committed", "channel_policy"],
+      "additionalProperties": false,
+      "properties": {
+        "destination": { "const": "slack_incoming_webhook" },
+        "webhook_variable": { "const": "OPRS_ALERT_WEBHOOK_URL" },
+        "webhook_url_committed": { "const": false },
+        "channel_policy": { "enum": ["private_ops_channel", "private_founder_channel"] }
+      }
+    },
+    "source_event": {
+      "type": "object",
+      "required": [
+        "service_name",
+        "run_id",
+        "protocol",
+        "severity",
+        "status",
+        "alert_class",
+        "freshness_label",
+        "checksum_present",
+        "public_output_published"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "service_name": { "const": "oprs-readonly-worker" },
+        "run_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "protocol": { "enum": ["drift", "jupiter", "phoenix", "multi_protocol"] },
+        "severity": { "enum": ["info", "warning", "error", "critical"] },
+        "status": { "enum": ["passed", "failed_closed", "degraded", "blocked"] },
+        "alert_class": {
+          "enum": [
+            "worker_failed_closed",
+            "provider_failure",
+            "schema_validation_failed",
+            "secret_marker_found",
+            "execution_marker_found",
+            "stale_input_detected",
+            "worker_soak_passed"
+          ]
+        },
+        "freshness_label": { "enum": ["fresh", "stale", "unknown", "not_applicable"] },
+        "checksum_present": { "type": "boolean" },
+        "public_output_published": { "const": false },
+        "runbook_path": { "type": "string", "minLength": 1, "maxLength": 160 }
+      }
+    },
+    "text": { "type": "string", "minLength": 1, "maxLength": 280 },
+    "blocks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/block" }
+    },
+    "safety_invariants": {
+      "type": "object",
+      "required": [
+        "contains_rpc_url",
+        "contains_api_key",
+        "contains_webhook_url",
+        "contains_private_key",
+        "contains_seed_phrase",
+        "contains_wallet_path",
+        "contains_raw_transaction_body",
+        "contains_raw_account_bytes",
+        "contains_signer_or_custody_config",
+        "contains_capital_or_execution_policy"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contains_rpc_url": { "const": false },
+        "contains_api_key": { "const": false },
+        "contains_webhook_url": { "const": false },
+        "contains_private_key": { "const": false },
+        "contains_seed_phrase": { "const": false },
+        "contains_wallet_path": { "const": false },
+        "contains_raw_transaction_body": { "const": false },
+        "contains_raw_account_bytes": { "const": false },
+        "contains_signer_or_custody_config": { "const": false },
+        "contains_capital_or_execution_policy": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["section", "context", "divider"] },
+        "text": { "$ref": "#/$defs/text_object" },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/text_object" }
+        },
+        "elements": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/text_object" }
+        }
+      }
+    },
+    "text_object": {
+      "type": "object",
+      "required": ["type", "text"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["mrkdwn", "plain_text"] },
+        "text": { "type": "string", "minLength": 1, "maxLength": 3000 }
+      }
+    }
+  }
+}

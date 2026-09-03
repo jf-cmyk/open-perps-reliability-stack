@@ -28,6 +28,7 @@ Read when changing module boundaries, service boundaries, contracts, or future s
 - [Live readiness path](../live-readiness-path.md)
 - [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
 - [Access and operations setup](../access-ops-setup.md)
+- [Slack alerting](../slack-alerting.md)
 - [Read-only soak runbook](../read-only-soak-runbook.md)
 - [Jupiter verified pairing validator](../jupiter-verified-pairing-validator.md)
 - [Commercial diagnostics pricing](../commercial-diagnostics-pricing.md)
@@ -84,6 +85,7 @@ Read when changing frontend/static reviewer artifacts:
 - [Live readiness path](../live-readiness-path.md)
 - [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
 - [Access and operations setup](../access-ops-setup.md)
+- [Slack alerting](../slack-alerting.md)
 - [Read-only soak runbook](../read-only-soak-runbook.md)
 - [Jupiter verified pairing validator](../jupiter-verified-pairing-validator.md)
 - [Commercial diagnostics pricing](../commercial-diagnostics-pricing.md)
@@ -173,4 +175,5 @@ When agent guidance affects implementation order, summarize it in the next check
 8. Keep Railway and GitHub Pages mirrors equivalent.
 9. Configure the existing empty `oprs-readonly-worker` service only after selecting the exact worker command, schedule, and retention policy.
 10. Add a local-only worker command wrapper and a synthetic Jupiter pairing-validator fixture before deploying source to the hosted worker service.
-11. Select the alert destination and custom domain, then use `docs/access-ops-setup.md` for safe Railway setup.
+11. Create the private Slack webhook and set `OPRS_ALERT_WEBHOOK_URL` with stdin, then test only the checked-in Slack sample payload.
+12. Select the custom domain, then use `docs/access-ops-setup.md` for safe Railway setup.

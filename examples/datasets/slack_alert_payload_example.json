@@ -1,0 +1,73 @@
+{
+  "schema_version": "oprs.slack_alert_payload.v0",
+  "delivery": {
+    "destination": "slack_incoming_webhook",
+    "webhook_variable": "OPRS_ALERT_WEBHOOK_URL",
+    "webhook_url_committed": false,
+    "channel_policy": "private_ops_channel"
+  },
+  "source_event": {
+    "service_name": "oprs-readonly-worker",
+    "run_id": "oprs-worker-smoke-001",
+    "protocol": "jupiter",
+    "severity": "warning",
+    "status": "degraded",
+    "alert_class": "provider_failure",
+    "freshness_label": "unknown",
+    "checksum_present": false,
+    "public_output_published": false,
+    "runbook_path": "docs/slack-alerting.md"
+  },
+  "text": "OPRS read-only worker warning: Jupiter provider failure; worker failed closed and no public output was published.",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*OPRS read-only worker warning*"
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Service:* oprs-readonly-worker"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Protocol:* jupiter"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Status:* degraded"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Alert:* provider_failure"
+        }
+      ]
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Worker failed closed. No public output was published. Review docs/slack-alerting.md."
+        }
+      ]
+    }
+  ],
+  "safety_invariants": {
+    "contains_rpc_url": false,
+    "contains_api_key": false,
+    "contains_webhook_url": false,
+    "contains_private_key": false,
+    "contains_seed_phrase": false,
+    "contains_wallet_path": false,
+    "contains_raw_transaction_body": false,
+    "contains_raw_account_bytes": false,
+    "contains_signer_or_custody_config": false,
+    "contains_capital_or_execution_policy": false
+  }
+}

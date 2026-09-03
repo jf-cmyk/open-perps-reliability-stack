@@ -11,6 +11,7 @@ This public changelog records reviewer-facing proof-pack progress. It excludes i
 - Added a local-only Jupiter lifecycle role-map probe contract that binds sampled public transaction accounts to onchain-IDL instruction roles while keeping verified pairing, keeper behavior, and replay claims blocked.
 - Added the live read-only worker service plan, 7-day soak runbook, and commercial diagnostics brief to define the post-MVP path before any execution scope exists.
 - Added a machine-checkable read-only soak summary schema/example and Jupiter verified-pairing validator contract so post-MVP promotion gates can be tested before any hosted worker or execution scope exists.
+- Added Slack alerting docs, a scrubbed Slack incoming-webhook payload schema/example, and a validator for future read-only worker alerts.
 - Tightened Jupiter source-authority docs to clarify that `JUPITER_API_KEY` may support authenticated read-only discovery but does not unlock verified pairing, keeper execution, or replay claims without a Jupiter-confirmed lifecycle artifact.
 - Regenerated the local Solana Foundation proposal DOCX and refreshed validation/smoke checks for the public proof pack.
 

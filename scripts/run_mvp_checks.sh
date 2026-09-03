@@ -21,6 +21,7 @@ rg -q "docs/proof-pack-changelog.md" index.html
 rg -q "docs/live-readiness-path.md" index.html
 rg -q "docs/railway-readonly-worker-service-plan.md" index.html
 rg -q "docs/access-ops-setup.md" index.html
+rg -q "docs/slack-alerting.md" index.html
 rg -q "docs/read-only-soak-runbook.md" index.html
 rg -q "docs/commercial-diagnostics-brief.md" index.html
 rg -q "docs/commercial-diagnostics-pricing.md" index.html
@@ -36,6 +37,7 @@ rg -q "../../docs/proof-pack-changelog.md" apps/dashboard/index.html
 rg -q "../../docs/live-readiness-path.md" apps/dashboard/index.html
 rg -q "../../docs/railway-readonly-worker-service-plan.md" apps/dashboard/index.html
 rg -q "../../docs/access-ops-setup.md" apps/dashboard/index.html
+rg -q "../../docs/slack-alerting.md" apps/dashboard/index.html
 rg -q "../../docs/read-only-soak-runbook.md" apps/dashboard/index.html
 rg -q "../../docs/commercial-diagnostics-brief.md" apps/dashboard/index.html
 rg -q "../../docs/commercial-diagnostics-pricing.md" apps/dashboard/index.html
@@ -62,6 +64,7 @@ python3 -m json.tool examples/datasets/readonly_soak_summary_example.json >/dev/
 python3 -m json.tool schemas/datasets/drift-liquidation-history-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-decode-worker-run-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-soak-summary-v0.json >/dev/null
+python3 -m json.tool schemas/datasets/slack-alert-payload-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/public-contract-index-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/spot-guardrail-snapshot-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/perp-guardrail-snapshot-v0.json >/dev/null
@@ -74,6 +77,7 @@ python3 -m json.tool schemas/datasets/slot-regime-benchmark-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/phoenix-hawkeye-validator-plan-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/source-review-record-v0.json >/dev/null
 python3 -m json.tool examples/datasets/drift_readonly_decode_worker_run_example.json >/dev/null
+python3 -m json.tool examples/datasets/slack_alert_payload_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_liquidation_history_probe_example.json >/dev/null
 python3 -m json.tool examples/datasets/jupiter_position_authority_source_review_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_public_field_source_review_template.json >/dev/null
@@ -113,6 +117,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_jupite
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_source_authority.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_lifecycle_role_map_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_soak_summary.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_slack_alert_payload.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_market_telemetry_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_slot_regime_benchmark.py
@@ -132,6 +137,7 @@ scripts/validate_public_jupiter_authority_gap.py
 scripts/validate_public_jupiter_onchain_decode.py
 scripts/validate_jupiter_lifecycle_role_map_probe.py
 scripts/validate_readonly_soak_summary.py
+scripts/validate_slack_alert_payload.py
 scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_public_slot_regime_benchmark.py
 scripts/validate_invalid_public_package_fixtures.py
@@ -149,6 +155,7 @@ test -f docs/proof-pack-changelog.md
 test -f docs/live-readiness-path.md
 test -f docs/railway-readonly-worker-service-plan.md
 test -f docs/access-ops-setup.md
+test -f docs/slack-alerting.md
 test -f docs/read-only-soak-runbook.md
 test -f docs/commercial-diagnostics-brief.md
 test -f docs/commercial-diagnostics-pricing.md
@@ -165,6 +172,7 @@ test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f schemas/datasets/drift-liquidation-history-probe-v0.json
 test -f schemas/datasets/readonly-decode-worker-run-v0.json
 test -f schemas/datasets/readonly-soak-summary-v0.json
+test -f schemas/datasets/slack-alert-payload-v0.json
 test -f schemas/datasets/public-contract-index-v0.json
 test -f schemas/datasets/spot-guardrail-snapshot-v0.json
 test -f schemas/datasets/perp-guardrail-snapshot-v0.json
@@ -181,6 +189,7 @@ test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
 test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/readonly_soak_summary_example.json
+test -f examples/datasets/slack_alert_payload_example.json
 test -f examples/datasets/drift_readonly_decode_worker_run_example.json
 test -f examples/datasets/drift_liquidation_history_probe_example.json
 test -f examples/datasets/jupiter_position_authority_source_review_example.json

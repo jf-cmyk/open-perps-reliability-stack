@@ -181,7 +181,7 @@ Needed now:
 
 - Confirm the first post-MVP live lane: read-only diagnostics API, private protocol dashboard, or protocol-specific proof-pack support.
 - Provide the exact custom domain when a branded public URL is desired.
-- Provide the alert destination type and private webhook outside the repo.
+- Create the private Slack incoming webhook outside the repo and store it as `OPRS_ALERT_WEBHOOK_URL`.
 - Confirm the first worker command, run schedule, and retention policy before deploying source to `oprs-readonly-worker`.
 
 Why these require consent:
@@ -189,7 +189,7 @@ Why these require consent:
 - Separate Railway worker service: creates a new hosted process that may hold read-only RPC credentials, run on a schedule, generate private outputs, and incur cloud usage. Even without execution, that changes the operational and secret-handling boundary.
 - First post-MVP commercial lane: determines what Blocksize sells first, what claims can be made publicly, how grant-funded OSS stays separated from paid work, and which customer evidence should be collected.
 - Production custom domain: changes the public canonical URL, brand surface, reviewer links, DNS ownership, and maintenance burden.
-- Monitoring destination: routes operational alerts into a real inbox, Slack, PagerDuty, or equivalent system. Alerts can contain protocol names, failure metadata, and private operational context, so the destination should be intentional.
+- Monitoring destination: routes operational alerts into Slack. Alerts can contain protocol names, failure metadata, and private operational context, so the channel and webhook should be intentionally private.
 - Execution pilot: introduces signing, wallet, custody, transaction-submission, capital, legal, and security risk. It needs a separate written approval package and is not implied by any read-only worker or diagnostics launch.
 
 Not needed now:

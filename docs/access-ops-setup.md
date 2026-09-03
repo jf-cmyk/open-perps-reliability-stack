@@ -6,7 +6,7 @@ This note records the approved post-MVP operations items and the exact setup pat
 
 Approved:
 
-- Alert destination setup.
+- Alert destination setup: Slack.
 - Separate Railway worker service.
 - Commercial lane pricing research for private dashboards and public API access.
 - Custom domain setup.
@@ -30,7 +30,7 @@ Current service split:
 | `refreshing-art` | Canonical static proof pack and dashboard | None | `https://refreshing-art-production-86de.up.railway.app` |
 | `oprs-readonly-worker` | Empty worker boundary for future read-only jobs | `HELIUS_RPC_URL` plus non-secret mode variables | None |
 
-The `oprs-readonly-worker` service was created as an empty service. It has no deployment source and no public URL. Its read-only RPC secret is stored only as a Railway worker variable, and non-secret guardrail variables are set: `OPRS_WORKER_MODE`, `OPRS_OUTPUT_MODE`, `OPRS_TARGET_PROTOCOLS`, and `OPRS_RUN_LIMIT`.
+The `oprs-readonly-worker` service was created as an empty service. It has no deployment source and no public URL. Its read-only RPC secret is stored only as a Railway worker variable, and non-secret guardrail variables are set: `OPRS_WORKER_MODE`, `OPRS_OUTPUT_MODE`, `OPRS_TARGET_PROTOCOLS`, `OPRS_RUN_LIMIT`, and `OPRS_ALERT_DESTINATION=slack`.
 
 Keep the local Railway link on `refreshing-art` for ordinary static proof-pack deploys:
 
@@ -53,6 +53,7 @@ railway variable set OPRS_WORKER_MODE=read_only --service oprs-readonly-worker -
 railway variable set OPRS_OUTPUT_MODE=private_target --service oprs-readonly-worker --skip-deploys
 railway variable set OPRS_TARGET_PROTOCOLS=drift,jupiter,phoenix --service oprs-readonly-worker --skip-deploys
 railway variable set OPRS_RUN_LIMIT=10 --service oprs-readonly-worker --skip-deploys
+railway variable set OPRS_ALERT_DESTINATION=slack --service oprs-readonly-worker --skip-deploys
 ```
 
 Read-only RPC secret setup command, already approved and applied for `oprs-readonly-worker`:
@@ -61,7 +62,7 @@ Read-only RPC secret setup command, already approved and applied for `oprs-reado
 printf "%s" "PASTE_HELIUS_RPC_URL_HERE" | railway variable set HELIUS_RPC_URL --stdin --service oprs-readonly-worker --skip-deploys
 ```
 
-Alert destination, when selected:
+Slack webhook secret, after the founder creates a Slack incoming webhook:
 
 ```bash
 printf "%s" "PASTE_ALERT_WEBHOOK_URL_HERE" | railway variable set OPRS_ALERT_WEBHOOK_URL --stdin --service oprs-readonly-worker --skip-deploys
@@ -71,15 +72,13 @@ Why stdin matters: it avoids putting key material directly in the shell command.
 
 ## Alert Destination
 
-Allowed alert destinations:
+Selected alert destination:
 
 - Slack incoming webhook.
-- Discord webhook.
-- PagerDuty Events API integration.
-- Email gateway webhook.
-- Founder-controlled private endpoint.
 
 Do not use a public channel for worker alerts. Alerts can mention protocol names, run status, error classes, data-quality downgrades, and freshness issues.
+
+See [Slack alerting](slack-alerting.md) for the setup guide, schema, example payload, and local validator.
 
 Initial alert payload should include only:
 
@@ -132,7 +131,7 @@ Do not attach the custom public domain to `oprs-readonly-worker` unless the work
 ## Immediate Next Safe Steps
 
 1. Add worker variables using stdin only after the first worker command is selected.
-2. Select the alert destination type and create a webhook outside the repo.
+2. Create a Slack incoming webhook outside the repo and store it as `OPRS_ALERT_WEBHOOK_URL`.
 3. Select the public domain name for the proof pack.
 4. Run hosted smoke checks after domain verification.
 5. Keep `oprs-readonly-worker` private and source-less until the worker command, schedule, and retention policy are explicit.

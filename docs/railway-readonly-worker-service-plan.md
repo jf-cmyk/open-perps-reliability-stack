@@ -4,7 +4,7 @@ This plan defines the first server-side service that can move Open Perps Reliabi
 
 Current Railway worker boundary: `oprs-readonly-worker`.
 
-Status: created as an empty Railway service with no source, no public URL, and no deployment. `HELIUS_RPC_URL` is stored only as a Railway worker variable, and non-secret guardrail variables are set. Keep it source-less until the first worker command, schedule, and retention policy are selected.
+Status: created as an empty Railway service with no source, no public URL, and no deployment. `HELIUS_RPC_URL` is stored only as a Railway worker variable, and non-secret guardrail variables are set, including `OPRS_ALERT_DESTINATION=slack`. Keep it source-less until the first worker command, schedule, and retention policy are selected.
 
 ## Purpose
 
@@ -66,10 +66,11 @@ Required for worker only:
 - `OPRS_OUTPUT_MODE`: set to `private_target` for the first hosted runs.
 - `OPRS_TARGET_PROTOCOLS`: comma-separated allowlist, initially `drift,jupiter,phoenix`.
 - `OPRS_RUN_LIMIT`: bounded per-run item limit, initially low.
+- `OPRS_ALERT_DESTINATION`: set to `slack`.
 
 Optional later:
 
-- `OPRS_ALERT_WEBHOOK_URL`: alert destination for failed or stale runs.
+- `OPRS_ALERT_WEBHOOK_URL`: Slack incoming webhook URL for failed or stale runs.
 - `OPRS_PUBLIC_OUTPUTS_ENABLED`: default `false`; public publishing needs review.
 - `OPRS_RUN_INTERVAL_MINUTES`: desired scheduler interval if Railway scheduling is used.
 - `OPRS_RETENTION_DAYS`: private output retention target.
@@ -152,4 +153,4 @@ We are ready to implement the worker service when:
 
 Until then, keep `oprs-readonly-worker` as an empty, private, no-secret service boundary.
 
-See [Access and operations setup](access-ops-setup.md) for safe variable commands, alert destination rules, and custom-domain setup.
+See [Access and operations setup](access-ops-setup.md) and [Slack alerting](slack-alerting.md) for safe variable commands, alert destination rules, and custom-domain setup.
