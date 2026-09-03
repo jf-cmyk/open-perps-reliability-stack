@@ -41,7 +41,7 @@ The static proof-pack service must never fetch private data, submit transactions
 
 Railway service: `oprs-readonly-worker`.
 
-Current status: empty service boundary only. It has no source, no public URL, no deployment, and no secret variables. Non-secret guardrail variables are set.
+Current status: empty service boundary only. It has no source, no public URL, and no deployment. `HELIUS_RPC_URL` is stored only as a Railway worker variable, and non-secret guardrail variables are set.
 
 Purpose:
 

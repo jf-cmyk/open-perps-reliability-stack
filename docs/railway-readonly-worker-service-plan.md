@@ -4,7 +4,7 @@ This plan defines the first server-side service that can move Open Perps Reliabi
 
 Current Railway worker boundary: `oprs-readonly-worker`.
 
-Status: created as an empty Railway service with no source, no public URL, no deployment, and no secret variables. Non-secret guardrail variables are set. Keep it source-less until the first worker command, schedule, and retention policy are selected.
+Status: created as an empty Railway service with no source, no public URL, and no deployment. `HELIUS_RPC_URL` is stored only as a Railway worker variable, and non-secret guardrail variables are set. Keep it source-less until the first worker command, schedule, and retention policy are selected.
 
 ## Purpose
 

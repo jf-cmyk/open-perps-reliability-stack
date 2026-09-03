@@ -28,9 +28,9 @@ Current service split:
 | Service | Purpose | Secrets | Public URL |
 | --- | --- | --- | --- |
 | `refreshing-art` | Canonical static proof pack and dashboard | None | `https://refreshing-art-production-86de.up.railway.app` |
-| `oprs-readonly-worker` | Empty worker boundary for future read-only jobs | Non-secret mode variables only | None |
+| `oprs-readonly-worker` | Empty worker boundary for future read-only jobs | `HELIUS_RPC_URL` plus non-secret mode variables | None |
 
-The `oprs-readonly-worker` service was created as an empty service. It has no deployment source, no public URL, and no secret variables. Non-secret guardrail variables are set: `OPRS_WORKER_MODE`, `OPRS_OUTPUT_MODE`, `OPRS_TARGET_PROTOCOLS`, and `OPRS_RUN_LIMIT`.
+The `oprs-readonly-worker` service was created as an empty service. It has no deployment source and no public URL. Its read-only RPC secret is stored only as a Railway worker variable, and non-secret guardrail variables are set: `OPRS_WORKER_MODE`, `OPRS_OUTPUT_MODE`, `OPRS_TARGET_PROTOCOLS`, and `OPRS_RUN_LIMIT`.
 
 Keep the local Railway link on `refreshing-art` for ordinary static proof-pack deploys:
 
@@ -55,7 +55,7 @@ railway variable set OPRS_TARGET_PROTOCOLS=drift,jupiter,phoenix --service oprs-
 railway variable set OPRS_RUN_LIMIT=10 --service oprs-readonly-worker --skip-deploys
 ```
 
-Read-only RPC secret, only after explicit approval to move the secret into Railway:
+Read-only RPC secret setup command, already approved and applied for `oprs-readonly-worker`:
 
 ```bash
 printf "%s" "PASTE_HELIUS_RPC_URL_HERE" | railway variable set HELIUS_RPC_URL --stdin --service oprs-readonly-worker --skip-deploys
