@@ -20,8 +20,11 @@ rg -q "docs/drift-liquidation-scan-boundary.md" index.html
 rg -q "docs/proof-pack-changelog.md" index.html
 rg -q "docs/live-readiness-path.md" index.html
 rg -q "docs/railway-readonly-worker-service-plan.md" index.html
+rg -q "docs/access-ops-setup.md" index.html
 rg -q "docs/read-only-soak-runbook.md" index.html
 rg -q "docs/commercial-diagnostics-brief.md" index.html
+rg -q "docs/commercial-diagnostics-pricing.md" index.html
+rg -q "docs/execution-pilot-scope.md" index.html
 rg -q "docs/jupiter-verified-pairing-validator.md" index.html
 rg -q "examples/datasets/readonly_soak_summary_example.json" index.html
 rg -q "examples/public/slot-regime-benchmark-v0/benchmark_windows.json" index.html
@@ -32,8 +35,11 @@ rg -q "Protocol Gates" apps/dashboard/index.html
 rg -q "../../docs/proof-pack-changelog.md" apps/dashboard/index.html
 rg -q "../../docs/live-readiness-path.md" apps/dashboard/index.html
 rg -q "../../docs/railway-readonly-worker-service-plan.md" apps/dashboard/index.html
+rg -q "../../docs/access-ops-setup.md" apps/dashboard/index.html
 rg -q "../../docs/read-only-soak-runbook.md" apps/dashboard/index.html
 rg -q "../../docs/commercial-diagnostics-brief.md" apps/dashboard/index.html
+rg -q "../../docs/commercial-diagnostics-pricing.md" apps/dashboard/index.html
+rg -q "../../docs/execution-pilot-scope.md" apps/dashboard/index.html
 rg -q "../../docs/jupiter-verified-pairing-validator.md" apps/dashboard/index.html
 rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
@@ -142,8 +148,11 @@ test -f docs/public-artifact-boundary.md
 test -f docs/proof-pack-changelog.md
 test -f docs/live-readiness-path.md
 test -f docs/railway-readonly-worker-service-plan.md
+test -f docs/access-ops-setup.md
 test -f docs/read-only-soak-runbook.md
 test -f docs/commercial-diagnostics-brief.md
+test -f docs/commercial-diagnostics-pricing.md
+test -f docs/execution-pilot-scope.md
 test -f docs/jupiter-verified-pairing-validator.md
 test -f docs/drift-decoder-provenance.md
 test -f docs/drift-liquidation-scan-boundary.md

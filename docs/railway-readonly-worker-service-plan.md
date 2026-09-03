@@ -2,6 +2,10 @@
 
 This plan defines the first server-side service that can move Open Perps Reliability Stack beyond the static MVP while preserving the read-only and dry-run scope.
 
+Current Railway worker boundary: `oprs-readonly-worker`.
+
+Status: created as an empty Railway service with no source, no public URL, no deployment, and no variables. Keep it empty until the first worker command, schedule, and retention policy are selected.
+
 ## Purpose
 
 The read-only worker service periodically fetches public Solana data, decodes reviewed protocol surfaces, validates data quality, and emits scrubbed reliability outputs for private diagnostics and later public proof packs.
@@ -12,7 +16,7 @@ It must never sign, build, submit, retry, prioritize, or route transactions.
 
 The current Railway service, `refreshing-art`, remains the canonical static proof-pack service. It serves checked-in public artifacts only.
 
-The future worker must be a separate Railway service, for example `oprs-readonly-worker`, with its own variables, deploy logs, monitoring, and failure policy.
+The worker must remain a separate Railway service, `oprs-readonly-worker`, with its own variables, deploy logs, monitoring, and failure policy.
 
 Static proof-pack service:
 
@@ -85,10 +89,10 @@ Forbidden variables:
 
 ## Railway Setup Sequence
 
-Do not run this sequence until founder confirms a separate worker service should be created.
+Founder has approved creating the separate worker boundary. The service exists, but source deployment, variables, schedule, public outputs, and retention still require the exact worker command and operational policy.
 
 1. Keep `refreshing-art` linked to the static proof pack.
-2. Create or link a separate Railway service for the worker.
+2. Use `oprs-readonly-worker` for worker variables and worker status.
 3. Add only read-only variables to the worker service.
 4. Configure the worker command with a low bounded run limit.
 5. Run once manually and inspect logs for secret leakage.
@@ -140,10 +144,12 @@ Fail closed:
 
 We are ready to implement the worker service when:
 
-- The founder confirms a separate Railway worker service.
+- The founder confirms the first worker command, schedule, and retention policy.
 - `docs/read-only-soak-runbook.md` exists and is linked.
 - Static proof-pack hosted smoke checks pass.
 - At least one local worker probe has a passing validator.
 - The exact first worker command and run limit are selected.
 
-Until then, keep hosted work limited to the static proof-pack service.
+Until then, keep `oprs-readonly-worker` as an empty, private, no-secret service boundary.
+
+See [Access and operations setup](access-ops-setup.md) for safe variable commands, alert destination rules, and custom-domain setup.

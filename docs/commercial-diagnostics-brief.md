@@ -103,6 +103,8 @@ Possible packages:
 
 Do not publish exact pricing until buyer willingness-to-pay is validated.
 
+See [Commercial diagnostics pricing](commercial-diagnostics-pricing.md) for current-source infrastructure cost anchors and the first package price test.
+
 ## Proof We Can Show Today
 
 - Hosted static proof pack on Railway and GitHub Pages.

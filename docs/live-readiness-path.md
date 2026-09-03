@@ -44,11 +44,15 @@ This is a server-side service that periodically fetches public Solana data, deco
 
 This is the safest path to revenue before execution.
 
+Current worker boundary: Railway service `oprs-readonly-worker` exists as an empty, no-secret service. It is not operationally live until source, command, schedule, retention, alerting, validation, and a 7-day soak are complete.
+
 ### Live Execution Pilot
 
 Status: blocked until a separate approval package exists.
 
 This is any system that builds, signs, submits, retries, prioritizes, or routes transactions. It requires security review, legal review, capital approval, key-management design, incident response, monitoring, circuit breakers, and explicit founder approval before implementation or deployment.
+
+See [Execution pilot scope](execution-pilot-scope.md) for the exact future approval package.
 
 ## Path To Bring This Live
 
@@ -78,7 +82,7 @@ Goal: turn static proof into repeatable read-only evidence.
 Required gates:
 
 - Add a scheduled read-only worker design with no secrets in public outputs.
-- Use [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) before creating or configuring the hosted worker service.
+- Use [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) before configuring or deploying the hosted worker service.
 - Run at least one source-backed replay-adjacent dataset through the public package contract.
 - Continue Drift liquidation-history pagination until a source-backed candidate is found or the search boundary is revised.
 - Convert Jupiter lifecycle role-map output into a verified-pairing validator design, while keeping pairing claims blocked until before/after state evidence exists.
@@ -119,6 +123,7 @@ Required gates:
 - Add billing/auth only after founder approval of the commercial scope.
 - Keep grant-funded OSS artifacts public and non-privatized.
 - Start from [Commercial diagnostics brief](commercial-diagnostics-brief.md) and validate scope with a specific buyer before publishing pricing.
+- Use [Commercial diagnostics pricing](commercial-diagnostics-pricing.md) as the current structural price test.
 
 Exit signal:
 
@@ -175,9 +180,9 @@ The project is ready to discuss an execution pilot only when all of the followin
 Needed now:
 
 - Confirm the first post-MVP live lane: read-only diagnostics API, private protocol dashboard, or protocol-specific proof-pack support.
-- Confirm whether Railway should host only the static proof pack for now, or also a separate read-only worker service.
-- Provide any production domain decision when a public custom domain is desired.
-- Provide monitoring destination later, such as email, Slack, PagerDuty, or another alert route.
+- Provide the exact custom domain when a branded public URL is desired.
+- Provide the alert destination type and private webhook outside the repo.
+- Confirm the first worker command, run schedule, and retention policy before deploying source to `oprs-readonly-worker`.
 
 Why these require consent:
 
@@ -207,3 +212,4 @@ Do not paste secrets into chat. Use local `.env` for development and Railway var
 4. Continue Drift liquidation-history pagination from the current cursor.
 5. Turn the Jupiter role-map probe into a verified-pairing validator design, but keep lifecycle proof blocked until before/after state evidence exists.
 6. Validate the commercial diagnostics brief with a specific buyer profile and package scope.
+7. Configure alerts and custom domain using [Access and operations setup](access-ops-setup.md).

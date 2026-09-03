@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-09-02-soak-summary-jupiter-validator-checkpoint.md)
+1. [Current checkpoint](2026-09-03-worker-commercial-domain-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -27,8 +27,11 @@ Read when changing module boundaries, service boundaries, contracts, or future s
 - [Liquidation dry-run and replay](../liquidation-dry-run.md)
 - [Live readiness path](../live-readiness-path.md)
 - [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
+- [Access and operations setup](../access-ops-setup.md)
 - [Read-only soak runbook](../read-only-soak-runbook.md)
 - [Jupiter verified pairing validator](../jupiter-verified-pairing-validator.md)
+- [Commercial diagnostics pricing](../commercial-diagnostics-pricing.md)
+- [Execution pilot scope](../execution-pilot-scope.md)
 - [ADR-0002: Adapter-first boundaries](../adr/0002-adapter-first-boundaries.md)
 - [ADR-0004: Deterministic replay before shadow mode](../adr/0004-deterministic-replay-before-shadow-mode.md)
 
@@ -80,8 +83,11 @@ Read when changing frontend/static reviewer artifacts:
 - [Railway deployment](../deployment-railway.md)
 - [Live readiness path](../live-readiness-path.md)
 - [Railway read-only worker service plan](../railway-readonly-worker-service-plan.md)
+- [Access and operations setup](../access-ops-setup.md)
 - [Read-only soak runbook](../read-only-soak-runbook.md)
 - [Jupiter verified pairing validator](../jupiter-verified-pairing-validator.md)
+- [Commercial diagnostics pricing](../commercial-diagnostics-pricing.md)
+- [Execution pilot scope](../execution-pilot-scope.md)
 
 Required checks:
 
@@ -165,5 +171,6 @@ When agent guidance affects implementation order, summarize it in the next check
 6. Jupiter account-layout decode is source-authorized through the live onchain Anchor IDL, and a local role-map probe now binds sampled public transaction accounts to onchain-IDL roles; keep verified lifecycle pairing and replay blocked until before/after state evidence and source-review gates land.
 7. Refresh the local Word proposal after public proof-pack text changes materially.
 8. Keep Railway and GitHub Pages mirrors equivalent.
-9. Design the separate Railway read-only worker service plan and 7-day soak checklist before adding hosted read-only secrets or recurring jobs.
-10. Add a local-only worker command wrapper and a synthetic Jupiter pairing-validator fixture before creating any hosted worker service.
+9. Configure the existing empty `oprs-readonly-worker` service only after selecting the exact worker command, schedule, and retention policy.
+10. Add a local-only worker command wrapper and a synthetic Jupiter pairing-validator fixture before deploying source to the hosted worker service.
+11. Select the alert destination and custom domain, then use `docs/access-ops-setup.md` for safe Railway setup.

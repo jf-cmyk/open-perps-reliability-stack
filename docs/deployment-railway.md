@@ -9,6 +9,7 @@ This deployment serves the proof-pack MVP as a static, read-only site on Railway
 - Service: `refreshing-art`
 - Public proof pack: `https://refreshing-art-production-86de.up.railway.app/`
 - Public dashboard: `https://refreshing-art-production-86de.up.railway.app/apps/dashboard/`
+- Empty read-only worker boundary: `oprs-readonly-worker`
 - Canonical reviewer URL policy: Railway is canonical; GitHub Pages remains an equivalent fallback mirror.
 - Verification status: Railway service reported `SUCCESS`, Nginx served `/` with HTTP 200, and hosted smoke checks passed.
 
@@ -29,7 +30,7 @@ railway service status --service refreshing-art --json
 
 Railway builds the repository with the checked-in `Dockerfile`. The container uses `nginx:1.27-alpine` and listens on Railway's injected `PORT` variable via `deploy/railway/nginx.conf.template`.
 
-Railway service configuration is managed with Infrastructure as Code in `.railway/railway.ts`. The generated plan targets the existing `refreshing-art` service; it must not create a second service.
+Railway service configuration is managed with Infrastructure as Code in `.railway/railway.ts`. The generated plan targets the existing `refreshing-art` service. The separate `oprs-readonly-worker` service currently stays outside the static proof-pack IaC plan until its command and retention policy are explicit.
 
 The public container includes only reviewer-facing static assets:
 
@@ -68,7 +69,7 @@ Optional future variable for a separate server-side read-only decode worker:
 
 - `HELIUS_RPC_URL`: read-only HTTPS RPC URL for local or server-side decode proof. Add it only to a non-public worker/service that needs it, never to the static site.
 
-See [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) before creating that separate worker service.
+See [Railway read-only worker service plan](railway-readonly-worker-service-plan.md) and [Access and operations setup](access-ops-setup.md) before configuring that separate worker service.
 
 ## Setup
 
@@ -117,6 +118,23 @@ The workflow checks both reviewer surfaces:
 This monitor uses no secrets. It fetches only public pages and examples, verifies read-only/dry-run markers, checks static 404 behavior for sensitive or internal paths, checks Railway's `X-Content-Type-Options: nosniff` header, and fails if hosted HTML or public JSON examples include forbidden secret markers such as `HELIUS_RPC_URL`, private keys, bearer tokens, seed phrases, or wallet-key language.
 
 A separate worker service needs its own monitoring and [7-day read-only soak runbook](read-only-soak-runbook.md) before it can be treated as operationally live.
+
+## Custom Domain
+
+The public custom domain should attach to `refreshing-art`, not to `oprs-readonly-worker`.
+
+After choosing the domain, run:
+
+```bash
+railway domain YOUR_DOMAIN_HERE --service refreshing-art --json
+```
+
+Add the returned CNAME and TXT records at the DNS provider, then check:
+
+```bash
+railway domain status YOUR_DOMAIN_HERE
+scripts/run_hosted_smoke_checks.sh https://YOUR_DOMAIN_HERE
+```
 
 ## QA Checklist
 

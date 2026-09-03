@@ -1129,6 +1129,14 @@
                 <p><a href="../../docs/read-only-soak-runbook.md">Review soak runbook</a></p>
               </div>
             </article>
+            <article class="step">
+              <div class="step-number">07</div>
+              <div>
+                <h4>Ops And Access Setup</h4>
+                <p>Keep worker variables, alert destinations, and custom-domain setup explicit so secrets never enter the static proof-pack service.</p>
+                <p><a href="../../docs/access-ops-setup.md">Review access ops setup</a></p>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -1231,8 +1239,18 @@
             </article>
             <article class="access-card">
               <div class="label">Railway Worker</div>
-              <strong>Separate service required</strong>
-              <p>The worker plan keeps `refreshing-art` static and secret-free, while a future private service owns read-only RPC variables. <a href="../../docs/railway-readonly-worker-service-plan.md">Read the worker plan</a>.</p>
+              <strong>Separate service created</strong>
+              <p>The `oprs-readonly-worker` boundary exists empty and no-secret; `refreshing-art` remains the static public service. <a href="../../docs/railway-readonly-worker-service-plan.md">Read the worker plan</a>.</p>
+            </article>
+            <article class="access-card">
+              <div class="label">Commercial Scope</div>
+              <strong>Private API before execution</strong>
+              <p>Public proof packs stay open while paid dashboards and APIs can package read-only reliability diagnostics. <a href="../../docs/commercial-diagnostics-pricing.md">Read pricing structure</a>.</p>
+            </article>
+            <article class="access-card">
+              <div class="label">Execution Pilot</div>
+              <strong>Future approval package</strong>
+              <p>Any signer, wallet, submission, fee, or capital-moving pilot needs a separate written scope and controls. <a href="../../docs/execution-pilot-scope.md">Read pilot scope</a>.</p>
             </article>
           </div>
         </div>
@@ -1326,9 +1344,12 @@
               <li><a href="../../docs/drift-liquidation-scan-boundary.md">Drift Scan Boundary</a></li>
               <li><a href="../../docs/live-readiness-path.md">Live Readiness Path</a></li>
               <li><a href="../../docs/railway-readonly-worker-service-plan.md">Worker Service Plan</a></li>
+              <li><a href="../../docs/access-ops-setup.md">Access Ops Setup</a></li>
               <li><a href="../../docs/read-only-soak-runbook.md">7-Day Soak Runbook</a></li>
               <li><a href="../../docs/jupiter-verified-pairing-validator.md">Jupiter Pairing Validator</a></li>
               <li><a href="../../docs/commercial-diagnostics-brief.md">Diagnostics Brief</a></li>
+              <li><a href="../../docs/commercial-diagnostics-pricing.md">Pricing Structure</a></li>
+              <li><a href="../../docs/execution-pilot-scope.md">Execution Pilot Scope</a></li>
               <li><a href="../../docs/proof-pack-changelog.md">Proof Changelog</a></li>
               <li><a href="../../docs/phoenix-hawkeye-validator-plan.md">Phoenix Validator Plan</a></li>
             </ul>

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-    "updated_at": "2026-09-01T20:17:27Z",
-    "last_material_delta": "jupiter-lifecycle-role-map-probe-added-and-drift-legacy-scan-advanced-to-318k",
+  "updated_at": "2026-09-03T14:04:37Z",
+  "last_material_delta": "firedancer-v26-08-2-mainnet-ready-with-solana-4-2-support-and-public-gossip",
   "mission": "Discover and qualify source-backed Blocksize business-development and partnership opportunities, prioritizing the Solana Foundation Open Perps call and read-only reliability infrastructure.",
   "scope": {
     "mode": "read_only",
@@ -21,9 +21,9 @@
     "broad_scan_primary_sources": 4
   },
   "daily_rotation": {
-    "last_run_date": "2026-09-01",
-    "last_lane": "validators",
-    "next_lane": "delegation"
+    "last_run_date": "2026-09-03",
+    "last_lane": "network",
+    "next_lane": "partnerships"
   },
   "market_baselines": {
     "solana_capital_flow": {
@@ -168,6 +168,30 @@
       "benchmark_implication": "Add full Firedancer v1.1.3 as a mainnet-ready replay, worst-case bundle, address-lookup-table, epoch-boundary root-advancement, and SVM benchmark stratum; preserve v1.1.2 as the testnet-only incremental-snapshot cluster-restart stratum and keep Frankendancer mainnet, route-table, GRE, and limited-stake strata separate",
       "claim_boundary": "The v1.1.3 mainnet-ready label, release notes, and ten public gossip advertisements do not establish stake-weighted adoption, installed binary provenance, configuration, successful operation, a Blocksize deployment or incident, DoubleZero use or benefit, performance improvement, security completion, or suitability for a specific validator"
     },
+    "firedancer_mainnet_v26_08_2": {
+      "as_of": "2026-09-03",
+      "release": "v26.08.2",
+      "published_at": "2026-08-25T19:57:21Z",
+      "release_label": "Firedancer Mainnet",
+      "prerelease": false,
+      "deployment_stage": "mainnet_ready_by_official_release_label",
+      "official_release_changes": [
+        "support all Solana 4.2 features",
+        "improve snapshot loading and validator startup",
+        "improve epoch-boundary handling",
+        "reduce stated mainnet memory footprint to approximately 280 GB",
+        "improve reliability and apply security fixes"
+      ],
+      "public_gossip_snapshot_slot": 443995709,
+      "public_gossip_total_node_records": 3711,
+      "public_gossip_firedancer_records": 38,
+      "public_gossip_v26_8_2_records": 16,
+      "public_gossip_adoption_status": "point_in_time_identity_advertisements_not_stake_weighted_adoption_or_binary_provenance",
+      "blocksize_voting_identity_client": "AgaveBam 4.2.1",
+      "blocksize_firedancer_instance_status": "first_party_nonvoting_claim_only_identity_release_configuration_persistence_doublezero_route_and_performance_unverified",
+      "benchmark_implication": "Add v26.08.2 as the current full-Firedancer mainnet-ready benchmark stratum for Solana 4.2 feature support, snapshot startup, epoch boundaries, memory, replay, landing, and catchup while preserving v1.1.3 as the predecessor with explicit worst-case bundle, address-lookup-table, and root-advancement fixes",
+      "claim_boundary": "The release label, release notes, and 16 public gossip advertisements do not establish stake-weighted adoption, active feature gates, installed binary provenance, configuration, successful operation, achieved memory use, faster startup, reliability improvement, Blocksize deployment, DoubleZero use or benefit, performance, or suitability for a specific validator"
+    },
     "alpenglow": {
       "as_of": "2026-09-01",
       "status": "under_development",
@@ -285,14 +309,14 @@
   },
   "delegation_baselines": {
     "solblaze_cls": {
-      "as_of": "2026-08-19",
+      "as_of": "2026-09-02",
       "api_success": true,
-      "eligible_validator_count": 1129,
-      "prior_eligible_validator_count": 1176,
-      "eligible_validator_count_change": -47,
-      "eligible_validator_count_change_pct": -3.9966,
-      "eligible_validator_count_change_since_2026_07_22": -163,
-      "eligible_validator_count_change_since_2026_07_22_pct": -12.6161,
+      "eligible_validator_count": 1069,
+      "prior_eligible_validator_count": 1129,
+      "eligible_validator_count_change": -60,
+      "eligible_validator_count_change_pct": -5.3144,
+      "eligible_validator_count_change_since_2026_07_22": -223,
+      "eligible_validator_count_change_since_2026_07_22_pct": -17.2601,
       "blocksize_vote_account_eligible": true,
       "public_interface_visible": true,
       "public_selector_url": "https://stake.solblaze.org/validators",
@@ -308,7 +332,7 @@
       "stake_unstake_submission_endpoints_called": false,
       "blocksize_delegated_balance_status": "unverified",
       "partnership_status": "not_established",
-      "claim_boundary": "The August 19 API snapshot confirms Blocksize remained eligible while the list contracted from 1176 to 1129 accounts since July 31 and from 1292 to 1129 since July 22. This is point-in-time eligibility and historical public interface evidence only; no cause for list changes, excluded-validator health, aggregate Blocksize target or applied balance, deposit, user, stake, revenue, transaction, continuing interface availability, endorsement, or relationship claim"
+      "claim_boundary": "The September 2 API snapshot confirms Blocksize remained eligible while the list contracted from 1129 to 1069 accounts since August 19 and from 1292 to 1069 since July 22. This is point-in-time eligibility and historical public interface evidence only; no cause for list changes, excluded-validator health, aggregate Blocksize target or applied balance, deposit, user, stake, revenue, transaction, continuing interface availability, endorsement, or relationship claim"
     },
     "sfdp": {
       "as_of_epoch": 1011,
