@@ -72,6 +72,14 @@ unset OPRS_ALERT_WEBHOOK_URL
 
 Why stdin matters: it avoids putting key material directly in the shell command. The variable value can still exist in terminal scrollback if pasted visibly, so paste only at the prompt or from a password manager.
 
+After the webhook is stored, test only the checked-in scrubbed sample by pulling Railway variables into the local process:
+
+```bash
+railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send
+```
+
+The sample sender validates `examples/datasets/slack_alert_payload_example.json` before delivery and does not print the webhook.
+
 ## Alert Destination
 
 Selected alert destination:

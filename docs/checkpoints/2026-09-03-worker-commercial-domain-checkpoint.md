@@ -33,6 +33,7 @@ Current implementation remains read-only and dry-run only:
 - Set `HELIUS_RPC_URL` on `oprs-readonly-worker` using stdin after explicit founder approval.
 - Selected Slack as alert destination and set `OPRS_ALERT_DESTINATION=slack`.
 - Added Slack alerting docs, payload schema, example payload, and validator.
+- Added a local Slack sample sender that dry-runs by default and can send only the checked-in scrubbed sample through `railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send` after the webhook exists.
 - Documented safe Railway variable setup using stdin for secret-like values.
 - Documented alert destination constraints and payload boundary.
 - Documented custom domain setup path for Railway.
@@ -42,9 +43,10 @@ Current implementation remains read-only and dry-run only:
 ## Next Queue
 
 1. Create a Slack incoming webhook for a private alerts channel and store it as `OPRS_ALERT_WEBHOOK_URL`.
-2. Select the custom domain and run Railway domain setup.
-3. Pick the first worker command and retention policy before deploying source to `oprs-readonly-worker`.
-4. Keep adapting the grant proposal as live read-only evidence improves.
+2. Run the Slack sample sender through Railway-injected worker variables.
+3. Select the custom domain and run Railway domain setup.
+4. Pick the first worker command and retention policy before deploying source to `oprs-readonly-worker`.
+5. Keep adapting the grant proposal as live read-only evidence improves.
 
 ## Fresh-Window Kickoff Prompt
 

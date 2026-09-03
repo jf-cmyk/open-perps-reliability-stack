@@ -100,6 +100,14 @@ Founder has approved creating the separate worker boundary. The service exists, 
 6. Validate the generated output locally before committing any scrubbed artifact.
 7. Enable scheduled runs only after the 7-day soak runbook is ready.
 
+Before any live worker output is sent to Slack, run the checked-in sample alert only:
+
+```bash
+railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send
+```
+
+This command uses the worker service variables without revealing the webhook in the command output.
+
 ## First Manual Run Contract
 
 The first hosted worker run should target a tiny bounded probe, such as:

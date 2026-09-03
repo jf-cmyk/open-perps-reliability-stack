@@ -118,6 +118,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_s
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_lifecycle_role_map_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_soak_summary.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_slack_alert_payload.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/send_slack_alert_sample.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/discover_phoenix_market_telemetry.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_phoenix_market_telemetry_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_public_slot_regime_benchmark.py
@@ -138,6 +139,7 @@ scripts/validate_public_jupiter_onchain_decode.py
 scripts/validate_jupiter_lifecycle_role_map_probe.py
 scripts/validate_readonly_soak_summary.py
 scripts/validate_slack_alert_payload.py
+scripts/send_slack_alert_sample.py --dry-run
 scripts/validate_public_phoenix_market_telemetry.py
 scripts/validate_public_slot_regime_benchmark.py
 scripts/validate_invalid_public_package_fixtures.py
@@ -231,6 +233,7 @@ test -x scripts/discover_jupiter_lifecycle_role_map.py
 test -x scripts/audit_jupiter_source_authority.py
 test -x scripts/validate_jupiter_lifecycle_role_map_probe.py
 test -x scripts/validate_readonly_soak_summary.py
+test -x scripts/send_slack_alert_sample.py
 test -x scripts/discover_phoenix_market_telemetry.py
 test -x scripts/validate_phoenix_market_telemetry_probe.py
 test -x scripts/validate_public_slot_regime_benchmark.py

@@ -76,6 +76,20 @@ Validator:
 scripts/validate_slack_alert_payload.py
 ```
 
+Dry-run sample sender:
+
+```bash
+scripts/send_slack_alert_sample.py --dry-run
+```
+
+After `OPRS_ALERT_WEBHOOK_URL` is set on the Railway worker service, send only the checked-in sample alert through Railway-injected variables:
+
+```bash
+railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send
+```
+
+Do not run the first send against live worker output. The sender posts only `text` and `blocks` from a locally validated payload; contract metadata and safety fields are validation inputs, not Slack message fields.
+
 ## Allowed Payload Fields
 
 Slack alerts may include:
