@@ -77,3 +77,15 @@ scripts/run_readonly_worker_once.py --job slack-sample-dry-run --execute
 ```
 
 `--plan` is the default. Use `--execute` only for an intentional bounded run. Outputs stay under `target/oprs-worker-runs/`, and live worker output must not be sent to Slack until a separate payload builder and validator exist.
+
+## Latest Local Smoke
+
+Date: 2026-09-03
+
+Executed locally with `scripts/run_readonly_worker_once.py --execute` and validated:
+
+- `drift-state-smoke`
+- `jupiter-role-map-smoke`
+- `phoenix-telemetry-smoke`
+
+Outputs were written under `target/oprs-worker-runs/` and were not committed or published. This proves the local wrapper can run bounded read-only probes across the current priority venues; it does not create a hosted worker deployment, scheduled job, public output promotion, or execution scope.
