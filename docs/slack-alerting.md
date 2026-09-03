@@ -50,10 +50,12 @@ Invite only the founder/operator set that should see:
 
 ## Store The Webhook In Railway
 
-Run this from the repo root after copying the Slack webhook URL:
+Run this from the repo root after copying the Slack webhook URL. Paste the webhook after the first command and press Enter; it will not echo in the terminal.
 
 ```bash
-printf "%s" "PASTE_SLACK_WEBHOOK_URL_HERE" | railway variable set OPRS_ALERT_WEBHOOK_URL --stdin --service oprs-readonly-worker --skip-deploys
+read -r -s OPRS_ALERT_WEBHOOK_URL
+printf "%s" "$OPRS_ALERT_WEBHOOK_URL" | railway variable set OPRS_ALERT_WEBHOOK_URL --stdin --service oprs-readonly-worker --skip-deploys
+unset OPRS_ALERT_WEBHOOK_URL
 ```
 
 Do not paste the webhook into chat. Do not use `railway variable list --json` or `railway variable list --kv` after setting it because those modes can reveal raw values.

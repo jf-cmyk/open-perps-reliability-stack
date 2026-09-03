@@ -65,7 +65,9 @@ printf "%s" "PASTE_HELIUS_RPC_URL_HERE" | railway variable set HELIUS_RPC_URL --
 Slack webhook secret, after the founder creates a Slack incoming webhook:
 
 ```bash
-printf "%s" "PASTE_ALERT_WEBHOOK_URL_HERE" | railway variable set OPRS_ALERT_WEBHOOK_URL --stdin --service oprs-readonly-worker --skip-deploys
+read -r -s OPRS_ALERT_WEBHOOK_URL
+printf "%s" "$OPRS_ALERT_WEBHOOK_URL" | railway variable set OPRS_ALERT_WEBHOOK_URL --stdin --service oprs-readonly-worker --skip-deploys
+unset OPRS_ALERT_WEBHOOK_URL
 ```
 
 Why stdin matters: it avoids putting key material directly in the shell command. The variable value can still exist in terminal scrollback if pasted visibly, so paste only at the prompt or from a password manager.
