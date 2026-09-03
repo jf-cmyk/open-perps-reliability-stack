@@ -41,7 +41,7 @@ The static proof-pack service must never fetch private data, submit transactions
 
 Railway service: `oprs-readonly-worker`.
 
-Current status: empty service boundary only. It has no source, no public URL, no deployment, and no variables.
+Current status: empty service boundary only. It has no source, no public URL, no deployment, and no secret variables. Non-secret guardrail variables are set.
 
 Purpose:
 

@@ -28,9 +28,9 @@ Current service split:
 | Service | Purpose | Secrets | Public URL |
 | --- | --- | --- | --- |
 | `refreshing-art` | Canonical static proof pack and dashboard | None | `https://refreshing-art-production-86de.up.railway.app` |
-| `oprs-readonly-worker` | Empty worker boundary for future read-only jobs | None yet | None |
+| `oprs-readonly-worker` | Empty worker boundary for future read-only jobs | Non-secret mode variables only | None |
 
-The `oprs-readonly-worker` service was created as an empty service. It has no deployment source, no public URL, and no variables at creation time.
+The `oprs-readonly-worker` service was created as an empty service. It has no deployment source, no public URL, and no secret variables. Non-secret guardrail variables are set: `OPRS_WORKER_MODE`, `OPRS_OUTPUT_MODE`, `OPRS_TARGET_PROTOCOLS`, and `OPRS_RUN_LIMIT`.
 
 Keep the local Railway link on `refreshing-art` for ordinary static proof-pack deploys:
 
@@ -46,14 +46,19 @@ Use Railway variables only on `oprs-readonly-worker`.
 
 Do not paste secrets into chat. Do not put secret values in docs. Do not use `railway variable list --json` or `railway variable list --kv` in shared output because those modes can reveal raw values.
 
-Recommended variable commands:
+Recommended non-secret variable commands:
 
 ```bash
-printf "%s" "PASTE_HELIUS_RPC_URL_HERE" | railway variable set HELIUS_RPC_URL --stdin --service oprs-readonly-worker --skip-deploys
 railway variable set OPRS_WORKER_MODE=read_only --service oprs-readonly-worker --skip-deploys
 railway variable set OPRS_OUTPUT_MODE=private_target --service oprs-readonly-worker --skip-deploys
 railway variable set OPRS_TARGET_PROTOCOLS=drift,jupiter,phoenix --service oprs-readonly-worker --skip-deploys
 railway variable set OPRS_RUN_LIMIT=10 --service oprs-readonly-worker --skip-deploys
+```
+
+Read-only RPC secret, only after explicit approval to move the secret into Railway:
+
+```bash
+printf "%s" "PASTE_HELIUS_RPC_URL_HERE" | railway variable set HELIUS_RPC_URL --stdin --service oprs-readonly-worker --skip-deploys
 ```
 
 Alert destination, when selected:
