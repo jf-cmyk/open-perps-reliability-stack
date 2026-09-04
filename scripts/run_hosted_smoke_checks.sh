@@ -123,6 +123,14 @@ assert_contains "oprs.readonly_soak_summary.v0" "$workdir/readonly_soak_summary_
 assert_contains "oprs-readonly-worker" "$workdir/readonly_soak_summary_example.json"
 assert_contains '"execution_pilot_authorized": false' "$workdir/readonly_soak_summary_example.json"
 
+echo "== Fetch worker run envelope example =="
+fetch "/schemas/datasets/readonly-worker-run-envelope-v0.json" "$workdir/readonly-worker-run-envelope-v0.json"
+fetch "/examples/datasets/readonly_worker_run_envelope_example.json" "$workdir/readonly_worker_run_envelope_example.json"
+assert_contains "oprs.readonly_worker_run_envelope.v0" "$workdir/readonly-worker-run-envelope-v0.json"
+assert_contains "oprs.readonly_worker_run_envelope.v0" "$workdir/readonly_worker_run_envelope_example.json"
+assert_contains '"public_output_published": false' "$workdir/readonly_worker_run_envelope_example.json"
+assert_contains "target/oprs-worker-runs/" "$workdir/readonly_worker_run_envelope_example.json"
+
 echo "== Fetch Jupiter pairing validator contract =="
 fetch "/docs/jupiter-verified-pairing-validator.md" "$workdir/jupiter-verified-pairing-validator.md"
 assert_contains "Jupiter Verified Pairing Validator Contract" "$workdir/jupiter-verified-pairing-validator.md"
@@ -213,7 +221,11 @@ assert_contains '"field": "amm_oracle"' "$workdir/drift_shape_snapshot_example.j
 assert_contains '"semantic_value": "Perpetual"' "$workdir/drift_shape_snapshot_example.json"
 
 echo "== Fetch read-only decode worker example =="
+fetch "/docs/read-only-decode-worker.md" "$workdir/read-only-decode-worker.md"
 fetch "/examples/datasets/drift_readonly_decode_worker_run_example.json" "$workdir/drift_readonly_decode_worker_run_example.json"
+assert_contains "Read-Only Decode Worker" "$workdir/read-only-decode-worker.md"
+assert_contains "Private Run Envelope" "$workdir/read-only-decode-worker.md"
+assert_contains "build_readonly_worker_run_envelope.py" "$workdir/read-only-decode-worker.md"
 assert_contains "oprs.readonly_decode_worker_run.v0" "$workdir/drift_readonly_decode_worker_run_example.json"
 assert_contains "one_shot_local_read_only" "$workdir/drift_readonly_decode_worker_run_example.json"
 assert_contains '"transaction_submission_enabled": false' "$workdir/drift_readonly_decode_worker_run_example.json"

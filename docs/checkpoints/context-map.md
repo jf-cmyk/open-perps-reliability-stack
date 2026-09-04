@@ -174,7 +174,7 @@ When agent guidance affects implementation order, summarize it in the next check
 7. Refresh the local Word proposal after public proof-pack text changes materially.
 8. Keep Railway and GitHub Pages mirrors equivalent.
 9. Configure the existing empty `oprs-readonly-worker` service only after selecting the exact worker command, schedule, and retention policy.
-10. Convert validated local worker output into a private run-envelope candidate before any hosted worker source deployment.
+10. Add a scrubbed promotion-candidate builder that can convert validated private envelopes into public-safe summaries after founder review.
 11. Create the private Slack webhook and set `OPRS_ALERT_WEBHOOK_URL` with stdin, then test only the checked-in Slack sample payload through `railway run --service oprs-readonly-worker --no-local -- scripts/send_slack_alert_sample.py --send`.
 12. Pick the first hosted worker command, schedule, and retention policy before deploying source to `oprs-readonly-worker`.
 13. Select the custom domain, then use `docs/access-ops-setup.md` for safe Railway setup.

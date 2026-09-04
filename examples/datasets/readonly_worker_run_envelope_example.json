@@ -1,0 +1,108 @@
+{
+  "schema_version": "oprs.readonly_worker_run_envelope.v0",
+  "run_id": "example_readonly_worker_run_envelope_001",
+  "generated_at_unix": 1788472666,
+  "worker": {
+    "service_name": "oprs-readonly-worker",
+    "mode": "read_only_private_target",
+    "lifecycle_stage": "local_probe_envelope",
+    "generated_by": "scripts/build_readonly_worker_run_envelope.py"
+  },
+  "scope": {
+    "chain_id": "solana-mainnet-beta",
+    "target_protocols": ["drift", "jupiter", "phoenix"],
+    "output_mode": "private_target",
+    "private_output_location": "target/oprs-worker-runs/",
+    "source_artifact_count": 3
+  },
+  "artifacts": [
+    {
+      "path": "target/oprs-worker-runs/drift-state-smoke.json",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "byte_length": 47104,
+      "protocol": "drift",
+      "dataset_name": "drift_readonly_state_discovery",
+      "schema_version": "0.1.0",
+      "validator_status": "passed",
+      "summary": {
+        "source_kind": "solana_rpc",
+        "read_only_probe": true,
+        "live_read_claimed": true,
+        "replay_ready": false,
+        "execution_claimed": false
+      }
+    },
+    {
+      "path": "target/oprs-worker-runs/jupiter-role-map-smoke.json",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "byte_length": 52224,
+      "protocol": "jupiter",
+      "dataset_name": "jupiter_lifecycle_role_map_probe_local",
+      "schema_version": "oprs.jupiter_lifecycle_role_map_probe.v0",
+      "validator_status": "passed",
+      "summary": {
+        "source_kind": "solana_rpc",
+        "read_only_probe": true,
+        "live_read_claimed": true,
+        "replay_ready": false,
+        "execution_claimed": false
+      }
+    },
+    {
+      "path": "target/oprs-worker-runs/phoenix-market-telemetry-smoke.json",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "byte_length": 3788,
+      "protocol": "phoenix",
+      "dataset_name": "phoenix_market_telemetry_probe_local",
+      "schema_version": "oprs.phoenix_market_telemetry_probe.v0",
+      "validator_status": "passed",
+      "summary": {
+        "source_kind": "public_http",
+        "read_only_probe": true,
+        "live_read_claimed": true,
+        "replay_ready": false,
+        "execution_claimed": false
+      }
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "validated_artifact_count": 3,
+    "validators": [
+      "scripts/validate_drift_readonly_state.py",
+      "scripts/validate_jupiter_lifecycle_role_map_probe.py",
+      "scripts/validate_phoenix_market_telemetry_probe.py"
+    ],
+    "secret_scan_passed": true
+  },
+  "promotion_policy": {
+    "public_output_published": false,
+    "public_candidate_created": false,
+    "promotion_requires_founder_review": true,
+    "promotion_requires_validator_pass": true,
+    "promotion_requires_scrub_pass": true
+  },
+  "safety_invariants": {
+    "rpc_credential_printed": false,
+    "contains_api_key": false,
+    "contains_webhook_url": false,
+    "raw_account_data_committed": false,
+    "raw_transaction_committed": false,
+    "signing_enabled": false,
+    "transaction_submission_enabled": false,
+    "priority_fee_bidding_enabled": false,
+    "keypair_loading_enabled": false,
+    "custody_enabled": false,
+    "capital_management_enabled": false
+  },
+  "forbidden_actions": [
+    "sign",
+    "submit_transaction",
+    "retry_transaction",
+    "bid_priority_fee",
+    "load_keypair",
+    "manage_custody",
+    "manage_capital",
+    "publish_without_review"
+  ]
+}

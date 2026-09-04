@@ -61,6 +61,8 @@ python3 -m json.tool examples/datasets/readonly_target_discovery_example.json >/
 python3 -m json.tool examples/datasets/drift_readonly_state_example.json >/dev/null
 python3 -m json.tool examples/datasets/drift_shape_snapshot_example.json >/dev/null
 python3 -m json.tool examples/datasets/readonly_soak_summary_example.json >/dev/null
+python3 -m json.tool schemas/datasets/readonly-worker-run-envelope-v0.json >/dev/null
+python3 -m json.tool examples/datasets/readonly_worker_run_envelope_example.json >/dev/null
 python3 -m json.tool schemas/datasets/drift-liquidation-history-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-decode-worker-run-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-soak-summary-v0.json >/dev/null
@@ -121,6 +123,8 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/audit_jupiter_s
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_lifecycle_role_map_probe.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_jupiter_verified_pairing_fixture.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_soak_summary.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_worker_run_envelope.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/build_readonly_worker_run_envelope.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_slack_alert_payload.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/send_slack_alert_sample.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/run_readonly_worker_once.py
@@ -144,6 +148,7 @@ scripts/validate_public_jupiter_onchain_decode.py
 scripts/validate_jupiter_lifecycle_role_map_probe.py
 scripts/validate_jupiter_verified_pairing_fixture.py
 scripts/validate_readonly_soak_summary.py
+scripts/validate_readonly_worker_run_envelope.py
 scripts/validate_slack_alert_payload.py
 scripts/send_slack_alert_sample.py --dry-run
 scripts/run_readonly_worker_once.py --job slack-sample-dry-run --execute
@@ -184,6 +189,7 @@ test -f schemas/datasets/data-reconstruction-envelope-v0.json
 test -f schemas/datasets/drift-liquidation-history-probe-v0.json
 test -f schemas/datasets/readonly-decode-worker-run-v0.json
 test -f schemas/datasets/readonly-soak-summary-v0.json
+test -f schemas/datasets/readonly-worker-run-envelope-v0.json
 test -f schemas/datasets/slack-alert-payload-v0.json
 test -f schemas/datasets/public-contract-index-v0.json
 test -f schemas/datasets/spot-guardrail-snapshot-v0.json
@@ -202,6 +208,7 @@ test -f examples/datasets/readonly_target_discovery_example.json
 test -f examples/datasets/drift_readonly_state_example.json
 test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/readonly_soak_summary_example.json
+test -f examples/datasets/readonly_worker_run_envelope_example.json
 test -f examples/datasets/slack_alert_payload_example.json
 test -f examples/datasets/drift_readonly_decode_worker_run_example.json
 test -f examples/datasets/drift_liquidation_history_probe_example.json
@@ -247,6 +254,8 @@ test -x scripts/audit_jupiter_source_authority.py
 test -x scripts/validate_jupiter_lifecycle_role_map_probe.py
 test -x scripts/validate_jupiter_verified_pairing_fixture.py
 test -x scripts/validate_readonly_soak_summary.py
+test -x scripts/validate_readonly_worker_run_envelope.py
+test -x scripts/build_readonly_worker_run_envelope.py
 test -x scripts/send_slack_alert_sample.py
 test -x scripts/run_readonly_worker_once.py
 test -x scripts/discover_phoenix_market_telemetry.py

@@ -62,6 +62,10 @@ Every worker run must keep these false until a separate founder-approved scope c
 - Schema: `schemas/datasets/readonly-decode-worker-run-v0.json`
 - Example: `examples/datasets/drift_readonly_decode_worker_run_example.json`
 - Local one-shot wrapper: `scripts/run_readonly_worker_once.py`
+- Private run envelope schema: `schemas/datasets/readonly-worker-run-envelope-v0.json`
+- Private run envelope example: `examples/datasets/readonly_worker_run_envelope_example.json`
+- Private run envelope builder: `scripts/build_readonly_worker_run_envelope.py`
+- Private run envelope validator: `scripts/validate_readonly_worker_run_envelope.py`
 
 The example is a scrubbed public artifact. It describes the worker contract and current Drift guardrail proof shape without committing live target output or raw account bytes.
 
@@ -89,3 +93,16 @@ Executed locally with `scripts/run_readonly_worker_once.py --execute` and valida
 - `phoenix-telemetry-smoke`
 
 Outputs were written under `target/oprs-worker-runs/` and were not committed or published. This proves the local wrapper can run bounded read-only probes across the current priority venues; it does not create a hosted worker deployment, scheduled job, public output promotion, or execution scope.
+
+## Private Run Envelope
+
+After local worker outputs validate, build a private envelope:
+
+```bash
+scripts/build_readonly_worker_run_envelope.py
+scripts/validate_readonly_worker_run_envelope.py target/oprs-worker-run-envelopes/latest.json
+```
+
+The envelope records paths, checksums, byte lengths, protocol labels, validator status, and promotion policy. It does not copy worker payload bodies, raw account data, raw transactions, RPC URLs, API keys, Slack webhooks, signer settings, custody settings, or capital settings.
+
+The checked-in example is public documentation of the envelope shape only. Generated envelopes under `target/oprs-worker-run-envelopes/` remain private target output until founder review, validator pass, and scrub pass.

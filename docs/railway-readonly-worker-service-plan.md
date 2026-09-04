@@ -67,6 +67,14 @@ Initial outputs:
 - Scrubbed public candidate only after validator pass.
 - Summary line with no secrets, raw account bytes, raw transaction bodies, wallet inventory, or private routes.
 
+The local envelope builder is:
+
+```bash
+scripts/build_readonly_worker_run_envelope.py
+```
+
+It creates `target/oprs-worker-run-envelopes/latest.json` from validated worker outputs without copying payload bodies into the envelope.
+
 ## Railway Variables
 
 Required for worker only:

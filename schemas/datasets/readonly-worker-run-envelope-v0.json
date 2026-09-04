@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/readonly-worker-run-envelope-v0.json",
+  "title": "Open Perps Reliability Stack Read-Only Worker Run Envelope v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "generated_at_unix",
+    "worker",
+    "scope",
+    "artifacts",
+    "validation",
+    "promotion_policy",
+    "safety_invariants",
+    "forbidden_actions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "oprs.readonly_worker_run_envelope.v0" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+    "generated_at_unix": { "type": "integer", "minimum": 1 },
+    "worker": {
+      "type": "object",
+      "required": ["service_name", "mode", "lifecycle_stage", "generated_by"],
+      "additionalProperties": false,
+      "properties": {
+        "service_name": { "const": "oprs-readonly-worker" },
+        "mode": { "const": "read_only_private_target" },
+        "lifecycle_stage": {
+          "enum": ["local_probe_envelope", "hosted_smoke_candidate", "soak_candidate"]
+        },
+        "generated_by": { "type": "string", "minLength": 1, "maxLength": 120 }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "chain_id",
+        "target_protocols",
+        "output_mode",
+        "private_output_location",
+        "source_artifact_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "chain_id": { "const": "solana-mainnet-beta" },
+        "target_protocols": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["drift", "jupiter", "phoenix"] }
+        },
+        "output_mode": { "const": "private_target" },
+        "private_output_location": { "const": "target/oprs-worker-runs/" },
+        "source_artifact_count": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "validated_artifact_count", "validators", "secret_scan_passed"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["passed", "failed_closed"] },
+        "validated_artifact_count": { "type": "integer", "minimum": 0 },
+        "validators": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 160 }
+        },
+        "secret_scan_passed": { "type": "boolean" }
+      }
+    },
+    "promotion_policy": {
+      "type": "object",
+      "required": [
+        "public_output_published",
+        "public_candidate_created",
+        "promotion_requires_founder_review",
+        "promotion_requires_validator_pass",
+        "promotion_requires_scrub_pass"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "public_output_published": { "const": false },
+        "public_candidate_created": { "const": false },
+        "promotion_requires_founder_review": { "const": true },
+        "promotion_requires_validator_pass": { "const": true },
+        "promotion_requires_scrub_pass": { "const": true }
+      }
+    },
+    "safety_invariants": {
+      "type": "object",
+      "required": [
+        "rpc_credential_printed",
+        "contains_api_key",
+        "contains_webhook_url",
+        "raw_account_data_committed",
+        "raw_transaction_committed",
+        "signing_enabled",
+        "transaction_submission_enabled",
+        "priority_fee_bidding_enabled",
+        "keypair_loading_enabled",
+        "custody_enabled",
+        "capital_management_enabled"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rpc_credential_printed": { "const": false },
+        "contains_api_key": { "const": false },
+        "contains_webhook_url": { "const": false },
+        "raw_account_data_committed": { "const": false },
+        "raw_transaction_committed": { "const": false },
+        "signing_enabled": { "const": false },
+        "transaction_submission_enabled": { "const": false },
+        "priority_fee_bidding_enabled": { "const": false },
+        "keypair_loading_enabled": { "const": false },
+        "custody_enabled": { "const": false },
+        "capital_management_enabled": { "const": false }
+      }
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "sign",
+          "submit_transaction",
+          "retry_transaction",
+          "bid_priority_fee",
+          "load_keypair",
+          "manage_custody",
+          "manage_capital",
+          "publish_without_review"
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "byte_length",
+        "protocol",
+        "dataset_name",
+        "schema_version",
+        "validator_status",
+        "summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 180 },
+        "sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+        "byte_length": { "type": "integer", "minimum": 1 },
+        "protocol": { "enum": ["drift", "jupiter", "phoenix"] },
+        "dataset_name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "schema_version": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "validator_status": { "enum": ["passed", "not_run", "failed_closed"] },
+        "summary": {
+          "type": "object",
+          "required": [
+            "source_kind",
+            "read_only_probe",
+            "live_read_claimed",
+            "replay_ready",
+            "execution_claimed"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "source_kind": { "enum": ["solana_rpc", "public_http", "mixed_readonly"] },
+            "read_only_probe": { "const": true },
+            "live_read_claimed": { "type": "boolean" },
+            "replay_ready": { "const": false },
+            "execution_claimed": { "const": false }
+          }
+        }
+      }
+    }
+  }
+}
