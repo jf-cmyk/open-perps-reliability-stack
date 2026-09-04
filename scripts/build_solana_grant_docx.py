@@ -373,6 +373,10 @@ def main():
         "Drift legacy liquidation-history diligence has scanned 318,000 finalized program transactions from July 22 back through slot 415091952 at 2026-04-23T08:31:20Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
         "Jupiter lifecycle role-map probe contract that binds sampled public transactions to hash-pinned onchain-IDL instruction roles while keeping signatures, account keys, raw instructions, raw transactions, verified pairing, keeper semantics, replay, and execution claims out of public artifacts.",
         "Slot-regime benchmark package for the source-governed 400ms-to-350ms activation boundary at slot 440208000, with pre/post windows for future read-only normalization and explicit no-performance-claim gates.",
+        "Local read-only worker wrapper with bounded Drift, Jupiter, Phoenix, and Slack-sample jobs. The wrapper defaults to plan mode and keeps execution, signing, key loading, custody, and capital-management flags false.",
+        "Private read-only worker run envelope that records artifact hashes, byte lengths, protocol labels, validator status, and promotion policy without copying worker payload bodies into public artifacts.",
+        "Public-safe worker candidate summary that can summarize a private envelope by dataset names, hashes, validator status, protocol labels, and blocked promotion gates while excluding private paths and payload bodies.",
+        "Public package manifest and DQ promotion template for future worker candidates. The template is hosted for reviewer clarity but remains blocked until founder review, final scrub, checksum binding, zero blocking DQ failures, and contract-index review.",
         "Continuous Solana ecosystem research loop with hot state, evidence ledger, opportunity pipeline, and checkpoint archive.",
         "Hosted Railway proof-pack MVP and dashboard with filtered GitHub Pages fallback.",
         "Hourly hosted smoke monitoring and public artifact boundary checks.",
@@ -383,7 +387,7 @@ def main():
     add_callout(
         document,
         "Reviewer proof pack",
-        "Canonical proof pack: https://refreshing-art-production-86de.up.railway.app/. Dashboard: https://refreshing-art-production-86de.up.railway.app/apps/dashboard/. GitHub Pages remains an equivalent filtered fallback. The MVP proof checklist maps claims to URLs, schemas, fixtures, and validation commands in docs/mvp-proof-checklist.md.",
+        "Canonical proof pack: https://refreshing-art-production-86de.up.railway.app/. Dashboard: https://refreshing-art-production-86de.up.railway.app/apps/dashboard/. GitHub Pages remains an equivalent filtered fallback. The MVP proof checklist maps claims to URLs, schemas, fixtures, worker candidate gates, and validation commands in docs/mvp-proof-checklist.md.",
     )
 
     document.add_heading("Why Blocksize", level=1)
