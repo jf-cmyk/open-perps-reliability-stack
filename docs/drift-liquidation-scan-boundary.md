@@ -4,9 +4,9 @@ This note defines what the current legacy Drift liquidation-history scan does an
 
 ## Current State
 
-As of the latest Solana research state, the read-only paginator has scanned 318,000 finalized transactions for the legacy Drift program from July 22 back through slot `415091952` at `2026-04-23T08:31:20Z` without finding a log message that matches `Instruction: Liquidate`.
+As of the latest validated read-only scan, the paginator has scanned 328,000 finalized transactions for the legacy Drift program from July 22 back through slot `414754843` at `2026-04-21T19:23:41Z` without finding a log message that matches `Instruction: Liquidate`.
 
-The next resume cursor is stored in `research/solana-ecosystem/state.json`. The research ledger in `research/solana-ecosystem/evidence.ndjson` is the audit trail for each bounded page.
+The next resume cursor is `51hCUKQToXRfTsFQq12voRR1LrQh4dvmoUWjVUogNi7x83mcfoV7rxEDSarpquJ4EqUbPnQVz4HG294SE43Uu5Ye`. The research ledger in `research/solana-ecosystem/evidence.ndjson` is the audit trail for background research pages; this reviewer note only promotes validated scrubbed scan boundaries.
 
 ## What The Scan Checks
 

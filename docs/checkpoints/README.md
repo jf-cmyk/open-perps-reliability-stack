@@ -4,6 +4,7 @@ Checkpoints are the project memory system for continuing work across fresh Codex
 
 ## Current Checkpoint
 
+- [2026-09-04 Drift 328k and worker promotion checkpoint](2026-09-04-drift-328k-worker-promotion-checkpoint.md)
 - [2026-09-03 worker boundary, commercial pricing, and domain checkpoint](2026-09-03-worker-commercial-domain-checkpoint.md)
 - [2026-09-02 soak summary and Jupiter validator checkpoint](2026-09-02-soak-summary-jupiter-validator-checkpoint.md)
 - [2026-09-01 worker soak commercial plan checkpoint](2026-09-01-worker-soak-commercial-plan-checkpoint.md)

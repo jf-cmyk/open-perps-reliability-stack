@@ -40,6 +40,7 @@
 - [Commercial diagnostics brief](commercial-diagnostics-brief.md)
 - [Railway deployment](deployment-railway.md)
 - [Reviewer proof-pack index](../index.html)
+- [Current checkpoint](checkpoints/2026-09-04-drift-328k-worker-promotion-checkpoint.md)
 
 Schema and fixture artifacts:
 

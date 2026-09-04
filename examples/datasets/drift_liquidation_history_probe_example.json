@@ -1,8 +1,8 @@
 {
   "chain_id": "solana-mainnet-beta",
   "dataset_name": "drift_liquidation_history_probe_local",
-  "generated_at_unix": 1784742789,
-  "generated_at_utc": "2026-07-22T17:53:09+00:00",
+  "generated_at_unix": 1788551984,
+  "generated_at_utc": "2026-09-04T19:59:44+00:00",
   "known_limitations": [
     "Log matches are discovery evidence only; selected transactions must be verified against pinned source before replay claims.",
     "A zero-candidate result is bounded pagination progress, not evidence that liquidations were absent.",
@@ -16,8 +16,8 @@
     "commitment": "finalized",
     "log_prefix": "Program log: Instruction: Liquidate",
     "page_size": 1000,
-    "pages": 1,
-    "started_before": "5GRuYzsVZPxWJPWAVDmDiZ5tYx7P7i876UG3FfPpUenub5oGGbuc82CxdxZvKLdVjsVUriBTgCRwGWfdhqMrTaWj"
+    "pages": 10,
+    "started_before": "2fhTXQqs9qnyX4mBrcKAuTLipxnWyfLG7kj7YRn3EpRNBQoRLignDCCVxCRx1ckfntdhYsSuC6deefgTLS9ghYKm"
   },
   "readiness": {
     "auth_used": false,
@@ -32,12 +32,12 @@
   },
   "scan_summary": {
     "liquidation_candidate_count": 0,
-    "newest_scanned_block_time": 1784647126,
-    "newest_scanned_slot": 428230799,
-    "next_before": "5GRuYzsVZPxWJPWAVDmDiZ5tYx7P7i876UG3FfPpUenub5oGGbuc82CxdxZvKLdVjsVUriBTgCRwGWfdhqMrTaWj",
-    "oldest_scanned_block_time": 1784077094,
-    "oldest_scanned_slot": 426802213,
-    "transactions_scanned": 1000
+    "newest_scanned_block_time": 1776933073,
+    "newest_scanned_slot": 415091934,
+    "next_before": "51hCUKQToXRfTsFQq12voRR1LrQh4dvmoUWjVUogNi7x83mcfoV7rxEDSarpquJ4EqUbPnQVz4HG294SE43Uu5Ye",
+    "oldest_scanned_block_time": 1776799421,
+    "oldest_scanned_slot": 414754843,
+    "transactions_scanned": 10000
   },
   "schema_version": "oprs.drift_liquidation_history_probe.v0"
 }

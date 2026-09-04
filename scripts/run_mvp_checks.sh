@@ -49,7 +49,7 @@ rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
 rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
 rg -q "../../examples/public/readonly-worker-candidate-template-v0/manifest.template.json" apps/dashboard/index.html
-rg -q "318,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
+rg -q "328,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
 test -f .railway/railway.ts

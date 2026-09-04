@@ -4,7 +4,7 @@ This map tells a fresh Codex window what to read for each workstream. Prefer thi
 
 ## Always Read First
 
-1. [Current checkpoint](2026-09-03-worker-commercial-domain-checkpoint.md)
+1. [Current checkpoint](2026-09-04-drift-328k-worker-promotion-checkpoint.md)
 2. [Roadmap](../roadmap.md)
 3. [ADR-0001: Read-only and dry-run first](../adr/0001-read-only-dry-run-first.md)
 
@@ -165,7 +165,7 @@ When agent guidance affects implementation order, summarize it in the next check
 
 ## Current No-Access Queue
 
-1. Continue Drift legacy pagination from cursor `2fhTXQqs9qnyX4mBrcKAuTLipxnWyfLG7kj7YRn3EpRNBQoRLignDCCVxCRx1ckfntdhYsSuC6deefgTLS9ghYKm`.
+1. Continue Drift legacy pagination from cursor `51hCUKQToXRfTsFQq12voRR1LrQh4dvmoUWjVUogNi7x83mcfoV7rxEDSarpquJ4EqUbPnQVz4HG294SE43Uu5Ye`.
 2. Keep Jupiter pairing unverified until the [Jupiter position authority confirmation](../jupiter-position-authority-confirmation.md) lifecycle evidence lands from canonical source or direct Jupiter confirmation.
 3. Decode additional Drift fields only after `scripts/validate_drift_readonly_state.py` passes on current local public-field target output and new offsets pass [Drift public field source review checklist](../drift-public-field-source-review-checklist.md).
 4. Keep `docs/proof-pack-changelog.md` current for reviewer-facing shipped evidence.

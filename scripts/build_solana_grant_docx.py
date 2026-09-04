@@ -370,7 +370,7 @@ def main():
         "Jupiter source-authority confirmation packet and send-ready outbound note.",
         "Source-review record schema and examples for Jupiter authority confirmation and Drift public-field promotion.",
         "Scrubbed Drift liquidation-history probe schema, validator, and bounded discovery output contract.",
-        "Drift legacy liquidation-history diligence has scanned 318,000 finalized program transactions from July 22 back through slot 415091952 at 2026-04-23T08:31:20Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
+        "Drift legacy liquidation-history diligence has scanned 328,000 finalized program transactions from July 22 back through slot 414754843 at 2026-04-21T19:23:41Z without a matching Liquidate* log; this is queue progress only, not evidence that liquidations were absent.",
         "Jupiter lifecycle role-map probe contract that binds sampled public transactions to hash-pinned onchain-IDL instruction roles while keeping signatures, account keys, raw instructions, raw transactions, verified pairing, keeper semantics, replay, and execution claims out of public artifacts.",
         "Slot-regime benchmark package for the source-governed 400ms-to-350ms activation boundary at slot 440208000, with pre/post windows for future read-only normalization and explicit no-performance-claim gates.",
         "Local read-only worker wrapper with bounded Drift, Jupiter, Phoenix, and Slack-sample jobs. The wrapper defaults to plan mode and keeps execution, signing, key loading, custody, and capital-management flags false.",
