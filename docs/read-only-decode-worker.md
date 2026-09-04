@@ -70,6 +70,8 @@ Every worker run must keep these false until a separate founder-approved scope c
 - Public candidate example: `examples/datasets/readonly_worker_public_candidate_example.json`
 - Public candidate builder: `scripts/build_readonly_worker_public_candidate.py`
 - Public candidate validator: `scripts/validate_readonly_worker_public_candidate.py`
+- Public package promotion template: `examples/public/readonly-worker-candidate-template-v0/`
+- Public package promotion template validator: `scripts/validate_readonly_worker_public_promotion_template.py`
 
 The example is a scrubbed public artifact. It describes the worker contract and current Drift guardrail proof shape without committing live target output or raw account bytes.
 
@@ -121,3 +123,13 @@ scripts/validate_readonly_worker_public_candidate.py target/oprs-worker-public-c
 ```
 
 By default, the candidate status is `blocked_pending_founder_review`. It includes protocol names, dataset names, artifact hashes, validator status, and false replay/execution flags. It excludes private artifact paths and payload bodies.
+
+## Public Package Promotion Template
+
+The checked-in template at `examples/public/readonly-worker-candidate-template-v0/` defines the manifest and DQ gates for a future public worker package. It is intentionally not a promoted worker output.
+
+The template keeps `public_output_published=false`, `founder_review_recorded=false`, and all final package gates pending. A real package can only be created after a selected candidate passes validation, founder review is recorded, final scrub passes, manifest checksums are bound, DQ blocking failures are zero, and a reviewed `examples/public/contract-index.json` entry is added.
+
+```bash
+scripts/validate_readonly_worker_public_promotion_template.py
+```

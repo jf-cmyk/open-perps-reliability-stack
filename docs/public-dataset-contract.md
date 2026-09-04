@@ -37,6 +37,8 @@ Allowed public content includes public program IDs, public account addresses, pu
 
 The first package profile is `drift-guardrails-v0`. The second package profile is `jupiter-authority-gap-v0`. The third package profile is `jupiter-onchain-decode-v0`. The fourth package profile is `phoenix-market-telemetry-v0`. The fifth package profile is `slot-regime-benchmark-v0`.
 
+`readonly-worker-candidate-template-v0` is a promotion template, not a public dataset package. It defines the future manifest and DQ gates for a selected read-only worker public candidate, while keeping public-output promotion blocked until founder review, final scrub, checksum binding, zero blocking DQ failures, and contract-index review are complete.
+
 Validators intentionally remain specialized until another package type applies pressure to the shared contract. Generalization should happen only when multiple package types share most of the same validation logic without weakening their domain-specific claim boundaries.
 
 The public contract index is intentionally small. It records package IDs, payload schema paths, validators, publishability, and claim boundaries so future packages can share discovery and review conventions without forcing a generic validator too early.

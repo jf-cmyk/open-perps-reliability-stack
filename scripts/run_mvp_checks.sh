@@ -30,6 +30,7 @@ rg -q "docs/jupiter-verified-pairing-validator.md" index.html
 rg -q "examples/datasets/readonly_soak_summary_example.json" index.html
 rg -q "examples/public/slot-regime-benchmark-v0/benchmark_windows.json" index.html
 rg -q "docs/phoenix-hawkeye-validator-plan.md" index.html
+rg -q "examples/public/readonly-worker-candidate-template-v0/manifest.template.json" index.html
 rg -q "Open Perps" apps/dashboard/index.html
 rg -q "No live execution" apps/dashboard/index.html
 rg -q "Protocol Gates" apps/dashboard/index.html
@@ -47,6 +48,7 @@ rg -q "ExecutionDisabledDryRun" apps/dashboard/index.html
 rg -q "AdapterVersionMismatch" apps/dashboard/index.html
 rg -q "../../docs/drift-liquidation-scan-boundary.md" apps/dashboard/index.html
 rg -q "../../docs/phoenix-hawkeye-validator-plan.md" apps/dashboard/index.html
+rg -q "../../examples/public/readonly-worker-candidate-template-v0/manifest.template.json" apps/dashboard/index.html
 rg -q "318,000 finalized transactions" docs/drift-liquidation-scan-boundary.md
 
 echo "== Deployment config =="
@@ -65,6 +67,8 @@ python3 -m json.tool schemas/datasets/readonly-worker-run-envelope-v0.json >/dev
 python3 -m json.tool examples/datasets/readonly_worker_run_envelope_example.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-worker-public-candidate-v0.json >/dev/null
 python3 -m json.tool examples/datasets/readonly_worker_public_candidate_example.json >/dev/null
+python3 -m json.tool examples/public/readonly-worker-candidate-template-v0/manifest.template.json >/dev/null
+python3 -m json.tool examples/public/readonly-worker-candidate-template-v0/dq.template.json >/dev/null
 python3 -m json.tool schemas/datasets/drift-liquidation-history-probe-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-decode-worker-run-v0.json >/dev/null
 python3 -m json.tool schemas/datasets/readonly-soak-summary-v0.json >/dev/null
@@ -129,6 +133,7 @@ PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readon
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/build_readonly_worker_run_envelope.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_worker_public_candidate.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/build_readonly_worker_public_candidate.py
+PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_readonly_worker_public_promotion_template.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/validate_slack_alert_payload.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/send_slack_alert_sample.py
 PYTHONPYCACHEPREFIX=target/pycache python3 -m py_compile scripts/run_readonly_worker_once.py
@@ -154,6 +159,7 @@ scripts/validate_jupiter_verified_pairing_fixture.py
 scripts/validate_readonly_soak_summary.py
 scripts/validate_readonly_worker_run_envelope.py
 scripts/validate_readonly_worker_public_candidate.py
+scripts/validate_readonly_worker_public_promotion_template.py
 scripts/validate_slack_alert_payload.py
 scripts/send_slack_alert_sample.py --dry-run
 scripts/run_readonly_worker_once.py --job slack-sample-dry-run --execute
@@ -216,6 +222,9 @@ test -f examples/datasets/drift_shape_snapshot_example.json
 test -f examples/datasets/readonly_soak_summary_example.json
 test -f examples/datasets/readonly_worker_run_envelope_example.json
 test -f examples/datasets/readonly_worker_public_candidate_example.json
+test -f examples/public/readonly-worker-candidate-template-v0/README.md
+test -f examples/public/readonly-worker-candidate-template-v0/manifest.template.json
+test -f examples/public/readonly-worker-candidate-template-v0/dq.template.json
 test -f examples/datasets/slack_alert_payload_example.json
 test -f examples/datasets/drift_readonly_decode_worker_run_example.json
 test -f examples/datasets/drift_liquidation_history_probe_example.json
@@ -265,6 +274,7 @@ test -x scripts/validate_readonly_worker_run_envelope.py
 test -x scripts/build_readonly_worker_run_envelope.py
 test -x scripts/validate_readonly_worker_public_candidate.py
 test -x scripts/build_readonly_worker_public_candidate.py
+test -x scripts/validate_readonly_worker_public_promotion_template.py
 test -x scripts/send_slack_alert_sample.py
 test -x scripts/run_readonly_worker_once.py
 test -x scripts/discover_phoenix_market_telemetry.py

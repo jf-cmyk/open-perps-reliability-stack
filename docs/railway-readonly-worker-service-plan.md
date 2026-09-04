@@ -83,6 +83,8 @@ scripts/build_readonly_worker_public_candidate.py
 
 It creates `target/oprs-worker-public-candidates/latest.json` with protocol names, dataset names, hashes, validator status, and a blocked promotion status. It does not publish, create public package manifests, or mark founder review complete.
 
+The future public package promotion template lives at `examples/public/readonly-worker-candidate-template-v0/`. It is hosted for reviewer clarity, but it is not a promoted worker output. It keeps founder review, final scrub, checksum binding, zero-blocking-DQ, and contract-index entry gates pending until a specific generated candidate is selected.
+
 ## Railway Variables
 
 Required for worker only:

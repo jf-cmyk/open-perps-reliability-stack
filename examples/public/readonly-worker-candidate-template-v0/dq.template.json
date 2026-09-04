@@ -1,0 +1,46 @@
+{
+  "schema_version": "oprs.public_dq_report.v0",
+  "dataset_name": "readonly_worker_public_candidate_template",
+  "status": "template_only",
+  "blocking_failures": 6,
+  "warnings": 0,
+  "checks": [
+    {
+      "gate_id": "founder_review_recorded",
+      "severity": "block_publish",
+      "status": "pending",
+      "message": "Founder review must select and approve the candidate id before public package creation."
+    },
+    {
+      "gate_id": "candidate_validator_passed",
+      "severity": "block_publish",
+      "status": "pending",
+      "message": "The selected candidate must pass scripts/validate_readonly_worker_public_candidate.py."
+    },
+    {
+      "gate_id": "final_scrub_passed",
+      "severity": "block_publish",
+      "status": "pending",
+      "message": "The final package must pass a public secret, local path, and private payload body sweep."
+    },
+    {
+      "gate_id": "manifest_checksums_bound",
+      "severity": "block_publish",
+      "status": "pending",
+      "message": "Manifest output hashes and row counts must be replaced with deterministic final values."
+    },
+    {
+      "gate_id": "dq_blocking_failures_zero",
+      "severity": "block_publish",
+      "status": "pending",
+      "message": "The final DQ report must have zero blocking failures."
+    },
+    {
+      "gate_id": "contract_index_entry_added",
+      "severity": "block_publish",
+      "status": "pending",
+      "message": "A reviewed package entry must be added to examples/public/contract-index.json."
+    }
+  ]
+}
+

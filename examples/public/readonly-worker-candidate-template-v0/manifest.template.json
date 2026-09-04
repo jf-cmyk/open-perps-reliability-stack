@@ -1,0 +1,63 @@
+{
+  "manifest_template_version": "oprs.readonly_worker_public_package_manifest_template.v0",
+  "package_template_id": "readonly-worker-candidate-template-v0",
+  "intended_package_type": "readonly_worker_public_candidate",
+  "capability": "read_only_dry_run",
+  "template_status": "blocked_until_founder_review",
+  "public_output_published": false,
+  "selected_candidate": {
+    "candidate_id": "REPLACE_WITH_FOUNDER_REVIEWED_CANDIDATE_ID",
+    "candidate_schema_version": "oprs.readonly_worker_public_candidate.v0",
+    "candidate_summary_path": "candidate_summary.json",
+    "candidate_summary_sha256": "REPLACE_WITH_SHA256_AFTER_FINAL_SCRUB",
+    "candidate_summary_row_count": 1
+  },
+  "generated_from": {
+    "source_type": "scrubbed_readonly_worker_candidate",
+    "private_worker_payload_bodies_used": false,
+    "private_worker_payload_bodies_committed": false,
+    "private_paths_committed": false
+  },
+  "outputs": [
+    {
+      "path": "candidate_summary.json",
+      "format": "json",
+      "schema_path": "schemas/datasets/readonly-worker-public-candidate-v0.json",
+      "schema_version": "oprs.readonly_worker_public_candidate.v0",
+      "row_count": 1,
+      "sha256": "REPLACE_WITH_SHA256_AFTER_FINAL_SCRUB"
+    },
+    {
+      "path": "dq.json",
+      "format": "json",
+      "schema_version": "oprs.public_dq_report.v0",
+      "row_count": "REPLACE_WITH_DQ_CHECK_COUNT",
+      "sha256": "REPLACE_WITH_SHA256_AFTER_FINAL_DQ"
+    }
+  ],
+  "dq": {
+    "status": "template_only",
+    "report_path": "dq.json",
+    "blocking_failures": 6,
+    "warnings": 0
+  },
+  "scrub": {
+    "policy_version": "oprs.public_artifact_scrub.v0",
+    "status": "template_only",
+    "blocked_pattern_count": "REPLACE_AFTER_FINAL_SCRUB"
+  },
+  "promotion_gates": {
+    "founder_review_recorded": false,
+    "candidate_validator_passed": false,
+    "final_scrub_passed": false,
+    "manifest_checksums_bound": false,
+    "dq_blocking_failures_zero": false,
+    "contract_index_entry_added": false
+  },
+  "known_limitations": [
+    "Template only; no generated worker output is promoted by this file.",
+    "A selected candidate remains non-public until founder review, final scrub, and package validator pass.",
+    "This package profile must not claim replay readiness, verified liquidation opportunities, signing, or submission."
+  ]
+}
+
