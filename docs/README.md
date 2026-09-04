@@ -48,6 +48,7 @@ Schema and fixture artifacts:
 - [Data reconstruction envelope schema](../schemas/datasets/data-reconstruction-envelope-v0.json)
 - [Read-only soak summary schema](../schemas/datasets/readonly-soak-summary-v0.json)
 - [Read-only worker run envelope schema](../schemas/datasets/readonly-worker-run-envelope-v0.json)
+- [Read-only worker public candidate schema](../schemas/datasets/readonly-worker-public-candidate-v0.json)
 - [Slack alert payload schema](../schemas/datasets/slack-alert-payload-v0.json)
 - [Source review record schema](../schemas/datasets/source-review-record-v0.json)
 - [Sample Drift fixture manifest](../datasets/sample/drift_synthetic_margin_001/manifest.json)
@@ -56,6 +57,7 @@ Schema and fixture artifacts:
 - [Dataset provenance example](../examples/datasets/data_reconstruction_envelope.json)
 - [Read-only soak summary example](../examples/datasets/readonly_soak_summary_example.json)
 - [Read-only worker run envelope example](../examples/datasets/readonly_worker_run_envelope_example.json)
+- [Read-only worker public candidate example](../examples/datasets/readonly_worker_public_candidate_example.json)
 - [Slack alert payload example](../examples/datasets/slack_alert_payload_example.json)
 - [Jupiter position authority source review example](../examples/datasets/jupiter_position_authority_source_review_example.json)
 - [Phoenix Hawkeye source review example](../examples/datasets/phoenix_hawkeye_source_review_example.json)
@@ -85,6 +87,7 @@ cargo run -p oprs-api-types --example validate_api_examples
 scripts/send_slack_alert_sample.py --dry-run
 scripts/run_readonly_worker_once.py --job drift-state-smoke --plan
 scripts/validate_readonly_worker_run_envelope.py
+scripts/validate_readonly_worker_public_candidate.py
 scripts/validate_jupiter_verified_pairing_fixture.py
 scripts/run_mvp_checks.sh
 ```

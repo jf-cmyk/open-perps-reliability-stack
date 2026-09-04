@@ -38,6 +38,7 @@ Current implementation remains read-only and dry-run only:
 - Executed and validated bounded local worker smokes for Drift state, Jupiter role-map, and Phoenix telemetry. Outputs stayed under `target/oprs-worker-runs/` and were not committed or published.
 - Added a Jupiter verified-pairing fixture contract, rejected role-map-only fixture, synthetic positive fixture, and validator. The synthetic positive proves validator gates only and does not claim mainnet pairing.
 - Added a private read-only worker run-envelope schema, example, builder, and validator. The generated envelope records paths, hashes, byte lengths, protocol labels, validator status, and promotion policy without copying private worker payload bodies.
+- Added a public-safe worker candidate schema, example, builder, and validator. The generated candidate summarizes private envelopes by counts, hashes, protocol labels, and promotion gates; default status is `blocked_pending_founder_review`.
 - Documented safe Railway variable setup using stdin for secret-like values.
 - Documented alert destination constraints and payload boundary.
 - Documented custom domain setup path for Railway.
@@ -50,7 +51,7 @@ Current implementation remains read-only and dry-run only:
 2. Run the Slack sample sender through Railway-injected worker variables.
 3. Select the custom domain and run Railway domain setup.
 4. Pick the first hosted worker command and retention policy before deploying source to `oprs-readonly-worker`.
-5. Add a scrubbed promotion-candidate builder that can convert validated private envelopes into public-safe summaries after founder review.
+5. Create a package-manifest/DQ template for public promotion once a founder-reviewed worker candidate is selected.
 6. Keep adapting the grant proposal as live read-only evidence improves.
 
 ## Fresh-Window Kickoff Prompt

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jf-cmyk/open-perps-reliability-stack/schemas/datasets/readonly-worker-public-candidate-v0.json",
+  "title": "Open Perps Reliability Stack Read-Only Worker Public Candidate v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "generated_at_unix",
+    "source_envelope",
+    "summary",
+    "protocols",
+    "promotion_gates",
+    "public_payload_policy",
+    "safety_invariants",
+    "known_limitations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "oprs.readonly_worker_public_candidate.v0" },
+    "candidate_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+    "generated_at_unix": { "type": "integer", "minimum": 1 },
+    "source_envelope": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "run_id",
+        "artifact_count",
+        "source_envelope_body_committed",
+        "source_envelope_hash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": "oprs.readonly_worker_run_envelope.v0" },
+        "run_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "artifact_count": { "type": "integer", "minimum": 1 },
+        "source_envelope_body_committed": { "const": false },
+        "source_envelope_hash": { "type": "string", "minLength": 64, "maxLength": 64 }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "worker_service",
+        "output_mode",
+        "validation_status",
+        "validated_artifact_count",
+        "public_candidate_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "worker_service": { "const": "oprs-readonly-worker" },
+        "output_mode": { "const": "private_target" },
+        "validation_status": { "enum": ["passed", "failed_closed"] },
+        "validated_artifact_count": { "type": "integer", "minimum": 0 },
+        "public_candidate_status": {
+          "enum": [
+            "blocked_pending_founder_review",
+            "blocked_validation_failed",
+            "ready_for_manual_public_package_review"
+          ]
+        }
+      }
+    },
+    "protocols": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/protocol_summary" }
+    },
+    "promotion_gates": {
+      "type": "object",
+      "required": [
+        "founder_review_recorded",
+        "validator_passed",
+        "scrub_passed",
+        "public_package_manifest_created",
+        "public_package_dq_created",
+        "public_output_published"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "founder_review_recorded": { "type": "boolean" },
+        "validator_passed": { "type": "boolean" },
+        "scrub_passed": { "type": "boolean" },
+        "public_package_manifest_created": { "const": false },
+        "public_package_dq_created": { "const": false },
+        "public_output_published": { "const": false }
+      }
+    },
+    "public_payload_policy": {
+      "type": "object",
+      "required": [
+        "private_artifact_paths_committed",
+        "private_payload_bodies_committed",
+        "raw_account_data_committed",
+        "raw_transaction_committed",
+        "only_counts_hashes_and_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "private_artifact_paths_committed": { "const": false },
+        "private_payload_bodies_committed": { "const": false },
+        "raw_account_data_committed": { "const": false },
+        "raw_transaction_committed": { "const": false },
+        "only_counts_hashes_and_status": { "const": true }
+      }
+    },
+    "safety_invariants": {
+      "type": "object",
+      "required": [
+        "contains_rpc_url",
+        "contains_api_key",
+        "contains_webhook_url",
+        "contains_private_key",
+        "contains_wallet_path",
+        "signing_enabled",
+        "transaction_submission_enabled",
+        "priority_fee_bidding_enabled",
+        "custody_enabled",
+        "capital_management_enabled"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contains_rpc_url": { "const": false },
+        "contains_api_key": { "const": false },
+        "contains_webhook_url": { "const": false },
+        "contains_private_key": { "const": false },
+        "contains_wallet_path": { "const": false },
+        "signing_enabled": { "const": false },
+        "transaction_submission_enabled": { "const": false },
+        "priority_fee_bidding_enabled": { "const": false },
+        "custody_enabled": { "const": false },
+        "capital_management_enabled": { "const": false }
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1, "maxLength": 220 }
+    }
+  },
+  "$defs": {
+    "protocol_summary": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "dataset_name",
+        "source_kind",
+        "artifact_hash",
+        "validator_status",
+        "live_read_claimed",
+        "replay_ready",
+        "execution_claimed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "protocol": { "enum": ["drift", "jupiter", "phoenix"] },
+        "dataset_name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "source_kind": { "enum": ["solana_rpc", "public_http", "mixed_readonly"] },
+        "artifact_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+        "validator_status": { "enum": ["passed", "not_run", "failed_closed"] },
+        "live_read_claimed": { "type": "boolean" },
+        "replay_ready": { "const": false },
+        "execution_claimed": { "const": false }
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "oprs.readonly_worker_public_candidate.v0",
+  "candidate_id": "example_readonly_worker_public_candidate_001",
+  "generated_at_unix": 1788472666,
+  "source_envelope": {
+    "schema_version": "oprs.readonly_worker_run_envelope.v0",
+    "run_id": "example_readonly_worker_run_envelope_001",
+    "artifact_count": 3,
+    "source_envelope_body_committed": false,
+    "source_envelope_hash": "4444444444444444444444444444444444444444444444444444444444444444"
+  },
+  "summary": {
+    "worker_service": "oprs-readonly-worker",
+    "output_mode": "private_target",
+    "validation_status": "passed",
+    "validated_artifact_count": 3,
+    "public_candidate_status": "blocked_pending_founder_review"
+  },
+  "protocols": [
+    {
+      "protocol": "drift",
+      "dataset_name": "drift_readonly_state_discovery",
+      "source_kind": "solana_rpc",
+      "artifact_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "validator_status": "passed",
+      "live_read_claimed": true,
+      "replay_ready": false,
+      "execution_claimed": false
+    },
+    {
+      "protocol": "jupiter",
+      "dataset_name": "jupiter_lifecycle_role_map_probe_local",
+      "source_kind": "solana_rpc",
+      "artifact_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "validator_status": "passed",
+      "live_read_claimed": true,
+      "replay_ready": false,
+      "execution_claimed": false
+    },
+    {
+      "protocol": "phoenix",
+      "dataset_name": "phoenix_market_telemetry_probe_local",
+      "source_kind": "public_http",
+      "artifact_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+      "validator_status": "passed",
+      "live_read_claimed": true,
+      "replay_ready": false,
+      "execution_claimed": false
+    }
+  ],
+  "promotion_gates": {
+    "founder_review_recorded": false,
+    "validator_passed": true,
+    "scrub_passed": true,
+    "public_package_manifest_created": false,
+    "public_package_dq_created": false,
+    "public_output_published": false
+  },
+  "public_payload_policy": {
+    "private_artifact_paths_committed": false,
+    "private_payload_bodies_committed": false,
+    "raw_account_data_committed": false,
+    "raw_transaction_committed": false,
+    "only_counts_hashes_and_status": true
+  },
+  "safety_invariants": {
+    "contains_rpc_url": false,
+    "contains_api_key": false,
+    "contains_webhook_url": false,
+    "contains_private_key": false,
+    "contains_wallet_path": false,
+    "signing_enabled": false,
+    "transaction_submission_enabled": false,
+    "priority_fee_bidding_enabled": false,
+    "custody_enabled": false,
+    "capital_management_enabled": false
+  },
+  "known_limitations": [
+    "This candidate summarizes a private worker run envelope by counts, hashes, and statuses only.",
+    "It is blocked from public-package promotion until founder review is recorded and package manifest/DQ files are created.",
+    "It does not include private artifact paths, payload bodies, raw account data, raw transactions, RPC URLs, API keys, or webhooks."
+  ]
+}

@@ -66,6 +66,10 @@ Every worker run must keep these false until a separate founder-approved scope c
 - Private run envelope example: `examples/datasets/readonly_worker_run_envelope_example.json`
 - Private run envelope builder: `scripts/build_readonly_worker_run_envelope.py`
 - Private run envelope validator: `scripts/validate_readonly_worker_run_envelope.py`
+- Public candidate schema: `schemas/datasets/readonly-worker-public-candidate-v0.json`
+- Public candidate example: `examples/datasets/readonly_worker_public_candidate_example.json`
+- Public candidate builder: `scripts/build_readonly_worker_public_candidate.py`
+- Public candidate validator: `scripts/validate_readonly_worker_public_candidate.py`
 
 The example is a scrubbed public artifact. It describes the worker contract and current Drift guardrail proof shape without committing live target output or raw account bytes.
 
@@ -106,3 +110,14 @@ scripts/validate_readonly_worker_run_envelope.py target/oprs-worker-run-envelope
 The envelope records paths, checksums, byte lengths, protocol labels, validator status, and promotion policy. It does not copy worker payload bodies, raw account data, raw transactions, RPC URLs, API keys, Slack webhooks, signer settings, custody settings, or capital settings.
 
 The checked-in example is public documentation of the envelope shape only. Generated envelopes under `target/oprs-worker-run-envelopes/` remain private target output until founder review, validator pass, and scrub pass.
+
+## Public Candidate Summary
+
+After the private envelope validates, build a public-safe candidate summary:
+
+```bash
+scripts/build_readonly_worker_public_candidate.py
+scripts/validate_readonly_worker_public_candidate.py target/oprs-worker-public-candidates/latest.json
+```
+
+By default, the candidate status is `blocked_pending_founder_review`. It includes protocol names, dataset names, artifact hashes, validator status, and false replay/execution flags. It excludes private artifact paths and payload bodies.

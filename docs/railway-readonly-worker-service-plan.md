@@ -75,6 +75,14 @@ scripts/build_readonly_worker_run_envelope.py
 
 It creates `target/oprs-worker-run-envelopes/latest.json` from validated worker outputs without copying payload bodies into the envelope.
 
+The public-safe candidate summary builder is:
+
+```bash
+scripts/build_readonly_worker_public_candidate.py
+```
+
+It creates `target/oprs-worker-public-candidates/latest.json` with protocol names, dataset names, hashes, validator status, and a blocked promotion status. It does not publish, create public package manifests, or mark founder review complete.
+
 ## Railway Variables
 
 Required for worker only:

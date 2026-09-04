@@ -17,6 +17,7 @@ This public changelog records reviewer-facing proof-pack progress. It excludes i
 - Validated bounded local Drift, Jupiter, and Phoenix worker smokes with outputs kept under ignored `target/` paths and no public-output promotion.
 - Added a Jupiter verified-pairing fixture contract with rejected role-map-only and synthetic positive cases so lifecycle gate behavior is testable while mainnet pairing remains unclaimed.
 - Added a private read-only worker run-envelope contract with builder and validator so local/hosted worker outputs can be summarized by checksum and promotion policy without copying payload bodies into public artifacts.
+- Added a public-safe worker candidate summary contract with builder and validator; generated candidates default to blocked pending founder review and package DQ gates.
 - Tightened Jupiter source-authority docs to clarify that `JUPITER_API_KEY` may support authenticated read-only discovery but does not unlock verified pairing, keeper execution, or replay claims without a Jupiter-confirmed lifecycle artifact.
 - Regenerated the local Solana Foundation proposal DOCX and refreshed validation/smoke checks for the public proof pack.
 
